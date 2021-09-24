@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">inuNavi</string>
+    <string name="title_map">지도</string>
+    <string name="title_satisfied">분석</string>
+    <string name="title_calendar">시간표</string>
+    <string name="title_recommend">추천</string>
+</resources>
