@@ -1,4 +1,4 @@
-package com.stream.inunavi;
+package com.maru.inunavi;
 
 import org.junit.Test;
 

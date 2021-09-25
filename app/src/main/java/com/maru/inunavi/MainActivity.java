@@ -1,20 +1,25 @@
-package com.stream.inunavi;
+package com.maru.inunavi;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.stream.inunavi.ui.calendar.CalendarFragment;
-import com.stream.inunavi.ui.map.MapFragment;
-import com.stream.inunavi.ui.recommend.RecommendFragment;
-import com.stream.inunavi.ui.satisfied.SatisfiedFragment;
+import com.maru.inunavi.ui.calendar.CalendarFragment;
+import com.maru.inunavi.ui.map.MapFragment;
+import com.maru.inunavi.ui.recommend.RecommendFragment;
+import com.maru.inunavi.ui.satisfied.SatisfiedFragment;
 
 public class MainActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,20 +27,14 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
+
+
         MapFragment mapFragment = new MapFragment();
         SatisfiedFragment satisfiedFragment= new SatisfiedFragment();
         CalendarFragment calendarFragment = new CalendarFragment();
         RecommendFragment recommendFragment = new RecommendFragment();
 
-        /*BottomNavigationView navView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_map, R.id.navigation_satisfied, R.id.navigation_calendar, R.id.navigation_recommend)
-                .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
-        //NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-        NavigationUI.setupWithNavController(binding.navView, navController);*/
+
 
         bottomNavigationView = findViewById(R.id.nav_view);
         getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_frameLayout_activity_main, mapFragment).commit();

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.stream.inunavi.ui.recommend.RecommendFragment">
+    tools:context="com.maru.inunavi.ui.recommend.RecommendFragment">
 
     <TextView
         android:id="@+id/text_recommend"

@@ -7,25 +7,25 @@
 
     <fragment
         android:id="@+id/navigation_map"
-        android:name="com.stream.inunavi.ui.map.MapFragment"
+        android:name="com.maru.inunavi.ui.map.MapFragment"
         android:label="@string/title_map"
         tools:layout="@layout/fragment_map" />
 
     <fragment
         android:id="@+id/navigation_satisfied"
-        android:name="com.stream.inunavi.ui.satisfied.SatisfiedFragment"
+        android:name="com.maru.inunavi.ui.satisfied.SatisfiedFragment"
         android:label="@string/title_satisfied"
         tools:layout="@layout/fragment_satisfied" />
 
     <fragment
         android:id="@+id/navigation_calendar"
-        android:name="com.stream.inunavi.ui.calendar.CalendarFragment"
+        android:name="com.maru.inunavi.ui.calendar.CalendarFragment"
         android:label="@string/title_calendar"
         tools:layout="@layout/fragment_calendar" />
 
     <fragment
         android:id="@+id/navigation_recommend"
-        android:name="com.stream.inunavi.ui.recommend.RecommendFragment"
+        android:name="com.maru.inunavi.ui.recommend.RecommendFragment"
         android:label="@string/title_recommend"
         tools:layout="@layout/fragment_recommend" />
 

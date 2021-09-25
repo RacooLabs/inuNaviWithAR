@@ -7,7 +7,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.stream.inunavi.ui.map.MapFragment"
+    tools:context="com.maru.inunavi.ui.map.MapFragment"
     >
 
 
@@ -31,7 +31,10 @@
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp">
+        android:layout_marginRight="10dp"
+        android:lines="1"
+        android:imeOptions="actionSearch"
+        android:inputType="text">
 
 
     </AutoCompleteTextView>
@@ -51,6 +54,16 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:text="X"
+        app:layout_constraintRight_toRightOf="@id/autoCompleteTextView_search"
+        app:layout_constraintTop_toTopOf="@id/autoCompleteTextView_search"
+        app:layout_constraintBottom_toBottomOf="@id/autoCompleteTextView_search"
+        android:visibility="invisible"/>
+
+    <Button
+        android:id="@+id/reset_button"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:text="R"
         app:layout_constraintRight_toRightOf="@id/autoCompleteTextView_search"
         app:layout_constraintTop_toTopOf="@id/autoCompleteTextView_search"
         app:layout_constraintBottom_toBottomOf="@id/autoCompleteTextView_search"
