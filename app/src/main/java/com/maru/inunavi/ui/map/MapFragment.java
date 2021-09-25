@@ -81,17 +81,18 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         autoCompleteTextView_search.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
+
                 if (hasFocus) {
                     search_button.setVisibility(View.INVISIBLE);
                     clear_button.setVisibility(View.VISIBLE);
-                    reset_button.setVisibility(View.INVISIBLE);
 
                 } else {
                     search_button.setVisibility(View.VISIBLE);
                     clear_button.setVisibility(View.INVISIBLE);
-                    reset_button.setVisibility(View.INVISIBLE);
 
                 }
+
+                reset_button.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -180,6 +181,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 search_button.setVisibility(View.VISIBLE);
                 clear_button.setVisibility(View.INVISIBLE);
                 reset_button.setVisibility(View.INVISIBLE);
+                autoCompleteTextView_search.clearFocus();
+
 
                 if (polyline != null) polyline.remove();
                 latLngList.clear();
