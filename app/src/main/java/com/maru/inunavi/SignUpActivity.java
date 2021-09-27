@@ -7,24 +7,23 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class LoginActivity extends AppCompatActivity {
+public class SignUpActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_sign_up);
 
-        TextView signUpButton = findViewById(R.id.button_moveTo_sign_up);
+        TextView sign_up_back_button = findViewById(R.id.textView_sign_up_back);
 
-        signUpButton.setOnClickListener(new View.OnClickListener() {
+        sign_up_back_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent signUpIntent = new Intent(LoginActivity.this, SignUpActivity.class);
-                startActivity(signUpIntent);
+                Intent backToLoginIntent = new Intent(SignUpActivity.this, LoginActivity.class);
+                startActivity(backToLoginIntent);
             }
         });
-
 
 
 
