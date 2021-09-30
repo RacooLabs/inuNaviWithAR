@@ -9,4 +9,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="main_color">#02468E</color>
     <color name="main_color_bright">#0868D2</color>
+
+    <color name="hint_text_normal">#939393</color>
+    <color name="warning_color">#E30000</color>
+
 </resources>
