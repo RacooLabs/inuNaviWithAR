@@ -74,16 +74,6 @@
                 android:visibility="invisible"
                 />
 
-            <ImageView
-                android:id="@+id/sign_up_id_not_icon"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginRight="8dp"
-                android:src="@drawable/ic_report_problem_black_24dp"
-                android:visibility="invisible" />
 
         </RelativeLayout>
 
@@ -132,17 +122,6 @@
 
                 />
 
-            <ImageView
-                android:id="@+id/sign_up_password_not_icon"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginRight="8dp"
-                android:src="@drawable/ic_report_problem_black_24dp"
-                android:visibility="invisible"
-                />
 
 
 
@@ -190,17 +169,6 @@
                 android:visibility="invisible"
                 />
 
-            <ImageView
-                android:id="@+id/sign_up_password_second_not_icon"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginRight="8dp"
-                android:src="@drawable/ic_report_problem_black_24dp"
-                android:visibility="invisible"
-                />
 
 
         </RelativeLayout>
@@ -210,6 +178,53 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="비밀번호 확인 문제"
+            android:textColor="@color/warning_color"
+            android:textSize="@dimen/warning_text_size"
+            android:visibility="gone"
+            android:paddingTop="6dp"
+            android:paddingLeft="6dp"
+            />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp">
+
+            <EditText
+                android:id="@+id/editText_sign_up_name"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/layout_login_roundedbox"
+                android:hint="이름"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:maxLength="20"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textColor="@color/hint_text_normal"
+                android:textSize="@dimen/main_text_size" />
+
+            <ImageView
+                android:id="@+id/sign_up_name_done_icon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginRight="6dp"
+                android:src="@drawable/ic_done_black_24dp"
+                android:visibility="invisible"
+                />
+
+
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/textView_name_warning"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="이름 문제"
             android:textColor="@color/warning_color"
             android:textSize="@dimen/warning_text_size"
             android:visibility="gone"
@@ -249,19 +264,6 @@
                 android:src="@drawable/ic_done_black_24dp"
                 android:visibility="invisible"
                 />
-
-            <ImageView
-                android:id="@+id/sign_up_email_not_icon"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginRight="8dp"
-                android:src="@drawable/ic_report_problem_black_24dp"
-                android:visibility="invisible"
-                />
-
 
 
         </RelativeLayout>

@@ -11,19 +11,19 @@ import java.util.Map;
 
 public class ValidateRequest extends StringRequest {
 
-    final static private String URL = "http://192.168.55.162/inuNavi/UserValidate.php";
+    final static private String URL = "http://219.248.233.170/project1_war_exploded/user/check/id?id=";
     private Map<String, String> parameters;
 
     public ValidateRequest(String userID, Response.Listener<String> listener){
 
-        super(Method.POST, URL, listener, new Response.ErrorListener() {
+        super(Method.GET, URL  + userID, listener, new Response.ErrorListener() {
+
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("@@@", String.valueOf(error));
+                Log.d("@@@2", String.valueOf(error));
             }
         });
-        parameters = new HashMap<>();
-        parameters.put("userID", userID);
+
     }
 
     @Override

@@ -27,11 +27,12 @@ public class SignUpActivity extends AppCompatActivity {
     private String userEmail;
 
     private boolean idValidate = false; //사용자 아이디 가능 체크
-    private boolean passwordValidate = false; //사용자 아이디 가능 체크
-    private boolean passwordCheckValidate = false; //사용자 아이디 가능 체크
-    private boolean emailValidate = false; //사용자 아이디 가능 체크
+    private boolean passwordValidate = false; //사용자 비밀번호 체크
+    private boolean passwordCheckValidate = false; //사용자 비밀번호 체크
+    private boolean emailValidate = false; //사용자 이메일 가능 체크
+    private boolean nameValidate = false; //사용자 이름 가능 체크
 
-   @Override
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -52,23 +53,20 @@ public class SignUpActivity extends AppCompatActivity {
        EditText editText_sign_up_password = findViewById(R.id.editText_sign_up_password);
        EditText editText_sign_up_password_second = findViewById(R.id.editText_sign_up_password_second);
        EditText editText_sign_up_email = findViewById(R.id.editText_sign_up_email);
+       EditText editText_sign_up_name = findViewById(R.id.editText_sign_up_name);
+
 
        ImageView sign_up_id_done_icon = findViewById(R.id.sign_up_id_done_icon);
-       ImageView sign_up_id_not_icon = findViewById(R.id.sign_up_id_not_icon);
-
        ImageView sign_up_password_done_icon = findViewById(R.id.sign_up_password_done_icon);
-       ImageView sign_up_password_not_icon = findViewById(R.id.sign_up_password_not_icon);
-
        ImageView sign_up_password_second_done_icon = findViewById(R.id.sign_up_password_second_done_icon);
-       ImageView sign_up_password_second_not_icon = findViewById(R.id.sign_up_password_second_not_icon);
-
        ImageView sign_up_email_done_icon = findViewById(R.id.sign_up_email_done_icon);
-       ImageView sign_up_email_not_icon = findViewById(R.id.sign_up_email_not_icon);
+       ImageView sign_up_name_done_icon = findViewById(R.id.sign_up_name_done_icon);
 
        TextView textView_id_warning = findViewById(R.id.textView_id_warning);
        TextView textView_password_warning = findViewById(R.id.textView_password_warning);
        TextView textView_password_second_warning = findViewById(R.id.textView_password_second_warning);
        TextView textView_email_warning = findViewById(R.id.textView_email_warning);
+       TextView textView_name_warning = findViewById(R.id.textView_name_warning);
 
        TextView button_sign_up = findViewById(R.id.button_sign_up);
 
@@ -78,7 +76,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                if(b) {
 
-                   setNormalEditText(editText_sign_up_id, sign_up_id_done_icon, sign_up_id_not_icon, textView_id_warning);
+                   setNormalEditText(editText_sign_up_id, sign_up_id_done_icon, textView_id_warning);
                    idValidate = false;
 
                }else {
@@ -86,15 +84,15 @@ public class SignUpActivity extends AppCompatActivity {
                    String userID = editText_sign_up_id.getText().toString();
 
                    if (userID.contains(" ")){
-                       setNotEditText(editText_sign_up_id, sign_up_id_done_icon, sign_up_id_not_icon, textView_id_warning, "아이디에 공백이 있습니다.");
+                       setNotEditText(editText_sign_up_id, sign_up_id_done_icon, textView_id_warning, "아이디에 공백이 있습니다.");
                        idValidate = false;
 
                    } else if (userID.equals("")) {
-                       setNotEditText(editText_sign_up_id, sign_up_id_done_icon, sign_up_id_not_icon, textView_id_warning, "아이디를 입력하세요.");
+                       setNotEditText(editText_sign_up_id, sign_up_id_done_icon, textView_id_warning, "아이디를 입력하세요.");
                        idValidate = false;
 
                    } else if (userID.length() > 15 || userID.length() < 6) {
-                       setNotEditText(editText_sign_up_id, sign_up_id_done_icon, sign_up_id_not_icon, textView_id_warning, "아이디는 6자 이상 14자 이하입니다.");
+                       setNotEditText(editText_sign_up_id, sign_up_id_done_icon, textView_id_warning, "아이디는 6자 이상 14자 이하입니다.");
                        idValidate = false;
 
                    } else {
@@ -105,17 +103,17 @@ public class SignUpActivity extends AppCompatActivity {
                            public void onResponse(String response) {
 
                                try {
-                                   Log.d("@@@", response);
-                                   JSONObject jsonResponse = new JSONObject(response);
 
+                                   JSONObject jsonResponse = new JSONObject(response);
                                    boolean success = jsonResponse.getBoolean("success");
 
 
+
                                    if (success) {
-                                       setDoneEditText(editText_sign_up_id, sign_up_id_done_icon, sign_up_id_not_icon, textView_id_warning);
+                                       setDoneEditText(editText_sign_up_id, sign_up_id_done_icon, textView_id_warning);
                                        idValidate = true;
                                    }else{
-                                       setNotEditText(editText_sign_up_id, sign_up_id_done_icon, sign_up_id_not_icon, textView_id_warning, "아이디가 이미 존재합니다.");
+                                       setNotEditText(editText_sign_up_id, sign_up_id_done_icon,  textView_id_warning, "아이디가 이미 존재합니다.");
                                        idValidate = false;
                                    }
 
@@ -123,6 +121,9 @@ public class SignUpActivity extends AppCompatActivity {
 
                                    Log.d("@@@", "validate error");
                                    e.printStackTrace();
+
+                                   setNotEditText(editText_sign_up_id, sign_up_id_done_icon,  textView_id_warning, "서버 연결 실패");
+                                   idValidate = false;
 
 
                                }
@@ -147,7 +148,7 @@ public class SignUpActivity extends AppCompatActivity {
            public void onFocusChange(View view, boolean b) {
 
                if(b){
-                   setNormalEditText(editText_sign_up_password, sign_up_password_done_icon, sign_up_password_not_icon, textView_password_warning);
+                   setNormalEditText(editText_sign_up_password, sign_up_password_done_icon,  textView_password_warning);
                    passwordValidate = false;
                }else{
 
@@ -156,31 +157,31 @@ public class SignUpActivity extends AppCompatActivity {
                    String userPasswordCheck = editText_sign_up_password_second.getText().toString();
 
                    if(userPassword.contains(userId)){
-                       setNotEditText(editText_sign_up_password, sign_up_password_done_icon, sign_up_password_not_icon, textView_password_warning, "비밀번호에 아이디가 포함되어있습니다.");
+                       setNotEditText(editText_sign_up_password, sign_up_password_done_icon, textView_password_warning, "비밀번호에 아이디가 포함되어있습니다.");
                        passwordValidate = false;
 
                    }else if (userPassword.contains(" ")){
-                       setNotEditText(editText_sign_up_password, sign_up_password_done_icon, sign_up_password_not_icon, textView_password_warning, "비밀번호에 공백이 있습니다.");
+                       setNotEditText(editText_sign_up_password, sign_up_password_done_icon,  textView_password_warning, "비밀번호에 공백이 있습니다.");
                        passwordValidate = false;
 
                    }else if (userPassword.equals("")) {
-                       setNotEditText(editText_sign_up_password, sign_up_password_done_icon, sign_up_password_not_icon, textView_password_warning, "비밀번호를 입력하세요.");
+                       setNotEditText(editText_sign_up_password, sign_up_password_done_icon,  textView_password_warning, "비밀번호를 입력하세요.");
                        passwordValidate = false;
 
                    }else if (userPassword.length() > 15 || userPassword.length() < 6){
-                       setNotEditText(editText_sign_up_password, sign_up_password_done_icon, sign_up_password_not_icon, textView_password_warning, "비밀번호는 6자 이상 20자 이하입니다.");
+                       setNotEditText(editText_sign_up_password, sign_up_password_done_icon, textView_password_warning, "비밀번호는 6자 이상 20자 이하입니다.");
                        passwordValidate = false;
 
                    }else {
 
-                       setDoneEditText(editText_sign_up_password, sign_up_password_done_icon, sign_up_password_not_icon, textView_password_warning);
+                       setDoneEditText(editText_sign_up_password, sign_up_password_done_icon,  textView_password_warning);
                        passwordValidate = true;
 
                        if(userPassword.equals(userPasswordCheck)){
-                           setDoneEditText(editText_sign_up_password_second, sign_up_password_second_done_icon, sign_up_password_second_not_icon, textView_password_second_warning);
+                           setDoneEditText(editText_sign_up_password_second, sign_up_password_second_done_icon,  textView_password_second_warning);
                            passwordCheckValidate = true;
                        }else{
-                           setNotEditText(editText_sign_up_password_second, sign_up_password_second_done_icon, sign_up_password_second_not_icon, textView_password_second_warning, "비밀번호가 다릅니다.");
+                           setNotEditText(editText_sign_up_password_second, sign_up_password_second_done_icon,  textView_password_second_warning, "비밀번호가 다릅니다.");
                            passwordCheckValidate = false;
                        }
 
@@ -197,7 +198,7 @@ public class SignUpActivity extends AppCompatActivity {
 
 
                if(b){
-                   setNormalEditText(editText_sign_up_password_second, sign_up_password_second_done_icon, sign_up_password_second_not_icon, textView_password_second_warning);
+                   setNormalEditText(editText_sign_up_password_second, sign_up_password_second_done_icon,  textView_password_second_warning);
                    passwordCheckValidate = false;
                }else{
 
@@ -205,23 +206,23 @@ public class SignUpActivity extends AppCompatActivity {
                    String userPasswordCheck = editText_sign_up_password_second.getText().toString();
 
                    if (userPasswordCheck.equals("")) {
-                       setNotEditText(editText_sign_up_password_second, sign_up_password_second_done_icon, sign_up_password_second_not_icon, textView_password_second_warning, "비밀번호를 재확인하세요.");
+                       setNotEditText(editText_sign_up_password_second, sign_up_password_second_done_icon,  textView_password_second_warning, "비밀번호를 재확인하세요.");
                        passwordCheckValidate = false;
 
                    }else if (!userPasswordCheck.equals(userPassword)){
 
-                       setNotEditText(editText_sign_up_password_second, sign_up_password_second_done_icon, sign_up_password_second_not_icon, textView_password_second_warning, "비밀번호가 다릅니다.");
+                       setNotEditText(editText_sign_up_password_second, sign_up_password_second_done_icon,  textView_password_second_warning, "비밀번호가 다릅니다.");
                        passwordCheckValidate = false;
 
                    }else if (!passwordValidate) {
 
-                       setNotEditText(editText_sign_up_password_second, sign_up_password_second_done_icon, sign_up_password_second_not_icon, textView_password_second_warning, "");
+                       setNotEditText(editText_sign_up_password_second, sign_up_password_second_done_icon,  textView_password_second_warning, "");
                        textView_password_second_warning.setVisibility(View.GONE);
 
 
                    }else{
 
-                       setDoneEditText(editText_sign_up_password_second, sign_up_password_second_done_icon, sign_up_password_second_not_icon, textView_password_second_warning);
+                       setDoneEditText(editText_sign_up_password_second, sign_up_password_second_done_icon,  textView_password_second_warning);
                        passwordCheckValidate = true;
 
                    }
@@ -236,7 +237,7 @@ public class SignUpActivity extends AppCompatActivity {
            public void onFocusChange(View view, boolean b) {
 
                if(b){
-                   setNormalEditText(editText_sign_up_email, sign_up_email_done_icon, sign_up_email_not_icon, textView_email_warning);
+                   setNormalEditText(editText_sign_up_email, sign_up_email_done_icon, textView_email_warning);
                    emailValidate = false;
                }else{
 
@@ -247,17 +248,17 @@ public class SignUpActivity extends AppCompatActivity {
 
 
                    if (userEmail.equals("")) {
-                       setNotEditText(editText_sign_up_email, sign_up_email_done_icon, sign_up_email_not_icon, textView_email_warning, "이메일을 입력하세요.");
+                       setNotEditText(editText_sign_up_email, sign_up_email_done_icon,  textView_email_warning, "이메일을 입력하세요.");
                        emailValidate = false;
 
                    }else if (!m.matches()) {
 
-                       setNotEditText(editText_sign_up_email, sign_up_email_done_icon, sign_up_email_not_icon, textView_email_warning, "이메일 형식을 입력하세요.");
+                       setNotEditText(editText_sign_up_email, sign_up_email_done_icon,  textView_email_warning, "이메일 형식을 입력하세요.");
                        emailValidate = false;
 
                    }else{
 
-                       setDoneEditText(editText_sign_up_email, sign_up_email_done_icon, sign_up_email_not_icon, textView_email_warning);
+                       setDoneEditText(editText_sign_up_email, sign_up_email_done_icon, textView_email_warning);
                        emailValidate = true;
 
                    }
@@ -268,6 +269,36 @@ public class SignUpActivity extends AppCompatActivity {
            }
        });
 
+       editText_sign_up_name.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+           @Override
+           public void onFocusChange(View view, boolean b) {
+
+               if(b){
+                   setNormalEditText(editText_sign_up_name, sign_up_name_done_icon, textView_name_warning);
+                   nameValidate = false;
+               }else{
+
+                   String userName = editText_sign_up_name.getText().toString();
+
+                   if (userName.equals("")) {
+                       setNotEditText(editText_sign_up_name, sign_up_name_done_icon, textView_name_warning, "이름을 입력하세요.");
+                       nameValidate = false;
+
+                   }else if (userName.length() > 15){
+                       setNotEditText(editText_sign_up_name, sign_up_name_done_icon, textView_name_warning, "이름은 14자 이하입니다.");
+                       nameValidate = false;
+
+                   }else{
+
+                       setDoneEditText(editText_sign_up_name, sign_up_name_done_icon, textView_name_warning);
+                       nameValidate = true;
+
+                   }
+
+               }
+               
+           }
+       });
 
        button_sign_up.setOnClickListener(new View.OnClickListener() {
            @Override
@@ -275,13 +306,16 @@ public class SignUpActivity extends AppCompatActivity {
                String userID = editText_sign_up_id.getText().toString();
                String userPassword = editText_sign_up_password.getText().toString();
                String userEmail = editText_sign_up_email.getText().toString();
+               String userName = editText_sign_up_name.getText().toString();
+
 
                editText_sign_up_id.clearFocus();
                editText_sign_up_password.clearFocus();
                editText_sign_up_password_second.clearFocus();
                editText_sign_up_email.clearFocus();
+               editText_sign_up_name.clearFocus();
 
-               if(idValidate && passwordValidate && passwordCheckValidate && emailValidate){
+               if(idValidate && passwordValidate && passwordCheckValidate && emailValidate && nameValidate){
 
                    Response.Listener<String> responseListener = new Response.Listener<String>() {
 
@@ -289,7 +323,7 @@ public class SignUpActivity extends AppCompatActivity {
                        public void onResponse(String response) {
 
                            try {
-                               Log.d("@@@", response);
+
                                JSONObject jsonResponse = new JSONObject(response);
 
                                boolean success = jsonResponse.getBoolean("success");
@@ -313,7 +347,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                    };
 
-                   SignUpRequest signupRequest = new SignUpRequest(userID,userPassword, userEmail, responseListener);
+                   SignUpRequest signupRequest = new SignUpRequest(userID,userPassword, userEmail, userName,responseListener);
                    RequestQueue queue = Volley.newRequestQueue(SignUpActivity.this);
                    queue.add(signupRequest);
 
@@ -328,24 +362,21 @@ public class SignUpActivity extends AppCompatActivity {
 
     }
 
-    public void setNormalEditText(EditText e, ImageView i_done, ImageView i_not, TextView t){
+    public void setNormalEditText(EditText e, ImageView i_done, TextView t){
         e.setBackgroundResource(R.drawable.layout_login_roundedbox);
         i_done.setVisibility(View.INVISIBLE);
-        i_not.setVisibility(View.INVISIBLE);
         t.setVisibility(View.GONE);
     }
 
-    public void setDoneEditText(EditText e, ImageView i_done, ImageView i_not, TextView t){
+    public void setDoneEditText(EditText e, ImageView i_done, TextView t){
         e.setBackgroundResource(R.drawable.layout_login_roundedbox_done);
         i_done.setVisibility(View.VISIBLE);
-        i_not.setVisibility(View.INVISIBLE);
         t.setVisibility(View.GONE);
     }
 
-    public void setNotEditText(EditText e, ImageView i_done, ImageView i_not, TextView t, String msg){
+    public void setNotEditText(EditText e, ImageView i_done, TextView t, String msg){
         e.setBackgroundResource(R.drawable.layout_login_roundedbox_not);
         i_done.setVisibility(View.INVISIBLE);
-        i_not.setVisibility(View.VISIBLE);
         t.setVisibility(View.VISIBLE);
         t.setText(msg);
     }

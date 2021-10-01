@@ -30,50 +30,86 @@
         android:layout_margin="60dp"
         android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/editText_id"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/layout_login_roundedbox"
-            android:imeOptions="actionNext"
-            android:inputType="text"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:maxLength="20"
-            android:hint="아이디"
-            android:textSize="@dimen/main_text_size"
+            >
 
-            />
+            <EditText
+                android:id="@+id/editText_id"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/layout_login_roundedbox"
+                android:hint="아이디"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:maxLength="20"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textSize="@dimen/main_text_size"
 
-        <EditText
-            android:id="@+id/editText_password"
+                />
+
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/textView_login_id_warning"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="로그인 아이디 문제"
+            android:textSize="@dimen/warning_text_size"
+            android:textColor="@color/warning_color"
+            android:visibility="gone"
+            android:paddingTop="6dp"
+            android:paddingLeft="6dp"/>
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/layout_login_roundedbox"
-            android:imeOptions="actionDone"
-            android:inputType="textPassword"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:maxLength="20"
-            android:hint="비밀번호"
-            android:textSize="@dimen/main_text_size"
-            />
+            android:layout_marginTop="10dp"
+            >
+
+            <EditText
+                android:id="@+id/editText_password"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/layout_login_roundedbox"
+                android:hint="비밀번호"
+                android:imeOptions="actionDone"
+                android:inputType="textPassword"
+                android:maxLength="20"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textSize="@dimen/main_text_size" />
+
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/textView_login_password_warning"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="로그인 비밀번호 문제"
+            android:textSize="@dimen/warning_text_size"
+            android:textColor="@color/warning_color"
+            android:visibility="gone"
+            android:paddingTop="6dp"
+            android:paddingLeft="6dp"/>
+
 
 
         <TextView
             android:id="@+id/button_login"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/layout_login_button_roundedbox"
             android:text="로그인"
             android:gravity="center"
             android:textColor="@color/white"
             android:textSize="@dimen/main_text_size"
             android:clickable="true"
-
             />
 
 
