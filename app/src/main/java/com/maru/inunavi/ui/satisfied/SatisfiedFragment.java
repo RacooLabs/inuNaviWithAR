@@ -45,6 +45,7 @@ public class SatisfiedFragment extends Fragment {
                         if (result.getResultCode() == Activity.RESULT_OK) {
                             Intent intent = result.getData();
                             Log.d("@@@", "return main");
+
                             int CallType = intent.getIntExtra("CallType", 0);
 
                             if(CallType == 0){
@@ -60,8 +61,6 @@ public class SatisfiedFragment extends Fragment {
                         }
                     }
                 });
-
-
 
 
         Button button_frag_satisfied_login = root.findViewById(R.id.button_frag_satisfied_login);
