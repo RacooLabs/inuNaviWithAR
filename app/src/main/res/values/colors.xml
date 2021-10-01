@@ -12,5 +12,8 @@
 
     <color name="hint_text_normal">#939393</color>
     <color name="warning_color">#E30000</color>
+    <color name="main_text_color">#333333</color>
+
+
 
 </resources>

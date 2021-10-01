@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -16,10 +17,16 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.maru.inunavi.LoginActivity;
+import com.maru.inunavi.MainActivity;
 import com.maru.inunavi.R;
 import com.maru.inunavi.ui.recommend.RecommendFragment;
+
+import org.json.JSONObject;
 
 
 public class SatisfiedFragment extends Fragment {
@@ -29,13 +36,13 @@ public class SatisfiedFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
+
         SatisfiedFragment satisfiedFragment= new SatisfiedFragment();
         RecommendFragment recommendFragment = new RecommendFragment();
 
         View root = inflater.inflate(R.layout.fragment_satisfied, container, false);
-        View mainRoot = inflater.inflate(R.layout.activity_main, container, false);
-        BottomNavigationView nav_view =  (BottomNavigationView)mainRoot.findViewById(R.id.nav_view);
-
+        Button button_frag_satisfied_login = root.findViewById(R.id.button_frag_satisfied_login);
+        TextView textView_note_login = root.findViewById(R.id.textView_note_login);
 
         ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -44,7 +51,6 @@ public class SatisfiedFragment extends Fragment {
                     public void onActivityResult(ActivityResult result) {
                         if (result.getResultCode() == Activity.RESULT_OK) {
                             Intent intent = result.getData();
-                            Log.d("@@@", "return main");
 
                             int CallType = intent.getIntExtra("CallType", 0);
 
@@ -52,7 +58,7 @@ public class SatisfiedFragment extends Fragment {
 
                             }else if(CallType == 1){
 
-                                ((BottomNavigationView)getActivity().findViewById(R.id.nav_view)).setSelectedItemId(R.id.navigation_recommend);
+                                ((BottomNavigationView)getActivity().findViewById(R.id.nav_view)).setSelectedItemId(R.id.navigation_satisfied);
 
                             }else if(CallType == 2){
 
@@ -62,8 +68,6 @@ public class SatisfiedFragment extends Fragment {
                     }
                 });
 
-
-        Button button_frag_satisfied_login = root.findViewById(R.id.button_frag_satisfied_login);
 
         button_frag_satisfied_login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,4 +89,6 @@ public class SatisfiedFragment extends Fragment {
         super.onDestroyView();
 
     }
+
+
 }
