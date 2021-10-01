@@ -85,16 +85,16 @@ public class SignUpActivity extends AppCompatActivity {
 
                    String userID = editText_sign_up_id.getText().toString();
 
-                   if (idValidate) {
-                       return;
-                   }
+                   if (userID.contains(" ")){
+                       setNotEditText(editText_sign_up_id, sign_up_id_done_icon, sign_up_id_not_icon, textView_id_warning, "아이디에 공백이 있습니다.");
+                       idValidate = false;
 
-                   if (userID.equals("")) {
+                   } else if (userID.equals("")) {
                        setNotEditText(editText_sign_up_id, sign_up_id_done_icon, sign_up_id_not_icon, textView_id_warning, "아이디를 입력하세요.");
                        idValidate = false;
 
-                   } else if (userID.length() > 15) {
-                       setNotEditText(editText_sign_up_id, sign_up_id_done_icon, sign_up_id_not_icon, textView_id_warning, "아이디는 14자 이하입니다.");
+                   } else if (userID.length() > 15 || userID.length() < 6) {
+                       setNotEditText(editText_sign_up_id, sign_up_id_done_icon, sign_up_id_not_icon, textView_id_warning, "아이디는 6자 이상 14자 이하입니다.");
                        idValidate = false;
 
                    } else {
@@ -111,11 +111,12 @@ public class SignUpActivity extends AppCompatActivity {
                                    boolean success = jsonResponse.getBoolean("success");
 
 
-
-
                                    if (success) {
                                        setDoneEditText(editText_sign_up_id, sign_up_id_done_icon, sign_up_id_not_icon, textView_id_warning);
                                        idValidate = true;
+                                   }else{
+                                       setNotEditText(editText_sign_up_id, sign_up_id_done_icon, sign_up_id_not_icon, textView_id_warning, "아이디가 이미 존재합니다.");
+                                       idValidate = false;
                                    }
 
                                } catch (Exception e) {
@@ -150,20 +151,38 @@ public class SignUpActivity extends AppCompatActivity {
                    passwordValidate = false;
                }else{
 
+                   String userId = editText_sign_up_id.getText().toString();
                    String userPassword = editText_sign_up_password.getText().toString();
+                   String userPasswordCheck = editText_sign_up_password_second.getText().toString();
 
-                   if (userPassword.equals("")) {
+                   if(userPassword.contains(userId)){
+                       setNotEditText(editText_sign_up_password, sign_up_password_done_icon, sign_up_password_not_icon, textView_password_warning, "비밀번호에 아이디가 포함되어있습니다.");
+                       passwordValidate = false;
+
+                   }else if (userPassword.contains(" ")){
+                       setNotEditText(editText_sign_up_password, sign_up_password_done_icon, sign_up_password_not_icon, textView_password_warning, "비밀번호에 공백이 있습니다.");
+                       passwordValidate = false;
+
+                   }else if (userPassword.equals("")) {
                        setNotEditText(editText_sign_up_password, sign_up_password_done_icon, sign_up_password_not_icon, textView_password_warning, "비밀번호를 입력하세요.");
                        passwordValidate = false;
 
-                   }else if (userPassword.length() > 15){
-                       setNotEditText(editText_sign_up_password, sign_up_password_done_icon, sign_up_password_not_icon, textView_password_warning, "비밀번호는 14자 이하입니다.");
+                   }else if (userPassword.length() > 15 || userPassword.length() < 6){
+                       setNotEditText(editText_sign_up_password, sign_up_password_done_icon, sign_up_password_not_icon, textView_password_warning, "비밀번호는 6자 이상 20자 이하입니다.");
                        passwordValidate = false;
 
                    }else {
 
                        setDoneEditText(editText_sign_up_password, sign_up_password_done_icon, sign_up_password_not_icon, textView_password_warning);
                        passwordValidate = true;
+
+                       if(userPassword.equals(userPasswordCheck)){
+                           setDoneEditText(editText_sign_up_password_second, sign_up_password_second_done_icon, sign_up_password_second_not_icon, textView_password_second_warning);
+                           passwordCheckValidate = true;
+                       }else{
+                           setNotEditText(editText_sign_up_password_second, sign_up_password_second_done_icon, sign_up_password_second_not_icon, textView_password_second_warning, "비밀번호가 다릅니다.");
+                           passwordCheckValidate = false;
+                       }
 
                    }
 
@@ -194,10 +213,17 @@ public class SignUpActivity extends AppCompatActivity {
                        setNotEditText(editText_sign_up_password_second, sign_up_password_second_done_icon, sign_up_password_second_not_icon, textView_password_second_warning, "비밀번호가 다릅니다.");
                        passwordCheckValidate = false;
 
+                   }else if (!passwordValidate) {
+
+                       setNotEditText(editText_sign_up_password_second, sign_up_password_second_done_icon, sign_up_password_second_not_icon, textView_password_second_warning, "");
+                       textView_password_second_warning.setVisibility(View.GONE);
+
+
                    }else{
 
                        setDoneEditText(editText_sign_up_password_second, sign_up_password_second_done_icon, sign_up_password_second_not_icon, textView_password_second_warning);
                        passwordCheckValidate = true;
+
                    }
 
                }
@@ -263,7 +289,9 @@ public class SignUpActivity extends AppCompatActivity {
                        public void onResponse(String response) {
 
                            try {
+                               Log.d("@@@", response);
                                JSONObject jsonResponse = new JSONObject(response);
+
                                boolean success = jsonResponse.getBoolean("success");
 
                                if (success) {
