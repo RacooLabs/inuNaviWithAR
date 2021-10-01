@@ -104,6 +104,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                                try {
 
+                                   Log.d("@@@", "signupactivity_107 : " + response);
                                    JSONObject jsonResponse = new JSONObject(response);
                                    boolean success = jsonResponse.getBoolean("success");
 
@@ -323,6 +324,8 @@ public class SignUpActivity extends AppCompatActivity {
                        public void onResponse(String response) {
 
                            try {
+
+                               Log.d("@@@", "signupactivity_329 : " + response);
 
                                JSONObject jsonResponse = new JSONObject(response);
 

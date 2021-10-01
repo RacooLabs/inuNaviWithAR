@@ -64,13 +64,12 @@ public class LoginActivity extends AppCompatActivity {
                             JSONObject jsonResponse = new JSONObject(response);
                             boolean success = jsonResponse.getBoolean("success");
 
-
                             if(success){
 
                                 Toast.makeText(getApplicationContext(), "로그인 성공", Toast.LENGTH_LONG).show();
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 intent.putExtra("CallType", 1);
-                                setResult(Activity.RESULT_OK);
+                                setResult(Activity.RESULT_OK, intent);
                                 finish();
 
                             }else{

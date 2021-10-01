@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-
         MapFragment mapFragment = new MapFragment();
         SatisfiedFragment satisfiedFragment= new SatisfiedFragment();
         CalendarFragment calendarFragment = new CalendarFragment();
@@ -73,29 +72,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        if (result.getResultCode() == Activity.RESULT_OK) {
-                            Intent intent = result.getData();
-                            Log.d("@@@", "return main");
-                            int CallType = intent.getIntExtra("CallType", 0);
 
-                            if(CallType == 0){
-
-                            }else if(CallType == 1){
-
-                                getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_frameLayout_activity_main,calendarFragment).commit();
-
-                            }else if(CallType == 2){
-
-                            }
-
-                        }
-                    }
-                });
 
 
     }

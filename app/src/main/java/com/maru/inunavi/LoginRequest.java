@@ -24,8 +24,8 @@ public class LoginRequest extends StringRequest {
         });
 
         parameters = new HashMap<>();
-        parameters.put("userID", userID);
-        parameters.put("userPassword", userPassword);
+        parameters.put("id", userID);
+        parameters.put("password", userPassword);
     }
 
     @Override
