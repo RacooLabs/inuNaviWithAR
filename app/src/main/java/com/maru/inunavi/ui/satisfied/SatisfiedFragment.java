@@ -41,8 +41,7 @@ public class SatisfiedFragment extends Fragment {
         RecommendFragment recommendFragment = new RecommendFragment();
 
         View root = inflater.inflate(R.layout.fragment_satisfied, container, false);
-        Button button_frag_satisfied_login = root.findViewById(R.id.button_frag_satisfied_login);
-        TextView textView_note_login = root.findViewById(R.id.textView_note_login);
+        Button button_frag_satisfied_login = root.findViewById(R.id.button_frag_sati_login);
 
         ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),

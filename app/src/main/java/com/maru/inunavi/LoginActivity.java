@@ -69,6 +69,7 @@ public class LoginActivity extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(), "로그인 성공", Toast.LENGTH_LONG).show();
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 intent.putExtra("CallType", 1);
+                                intent.putExtra("userID",userID);
                                 setResult(Activity.RESULT_OK, intent);
                                 finish();
 
@@ -81,7 +82,9 @@ public class LoginActivity extends AppCompatActivity {
 
 
                         }catch (Exception e){
-                            e.printStackTrace();
+
+                            setNotEditText(editText_password, textView_login_password_warning, "서버 연결 실패");
+
                         }
                     }
                 };

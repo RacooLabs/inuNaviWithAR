@@ -10,12 +10,15 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.webkit.CookieManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.maru.inunavi.ui.calendar.CalendarFragment;
@@ -27,20 +30,21 @@ public class MainActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
 
+    private CookieManager cookieManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         setContentView(R.layout.activity_main);
+
+        cookieManager = CookieManager.getInstance();
 
 
         MapFragment mapFragment = new MapFragment();
         SatisfiedFragment satisfiedFragment= new SatisfiedFragment();
         CalendarFragment calendarFragment = new CalendarFragment();
         RecommendFragment recommendFragment = new RecommendFragment();
-
 
 
         bottomNavigationView = findViewById(R.id.nav_view);
@@ -77,6 +81,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public CookieManager getCookieManager(){
+        return this.cookieManager;
+    }
 
 
 }

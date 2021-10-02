@@ -6,18 +6,117 @@
     android:layout_height="match_parent"
     tools:context="com.maru.inunavi.ui.calendar.CalendarFragment">
 
-    <TextView
-        android:id="@+id/text_calendar"
-        android:layout_width="match_parent"
+
+    <LinearLayout
+
+        android:id="@+id/frag_cal_login_box"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
+        android:orientation="vertical"
+        android:gravity="center"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/button_frag_cal_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="로그인"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintVertical_chainStyle="packed"
+            android:textSize="@dimen/main_text_size"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/main_text_size"
+            android:textColor="@color/main_text_color"
+            android:text="로그인이 필요합니다" />
+
+
+
+    </LinearLayout>
+
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint_frag_cal_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+
+        <LinearLayout
+            android:id="@+id/frag_cal_top_bar"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:orientation="vertical"
+            android:paddingLeft="16dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:gravity="center_vertical"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2021년 2학기"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="시간표"
+                android:textStyle="bold"
+                android:textColor="@color/main_color"
+                android:textSize="24dp"/>
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/imageView_frag_cal_setting"
+            android:layout_width="@dimen/top_bar_button_size"
+            android:layout_height="@dimen/top_bar_button_size"
+            android:src="@drawable/ic_settings_black_24dp"
+            app:layout_constraintRight_toRightOf="@id/frag_cal_top_bar"
+            app:layout_constraintBottom_toBottomOf="@id/frag_cal_top_bar"
+            app:layout_constraintTop_toTopOf="@id/frag_cal_top_bar"
+            android:layout_marginRight="16dp"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"/>
+
+        <ImageView
+            android:id="@+id/imageView_frag_cal_list"
+            android:layout_width="@dimen/top_bar_button_size"
+            android:layout_height="@dimen/top_bar_button_size"
+            android:src="@drawable/ic_format_list_bulleted_black_24dp"
+            app:layout_constraintRight_toLeftOf="@id/imageView_frag_cal_setting"
+            app:layout_constraintBottom_toBottomOf="@id/frag_cal_top_bar"
+            app:layout_constraintTop_toTopOf="@id/frag_cal_top_bar"
+            android:layout_marginRight="20dp"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"/>
+
+        <ImageView
+            android:id="@+id/imageView_frag_cal_add"
+            android:layout_width="@dimen/top_bar_button_size"
+            android:layout_height="@dimen/top_bar_button_size"
+            android:src="@drawable/ic_add_circle_outline_black_24dp"
+            app:layout_constraintRight_toLeftOf="@id/imageView_frag_cal_list"
+            app:layout_constraintBottom_toBottomOf="@id/frag_cal_top_bar"
+            app:layout_constraintTop_toTopOf="@id/frag_cal_top_bar"
+            android:layout_marginRight="20dp"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"/>
+
+        
+        
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
