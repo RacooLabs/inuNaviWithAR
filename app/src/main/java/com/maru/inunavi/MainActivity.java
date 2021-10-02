@@ -1,27 +1,14 @@
 package com.maru.inunavi;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
-import android.Manifest;
-import android.app.ActionBar;
-import android.app.Activity;
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 import android.webkit.CookieManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.maru.inunavi.ui.calendar.CalendarFragment;
+import com.maru.inunavi.ui.timetable.CalendarFragment;
 import com.maru.inunavi.ui.map.MapFragment;
 import com.maru.inunavi.ui.recommend.RecommendFragment;
 import com.maru.inunavi.ui.satisfied.SatisfiedFragment;
@@ -32,11 +19,15 @@ public class MainActivity extends AppCompatActivity {
 
     private CookieManager cookieManager;
 
+    //public static String sessionURL  = "http://219.248.233.170/project1_war_exploded/user/";
+    public static String sessionURL  = "http://192.168.55.162/inuNavi/";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.main_activity);
 
         cookieManager = CookieManager.getInstance();
 
@@ -45,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
         SatisfiedFragment satisfiedFragment= new SatisfiedFragment();
         CalendarFragment calendarFragment = new CalendarFragment();
         RecommendFragment recommendFragment = new RecommendFragment();
-
 
         bottomNavigationView = findViewById(R.id.nav_view);
         getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_frameLayout_activity_main, mapFragment).commit();

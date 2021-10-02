@@ -3,12 +3,10 @@ package com.maru.inunavi.ui.satisfied;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -17,16 +15,10 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.maru.inunavi.LoginActivity;
-import com.maru.inunavi.MainActivity;
+import com.maru.inunavi.user.LoginActivity;
 import com.maru.inunavi.R;
 import com.maru.inunavi.ui.recommend.RecommendFragment;
-
-import org.json.JSONObject;
 
 
 public class SatisfiedFragment extends Fragment {
@@ -40,7 +32,7 @@ public class SatisfiedFragment extends Fragment {
         SatisfiedFragment satisfiedFragment= new SatisfiedFragment();
         RecommendFragment recommendFragment = new RecommendFragment();
 
-        View root = inflater.inflate(R.layout.fragment_satisfied, container, false);
+        View root = inflater.inflate(R.layout.satisfied_fragment, container, false);
         Button button_frag_satisfied_login = root.findViewById(R.id.button_frag_sati_login);
 
         ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(

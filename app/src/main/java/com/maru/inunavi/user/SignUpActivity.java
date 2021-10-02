@@ -1,4 +1,4 @@
-package com.maru.inunavi;
+package com.maru.inunavi.user;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
+import com.maru.inunavi.R;
 
 import org.json.JSONObject;
 
@@ -36,7 +37,7 @@ public class SignUpActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_sign_up);
+        setContentView(R.layout.user_activity_signup);
 
         TextView sign_up_back_button = findViewById(R.id.textView_sign_up_back);
 

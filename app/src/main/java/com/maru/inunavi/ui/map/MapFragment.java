@@ -64,7 +64,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View layout = inflater.inflate(R.layout.fragment_map, container, false);
+        View layout = inflater.inflate(R.layout.map_fragment, container, false);
 
         String[] items = {"information", "center", "infor"};
 

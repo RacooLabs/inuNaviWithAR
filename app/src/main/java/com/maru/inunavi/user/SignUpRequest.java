@@ -1,4 +1,4 @@
-package com.maru.inunavi;
+package com.maru.inunavi.user;
 
 import android.util.Log;
 
@@ -11,8 +11,9 @@ import java.util.Map;
 
 public class SignUpRequest extends StringRequest {
 
-    //final static private String URL = "http://192.168.55.162/inuNavi/UserRegister.php";
-    final static private String URL = "http://219.248.233.170/project1_war_exploded/user/insert";
+
+    final static private String URL = "http://192.168.55.162/inuNavi/UserRegister.php";
+    //final static private String URL = "http://219.248.233.170/project1_war_exploded/user/insert";
 
     private Map<String, String> parameters;
 

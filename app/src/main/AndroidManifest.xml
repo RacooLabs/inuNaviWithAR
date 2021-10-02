@@ -35,7 +35,7 @@
         </activity>
 
         <activity
-            android:name="com.maru.inunavi.LoginActivity"
+            android:name="com.maru.inunavi.user.LoginActivity"
             android:exported="true"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait">
@@ -43,7 +43,15 @@
         </activity>
 
         <activity
-            android:name="com.maru.inunavi.SignUpActivity"
+            android:name="com.maru.inunavi.user.SignUpActivity"
+            android:exported="true"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait">
+
+        </activity>
+
+        <activity
+            android:name="com.maru.inunavi.ui.timetable.SettingActivity"
             android:exported="true"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait">

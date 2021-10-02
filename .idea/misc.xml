@@ -35,8 +35,17 @@
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/fragment_calendar.xml" value="0.1" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/fragment_map.xml" value="0.1490036231884058" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/fragment_satisfied.xml" value="0.25" />
+        <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/fragment_timetable.xml" value="0.1" />
+        <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/recommend_fragment.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/satisfied_fragment.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/timetable_activity_setting.xml" value="0.25" />
+        <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/timetable_fragment.xml" value="0.22" />
+        <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/timetable_item_list.xml" value="0.22" />
+        <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/timetable_list_list.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/user_activity_login.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/menu/bottom_nav_menu.xml" value="0.30462962962962964" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.16458333333333333" />
+        <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.38229166666666664" />
       </map>
     </option>
   </component>

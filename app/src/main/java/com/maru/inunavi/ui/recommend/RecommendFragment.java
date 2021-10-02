@@ -19,7 +19,7 @@ public class RecommendFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
 
-        View root = inflater.inflate(R.layout.fragment_map, container, false);
+        View root = inflater.inflate(R.layout.map_fragment, container, false);
 
 
         return root;

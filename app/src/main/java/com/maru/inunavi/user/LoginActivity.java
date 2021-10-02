@@ -1,4 +1,4 @@
-package com.maru.inunavi;
+package com.maru.inunavi.user;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,19 +6,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
+import com.maru.inunavi.MainActivity;
+import com.maru.inunavi.R;
 
 import org.json.JSONObject;
 
@@ -28,7 +25,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.user_activity_login);
 
         TextView signUpButton = findViewById(R.id.button_moveTo_sign_up);
 

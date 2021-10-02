@@ -9,24 +9,24 @@
         android:id="@+id/navigation_map"
         android:name="com.maru.inunavi.ui.map.MapFragment"
         android:label="@string/title_map"
-        tools:layout="@layout/fragment_map" />
+        tools:layout="@layout/map_fragment" />
 
     <fragment
         android:id="@+id/navigation_satisfied"
         android:name="com.maru.inunavi.ui.satisfied.SatisfiedFragment"
         android:label="@string/title_satisfied"
-        tools:layout="@layout/fragment_satisfied" />
+        tools:layout="@layout/satisfied_fragment" />
 
     <fragment
         android:id="@+id/navigation_calendar"
-        android:name="com.maru.inunavi.ui.calendar.CalendarFragment"
-        android:label="@string/title_calendar"
-        tools:layout="@layout/fragment_calendar" />
+        android:name="com.maru.inunavi.ui.timetable.CalendarFragment"
+        android:label="@string/title_timetable"
+        tools:layout="@layout/timetable_fragment" />
 
     <fragment
         android:id="@+id/navigation_recommend"
         android:name="com.maru.inunavi.ui.recommend.RecommendFragment"
         android:label="@string/title_recommend"
-        tools:layout="@layout/fragment_recommend" />
+        tools:layout="@layout/recommend_fragment" />
 
 </navigation>
