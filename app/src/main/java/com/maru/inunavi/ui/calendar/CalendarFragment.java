@@ -2,6 +2,7 @@ package com.maru.inunavi.ui.calendar;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.UrlQuerySanitizer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,6 +30,9 @@ public class CalendarFragment extends Fragment {
 
     //private MapViewModel mapViewModel;
 
+    private String url = "http://219.248.233.170/project1_war_exploded/user/";
+    //private String url = "http://192.168.55.162/inuNavi/";
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
@@ -46,14 +50,15 @@ public class CalendarFragment extends Fragment {
 
         //cookieManager.removeAllCookies(null);
 
-        if(cookieManager.getCookie("http://192.168.55.162/inuNavi/")!=null &&
-                !cookieManager.getCookie("http://192.168.55.162/inuNavi/").equals("")){
+        if(cookieManager.getCookie(url)!=null &&
+                !cookieManager.getCookie(url).equals("")){
 
-            Log.d("@@@ fragmentcalendar : 50", cookieManager.getCookie("http://192.168.55.162/inuNavi/"));
+            Log.d("@@@ fragmentcalendar : 50", cookieManager.getCookie(url));
             frag_cal_login_box.setVisibility(View.INVISIBLE);
             constraint_frag_cal_main.setVisibility(View.VISIBLE);
 
         }else{
+            //Log.d("@@@ fragmentcalendar : 61", cookieManager.getCookie(url).toString());
 
             frag_cal_login_box.setVisibility(View.VISIBLE);
             constraint_frag_cal_main.setVisibility(View.INVISIBLE);
@@ -72,7 +77,7 @@ public class CalendarFragment extends Fragment {
                                 if(CallType == 2) {
                                     ((BottomNavigationView) getActivity().findViewById(R.id.nav_view)).setSelectedItemId(R.id.navigation_satisfied);
                                 }
-                                cookieManager.setCookie("http://192.168.55.162/inuNavi/","cookieKey="+userID);
+                                cookieManager.setCookie(url,"cookieKey="+userID);
                                 frag_cal_login_box.setVisibility(View.INVISIBLE);
                                 constraint_frag_cal_main.setVisibility(View.VISIBLE);
                             }
