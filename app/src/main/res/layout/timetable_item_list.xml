@@ -17,7 +17,8 @@
         android:paddingLeft="32dp"
         android:textSize="@dimen/main_text_size"
         android:textColor="@color/main_text_color"
-
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
         >
 
     </TextView>

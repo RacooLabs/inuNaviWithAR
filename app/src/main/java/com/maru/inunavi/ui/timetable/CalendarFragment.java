@@ -66,10 +66,12 @@ public class CalendarFragment extends Fragment {
 
                                 int CallType = intent.getIntExtra("CallType", 0);
 
-                                if(CallType == 1) {
+                                if(CallType == 1001) {
 
-                                    frag_tita_login_box.setVisibility(View.INVISIBLE);
-                                    constraint_frag_tita_main.setVisibility(View.VISIBLE);
+                                    // 로그아웃 요청
+
+                                    frag_tita_login_box.setVisibility(View.VISIBLE);
+                                    constraint_frag_tita_main.setVisibility(View.INVISIBLE);
                                     cookieManager.removeAllCookies(null);
 
                                 }
@@ -108,6 +110,8 @@ public class CalendarFragment extends Fragment {
                                 int CallType = intent.getIntExtra("CallType", 2);
                                 String userID = intent.getStringExtra("userID");
 
+                                //로그인 요청, 쿠키 저장
+                                
                                 if(CallType == 2) {
                                     ((BottomNavigationView) getActivity().findViewById(R.id.nav_view)).setSelectedItemId(R.id.navigation_satisfied);
                                 }
