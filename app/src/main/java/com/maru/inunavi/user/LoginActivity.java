@@ -37,8 +37,8 @@ public class LoginActivity extends AppCompatActivity {
 
         TextView button_login = findViewById(R.id.button_login);
 
-
-
+        
+        //회원가입 하러가기 버튼
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -47,6 +47,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        //로그인 버튼
         button_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -92,10 +93,6 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
-
-
-
-
 
 
     }

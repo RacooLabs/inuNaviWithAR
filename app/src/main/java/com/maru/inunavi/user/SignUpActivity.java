@@ -110,7 +110,6 @@ public class SignUpActivity extends AppCompatActivity {
                                    boolean success = jsonResponse.getBoolean("success");
 
 
-
                                    if (success) {
                                        setDoneEditText(editText_sign_up_id, sign_up_id_done_icon, textView_id_warning);
                                        idValidate = true;

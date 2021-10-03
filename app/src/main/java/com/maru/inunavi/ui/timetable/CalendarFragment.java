@@ -55,6 +55,8 @@ public class CalendarFragment extends Fragment {
             Log.d("@@@ fragmentcalendar : 50", cookieManager.getCookie(url));
             frag_tita_login_box.setVisibility(View.INVISIBLE);
             constraint_frag_tita_main.setVisibility(View.VISIBLE);
+            
+            //설정버튼 액티비티 리스너
 
             ActivityResultLauncher<Intent> logoutActivityResultLauncher = registerForActivityResult(
                     new ActivityResultContracts.StartActivityForResult(),
@@ -95,6 +97,8 @@ public class CalendarFragment extends Fragment {
         }else{
 
             //Log.d("@@@ fragmentcalendar : 61", cookieManager.getCookie(url).toString());
+
+            //로그인 버튼 리스너
 
             frag_tita_login_box.setVisibility(View.VISIBLE);
             constraint_frag_tita_main.setVisibility(View.INVISIBLE);
