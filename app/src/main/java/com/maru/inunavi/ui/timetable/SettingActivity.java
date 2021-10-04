@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,7 +23,6 @@ public class SettingActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     SettingAdapter adapter;
 
-
     @Override protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
@@ -30,6 +30,15 @@ public class SettingActivity extends AppCompatActivity {
 
         recyclerView = (RecyclerView)findViewById(R.id.recyceler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false)) ;
+
+        ImageView tita_setting_backButton = findViewById(R.id.tita_setting_backButton);
+
+        tita_setting_backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         ArrayList<String> list = new ArrayList<>();
         list.add("로그아웃");
@@ -40,7 +49,6 @@ public class SettingActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View v, int position) {
 
-                Log.d("@@@ settingactivity42", "error");
 
                 Intent intent = new Intent(SettingActivity.this, MainActivity.class);
                 intent.putExtra("CallType", 1001);

@@ -49,6 +49,77 @@ public class CalendarFragment extends Fragment {
         CookieManager cookieManager = ((MainActivity)getActivity()).getCookieManager();
 
 
+        ActivityResultLauncher<Intent> logoutActivityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            Intent intent = result.getData();
+
+                            int CallType = intent.getIntExtra("CallType", 0);
+
+                            if(CallType == 1001) {
+
+                                // 로그아웃 요청
+
+                                frag_tita_login_box.setVisibility(View.VISIBLE);
+                                constraint_frag_tita_main.setVisibility(View.INVISIBLE);
+                                cookieManager.removeAllCookies(null);
+
+                            }
+
+
+                        }
+                    }
+                });
+
+
+        imageView_frag_tita_setting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(getActivity(), SettingActivity.class);
+                logoutActivityResultLauncher.launch(intent);
+
+            }
+        });
+
+        ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            Intent intent = result.getData();
+
+                            int CallType = intent.getIntExtra("CallType", 2);
+                            String userID = intent.getStringExtra("userID");
+
+                            //로그인 요청, 쿠키 저장
+
+                            if(CallType == 2) {
+                                ((BottomNavigationView) getActivity().findViewById(R.id.nav_view)).setSelectedItemId(R.id.navigation_satisfied);
+                            }
+                            cookieManager.setCookie(url,"cookieKey="+userID);
+                            frag_tita_login_box.setVisibility(View.INVISIBLE);
+                            constraint_frag_tita_main.setVisibility(View.VISIBLE);
+                        }
+                    }
+                });
+
+
+        button_frag_tita_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                someActivityResultLauncher.launch(intent);
+
+            }
+        });
+
+
         if(cookieManager.getCookie(url)!=null &&
                 !cookieManager.getCookie(url).equals("")){
 
@@ -58,42 +129,6 @@ public class CalendarFragment extends Fragment {
             
             //설정버튼 액티비티 리스너
 
-            ActivityResultLauncher<Intent> logoutActivityResultLauncher = registerForActivityResult(
-                    new ActivityResultContracts.StartActivityForResult(),
-                    new ActivityResultCallback<ActivityResult>() {
-                        @Override
-                        public void onActivityResult(ActivityResult result) {
-                            if (result.getResultCode() == Activity.RESULT_OK) {
-                                Intent intent = result.getData();
-
-                                int CallType = intent.getIntExtra("CallType", 0);
-
-                                if(CallType == 1001) {
-
-                                    // 로그아웃 요청
-
-                                    frag_tita_login_box.setVisibility(View.VISIBLE);
-                                    constraint_frag_tita_main.setVisibility(View.INVISIBLE);
-                                    cookieManager.removeAllCookies(null);
-
-                                }
-
-
-                            }
-                        }
-                    });
-
-
-            imageView_frag_tita_setting.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    Intent intent = new Intent(getActivity(), SettingActivity.class);
-                    logoutActivityResultLauncher.launch(intent);
-
-                }
-            });
-
         }else{
 
             //Log.d("@@@ fragmentcalendar : 61", cookieManager.getCookie(url).toString());
@@ -102,40 +137,6 @@ public class CalendarFragment extends Fragment {
 
             frag_tita_login_box.setVisibility(View.VISIBLE);
             constraint_frag_tita_main.setVisibility(View.INVISIBLE);
-
-            ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
-                    new ActivityResultContracts.StartActivityForResult(),
-                    new ActivityResultCallback<ActivityResult>() {
-                        @Override
-                        public void onActivityResult(ActivityResult result) {
-                            if (result.getResultCode() == Activity.RESULT_OK) {
-                                Intent intent = result.getData();
-
-                                int CallType = intent.getIntExtra("CallType", 2);
-                                String userID = intent.getStringExtra("userID");
-
-                                //로그인 요청, 쿠키 저장
-                                
-                                if(CallType == 2) {
-                                    ((BottomNavigationView) getActivity().findViewById(R.id.nav_view)).setSelectedItemId(R.id.navigation_satisfied);
-                                }
-                                cookieManager.setCookie(url,"cookieKey="+userID);
-                                frag_tita_login_box.setVisibility(View.INVISIBLE);
-                                constraint_frag_tita_main.setVisibility(View.VISIBLE);
-                            }
-                        }
-                    });
-
-
-            button_frag_tita_login.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    Intent intent = new Intent(getActivity(), LoginActivity.class);
-                    someActivityResultLauncher.launch(intent);
-
-                }
-            });
 
         }
 
