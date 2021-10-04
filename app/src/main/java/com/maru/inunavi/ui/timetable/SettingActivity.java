@@ -33,6 +33,7 @@ public class SettingActivity extends AppCompatActivity {
 
         ImageView tita_setting_backButton = findViewById(R.id.tita_setting_backButton);
 
+        //돌아가기 버튼
         tita_setting_backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -45,11 +46,12 @@ public class SettingActivity extends AppCompatActivity {
         adapter = new SettingAdapter(list);
         recyclerView.setAdapter(adapter);
 
+
+        //어댑터 콜백 리스너
         adapter.setOnItemClickListener(new SettingAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
-
-
+                
                 Intent intent = new Intent(SettingActivity.this, MainActivity.class);
                 intent.putExtra("CallType", 1001);
                 setResult(Activity.RESULT_OK, intent);

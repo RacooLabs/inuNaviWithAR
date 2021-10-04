@@ -54,7 +54,10 @@
             android:hint="검색"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
-            android:textColor="@color/hint_text_normal" />
+            android:textColor="@color/hint_text_normal"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:maxLength="20"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -73,21 +76,24 @@
                     android:layout_height="wrap_content"
                     android:text="과목명"
                     android:textSize="@dimen/small_text_size"
-                    android:layout_marginRight="4dp"/>
+                    android:layout_marginRight="4dp"
+                    android:buttonTint="@color/main_color"/>
 
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="교수명"
                     android:textSize="@dimen/small_text_size"
-                    android:layout_marginRight="4dp"/>
+                    android:layout_marginRight="4dp"
+                    android:buttonTint="@color/main_color"/>
 
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="과목코드"
                     android:textSize="@dimen/small_text_size"
-                    android:layout_marginRight="4dp"/>
+                    android:layout_marginRight="4dp"
+                    android:buttonTint="@color/main_color"/>
 
             </RadioGroup>
 
@@ -98,7 +104,8 @@
                 android:text="더 많은 옵션"
                 android:textSize="@dimen/small_text_size"
                 android:textColor="@color/white"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:clickable="true"/>
 
 
         </LinearLayout>

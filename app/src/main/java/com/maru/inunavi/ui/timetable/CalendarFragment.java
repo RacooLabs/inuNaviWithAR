@@ -42,6 +42,7 @@ public class CalendarFragment extends Fragment {
 
         Button button_frag_tita_login = root.findViewById(R.id.button_frag_tita_login);
         ImageView imageView_frag_tita_setting = root.findViewById(R.id.imageView_frag_tita_setting);
+        ImageView imageView_frag_tita_add = root.findViewById(R.id.imageView_frag_tita_add);
 
         frag_tita_login_box.setVisibility(View.VISIBLE);
         constraint_frag_tita_main.setVisibility(View.INVISIBLE);
@@ -49,6 +50,7 @@ public class CalendarFragment extends Fragment {
         CookieManager cookieManager = ((MainActivity)getActivity()).getCookieManager();
 
 
+        //설정 콜백
         ActivityResultLauncher<Intent> logoutActivityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
@@ -75,6 +77,7 @@ public class CalendarFragment extends Fragment {
                 });
 
 
+        //설정 버튼
         imageView_frag_tita_setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,6 +88,43 @@ public class CalendarFragment extends Fragment {
             }
         });
 
+
+        //강의 추가 콜백
+        ActivityResultLauncher<Intent> searchActivityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            Intent intent = result.getData();
+
+                            int CallType = intent.getIntExtra("CallType", 0);
+
+                            if(CallType == 2001) {
+
+
+                            }
+
+
+                        }
+                    }
+                });
+
+
+        //강의 추가 버튼
+        imageView_frag_tita_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(getActivity(), SearchActivity.class);
+                searchActivityResultLauncher.launch(intent);
+
+            }
+        });
+
+
+
+        //로그인 콜백
         ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
@@ -109,6 +149,7 @@ public class CalendarFragment extends Fragment {
                 });
 
 
+        //로그인 버튼
         button_frag_tita_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
