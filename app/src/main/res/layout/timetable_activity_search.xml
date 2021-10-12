@@ -46,6 +46,7 @@
         android:orientation="vertical">
 
         <EditText
+            android:id="@+id/tita_search_searchbar"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginLeft="30dp"
