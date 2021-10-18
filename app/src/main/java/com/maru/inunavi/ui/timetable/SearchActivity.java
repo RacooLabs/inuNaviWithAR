@@ -1,5 +1,6 @@
 package com.maru.inunavi.ui.timetable;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.maru.inunavi.MainActivity;
 import com.maru.inunavi.R;
 
 import org.json.JSONArray;
@@ -45,6 +47,7 @@ public class SearchActivity extends AppCompatActivity {
 
         ImageView tita_search_backButton = findViewById(R.id.tita_search_backButton);
         EditText tita_search_searchbar = findViewById(R.id.tita_search_searchbar);
+        TextView tita_search_option_button = findViewById(R.id.tita_search_option_button);
 
         //돌아가기 버튼
         tita_search_backButton.setOnClickListener(new View.OnClickListener() {
@@ -69,13 +72,29 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
+        //더 많은 검색 옵션 버튼
+        tita_search_option_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(SearchActivity.this, SearchOptionActivity.class);
+                startActivity(intent);
+
+            }
+        });
+
     }
+
+
+
+
+
 
     Disposable backgroundtask;
 
     public int value;
     boolean isCancel = false;
-    String target = "http://192.168.55.162/inuNavi/LectureList.php";
+    String target = "http://192.168.0.5/inuNavi/LectureList.php";
 
     void BackgroundTask() {
         backgroundtask = Observable.fromCallable(() -> {
