@@ -1,7 +1,6 @@
-package com.maru.inunavi.ui.timetable;
+package com.maru.inunavi.ui.timetable.search;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -13,28 +12,18 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.maru.inunavi.MainActivity;
 import com.maru.inunavi.R;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.HashMap;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class SearchActivity extends AppCompatActivity {
@@ -61,10 +50,7 @@ public class SearchActivity extends AppCompatActivity {
 
                 if(i == EditorInfo.IME_ACTION_SEARCH){
 
-                    BackgroundTask();
-
-
-
+                    SearchBackgroundTask();
 
                 }
 
@@ -96,7 +82,7 @@ public class SearchActivity extends AppCompatActivity {
     boolean isCancel = false;
     String target = "http://192.168.0.5/inuNavi/LectureList.php";
 
-    void BackgroundTask() {
+    void SearchBackgroundTask() {
         backgroundtask = Observable.fromCallable(() -> {
             // doInBackground
 

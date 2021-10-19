@@ -28,7 +28,7 @@ public class SettingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.timetable_activity_setting);
 
-        recyclerView = (RecyclerView)findViewById(R.id.recyceler_view);
+        recyclerView = (RecyclerView)findViewById(R.id.setting_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false)) ;
 
         ImageView tita_setting_backButton = findViewById(R.id.tita_setting_backButton);
@@ -51,11 +51,13 @@ public class SettingActivity extends AppCompatActivity {
         adapter.setOnItemClickListener(new SettingAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
-                
-                Intent intent = new Intent(SettingActivity.this, MainActivity.class);
-                intent.putExtra("CallType", 1001);
-                setResult(Activity.RESULT_OK, intent);
-                finish();
+
+                if(position==0){
+                    Intent intent = new Intent(SettingActivity.this, MainActivity.class);
+                    intent.putExtra("CallType", 1001);
+                    setResult(Activity.RESULT_OK, intent);
+                    finish();
+                }
 
             }
 

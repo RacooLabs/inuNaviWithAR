@@ -59,7 +59,7 @@
         </activity>
 
         <activity
-            android:name="com.maru.inunavi.ui.timetable.SearchActivity"
+            android:name="com.maru.inunavi.ui.timetable.search.SearchActivity"
             android:exported="true"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait">
@@ -67,13 +67,20 @@
         </activity>
 
         <activity
-            android:name="com.maru.inunavi.ui.timetable.SearchOptionActivity"
+            android:name="com.maru.inunavi.ui.timetable.search.SearchOptionActivity"
             android:exported="true"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait">
 
         </activity>
 
+        <activity
+            android:name="com.maru.inunavi.ui.timetable.search.SearchMajorActivity"
+            android:exported="true"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait">
+
+        </activity>
 
 
 
