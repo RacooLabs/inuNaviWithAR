@@ -113,7 +113,7 @@ import com.maru.inunavi.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MajorAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     public interface OnItemClickListener {
         void onItemClick(View v, int position) ;
@@ -121,16 +121,18 @@ public class MajorAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     private OnItemClickListener mListener = null ;
 
-    public void setOnItemClickListener(MajorAdapter.OnItemClickListener listener) {
+    public void setOnItemClickListener(SearchAdapter.OnItemClickListener listener) {
         this.mListener = listener ;
     }
 
     public static final int HEADER = 0;
     public static final int CHILD = 1;
+    public static final int DEFAULT_HEADER = 2;
+    public static final int DEFAULT_CHILD = 3;
 
     private List<Item> data;
 
-    public MajorAdapter(List<Item> data) {
+    public SearchAdapter(List<Item> data) {
         this.data = data;
     }
 
@@ -148,6 +150,14 @@ public class MajorAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                 ListHeaderViewHolder header = new ListHeaderViewHolder(view);
 
                 return header;
+
+            case DEFAULT_HEADER:
+                LayoutInflater inflater_default_header = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                view = inflater_default_header.inflate(R.layout.timetable_major_item_list_default_header, parent, false);
+                ListDefaultHeaderViewHolder default_header = new ListDefaultHeaderViewHolder(view);
+
+                return default_header;
+
             case CHILD:
                 LayoutInflater inflater_child = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 view = inflater_child.inflate(R.layout.timetable_major_item_list_child, parent, false);
@@ -155,7 +165,10 @@ public class MajorAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
                 return child;
 
-
+            case DEFAULT_CHILD:
+                LayoutInflater inflater_default_child = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                view = inflater_default_child.inflate(R.layout.timetable_major_item_list_child, parent, false);
+                ListChildViewHolder default_child = new ListChildViewHolder(view);
 
         }
         return null;
@@ -175,7 +188,7 @@ public class MajorAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                     itemController.btn_expand_toggle.setImageResource(R.drawable.circle_plus);
                 }
 
-                itemController.btn_expand_toggle.setOnClickListener(new View.OnClickListener() {
+                itemController.header_title_layout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if (item.invisibleChildren == null) {
@@ -202,6 +215,15 @@ public class MajorAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                     }
                 });
                 break;
+
+            case DEFAULT_HEADER:
+
+                final ListDefaultHeaderViewHolder defaultHeaderView = (ListDefaultHeaderViewHolder) holder;
+                TextView itemTextView_defaultHeader = (TextView) defaultHeaderView.default_header_title;
+                itemTextView_defaultHeader.setText(data.get(position).text);
+
+                break;
+
             case CHILD:
 
                 final ListChildViewHolder childView = (ListChildViewHolder) holder;
@@ -209,6 +231,14 @@ public class MajorAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                 itemTextView.setText(data.get(position).text);
 
                 break;
+
+            case DEFAULT_CHILD:
+
+                final ListDefaultChildViewHolder defaultChildView = (ListDefaultChildViewHolder) holder;
+                TextView itemTextView_defaultChild = (TextView) defaultChildView.child_title;
+                itemTextView_defaultChild.setText(data.get(position).text);
+                break;
+
 
         }
     }
@@ -228,11 +258,13 @@ public class MajorAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         public TextView header_title;
         public ImageView btn_expand_toggle;
         public Item refferalItem;
+        public LinearLayout header_title_layout;
 
         public ListHeaderViewHolder(View itemView) {
             super(itemView);
             header_title = (TextView) itemView.findViewById(R.id.header_title);
             btn_expand_toggle = (ImageView) itemView.findViewById(R.id.btn_expand_toggle);
+            header_title_layout = (LinearLayout) itemView.findViewById(R.id.header_title_layout);
 
 
         }
@@ -243,6 +275,63 @@ public class MajorAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         public TextView child_title;
 
         public ListChildViewHolder(View itemView) {
+            super(itemView);
+            child_title = (TextView) itemView.findViewById(R.id.child_title);
+
+            child_title.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+
+
+                    int pos = getAdapterPosition();
+                    if (pos != RecyclerView.NO_POSITION) {
+                        if(mListener != null){
+                            mListener.onItemClick(v,pos);
+                        }
+                    }
+
+                }
+            });
+
+        }
+    }
+
+    private class ListDefaultHeaderViewHolder extends RecyclerView.ViewHolder {
+
+        public LinearLayout default_header_title_layout;
+        public TextView default_header_title;
+
+        public ListDefaultHeaderViewHolder(View itemView) {
+            super(itemView);
+
+            default_header_title_layout = (LinearLayout) itemView.findViewById(R.id.default_header_title_layout);
+            default_header_title = (TextView) itemView.findViewById(R.id.default_header_title);
+
+
+            default_header_title_layout.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+
+                    int pos = getAdapterPosition();
+                    if (pos != RecyclerView.NO_POSITION) {
+                        if(mListener != null){
+                            mListener.onItemClick(default_header_title,pos);
+                        }
+                    }
+
+                }
+            });
+
+        }
+    }
+
+    private class ListDefaultChildViewHolder extends RecyclerView.ViewHolder {
+
+        public TextView child_title;
+
+        public ListDefaultChildViewHolder(View itemView) {
             super(itemView);
             child_title = (TextView) itemView.findViewById(R.id.child_title);
 

@@ -71,6 +71,36 @@ public class SearchOptionActivity extends AppCompatActivity {
 
             }
         });
+
+
+
+        //정렬 콜백 리스너
+        ActivityResultLauncher<Intent> sortActivityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            Intent intent = result.getData();
+
+                            int CallType = intent.getIntExtra("CallType", 0);
+                            String sortType = intent.getStringExtra("Sort");
+
+                            tita_search_option_sort_text.setText(sortType);
+
+                        }
+                    }
+                });
+
+        tita_search_option_sort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SearchOptionActivity.this, SearchSortActivity.class);
+                sortActivityResultLauncher.launch(intent);
+            }
+        });
+
+
         
         
 

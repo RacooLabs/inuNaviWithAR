@@ -2,13 +2,15 @@
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="40dp"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:paddingLeft="30dp"
+    android:paddingRight="30dp">
 
     <TextView
         android:id="@+id/child_title"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:textColor="@color/main_color"
+        android:textColor="@color/main_text_color"
         android:textSize="@dimen/main_text_size"
         android:gravity="center_vertical"
         android:background="?attr/selectableItemBackground"

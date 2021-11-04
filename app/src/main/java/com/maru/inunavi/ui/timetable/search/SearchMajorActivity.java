@@ -11,10 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.maru.inunavi.MainActivity;
 import com.maru.inunavi.R;
-import com.maru.inunavi.ui.timetable.SettingActivity;
-import com.maru.inunavi.ui.timetable.SettingAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,7 +20,7 @@ import java.util.List;
 public class SearchMajorActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
-    MajorAdapter adapter;
+    SearchAdapter adapter;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
 
@@ -51,9 +48,7 @@ public class SearchMajorActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.major_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        List<MajorAdapter.Item> data = new ArrayList<>();
-
-
+        List<SearchAdapter.Item> data = new ArrayList<>();
 
         //전공
         ArrayList<String> majorArray = new ArrayList<String>(Arrays.asList("국어국문학과", "영어영문학과", "독어독문학과", "불어불문학과", "일어일문학과", "중어중국학과", "수학과",
@@ -66,36 +61,55 @@ public class SearchMajorActivity extends AppCompatActivity {
                 "물류학전공(연계)", "인공지능소프트웨어연계전공", "MICE,스포츠및관광연계전공", "창의적디자인연계전공", "뷰티산업연계전공", "인문문화예술기획연계전공", "소셜데이터사이언스연계전공"));
 
 
-        MajorAdapter.Item major = new MajorAdapter.Item(MajorAdapter.HEADER, "전공");
+        SearchAdapter.Item major = new SearchAdapter.Item(SearchAdapter.HEADER, "전공");
         major.invisibleChildren = new ArrayList<>();
 
         for(int i=0;i<majorArray.size();i++){
-            major.invisibleChildren.add(new MajorAdapter.Item(MajorAdapter.CHILD, majorArray.get(i)));
+            major.invisibleChildren.add(new SearchAdapter.Item(SearchAdapter.CHILD, majorArray.get(i)));
         }
         data.add(major);
 
         //교양필수
 
         //culturalStudiesEssential
-        ArrayList<String> CSEArray = new ArrayList<String>(Arrays.asList("기타", "대학영어2", "Academic English", "컴퓨팅적사고와SW", "글쓰기이론과실제",
-                "대학영어회화2"));
+        ArrayList<String> CSEArray = new ArrayList<String>(Arrays.asList("대학영어2", "Academic English", "컴퓨팅적사고와SW", "글쓰기이론과실제",
+                "대학영어회화2","기타" ));
 
 
-        MajorAdapter.Item CSE = new MajorAdapter.Item(MajorAdapter.HEADER, "교양필수");
+        SearchAdapter.Item CSE = new SearchAdapter.Item(SearchAdapter.HEADER, "교양필수");
         CSE.invisibleChildren = new ArrayList<>();
 
         for(int i=0;i<CSEArray.size();i++){
-            CSE.invisibleChildren.add(new MajorAdapter.Item(MajorAdapter.CHILD, CSEArray.get(i)));
+            CSE.invisibleChildren.add(new SearchAdapter.Item(SearchAdapter.CHILD, CSEArray.get(i)));
         }
         data.add(CSE);
 
+        SearchAdapter.Item CSS = new SearchAdapter.Item(SearchAdapter.DEFAULT_HEADER, "교양 선택");
+        data.add(CSS);
 
-        MajorAdapter adapter =  new MajorAdapter(data);
+        //Teaching Profession
+        SearchAdapter.Item TP = new SearchAdapter.Item(SearchAdapter.DEFAULT_HEADER, "교직");
+        data.add(TP);
+
+
+        ArrayList<String> etcArray = new ArrayList<String>(Arrays.asList("일반 선택", "군사학"));
+        SearchAdapter.Item etc = new SearchAdapter.Item(SearchAdapter.HEADER, "기타");
+
+        etc.invisibleChildren = new ArrayList<>();
+
+        for(int i=0;i<etcArray.size();i++){
+            etc.invisibleChildren.add(new SearchAdapter.Item(SearchAdapter.CHILD, etcArray.get(i)));
+        }
+
+        data.add(etc);
+
+        SearchAdapter adapter =  new SearchAdapter(data);
+
         recyclerView.setAdapter(adapter);
 
 
         //어댑터 콜백 리스너
-        adapter.setOnItemClickListener(new MajorAdapter.OnItemClickListener() {
+        adapter.setOnItemClickListener(new SearchAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
 
