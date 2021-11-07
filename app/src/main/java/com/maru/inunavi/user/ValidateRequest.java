@@ -5,14 +5,16 @@ import android.util.Log;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.maru.inunavi.IpAddress;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class ValidateRequest extends StringRequest {
 
-    final static private String URL = "http://192.168.0.5/inuNavi/UserValidate.php?id=";
-    //final static private String URL = "http://219.248.233.170/project1_war_exploded/user/check/id?id=";
+    final static private String URL = IpAddress.isTest ? "http://192.168.0.5/inuNavi/UserValidate.php?id=" :
+            "http://219.248.233.170/project1_war_exploded/user/check/id?id=";
+
     private Map<String, String> parameters;
 
     public ValidateRequest(String userID, Response.Listener<String> listener){

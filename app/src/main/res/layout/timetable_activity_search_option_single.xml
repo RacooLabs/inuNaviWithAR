@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
-        android:id="@+id/tita_search_option_major_topBar"
+        android:id="@+id/tita_search_option_single_topBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/top_bar_height"
         android:orientation="horizontal"
@@ -18,7 +18,7 @@
         >
 
         <ImageView
-            android:id="@+id/tita_search_option_major_backButton"
+            android:id="@+id/tita_search_option_single_backButton"
             android:layout_width="@dimen/top_bar_button_size"
             android:layout_height="@dimen/top_bar_button_size"
             android:src="@drawable/ic_clear_black_24dp"
@@ -26,6 +26,7 @@
             android:clickable="true"/>
 
         <TextView
+            android:id="@+id/tita_search_option_topBar_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="전공/영역"
@@ -39,13 +40,13 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/major_recycler_view"
+        android:id="@+id/single_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tita_search_option_major_topBar"
+        app:layout_constraintTop_toBottomOf="@id/tita_search_option_single_topBar"
         />
 
 

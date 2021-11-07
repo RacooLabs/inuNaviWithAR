@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/timetable_multi_item_list_child_layout"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:paddingLeft="30dp"
+    android:paddingRight="30dp"
+    android:background="?attr/selectableItemBackground"
+    android:clickable="true">
+
+    <CheckBox
+        android:id="@+id/tita_multi_item_list_child_checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:buttonTint="@color/main_color"/>
+
+    <TextView
+        android:id="@+id/child_title"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:textColor="@color/main_text_color"
+        android:textSize="@dimen/main_text_size"
+        android:gravity="center_vertical"
+        />
+
+</LinearLayout>

@@ -12,7 +12,9 @@
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable-v24/ic_login_logo.xml" value="0.16458333333333333" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable-v24/layout_login_button_roundedbox.xml" value="0.2598958333333333" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable-v24/layout_login_roundedbox_done.xml" value="0.2598958333333333" />
+        <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable-v24/layout_login_roundedbox_not.xml" value="0.22135416666666666" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable-v24/layout_more_option_button_roundedbox.xml" value="0.2598958333333333" />
+        <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable-v24/layout_more_option_button_roundedbox_outline.xml" value="0.22135416666666666" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable-v24/layout_search_roundedbox.xml" value="0.2598958333333333" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable/ic_add_circle_outline_black_24dp.xml" value="0.16614583333333333" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable/ic_arrow_forward_ios_white_24dp.xml" value="0.23072916666666668" />
@@ -24,7 +26,9 @@
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable/ic_format_list_bulleted_black_24dp.xml" value="0.16614583333333333" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable/ic_home_black_24dp.xml" value="0.25925925925925924" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable/ic_launcher_background.xml" value="0.25925925925925924" />
+        <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.22135416666666666" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable/ic_login_logo.xml" value="0.25925925925925924" />
+        <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable/ic_map_black_24dp.xml" value="0.22135416666666666" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable/ic_map_white_24dp.xml" value="0.1" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable/ic_notifications_black_24dp.xml" value="0.1" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable/ic_report_problem_black_24dp.xml" value="0.3764102564102564" />
@@ -35,6 +39,7 @@
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable/layout_login_roundedbox.xml" value="0.3260416666666667" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable/layout_login_roundedbox_done.xml" value="0.3764102564102564" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable/layout_login_roundedbox_not.xml" value="0.3764102564102564" />
+        <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable/layout_more_option_button_roundedbox.xml" value="0.22135416666666666" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/activity_main.xml" value="0.17806484295845998" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/activity_sign_up.xml" value="0.33" />
@@ -49,16 +54,22 @@
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/timetable_activity_search.xml" value="0.33" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/timetable_activity_search_option.xml" value="0.25" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/timetable_activity_search_option_major.xml" value="0.20833333333333334" />
+        <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/timetable_activity_search_option_multi.xml" value="0.33" />
+        <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/timetable_activity_search_option_single.xml" value="0.20520833333333333" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/timetable_activity_setting.xml" value="0.25" />
-        <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/timetable_fragment.xml" value="0.22" />
+        <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/timetable_fragment.xml" value="0.2" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/timetable_item_list.xml" value="0.22" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/timetable_list_list.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/timetable_major_item_list.xml" value="0.2046875" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/timetable_major_item_list_child.xml" value="0.2046875" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/timetable_major_item_list_header.xml" value="0.2046875" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/timetable_major_item_list_header_child.xml" value="0.22" />
+        <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/timetable_multi_item_list_child.xml" value="0.20520833333333333" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/timetable_search_option_item_list.xml" value="0.20833333333333334" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/timetable_setting_item_list.xml" value="0.2916666666666667" />
+        <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/timetable_single_item_list_child.xml" value="0.23802083333333332" />
+        <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/timetable_single_item_list_default_header.xml" value="0.20520833333333333" />
+        <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/timetable_single_item_list_header.xml" value="0.20520833333333333" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/user_activity_login.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/user_activity_signup.xml" value="0.24375" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/menu/bottom_nav_menu.xml" value="0.30462962962962964" />

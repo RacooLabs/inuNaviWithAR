@@ -75,9 +75,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="4dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:checkedButton="@+id/tita_search_option_radio1"
+                >
 
                 <RadioButton
+                    android:id="@+id/tita_search_option_radio1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"
@@ -87,6 +90,7 @@
                     android:textSize="@dimen/small_text_size" />
 
                 <RadioButton
+                    android:id="@+id/tita_search_option_radio2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="4dp"
@@ -95,6 +99,7 @@
                     android:textSize="@dimen/small_text_size" />
 
                 <RadioButton
+                    android:id="@+id/tita_search_option_radio3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="4dp"
@@ -103,6 +108,7 @@
                     android:textSize="@dimen/small_text_size" />
 
                 <RadioButton
+                    android:id="@+id/tita_search_option_radio4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="4dp"
@@ -124,6 +130,7 @@
             android:background="?attr/selectableItemBackground"
             android:clickable="true"
             android:paddingLeft="12dp"
+            android:paddingRight="12dp"
             >
 
             <TextView
@@ -155,7 +162,10 @@
                 android:paddingLeft="30dp"
                 android:text="전체"
                 android:gravity="center_vertical"
-                android:textSize="@dimen/main_text_size"/>
+                android:textSize="@dimen/main_text_size"
+                android:maxLines="1"
+                android:ellipsize="end"
+                />
 
         </LinearLayout>
 
@@ -168,6 +178,7 @@
             android:background="?attr/selectableItemBackground"
             android:clickable="true"
             android:paddingLeft="12dp"
+            android:paddingRight="12dp"
             >
 
             <TextView
@@ -198,13 +209,15 @@
                 android:layout_weight="6"
                 android:gravity="center_vertical"
                 android:paddingLeft="30dp"
-                android:text="전체"
-                android:textSize="@dimen/main_text_size" />
+                android:text="기본"
+                android:textSize="@dimen/main_text_size"
+                android:maxLines="1"
+                android:ellipsize="end"/>
 
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/tita_search_option_grade"
+            android:id="@+id/tita_search_option_grade_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:weightSum="10"
@@ -212,6 +225,7 @@
             android:background="?attr/selectableItemBackground"
             android:clickable="true"
             android:paddingLeft="12dp"
+            android:paddingRight="12dp"
             >
 
             <TextView
@@ -236,19 +250,21 @@
                 android:textSize="@dimen/main_text_size"/>
 
             <TextView
-                android:id="@+id/tita_search_option_major_grade"
+                android:id="@+id/tita_search_option_grade_text"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_weight="6"
                 android:paddingLeft="30dp"
                 android:text="전체"
                 android:gravity="center_vertical"
-                android:textSize="@dimen/main_text_size"/>
+                android:textSize="@dimen/main_text_size"
+                android:maxLines="1"
+                android:ellipsize="end"/>
 
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/tita_search_option_kind"
+            android:id="@+id/tita_search_option_kind_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:weightSum="10"
@@ -256,6 +272,7 @@
             android:background="?attr/selectableItemBackground"
             android:clickable="true"
             android:paddingLeft="12dp"
+            android:paddingRight="12dp"
             >
 
             <TextView
@@ -280,19 +297,21 @@
                 android:textSize="@dimen/main_text_size"/>
 
             <TextView
-                android:id="@+id/tita_search_option_major_kind"
+                android:id="@+id/tita_search_option_kind_text"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_weight="6"
                 android:paddingLeft="30dp"
                 android:text="전체"
                 android:gravity="center_vertical"
-                android:textSize="@dimen/main_text_size"/>
+                android:textSize="@dimen/main_text_size"
+                android:maxLines="1"
+                android:ellipsize="end"/>
 
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/tita_search_option_score"
+            android:id="@+id/tita_search_option_score_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:weightSum="10"
@@ -300,10 +319,11 @@
             android:background="?attr/selectableItemBackground"
             android:clickable="true"
             android:paddingLeft="12dp"
+            android:paddingRight="12dp"
             >
 
             <TextView
-                android:id="@+id/tita_search_option_major_score"
+                android:id="@+id/tita_search_option_score"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="3"
@@ -325,13 +345,16 @@
                 android:textSize="@dimen/main_text_size"/>
 
             <TextView
+                android:id="@+id/tita_search_option_score_text"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_weight="6"
                 android:gravity="center_vertical"
                 android:paddingLeft="30dp"
                 android:text="전체"
-                android:textSize="@dimen/main_text_size" />
+                android:textSize="@dimen/main_text_size"
+                android:maxLines="1"
+                android:ellipsize="end"/>
 
         </LinearLayout>
 

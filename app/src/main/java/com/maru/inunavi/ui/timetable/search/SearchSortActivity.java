@@ -25,30 +25,29 @@ public class SearchSortActivity extends AppCompatActivity {
     @Override protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.timetable_activity_search_option_major);
+        setContentView(R.layout.timetable_activity_search_option_single);
 
-        ImageView tita_search_option_major_backButton = findViewById(R.id.tita_search_option_major_backButton);
+        //Topbar
+        Intent intent = getIntent();
+        String topBarTitle = intent.getStringExtra("topBarTitle");
+        TextView tita_search_option_topBar_textView = findViewById(R.id.tita_search_option_topBar_textView);
+        tita_search_option_topBar_textView.setText(topBarTitle);
+
+        ImageView tita_search_option_single_backButton = findViewById(R.id.tita_search_option_single_backButton);
 
         //돌아가기 버튼
-        tita_search_option_major_backButton.setOnClickListener(new View.OnClickListener() {
+        tita_search_option_single_backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
 
-        /*
-        recyclerView = (RecyclerView)findViewById(R.id.recyceler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false)) ;
-        ArrayList<String> list = new ArrayList<>();
-        list.add("컴퓨터 공학부");
-        adapter = new SettingAdapter(list);
-        recyclerView.setAdapter(adapter);
-        */
 
-        recyclerView = findViewById(R.id.major_recycler_view);
+        recyclerView = findViewById(R.id.single_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         List<SearchAdapter.Item> data = new ArrayList<>();
+
 
 
         ArrayList<String> sortTypeList = new ArrayList<String>(Arrays.asList("기본", "과목코드", "과목명" ));
@@ -68,7 +67,7 @@ public class SearchSortActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View v, int position) {
 
-                Intent intent = new Intent(SearchSortActivity.this, SearchActivity.class);
+                Intent intent = new Intent(SearchSortActivity.this, SearchOptionActivity.class);
                 intent.putExtra("CallType", 1001);
                 intent.putExtra("Sort", ((TextView)v).getText());
                 setResult(Activity.RESULT_OK, intent);

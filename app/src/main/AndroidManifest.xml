@@ -82,6 +82,39 @@
 
         </activity>
 
+        <activity
+            android:name="com.maru.inunavi.ui.timetable.search.SearchSortActivity"
+            android:exported="true"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait">
+
+        </activity>
+
+        <activity
+            android:name="com.maru.inunavi.ui.timetable.search.SearchGradeActivity"
+            android:exported="true"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait">
+
+        </activity>
+
+        <activity
+            android:name="com.maru.inunavi.ui.timetable.search.SearchKindActivity"
+            android:exported="true"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait">
+
+        </activity>
+
+        <activity
+            android:name="com.maru.inunavi.ui.timetable.search.SearchScoreActivity"
+            android:exported="true"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait">
+
+        </activity>
+
+
 
 
         <meta-data

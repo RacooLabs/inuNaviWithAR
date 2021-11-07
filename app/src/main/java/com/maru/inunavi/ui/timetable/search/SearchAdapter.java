@@ -99,17 +99,22 @@ public class MajorAdapter extends RecyclerView.Adapter<com.maru.inunavi.ui.timet
 package com.maru.inunavi.ui.timetable.search;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.maru.inunavi.R;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -121,6 +126,8 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     private OnItemClickListener mListener = null ;
 
+
+
     public void setOnItemClickListener(SearchAdapter.OnItemClickListener listener) {
         this.mListener = listener ;
     }
@@ -129,11 +136,22 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public static final int CHILD = 1;
     public static final int DEFAULT_HEADER = 2;
     public static final int DEFAULT_CHILD = 3;
+    public static final int MULTI_CHILD = 4;
+
+    public static int ALL_CHECKED = 2;
+
+    private List<String> selectionList;
 
     private List<Item> data;
 
     public SearchAdapter(List<Item> data) {
         this.data = data;
+        this.selectionList = selectionList;
+    }
+
+    public SearchAdapter(List<Item> data, List<String> selectionList) {
+        this.data = data;
+        this.selectionList = selectionList;
     }
 
     @Override
@@ -146,33 +164,53 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         switch (type) {
             case HEADER:
                 LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                view = inflater.inflate(R.layout.timetable_major_item_list_header, parent, false);
+                view = inflater.inflate(R.layout.timetable_single_item_list_header, parent, false);
                 ListHeaderViewHolder header = new ListHeaderViewHolder(view);
 
                 return header;
 
             case DEFAULT_HEADER:
                 LayoutInflater inflater_default_header = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                view = inflater_default_header.inflate(R.layout.timetable_major_item_list_default_header, parent, false);
+                view = inflater_default_header.inflate(R.layout.timetable_single_item_list_default_header, parent, false);
                 ListDefaultHeaderViewHolder default_header = new ListDefaultHeaderViewHolder(view);
 
                 return default_header;
 
             case CHILD:
                 LayoutInflater inflater_child = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                view = inflater_child.inflate(R.layout.timetable_major_item_list_child, parent, false);
+                view = inflater_child.inflate(R.layout.timetable_single_item_list_child, parent, false);
                 ListChildViewHolder child = new ListChildViewHolder(view);
 
                 return child;
 
             case DEFAULT_CHILD:
                 LayoutInflater inflater_default_child = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                view = inflater_default_child.inflate(R.layout.timetable_major_item_list_child, parent, false);
-                ListChildViewHolder default_child = new ListChildViewHolder(view);
+                view = inflater_default_child.inflate(R.layout.timetable_single_item_list_child, parent, false);
+                ListDefaultChildViewHolder default_child = new ListDefaultChildViewHolder(view);
+
+                return default_child;
+
+            case MULTI_CHILD:
+                LayoutInflater inflater_multi_child = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                view = inflater_multi_child.inflate(R.layout.timetable_multi_item_list_child, parent, false);
+                ListMultiChildViewHolder multi_child = new ListMultiChildViewHolder(view);
+
+                return multi_child;
 
         }
         return null;
     }
+
+    public void doAllCheck(){
+        ALL_CHECKED = 1;
+        notifyDataSetChanged();
+    }
+
+    public void doAllCancel(){
+        ALL_CHECKED = 0;
+        notifyDataSetChanged();
+    }
+
 
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         final Item item = data.get(position);
@@ -187,6 +225,8 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 } else {
                     itemController.btn_expand_toggle.setImageResource(R.drawable.circle_plus);
                 }
+
+
 
                 itemController.header_title_layout.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -229,7 +269,6 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 final ListChildViewHolder childView = (ListChildViewHolder) holder;
                 TextView itemTextView = (TextView) childView.child_title;
                 itemTextView.setText(data.get(position).text);
-
                 break;
 
             case DEFAULT_CHILD:
@@ -239,6 +278,50 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 itemTextView_defaultChild.setText(data.get(position).text);
                 break;
 
+            case MULTI_CHILD:
+                final ListMultiChildViewHolder multiChildView = (ListMultiChildViewHolder) holder;
+                TextView itemTextView_multiChild = (TextView) multiChildView.child_title;
+                itemTextView_multiChild.setText(data.get(position).text);
+
+                CheckBox checkBox = (CheckBox) multiChildView.checkBox;
+                String child_text = data.get(position).text;
+
+                // 체크 박스 리스너
+                checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+                    public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                        if(isChecked){
+                            if(!selectionList.contains(child_text))
+                                selectionList.add(child_text);
+                        }else{
+                            if(selectionList.contains(child_text))
+                                selectionList.remove(child_text);
+                        }
+                    }
+                });
+
+                if(selectionList.contains(child_text)){
+
+                    multiChildView.checkBox.setChecked(true);
+
+                }else{
+
+                    multiChildView.checkBox.setChecked(false);
+
+                }
+
+                switch (ALL_CHECKED){
+                    case 0 :
+                        multiChildView.checkBox.setChecked(false);
+                        break;
+                    case 1:
+                        multiChildView.checkBox.setChecked(true);
+                        break;
+
+                    default:
+                }
+
+                break;
 
         }
     }
@@ -307,8 +390,6 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
             default_header_title_layout = (LinearLayout) itemView.findViewById(R.id.default_header_title_layout);
             default_header_title = (TextView) itemView.findViewById(R.id.default_header_title);
-
-
             default_header_title_layout.setOnClickListener(new View.OnClickListener() {
 
                 @Override
@@ -350,9 +431,39 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
                 }
             });
+        }
+    }
+
+    private class ListMultiChildViewHolder extends RecyclerView.ViewHolder {
+
+        public LinearLayout multi_child_layout;
+        public CheckBox checkBox;
+        public TextView child_title;
+        public String child_text;
+
+        public ListMultiChildViewHolder(View itemView) {
+            super(itemView);
+            multi_child_layout = itemView.findViewById(R.id.timetable_multi_item_list_child_layout);
+            checkBox = (CheckBox) itemView.findViewById(R.id.tita_multi_item_list_child_checkBox);
+            child_title = (TextView) itemView.findViewById(R.id.child_title);
+            child_text = child_title.getText().toString();
+
+
+            multi_child_layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(checkBox.isChecked())
+                        checkBox.setChecked(false);
+                    else
+                        checkBox.setChecked(true);
+                }
+            });
+
 
         }
     }
+
+
 
     public static class Item {
         public int type;

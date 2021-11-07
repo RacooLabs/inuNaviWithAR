@@ -72,10 +72,6 @@ public class SearchActivity extends AppCompatActivity {
     }
 
 
-
-
-
-
     Disposable backgroundtask;
 
     public int value;
