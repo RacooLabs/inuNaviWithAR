@@ -13,7 +13,7 @@ import java.util.Map;
 public class SignUpRequest extends StringRequest {
 
 
-    final static private String URL = IpAddress.isTest ? "http://192.168.0.5/inuNavi/UserRegister.php" :
+    final static private String URL = IpAddress.isTest ? "http://192.168.0.106/inuNavi/UserRegister.php" :
             "http://219.248.233.170/project1_war_exploded/user/insert";
 
 

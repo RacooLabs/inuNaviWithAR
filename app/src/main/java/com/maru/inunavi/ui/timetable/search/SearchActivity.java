@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.maru.inunavi.IpAddress;
 import com.maru.inunavi.R;
 
 import java.io.BufferedReader;
@@ -76,7 +77,9 @@ public class SearchActivity extends AppCompatActivity {
 
     public int value;
     boolean isCancel = false;
-    String target = "http://192.168.0.5/inuNavi/LectureList.php";
+    private String target = IpAddress.isTest ? "http://192.168.0.106/inuNavi/LectureList.php" :
+            "http://219.248.233.170/project1_war_exploded/user/login";
+
 
     void SearchBackgroundTask() {
         backgroundtask = Observable.fromCallable(() -> {

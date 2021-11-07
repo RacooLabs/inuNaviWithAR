@@ -72,9 +72,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginRight="4dp">
+                android:layout_marginRight="4dp"
+                android:checkedButton="@id/tita_search_radioButton1">
 
                 <RadioButton
+                    android:id="@+id/tita_search_radioButton1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="과목명"
@@ -83,6 +85,7 @@
                     android:buttonTint="@color/main_color"/>
 
                 <RadioButton
+                    android:id="@+id/tita_search_radioButton2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="교수명"
@@ -91,6 +94,7 @@
                     android:buttonTint="@color/main_color"/>
 
                 <RadioButton
+                    android:id="@+id/tita_search_radioButton3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="과목코드"

@@ -3,6 +3,7 @@ package com.maru.inunavi.ui.timetable.search;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -126,7 +127,11 @@ public class SearchOptionActivity extends AppCompatActivity implements Serializa
                             int CallType = intent.getIntExtra("CallType", 0);
                             gradeList = (ArrayList<String>)intent.getSerializableExtra("Grade");
 
-                            if(gradeList.size() > 0){
+                            if(gradeList.size() == 4 || gradeList.size() == 0){
+
+                                tita_search_option_grade_text.setText("전체");
+
+                            }else if(gradeList.size() > 0){
 
                                 StringBuilder sb = new StringBuilder();
 
@@ -140,10 +145,6 @@ public class SearchOptionActivity extends AppCompatActivity implements Serializa
                                 sb.append(gradeList.get(i));
 
                                 tita_search_option_grade_text.setText(sb);
-
-                            }else{
-
-                                tita_search_option_grade_text.setText("전체");
 
                             }
 
@@ -173,7 +174,11 @@ public class SearchOptionActivity extends AppCompatActivity implements Serializa
                             int CallType = intent.getIntExtra("CallType", 0);
                             kindList = (ArrayList<String>)intent.getSerializableExtra("Kind");
 
-                            if(kindList.size() > 0){
+                            if(kindList.size() == 9 || kindList.size() == 0){
+
+                                tita_search_option_kind_text.setText("전체");
+
+                            }else if(kindList.size() > 0){
 
                                 StringBuilder sb = new StringBuilder();
 
@@ -188,11 +193,8 @@ public class SearchOptionActivity extends AppCompatActivity implements Serializa
 
                                 tita_search_option_kind_text.setText(sb);
 
-                            }else{
-
-                                tita_search_option_kind_text.setText("전체");
-
                             }
+
 
                         }
                     }
@@ -221,7 +223,11 @@ public class SearchOptionActivity extends AppCompatActivity implements Serializa
                             int CallType = intent.getIntExtra("CallType", 0);
                             scoreList = (ArrayList<String>)intent.getSerializableExtra("Score");
 
-                            if(scoreList.size() > 0){
+
+                            if(scoreList.size() == 4 || scoreList.size() == 0){
+                                tita_search_option_score_text.setText("전체");
+
+                            }else if(scoreList.size() > 0){
 
                                 StringBuilder sb = new StringBuilder();
 
@@ -235,10 +241,6 @@ public class SearchOptionActivity extends AppCompatActivity implements Serializa
                                 sb.append(scoreList.get(i));
 
                                 tita_search_option_score_text.setText(sb);
-
-                            }else{
-
-                                tita_search_option_score_text.setText("전체");
 
                             }
 
