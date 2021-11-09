@@ -23,6 +23,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.maru.inunavi.IpAddress;
 import com.maru.inunavi.ui.timetable.search.SearchActivity;
 import com.maru.inunavi.user.LoginActivity;
 import com.maru.inunavi.MainActivity;
@@ -32,6 +33,9 @@ import com.maru.inunavi.R;
 public class CalendarFragment extends Fragment {
 
     private String url = sessionURL;
+
+
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {

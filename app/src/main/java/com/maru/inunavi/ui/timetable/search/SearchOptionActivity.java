@@ -21,6 +21,7 @@ import com.maru.inunavi.R;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class SearchOptionActivity extends AppCompatActivity implements Serializable {
@@ -50,6 +51,10 @@ public class SearchOptionActivity extends AppCompatActivity implements Serializa
         TextView tita_search_option_grade_text = findViewById(R.id.tita_search_option_grade_text);
         TextView tita_search_option_kind_text = findViewById(R.id.tita_search_option_kind_text);
         TextView tita_search_option_score_text = findViewById(R.id.tita_search_option_score_text);
+
+        TextView tita_search_option_ok = findViewById(R.id.tita_search_option_ok);
+
+
 
         //돌아가기 버튼
         tita_search_option_backButton.setOnClickListener(new View.OnClickListener() {
@@ -257,6 +262,23 @@ public class SearchOptionActivity extends AppCompatActivity implements Serializa
                 scoreActivityResultLauncher.launch(intent);
             }
         });
+
+        //확인버튼
+        tita_search_option_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(SearchOptionActivity.this, SearchActivity.class);
+                intent.putExtra("CallType", 0);
+
+                intent.putExtra("Kind", kindList);
+
+                setResult(Activity.RESULT_OK, intent);
+                finish();
+
+            }
+        });
+
 
     }
 
