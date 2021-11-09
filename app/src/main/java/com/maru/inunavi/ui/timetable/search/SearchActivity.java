@@ -94,13 +94,22 @@ public class SearchActivity extends AppCompatActivity {
                             Intent intent = result.getData();
                             int CallType = intent.getIntExtra("CallType", 0);
 
+                            String main_keyword = intent.getStringExtra("main_keyword");
+                            String keyword_option = intent.getStringExtra("keyword_option");
+                            String major_option = intent.getStringExtra("major_option");
+                            String cse_option = intent.getStringExtra("cse_option");
+                            String sort_option = intent.getStringExtra("sort_option");
+                            String grade_option = intent.getStringExtra("grade_option");
+                            String kind_option = intent.getStringExtra("kind_option");
+                            String score_option = intent.getStringExtra("score_option");
 
-
-                            String major = intent.getStringExtra("Major");
 
                             target = (IpAddress.isTest ? "http://192.168.0.106/inuNavi/LectureList.php" :
                                     "http://219.248.233.170/project1_war_exploded/user/login")+ "?main_keyword=\"" + main_keyword + "\"&keyword_option=\"" + keyword_option
-                                    + "\"&major_option=\"전체\"" + "&sort_option=\"기본\"" + "&grade_option=\"전체\"" + "&kind_option=\"전체\"" + "&score_option=\"전체\"";
+                                    + "\"&major_option=\"" + major_option + "\"&cse_option=\""+ cse_option +"\"&sort_option=\"" + sort_option + "\"&grade_option=\"" + grade_option +
+                                    "\"&kind_option=\"" + kind_option +"\"&score_option=\"" + score_option +"\"";
+
+                            Log.d("@@@ searchactivity111", target);
 
                             SearchBackgroundTask();
 

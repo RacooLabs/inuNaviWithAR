@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResult;
@@ -33,6 +34,16 @@ public class SearchOptionActivity extends AppCompatActivity implements Serializa
 
     ArrayList<String> scoreList = new ArrayList<String>(Arrays.asList("1학점", "2학점", "3학점", "4학점"));
 
+    String main_keyword = "";
+    String keyword_option = "전체";
+
+    String major_option = "전체";
+    String cse_option = "전체";
+    String sort_option =  "기본";
+    String grade_option = "전체";
+    String kind_option = "전체";
+    String score_option = "전체";
+
     @Override protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
@@ -41,12 +52,17 @@ public class SearchOptionActivity extends AppCompatActivity implements Serializa
         ImageView tita_search_option_backButton = findViewById(R.id.tita_search_option_backButton);
 
         LinearLayout tita_search_option_major = findViewById(R.id.tita_search_option_major);
+        LinearLayout tita_search_option_cse = findViewById(R.id.tita_search_option_cse);
         LinearLayout tita_search_option_sort = findViewById(R.id.tita_search_option_sort);
         LinearLayout tita_search_option_grade_layout = findViewById(R.id.tita_search_option_grade_layout);
         LinearLayout tita_search_option_kind_layout = findViewById(R.id.tita_search_option_kind_layout);
         LinearLayout tita_search_option_score_layout = findViewById(R.id.tita_search_option_score_layout);
 
+        EditText tita_search_option_searchbar = findViewById(R.id.tita_search_option_searchbar);
+        RadioGroup tita_search_option_radioGroup = findViewById(R.id.tita_search_option_radioGroup);
+
         TextView tita_search_option_major_text = findViewById(R.id.tita_search_option_major_text);
+        TextView tita_search_option_cse_text = findViewById(R.id.tita_search_option_cse_text);
         TextView tita_search_option_sort_text = findViewById(R.id.tita_search_option_sort_text);
         TextView tita_search_option_grade_text = findViewById(R.id.tita_search_option_grade_text);
         TextView tita_search_option_kind_text = findViewById(R.id.tita_search_option_kind_text);
@@ -60,6 +76,32 @@ public class SearchOptionActivity extends AppCompatActivity implements Serializa
         tita_search_option_backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)  { finish(); }
+        });
+
+        //검색 조건
+        tita_search_option_radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
+                switch (checkedId){
+
+                    case R.id.tita_search_option_radio1:
+                        keyword_option = "전체";
+                        break;
+
+                    case R.id.tita_search_option_radio2:
+                        keyword_option = "과목명";
+                        break;
+
+                    case R.id.tita_search_option_radio3:
+                        keyword_option = "교수명";
+                        break;
+
+                    case R.id.tita_search_option_radio4:
+                        keyword_option = "과목코드";
+                        break;
+
+                }
+            }
         });
 
         //전공 콜백 리스너
@@ -87,6 +129,35 @@ public class SearchOptionActivity extends AppCompatActivity implements Serializa
                 Intent intent = new Intent(SearchOptionActivity.this, SearchMajorActivity.class);
                 intent.putExtra("topBarTitle", "전공/영역");
                 majorActivityResultLauncher.launch(intent);
+
+            }
+        });
+
+        //교양필수 콜백 리스너
+        ActivityResultLauncher<Intent> CSEActivityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            Intent intent = result.getData();
+
+                            int CallType = intent.getIntExtra("CallType", 0);
+                            String CSE = intent.getStringExtra("CSE");
+
+                            tita_search_option_cse_text.setText(CSE);
+
+                        }
+                    }
+                });
+
+
+        tita_search_option_cse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SearchOptionActivity.this, SearchCSEActivity.class);
+                intent.putExtra("topBarTitle", "교양필수");
+                CSEActivityResultLauncher.launch(intent);
 
             }
         });
@@ -271,12 +342,28 @@ public class SearchOptionActivity extends AppCompatActivity implements Serializa
                 Intent intent = new Intent(SearchOptionActivity.this, SearchActivity.class);
                 intent.putExtra("CallType", 0);
 
-                intent.putExtra("Kind", kindList);
+                main_keyword = tita_search_option_searchbar.getText().toString();
+                major_option = tita_search_option_major_text.getText().toString();
+                cse_option = tita_search_option_cse_text.getText().toString();
+                sort_option =  tita_search_option_sort_text.getText().toString();
+                grade_option = tita_search_option_grade_text.getText().toString();
+                kind_option = tita_search_option_kind_text.getText().toString();
+                score_option = tita_search_option_score_text.getText().toString();
+
+                intent.putExtra("main_keyword", main_keyword);
+                intent.putExtra("keyword_option",keyword_option);
+                intent.putExtra("major_option",  major_option);
+                intent.putExtra("cse_option",  cse_option);
+                intent.putExtra("sort_option", sort_option);
+                intent.putExtra("grade_option",grade_option);
+                intent.putExtra("kind_option", kind_option);
+                intent.putExtra("score_option", score_option) ;
 
                 setResult(Activity.RESULT_OK, intent);
                 finish();
 
             }
+
         });
 
 

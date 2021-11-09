@@ -71,7 +71,7 @@
             android:layout_marginBottom="30dp">
 
             <RadioGroup
-                android:id="@+id/tita_search_option_radiogroup"
+                android:id="@+id/tita_search_option_radioGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="4dp"
@@ -121,6 +121,8 @@
 
         </LinearLayout>
 
+
+
         <LinearLayout
             android:id="@+id/tita_search_option_major"
             android:layout_width="match_parent"
@@ -137,7 +139,7 @@
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_weight="3"
-                android:text="전공/영역"
+                android:text="전공"
                 android:gravity="center"
                 android:textSize="@dimen/main_text_size"
                 android:textColor="@color/main_color"
@@ -166,6 +168,101 @@
                 android:maxLines="1"
                 android:ellipsize="end"
                 />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/tita_search_option_cse"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="10"
+            android:orientation="horizontal"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="3"
+                android:text="교양필수"
+                android:gravity="center"
+                android:textSize="@dimen/main_text_size"
+                android:textColor="@color/main_color"
+                android:textStyle="bold"/>
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:paddingRight="30dp"
+                android:text="컴퓨터공학부 "
+                android:src="@drawable/ic_arrow_forward_ios_white_24dp"
+                android:gravity="center_vertical"
+                android:textSize="@dimen/main_text_size"/>
+
+            <TextView
+                android:id="@+id/tita_search_option_cse_text"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="6"
+                android:paddingLeft="30dp"
+                android:text="전체"
+                android:gravity="center_vertical"
+                android:textSize="@dimen/main_text_size"
+                android:maxLines="1"
+                android:ellipsize="end"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/tita_search_option_kind_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="10"
+            android:orientation="horizontal"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="3"
+                android:text="구분"
+                android:gravity="center"
+                android:textSize="@dimen/main_text_size"
+                android:textColor="@color/main_color"
+                android:textStyle="bold"/>
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:paddingRight="30dp"
+                android:text="컴퓨터공학부 "
+                android:src="@drawable/ic_arrow_forward_ios_white_24dp"
+                android:gravity="center_vertical"
+                android:textSize="@dimen/main_text_size"/>
+
+            <TextView
+                android:id="@+id/tita_search_option_kind_text"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="6"
+                android:paddingLeft="30dp"
+                android:text="전체"
+                android:gravity="center_vertical"
+                android:textSize="@dimen/main_text_size"
+                android:maxLines="1"
+                android:ellipsize="end"/>
 
         </LinearLayout>
 
@@ -263,52 +360,7 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/tita_search_option_kind_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="10"
-            android:orientation="horizontal"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:paddingLeft="12dp"
-            android:paddingRight="12dp"
-            >
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_weight="3"
-                android:text="구분"
-                android:gravity="center"
-                android:textSize="@dimen/main_text_size"
-                android:textColor="@color/main_color"
-                android:textStyle="bold"/>
-
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_weight="1"
-                android:padding="8dp"
-                android:paddingRight="30dp"
-                android:text="컴퓨터공학부 "
-                android:src="@drawable/ic_arrow_forward_ios_white_24dp"
-                android:gravity="center_vertical"
-                android:textSize="@dimen/main_text_size"/>
-
-            <TextView
-                android:id="@+id/tita_search_option_kind_text"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_weight="6"
-                android:paddingLeft="30dp"
-                android:text="전체"
-                android:gravity="center_vertical"
-                android:textSize="@dimen/main_text_size"
-                android:maxLines="1"
-                android:ellipsize="end"/>
-
-        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/tita_search_option_score_layout"
