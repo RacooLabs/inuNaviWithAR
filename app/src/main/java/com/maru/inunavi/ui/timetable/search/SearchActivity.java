@@ -19,15 +19,23 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.maru.inunavi.IpAddress;
 import com.maru.inunavi.R;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
@@ -35,6 +43,8 @@ import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class SearchActivity extends AppCompatActivity {
+
+
 
     ImageView tita_search_backButton;
     EditText tita_search_searchbar;
@@ -44,6 +54,11 @@ public class SearchActivity extends AppCompatActivity {
     private String main_keyword = "";
     private String keyword_option = "과목명";
     private String target;
+    private SearchAdapter adapter;
+
+    RecyclerView recyclerView;
+
+    private ArrayList<Lecture> lectureList = new ArrayList<>();
 
     @Override protected void onCreate(Bundle savedInstanceState) {
 
@@ -72,7 +87,7 @@ public class SearchActivity extends AppCompatActivity {
 
                     target = (IpAddress.isTest ? "http://192.168.0.106/inuNavi/LectureList.php" :
                             "http://219.248.233.170/project1_war_exploded/user/login")+ "?main_keyword=\"" + main_keyword + "\"&keyword_option=\"" + keyword_option
-                            + "\"&major_option=\"전체\"" + "&sort_option=\"기본\"" + "&grade_option=\"전체\"" + "&kind_option=\"전체\"" + "&score_option=\"전체\"";
+                             + "\"&major_option=\"전체\"" + "\"&cse_option=\"전체\"" + "&sort_option=\"기본\"" + "&grade_option=\"전체\"" + "&category_option=\"전체\"" + "&score_option=\"전체\"";
 
                     SearchBackgroundTask();
 
@@ -100,14 +115,14 @@ public class SearchActivity extends AppCompatActivity {
                             String cse_option = intent.getStringExtra("cse_option");
                             String sort_option = intent.getStringExtra("sort_option");
                             String grade_option = intent.getStringExtra("grade_option");
-                            String kind_option = intent.getStringExtra("kind_option");
+                            String category_option = intent.getStringExtra("category_option");
                             String score_option = intent.getStringExtra("score_option");
 
 
                             target = (IpAddress.isTest ? "http://192.168.0.106/inuNavi/LectureList.php" :
                                     "http://219.248.233.170/project1_war_exploded/user/login")+ "?main_keyword=\"" + main_keyword + "\"&keyword_option=\"" + keyword_option
                                     + "\"&major_option=\"" + major_option + "\"&cse_option=\""+ cse_option +"\"&sort_option=\"" + sort_option + "\"&grade_option=\"" + grade_option +
-                                    "\"&kind_option=\"" + kind_option +"\"&score_option=\"" + score_option +"\"";
+                                    "\"&category_option=\"" + category_option +"\"&score_option=\"" + score_option +"\"";
 
                             Log.d("@@@ searchactivity111", target);
 
@@ -151,6 +166,12 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
+        recyclerView = findViewById(R.id.tita_search_recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+
+        adapter =  new SearchAdapter(lectureList);
+        recyclerView.setAdapter(adapter);
+
 
 
     }
@@ -191,14 +212,59 @@ public class SearchActivity extends AppCompatActivity {
             return null;
 
         }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()) .subscribe((result) -> {
-                    // onPostExecute
+
+            // onPostExecute
 
             try {
 
-                AlertDialog dialog;
-                AlertDialog.Builder builder = new AlertDialog.Builder(SearchActivity.this);
-                dialog = builder.setMessage(result).setPositiveButton("확인", null).create();
-                dialog.show();
+                Log.d("@@@ SearchAcitvity236", result);
+
+                lectureList.clear();
+                JSONObject jsonObject = new JSONObject(result);
+                JSONArray jsonArray = jsonObject.getJSONArray("response");
+
+                int count = 0;
+
+                String university;
+                String department;
+                int grade;
+                String category;
+                String number;
+                String lectureName;
+                String professor;
+                String place;
+                String time;
+                String how;
+                int score;
+
+                while(count < jsonArray.length()){
+                    JSONObject object = jsonArray.getJSONObject(count);
+
+                    university = object.getString("university");
+                    department = object.getString("department");
+                    grade = object.getInt("grade");
+                    category = object.getString("category");
+                    number = object.getString("number");
+                    lectureName = object.getString("lectureName");
+                    professor = object.getString("professor");
+                    place = object.getString("place");
+                    time = object.getString("time");
+                    how = object.getString("how");
+                    score = object.getInt("score");
+                    Lecture lecture = new Lecture(department, grade, category, number, lectureName,
+                            professor, place, time, how, score, university);
+                    lectureList.add(lecture);
+                    count++;
+
+                }
+
+                if(count == 0){
+                    //조회된 강의가 없음.
+
+                }
+
+                adapter.notifyDataSetChanged();
+
 
             } catch (Exception e) {
                 e.printStackTrace();

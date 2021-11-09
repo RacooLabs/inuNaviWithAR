@@ -3,7 +3,6 @@ package com.maru.inunavi.ui.timetable.search;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -22,14 +21,12 @@ import com.maru.inunavi.R;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 public class SearchOptionActivity extends AppCompatActivity implements Serializable {
 
     ArrayList<String> gradeList = new ArrayList<String>(Arrays.asList("1학년", "2학년", "3학년", "4학년" ));
 
-    ArrayList<String> kindList = new ArrayList<String>(Arrays.asList("전공선택", "전공기초", "전공필수", "교양필수","기초과학","교양선택", "교직", "일반선택",
+    ArrayList<String> categoryList = new ArrayList<String>(Arrays.asList("전공선택", "전공기초", "전공필수", "교양필수","기초과학","교양선택", "교직", "일반선택",
             "군사학"));
 
     ArrayList<String> scoreList = new ArrayList<String>(Arrays.asList("1학점", "2학점", "3학점", "4학점"));
@@ -41,7 +38,7 @@ public class SearchOptionActivity extends AppCompatActivity implements Serializa
     String cse_option = "전체";
     String sort_option =  "기본";
     String grade_option = "전체";
-    String kind_option = "전체";
+    String category_option = "전체";
     String score_option = "전체";
 
     @Override protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +52,7 @@ public class SearchOptionActivity extends AppCompatActivity implements Serializa
         LinearLayout tita_search_option_cse = findViewById(R.id.tita_search_option_cse);
         LinearLayout tita_search_option_sort = findViewById(R.id.tita_search_option_sort);
         LinearLayout tita_search_option_grade_layout = findViewById(R.id.tita_search_option_grade_layout);
-        LinearLayout tita_search_option_kind_layout = findViewById(R.id.tita_search_option_kind_layout);
+        LinearLayout tita_search_option_category_layout = findViewById(R.id.tita_search_option_category_layout);
         LinearLayout tita_search_option_score_layout = findViewById(R.id.tita_search_option_score_layout);
 
         EditText tita_search_option_searchbar = findViewById(R.id.tita_search_option_searchbar);
@@ -65,7 +62,7 @@ public class SearchOptionActivity extends AppCompatActivity implements Serializa
         TextView tita_search_option_cse_text = findViewById(R.id.tita_search_option_cse_text);
         TextView tita_search_option_sort_text = findViewById(R.id.tita_search_option_sort_text);
         TextView tita_search_option_grade_text = findViewById(R.id.tita_search_option_grade_text);
-        TextView tita_search_option_kind_text = findViewById(R.id.tita_search_option_kind_text);
+        TextView tita_search_option_category_text = findViewById(R.id.tita_search_option_category_text);
         TextView tita_search_option_score_text = findViewById(R.id.tita_search_option_score_text);
 
         TextView tita_search_option_ok = findViewById(R.id.tita_search_option_ok);
@@ -239,7 +236,7 @@ public class SearchOptionActivity extends AppCompatActivity implements Serializa
         });
 
         //구분 콜백 리스너
-        ActivityResultLauncher<Intent> kindActivityResultLauncher = registerForActivityResult(
+        ActivityResultLauncher<Intent> categoryActivityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
                     @Override
@@ -248,26 +245,26 @@ public class SearchOptionActivity extends AppCompatActivity implements Serializa
 
                             Intent intent = result.getData();
                             int CallType = intent.getIntExtra("CallType", 0);
-                            kindList = (ArrayList<String>)intent.getSerializableExtra("Kind");
+                            categoryList = (ArrayList<String>)intent.getSerializableExtra("Category");
 
-                            if(kindList.size() == 9 || kindList.size() == 0){
+                            if(categoryList.size() == 9 || categoryList.size() == 0){
 
-                                tita_search_option_kind_text.setText("전체");
+                                tita_search_option_category_text.setText("전체");
 
-                            }else if(kindList.size() > 0){
+                            }else if(categoryList.size() > 0){
 
                                 StringBuilder sb = new StringBuilder();
 
                                 int i;
 
-                                for(i=0;i<kindList.size()-1;i++){
-                                    sb.append(kindList.get(i));
+                                for(i=0;i<categoryList.size()-1;i++){
+                                    sb.append(categoryList.get(i));
                                     sb.append(", ");
                                 }
 
-                                sb.append(kindList.get(i));
+                                sb.append(categoryList.get(i));
 
-                                tita_search_option_kind_text.setText(sb);
+                                tita_search_option_category_text.setText(sb);
 
                             }
 
@@ -276,13 +273,13 @@ public class SearchOptionActivity extends AppCompatActivity implements Serializa
                     }
                 });
 
-        tita_search_option_kind_layout.setOnClickListener(new View.OnClickListener() {
+        tita_search_option_category_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SearchOptionActivity.this, SearchKindActivity.class);
+                Intent intent = new Intent(SearchOptionActivity.this, SearchCategoryActivity.class);
                 intent.putExtra("topBarTitle", "구분");
-                intent.putExtra("Kind", kindList);
-                kindActivityResultLauncher.launch(intent);
+                intent.putExtra("Category", categoryList);
+                categoryActivityResultLauncher.launch(intent);
             }
         });
 
@@ -347,7 +344,7 @@ public class SearchOptionActivity extends AppCompatActivity implements Serializa
                 cse_option = tita_search_option_cse_text.getText().toString();
                 sort_option =  tita_search_option_sort_text.getText().toString();
                 grade_option = tita_search_option_grade_text.getText().toString();
-                kind_option = tita_search_option_kind_text.getText().toString();
+                category_option = tita_search_option_category_text.getText().toString();
                 score_option = tita_search_option_score_text.getText().toString();
 
                 intent.putExtra("main_keyword", main_keyword);
@@ -356,7 +353,7 @@ public class SearchOptionActivity extends AppCompatActivity implements Serializa
                 intent.putExtra("cse_option",  cse_option);
                 intent.putExtra("sort_option", sort_option);
                 intent.putExtra("grade_option",grade_option);
-                intent.putExtra("kind_option", kind_option);
+                intent.putExtra("category_option", category_option);
                 intent.putExtra("score_option", score_option) ;
 
                 setResult(Activity.RESULT_OK, intent);

@@ -20,7 +20,7 @@ import java.util.List;
 public class SearchMajorActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
-    SearchAdapter adapter;
+    SearchOptionAdapter adapter;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
 
@@ -46,10 +46,10 @@ public class SearchMajorActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.single_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        List<SearchAdapter.Item> data = new ArrayList<>();
+        List<SearchOptionAdapter.Item> data = new ArrayList<>();
 
         //전공
-        ArrayList<String> majorArray = new ArrayList<String>(Arrays.asList("국어국문학과", "영어영문학과", "독어독문학과", "불어불문학과", "일어일문학과", "중어중국학과", "수학과",
+        ArrayList<String> majorArray = new ArrayList<String>(Arrays.asList("전체", "국어국문학과", "영어영문학과", "독어독문학과", "불어불문학과", "일어일문학과", "중어중국학과", "수학과",
                 "물리학과", "화학과", "소비자·아동학과", "패션산업학과", "해양학과", "사회복지학과", "신문방송학과", "문헌정보학과", "창의인재개발학과", "행정학과", "정치외교학과",
                 "경제학과", "경제학과(야)", "무역학부", "무역학부(야)", "소비자학과", "기계공학과", "기계공학과(야)", "메카트로닉스공학과", "전기공학과", "전자공학과",
                 "전자공학과(야)", "산업경영공학과", "산업경영공학과(야)", "안전공학과", "신소재공학과", "에너지화학공학과", "컴퓨터공학부", "컴퓨터공학부(야)", "정보통신공학과",
@@ -64,17 +64,17 @@ public class SearchMajorActivity extends AppCompatActivity {
 
 
         for (int i =0;i<majorArray.size();i++){
-            SearchAdapter.Item major = new SearchAdapter.Item(SearchAdapter.DEFAULT_CHILD, majorArray.get(i));
+            SearchOptionAdapter.Item major = new SearchOptionAdapter.Item(SearchOptionAdapter.DEFAULT_CHILD, majorArray.get(i));
             data.add(major);
         }
 
-        SearchAdapter adapter =  new SearchAdapter(data);
+        SearchOptionAdapter adapter =  new SearchOptionAdapter(data);
 
         recyclerView.setAdapter(adapter);
 
 
         //어댑터 콜백 리스너
-        adapter.setOnItemClickListener(new SearchAdapter.OnItemClickListener() {
+        adapter.setOnItemClickListener(new SearchOptionAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
 

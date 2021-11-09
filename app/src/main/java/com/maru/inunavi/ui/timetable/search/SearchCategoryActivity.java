@@ -19,11 +19,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class SearchKindActivity extends AppCompatActivity implements Serializable {
+public class SearchCategoryActivity extends AppCompatActivity implements Serializable {
 
     RecyclerView recyclerView;
-    SearchAdapter adapter;
-    private ArrayList<String> kindList;
+    SearchOptionAdapter adapter;
+    private ArrayList<String> categoryList;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
 
@@ -42,7 +42,7 @@ public class SearchKindActivity extends AppCompatActivity implements Serializabl
         TextView tita_search_option_multi_topBar_textView = findViewById(R.id.tita_search_option_multi_topBar_textView);
         tita_search_option_multi_topBar_textView.setText(topBarTitle);
 
-        kindList = (ArrayList<String>)getIntent().getSerializableExtra("Kind");
+        categoryList = (ArrayList<String>)getIntent().getSerializableExtra("Category");
 
         //돌아가기 버튼
         tita_search_option_multi_backButton.setOnClickListener(new View.OnClickListener() {
@@ -55,29 +55,29 @@ public class SearchKindActivity extends AppCompatActivity implements Serializabl
 
         recyclerView = findViewById(R.id.multi_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        List<SearchAdapter.Item> data = new ArrayList<>();
+        List<SearchOptionAdapter.Item> data = new ArrayList<>();
 
-        ArrayList<String> kindTypeList = new ArrayList<String>(Arrays.asList("전공선택", "전공기초", "전공필수", "교양필수","기초과학","교양선택", "교직", "일반선택",
+        ArrayList<String> categoryTypeList = new ArrayList<String>(Arrays.asList("전공선택", "전공기초", "전공필수", "교양필수","기초과학","교양선택", "교직", "일반선택",
                 "군사학"));
 
-        for (int i =0;i<kindTypeList.size();i++){
-            SearchAdapter.Item kind_Type = new SearchAdapter.Item(SearchAdapter.MULTI_CHILD, kindTypeList.get(i));
-            data.add(kind_Type);
+        for (int i =0;i<categoryTypeList.size();i++){
+            SearchOptionAdapter.Item category_Type = new SearchOptionAdapter.Item(SearchOptionAdapter.MULTI_CHILD, categoryTypeList.get(i));
+            data.add(category_Type);
         }
 
-        SearchAdapter adapter =  new SearchAdapter(data, kindList);
+        SearchOptionAdapter adapter =  new SearchOptionAdapter(data, categoryList);
 
         recyclerView.setAdapter(adapter);
 
 
         //어댑터 콜백 리스너
-        adapter.setOnItemClickListener(new SearchAdapter.OnItemClickListener() {
+        adapter.setOnItemClickListener(new SearchOptionAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
 
-                Intent intent = new Intent(SearchKindActivity.this, SearchActivity.class);
+                Intent intent = new Intent(SearchCategoryActivity.this, SearchActivity.class);
                 intent.putExtra("CallType", 1001);
-                intent.putExtra("Kind", ((TextView)v).getText());
+                intent.putExtra("Category", ((TextView)v).getText());
                 setResult(Activity.RESULT_OK, intent);
                 finish();
 
@@ -108,10 +108,10 @@ public class SearchKindActivity extends AppCompatActivity implements Serializabl
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(SearchKindActivity.this, SearchOptionActivity.class);
+                Intent intent = new Intent(SearchCategoryActivity.this, SearchOptionActivity.class);
                 intent.putExtra("CallType", 1001);
-                Collections.sort(kindList);
-                intent.putExtra("Kind", kindList);
+                Collections.sort(categoryList);
+                intent.putExtra("Category", categoryList);
                 setResult(Activity.RESULT_OK, intent);
                 finish();
 

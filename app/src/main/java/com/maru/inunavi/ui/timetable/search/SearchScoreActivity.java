@@ -22,7 +22,7 @@ import java.util.List;
 public class SearchScoreActivity extends AppCompatActivity implements Serializable {
 
     RecyclerView recyclerView;
-    SearchAdapter adapter;
+    SearchOptionAdapter adapter;
     private ArrayList<String> scoreList;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
@@ -55,22 +55,22 @@ public class SearchScoreActivity extends AppCompatActivity implements Serializab
 
         recyclerView = findViewById(R.id.multi_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        List<SearchAdapter.Item> data = new ArrayList<>();
+        List<SearchOptionAdapter.Item> data = new ArrayList<>();
 
         ArrayList<String> scoreTypeList = new ArrayList<String>(Arrays.asList("1학점","2학점","3학점","4학점"));
 
         for (int i =0;i<scoreTypeList.size();i++){
-            SearchAdapter.Item score_Type = new SearchAdapter.Item(SearchAdapter.MULTI_CHILD, scoreTypeList.get(i));
+            SearchOptionAdapter.Item score_Type = new SearchOptionAdapter.Item(SearchOptionAdapter.MULTI_CHILD, scoreTypeList.get(i));
             data.add(score_Type);
         }
 
-        SearchAdapter adapter =  new SearchAdapter(data, scoreList);
+        SearchOptionAdapter adapter =  new SearchOptionAdapter(data, scoreList);
 
         recyclerView.setAdapter(adapter);
 
 
         //어댑터 콜백 리스너
-        adapter.setOnItemClickListener(new SearchAdapter.OnItemClickListener() {
+        adapter.setOnItemClickListener(new SearchOptionAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
 

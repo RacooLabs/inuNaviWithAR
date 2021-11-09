@@ -20,7 +20,6 @@ import java.util.List;
 public class SearchCSEActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
-    SearchAdapter adapter;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
 
@@ -46,24 +45,24 @@ public class SearchCSEActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.single_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        List<SearchAdapter.Item> data = new ArrayList<>();
+        List<SearchOptionAdapter.Item> data = new ArrayList<>();
 
         //전공
-        ArrayList<String> CSEArray = new ArrayList<String>(Arrays.asList("대학영어2", "Academic English", "컴퓨팅적사고와SW", "글쓰기이론과실제",
+        ArrayList<String> CSEArray = new ArrayList<String>(Arrays.asList("전체","대학영어2", "Academic English", "컴퓨팅적사고와SW", "글쓰기이론과실제",
                 "대학영어회화2","기타" ));
 
         for (int i =0;i<CSEArray.size();i++){
-            SearchAdapter.Item major = new SearchAdapter.Item(SearchAdapter.DEFAULT_CHILD, CSEArray.get(i));
+            SearchOptionAdapter.Item major = new SearchOptionAdapter.Item(SearchOptionAdapter.DEFAULT_CHILD, CSEArray.get(i));
             data.add(major);
         }
 
-        SearchAdapter adapter =  new SearchAdapter(data);
+        SearchOptionAdapter adapter =  new SearchOptionAdapter(data);
 
         recyclerView.setAdapter(adapter);
 
 
         //어댑터 콜백 리스너
-        adapter.setOnItemClickListener(new SearchAdapter.OnItemClickListener() {
+        adapter.setOnItemClickListener(new SearchOptionAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
 

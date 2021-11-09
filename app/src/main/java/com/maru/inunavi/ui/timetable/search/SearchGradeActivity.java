@@ -16,14 +16,13 @@ import com.maru.inunavi.R;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 public class SearchGradeActivity extends AppCompatActivity implements Serializable {
 
     RecyclerView recyclerView;
-    SearchAdapter adapter;
+    SearchOptionAdapter adapter;
     private ArrayList<String> gradeList;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
@@ -57,22 +56,22 @@ public class SearchGradeActivity extends AppCompatActivity implements Serializab
 
         recyclerView = findViewById(R.id.multi_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        List<SearchAdapter.Item> data = new ArrayList<>();
+        List<SearchOptionAdapter.Item> data = new ArrayList<>();
 
         ArrayList<String> gradeTypeList = new ArrayList<String>(Arrays.asList("1학년", "2학년", "3학년", "4학년" ));
 
         for (int i =0;i<gradeTypeList.size();i++){
-            SearchAdapter.Item grade_Type = new SearchAdapter.Item(SearchAdapter.MULTI_CHILD, gradeTypeList.get(i));
+            SearchOptionAdapter.Item grade_Type = new SearchOptionAdapter.Item(SearchOptionAdapter.MULTI_CHILD, gradeTypeList.get(i));
             data.add(grade_Type);
         }
 
-        SearchAdapter adapter =  new SearchAdapter(data, gradeList);
+        SearchOptionAdapter adapter =  new SearchOptionAdapter(data, gradeList);
 
         recyclerView.setAdapter(adapter);
 
 
         //어댑터 콜백 리스너
-        adapter.setOnItemClickListener(new SearchAdapter.OnItemClickListener() {
+        adapter.setOnItemClickListener(new SearchOptionAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
 

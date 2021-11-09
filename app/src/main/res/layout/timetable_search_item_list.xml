@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="90dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/textView_search_list_lectureName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/textView_search_list_professor"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="교과목이름"
+        android:gravity="center_vertical"
+        android:textSize="@dimen/main_text_size"
+        android:textColor="@color/main_color"
+        android:layout_marginLeft="24dp"
+        android:textStyle="bold"
+        app:layout_constraintVertical_chainStyle="packed"
+        >
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/textView_search_list_professor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/textView_search_list_info"
+        app:layout_constraintTop_toBottomOf="@id/textView_search_list_lectureName"
+        android:text="김교수"
+        android:gravity="center_vertical"
+        android:textSize="12sp"
+        android:textColor="@color/main_text_color"
+        android:layout_marginLeft="24dp"
+        >
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/textView_search_list_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/textView_search_list_time"
+        app:layout_constraintTop_toBottomOf="@id/textView_search_list_professor"
+        android:text="1학년 전공선택 1학점 000000000"
+        android:gravity="center_vertical"
+        android:textSize="12sp"
+        android:textColor="@color/main_text_color"
+        android:layout_marginLeft="24dp"
+        >
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/textView_search_list_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView_search_list_info"
+        android:text="월화수목금토"
+        android:gravity="center_vertical"
+        android:textSize="12sp"
+        android:textColor="@color/main_text_color"
+        android:layout_marginLeft="24dp"
+        >
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/tita_search_add"
+        android:layout_width="60dp"
+        android:layout_height="@dimen/editText_height"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:background="@drawable/layout_more_option_button_roundedbox"
+        android:text="추가"
+        android:layout_marginRight="24dp"
+        android:textSize="@dimen/main_text_size"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:clickable="true"/>
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

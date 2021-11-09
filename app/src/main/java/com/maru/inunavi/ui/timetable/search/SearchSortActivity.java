@@ -20,7 +20,7 @@ import java.util.List;
 public class SearchSortActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
-    SearchAdapter adapter;
+    SearchOptionAdapter adapter;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
 
@@ -46,24 +46,24 @@ public class SearchSortActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.single_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        List<SearchAdapter.Item> data = new ArrayList<>();
+        List<SearchOptionAdapter.Item> data = new ArrayList<>();
 
 
 
         ArrayList<String> sortTypeList = new ArrayList<String>(Arrays.asList("기본", "과목코드", "과목명" ));
 
         for (int i =0;i<sortTypeList.size();i++){
-            SearchAdapter.Item sort_Type = new SearchAdapter.Item(SearchAdapter.DEFAULT_CHILD, sortTypeList.get(i));
+            SearchOptionAdapter.Item sort_Type = new SearchOptionAdapter.Item(SearchOptionAdapter.DEFAULT_CHILD, sortTypeList.get(i));
             data.add(sort_Type);
         }
 
-        SearchAdapter adapter =  new SearchAdapter(data);
+        SearchOptionAdapter adapter =  new SearchOptionAdapter(data);
 
         recyclerView.setAdapter(adapter);
 
 
         //어댑터 콜백 리스너
-        adapter.setOnItemClickListener(new SearchAdapter.OnItemClickListener() {
+        adapter.setOnItemClickListener(new SearchOptionAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
 
