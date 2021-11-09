@@ -58,6 +58,8 @@ public class SearchActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
 
+
+
     private ArrayList<Lecture> lectureList = new ArrayList<>();
 
     @Override protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +71,6 @@ public class SearchActivity extends AppCompatActivity {
         EditText tita_search_searchbar = findViewById(R.id.tita_search_searchbar);
         TextView tita_search_option_button = findViewById(R.id.tita_search_option_button);
         RadioGroup tita_search_radioGroup = findViewById(R.id.tita_search_radioGroup);
-
 
         //돌아가기 버튼
         tita_search_backButton.setOnClickListener(new View.OnClickListener() {
@@ -173,14 +174,9 @@ public class SearchActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
 
-
     }
 
-
     Disposable backgroundtask;
-
-    public int value;
-    boolean isCancel = false;
 
 
     void SearchBackgroundTask() {
