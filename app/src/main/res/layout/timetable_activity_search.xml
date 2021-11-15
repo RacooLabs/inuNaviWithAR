@@ -134,5 +134,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         />
 
+    <TextView
+        android:id="@+id/tita_search_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/main_text_size"
+        android:text="강의를 검색해보세요."
+        app:layout_constraintTop_toTopOf="@+id/tita_search_recycler_view"
+        app:layout_constraintBottom_toBottomOf="@+id/tita_search_recycler_view"
+        app:layout_constraintLeft_toLeftOf="@+id/tita_search_recycler_view"
+        app:layout_constraintRight_toRightOf="@+id/tita_search_recycler_view"
+        android:visibility="visible"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

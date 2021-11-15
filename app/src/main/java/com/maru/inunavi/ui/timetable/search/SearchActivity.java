@@ -50,6 +50,7 @@ public class SearchActivity extends AppCompatActivity {
     EditText tita_search_searchbar;
     TextView tita_search_option_button;
     RadioGroup tita_search_radioGroup;
+    TextView tita_search_info;
 
     private String main_keyword = "";
     private String keyword_option = "과목명";
@@ -67,10 +68,11 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.timetable_activity_search);
 
-        ImageView tita_search_backButton = findViewById(R.id.tita_search_backButton);
-        EditText tita_search_searchbar = findViewById(R.id.tita_search_searchbar);
-        TextView tita_search_option_button = findViewById(R.id.tita_search_option_button);
-        RadioGroup tita_search_radioGroup = findViewById(R.id.tita_search_radioGroup);
+        tita_search_backButton = findViewById(R.id.tita_search_backButton);
+        tita_search_searchbar = findViewById(R.id.tita_search_searchbar);
+        tita_search_option_button = findViewById(R.id.tita_search_option_button);
+        tita_search_radioGroup = findViewById(R.id.tita_search_radioGroup);
+        tita_search_info = findViewById(R.id.tita_search_info);
 
         //돌아가기 버튼
         tita_search_backButton.setOnClickListener(new View.OnClickListener() {
@@ -170,7 +172,7 @@ public class SearchActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.tita_search_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
-        adapter =  new SearchAdapter(lectureList);
+        adapter =  new SearchAdapter(lectureList, this);
         recyclerView.setAdapter(adapter);
 
 
@@ -221,41 +223,49 @@ public class SearchActivity extends AppCompatActivity {
 
                 int count = 0;
 
-                String university;
+                int id;
                 String department;
-                int grade;
+                String grade;
                 String category;
                 String number;
-                String lectureName;
+                String lecturename;
                 String professor;
-                String place;
-                String time;
+                String classroom_raw;
+                String classtime_raw;
+                String classroom;
+                String classtime;
                 String how;
-                int score;
+                String point;
 
                 while(count < jsonArray.length()){
                     JSONObject object = jsonArray.getJSONObject(count);
 
-                    university = object.getString("university");
+                    id = object.getInt("id");
                     department = object.getString("department");
-                    grade = object.getInt("grade");
+                    grade = object.getString("grade");
                     category = object.getString("category");
                     number = object.getString("number");
-                    lectureName = object.getString("lectureName");
+                    lecturename = object.getString("lecturename");
                     professor = object.getString("professor");
-                    place = object.getString("place");
-                    time = object.getString("time");
+                    classroom_raw = object.getString("classroom_raw");
+                    classtime_raw = object.getString("classtime_raw");
+                    classroom = object.getString("classroom");
+                    classtime = object.getString("classtime");
                     how = object.getString("how");
-                    score = object.getInt("score");
-                    Lecture lecture = new Lecture(department, grade, category, number, lectureName,
-                            professor, place, time, how, score, university);
+                    point = object.getString("point");
+                    Lecture lecture = new Lecture(id, department, Integer.parseInt(grade), category, number, lecturename,
+                            professor, classroom_raw, classtime_raw, classroom, classtime, how, Integer.parseInt(point));
                     lectureList.add(lecture);
                     count++;
+
+                    tita_search_info.setVisibility(View.INVISIBLE);
 
                 }
 
                 if(count == 0){
-                    //조회된 강의가 없음.
+
+                    tita_search_info.setVisibility(View.VISIBLE);
+                    tita_search_info.setText("조회된 강의가 없습니다.");
 
                 }
 

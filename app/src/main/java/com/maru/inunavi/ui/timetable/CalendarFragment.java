@@ -34,9 +34,6 @@ public class CalendarFragment extends Fragment {
 
     private String url = sessionURL;
 
-
-
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
@@ -52,7 +49,7 @@ public class CalendarFragment extends Fragment {
         frag_tita_login_box.setVisibility(View.VISIBLE);
         constraint_frag_tita_main.setVisibility(View.INVISIBLE);
 
-        CookieManager cookieManager = ((MainActivity)getActivity()).getCookieManager();
+        MainActivity.cookieManager = ((MainActivity)getActivity()).getCookieManager();
 
 
         //설정 콜백
@@ -72,7 +69,7 @@ public class CalendarFragment extends Fragment {
 
                                 frag_tita_login_box.setVisibility(View.VISIBLE);
                                 constraint_frag_tita_main.setVisibility(View.INVISIBLE);
-                                cookieManager.removeAllCookies(null);
+                                MainActivity.cookieManager.removeAllCookies(null);
 
                             }
 
@@ -146,7 +143,7 @@ public class CalendarFragment extends Fragment {
                             if(CallType == 2) {
                                 ((BottomNavigationView) getActivity().findViewById(R.id.nav_view)).setSelectedItemId(R.id.navigation_satisfied);
                             }
-                            cookieManager.setCookie(url,"cookieKey="+userID);
+                            MainActivity.cookieManager.setCookie(url,"cookieKey="+userID);
                             frag_tita_login_box.setVisibility(View.INVISIBLE);
                             constraint_frag_tita_main.setVisibility(View.VISIBLE);
                         }
@@ -166,10 +163,10 @@ public class CalendarFragment extends Fragment {
         });
 
 
-        if(cookieManager.getCookie(url)!=null &&
-                !cookieManager.getCookie(url).equals("")){
+        if(MainActivity.cookieManager.getCookie(url)!=null &&
+                !MainActivity.cookieManager.getCookie(url).equals("")){
 
-            Log.d("@@@ fragmentcalendar : 50", cookieManager.getCookie(url));
+            Log.d("@@@ fragmentcalendar : 50", MainActivity.cookieManager.getCookie(url));
             frag_tita_login_box.setVisibility(View.INVISIBLE);
             constraint_frag_tita_main.setVisibility(View.VISIBLE);
             

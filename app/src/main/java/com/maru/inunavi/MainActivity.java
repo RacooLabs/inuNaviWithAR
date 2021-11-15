@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
 
-    private CookieManager cookieManager;
+    public static CookieManager cookieManager;
 
     public static String sessionURL = IpAddress.isTest ? "http://192.168.0.5/inuNavi/" :
             "http://219.248.233.170/project1_war_exploded/user/";
@@ -30,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.main_activity);
 
         cookieManager = CookieManager.getInstance();
-
 
         MapFragment mapFragment = new MapFragment();
         SatisfiedFragment satisfiedFragment= new SatisfiedFragment();

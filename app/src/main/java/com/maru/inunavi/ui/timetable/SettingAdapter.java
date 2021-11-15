@@ -47,7 +47,6 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
                 @Override
                 public void onClick(View v) {
 
-                    Log.d("@@@settingadapter : 44", "error");
 
                     int pos = getAdapterPosition() ;
                     if (pos != RecyclerView.NO_POSITION) {

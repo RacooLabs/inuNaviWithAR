@@ -2,39 +2,43 @@ package com.maru.inunavi.ui.timetable.search;
 
 public class Lecture {
 
-    String department; // 학과
-    int grade; // 학년
-    String category;
-    String number;
-    String lectureName;
-    String professor;
-    String place;
-    String time;
-    String how;
-    int score;
+    int id; // 학과
+    String department;
 
-    public Lecture(String department, int grade, String category, String number, String lectureName, String professor, String place, String time, String how, int score, String university) {
+    public Lecture(int id, String department, int grade, String category, String number, String lecturename, String professor, String classroom_raw, String classtime_raw, String classroom, String classtime, String how, int point) {
+        this.id = id;
         this.department = department;
         this.grade = grade;
         this.category = category;
         this.number = number;
-        this.lectureName = lectureName;
+        this.lecturename = lecturename;
         this.professor = professor;
-        this.place = place;
-        this.time = time;
+        this.classroom_raw = classroom_raw;
+        this.classtime_raw = classtime_raw;
+        this.classroom = classroom;
+        this.classtime = classtime;
         this.how = how;
-        this.score = score;
-        this.university = university;
+        this.point = point;
     }
 
-    String university; //단과대
+    int grade; // 학년
+    String category;
+    String number;
+    String lecturename;
+    String professor;
+    String classroom_raw;
+    String classtime_raw;
+    String classroom;
+    String classtime;
+    String how;
+    int point;
 
-    public String getUniversity() {
-        return university;
+    public int getId() {
+        return id;
     }
 
-    public void setUniversity(String university) {
-        this.university = university;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getDepartment() {
@@ -69,12 +73,12 @@ public class Lecture {
         this.number = number;
     }
 
-    public String getLectureName() {
-        return lectureName;
+    public String getLecturename() {
+        return lecturename;
     }
 
-    public void setLectureName(String lectureName) {
-        this.lectureName = lectureName;
+    public void setLecturename(String lecturename) {
+        this.lecturename = lecturename;
     }
 
     public String getProfessor() {
@@ -85,20 +89,36 @@ public class Lecture {
         this.professor = professor;
     }
 
-    public String getPlace() {
-        return place;
+    public String getClassroom_raw() {
+        return classroom_raw;
     }
 
-    public void setPlace(String place) {
-        this.place = place;
+    public void setClassroom_raw(String classroom_raw) {
+        this.classroom_raw = classroom_raw;
     }
 
-    public String getTime() {
-        return time;
+    public String getClasstime_raw() {
+        return classtime_raw;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setClasstime_raw(String classtime_raw) {
+        this.classtime_raw = classtime_raw;
+    }
+
+    public String getClassroom() {
+        return classroom;
+    }
+
+    public void setClassroom(String classroom) {
+        this.classroom = classroom;
+    }
+
+    public String getClasstime() {
+        return classtime;
+    }
+
+    public void setClasstime(String classtime) {
+        this.classtime = classtime;
     }
 
     public String getHow() {
@@ -109,13 +129,12 @@ public class Lecture {
         this.how = how;
     }
 
-    public int getScore() {
-        return score;
+    public int getPoint() {
+        return point;
     }
 
-    public void setScore(int score) {
-        this.score = score;
+    public void setPoint(int point) {
+        this.point = point;
     }
-
 
 }

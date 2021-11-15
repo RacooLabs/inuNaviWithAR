@@ -124,7 +124,7 @@ public class SearchOptionActivity extends AppCompatActivity implements Serializa
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(SearchOptionActivity.this, SearchMajorActivity.class);
-                intent.putExtra("topBarTitle", "전공/영역");
+                intent.putExtra("topBarTitle", "전공");
                 majorActivityResultLauncher.launch(intent);
 
             }
