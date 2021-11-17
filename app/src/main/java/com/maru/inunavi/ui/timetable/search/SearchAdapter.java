@@ -181,7 +181,11 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                                     dialog.show();
 
                                     lectureIDList.add(mData.get(holder.getAdapterPosition()).getNumber());
-                                    schedule.addSchedule(mData.get(holder.getAdapterPosition()).getClasstime(), mData.get(holder.getAdapterPosition()).getNumber());
+
+                                    schedule.addSchedule(mData.get(holder.getAdapterPosition()).getLecturename(),
+                                            mData.get(holder.getAdapterPosition()).getProfessor(),
+                                                    mData.get(holder.getAdapterPosition()).getClasstime(),
+                                                    mData.get(holder.getAdapterPosition()).getNumber());
 
                                 }else{
                                     AlertDialog.Builder builder = new AlertDialog.Builder(parent);
@@ -263,19 +267,24 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
                 int count = 0;
 
+                String lectureName;
+                String lectureProfessor;
                 String lectureNumber;
                 String lectureTime;
-                String lectureProfessor;
+
+
 
                 while (count < jsonArray.length()) {
                     JSONObject object = jsonArray.getJSONObject(count);
 
+                    lectureName = object.getString("lectureName");
+                    lectureProfessor = object.getString("lectureProfessor");
                     lectureNumber = object.getString("lectureNumber");
                     lectureTime = object.getString("lectureTime");
-                    lectureProfessor = object.getString("lectureProfessor");
+
 
                     lectureIDList.add(lectureNumber);
-                    schedule.addSchedule(lectureTime, lectureNumber);
+                    schedule.addSchedule(lectureName, lectureProfessor, lectureTime, lectureNumber);
                     count++;
 
                 }
