@@ -44,8 +44,7 @@ public class SignUpActivity extends AppCompatActivity {
         sign_up_back_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent backToLoginIntent = new Intent(SignUpActivity.this, LoginActivity.class);
-                startActivity(backToLoginIntent);
+                finish();
             }
         });
 
