@@ -1,5 +1,6 @@
 package com.maru.inunavi.ui.timetable;
 
+import static com.maru.inunavi.MainActivity.cookieManager;
 import static com.maru.inunavi.MainActivity.sessionURL;
 
 import android.app.Activity;
@@ -56,8 +57,7 @@ public class CalendarFragment extends Fragment {
 
     private TextView schedule_textView[];
 
-    private String userID = (MainActivity.cookieManager.getCookie(MainActivity.sessionURL)).replace("cookieKey=", "");
-
+    private String userID;
     private Schedule schedule;
 
     String target;
@@ -79,7 +79,8 @@ public class CalendarFragment extends Fragment {
         frag_tita_login_box.setVisibility(View.VISIBLE);
         constraint_frag_tita_main.setVisibility(View.INVISIBLE);
 
-        MainActivity.cookieManager = ((MainActivity)getActivity()).getCookieManager();
+        cookieManager = ((MainActivity)getActivity()).getCookieManager();
+
 
         schedule_textView = new TextView[] {
 
@@ -276,7 +277,7 @@ public class CalendarFragment extends Fragment {
         schedule = new Schedule();
 
 
-        SearchBackgroundTask();
+
 
 
         //설정 콜백
@@ -296,7 +297,7 @@ public class CalendarFragment extends Fragment {
 
                                 frag_tita_login_box.setVisibility(View.VISIBLE);
                                 constraint_frag_tita_main.setVisibility(View.INVISIBLE);
-                                MainActivity.cookieManager.removeAllCookies(null);
+                                cookieManager.removeAllCookies(null);
 
                             }
 
@@ -351,6 +352,39 @@ public class CalendarFragment extends Fragment {
             }
         });
 
+        if(cookieManager.getCookie(url) != null && !cookieManager.getCookie(url).equals("")){
+
+
+            userID = MainActivity.cookieManager.getCookie(url).replace("cookieKey=", "");
+
+            {
+                try {
+                    target = IpAddress.isTest ? "http://192.168.0.106/inuNavi/ScheduleList.php?userID=\"" + URLEncoder.encode(userID, "UTF-8") +"\"":
+                            "http://219.248.233.170/project1_war_exploded/user/login";
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            Log.d("@@@ fragmentcalendar : 50", cookieManager.getCookie(url));
+
+            frag_tita_login_box.setVisibility(View.INVISIBLE);
+            constraint_frag_tita_main.setVisibility(View.VISIBLE);
+
+            SearchBackgroundTask();
+
+            //설정버튼 액티비티 리스너
+
+        }else{
+
+            //Log.d("@@@ fragmentcalendar : 61", cookieManager.getCookie(url).toString());
+
+            //로그인 버튼 리스너
+            frag_tita_login_box.setVisibility(View.VISIBLE);
+            constraint_frag_tita_main.setVisibility(View.INVISIBLE);
+
+        }
+
 
 
         //로그인 콜백
@@ -370,9 +404,19 @@ public class CalendarFragment extends Fragment {
                             if(CallType == 2) {
                                 ((BottomNavigationView) getActivity().findViewById(R.id.nav_view)).setSelectedItemId(R.id.navigation_satisfied);
                             }
-                            MainActivity.cookieManager.setCookie(url,"cookieKey="+userID);
+                            cookieManager.setCookie(url,"cookieKey="+userID);
                             frag_tita_login_box.setVisibility(View.INVISIBLE);
                             constraint_frag_tita_main.setVisibility(View.VISIBLE);
+
+                            try {
+                                target = IpAddress.isTest ? "http://192.168.0.106/inuNavi/ScheduleList.php?userID=\"" + URLEncoder.encode(userID, "UTF-8") +"\"":
+                                        "http://219.248.233.170/project1_war_exploded/user/login";
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            }
+
+                            SearchBackgroundTask();
+
                         }
                     }
                 });
@@ -390,38 +434,10 @@ public class CalendarFragment extends Fragment {
         });
 
 
-        if(MainActivity.cookieManager.getCookie(url)!=null &&
-                !MainActivity.cookieManager.getCookie(url).equals("")){
 
-            Log.d("@@@ fragmentcalendar : 50", MainActivity.cookieManager.getCookie(url));
-            frag_tita_login_box.setVisibility(View.INVISIBLE);
-            constraint_frag_tita_main.setVisibility(View.VISIBLE);
-            
-            //설정버튼 액티비티 리스너
-
-        }else{
-
-            //Log.d("@@@ fragmentcalendar : 61", cookieManager.getCookie(url).toString());
-
-            //로그인 버튼 리스너
-
-            frag_tita_login_box.setVisibility(View.VISIBLE);
-            constraint_frag_tita_main.setVisibility(View.INVISIBLE);
-
-        }
 
         return root;
 
-    }
-
-
-    {
-        try {
-            target = IpAddress.isTest ? "http://192.168.0.106/inuNavi/ScheduleList.php?userID=\"" + URLEncoder.encode(userID, "UTF-8") +"\"":
-                    "http://219.248.233.170/project1_war_exploded/user/login";
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
     }
 
 
