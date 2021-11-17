@@ -60,7 +60,7 @@ public class CalendarFragment extends Fragment {
     private String userID;
     private Schedule schedule;
 
-    String target;
+    public static String target;
 
 
 

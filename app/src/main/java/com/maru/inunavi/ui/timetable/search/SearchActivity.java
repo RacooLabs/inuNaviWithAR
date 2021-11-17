@@ -81,6 +81,9 @@ public class SearchActivity extends AppCompatActivity {
         tita_search_backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)  {
+                Intent intent = new Intent(SearchActivity.this, MainActivity.class);
+                intent.putExtra("CallType", 2001);
+                setResult(Activity.RESULT_OK, intent);
                 finish();
             }
         });
