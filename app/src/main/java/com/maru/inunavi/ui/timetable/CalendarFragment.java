@@ -278,8 +278,6 @@ public class CalendarFragment extends Fragment {
 
 
 
-
-
         //설정 콜백
         ActivityResultLauncher<Intent> logoutActivityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -332,6 +330,7 @@ public class CalendarFragment extends Fragment {
 
                             if(CallType == 2001) {
 
+                                ScheduleBackgroundTask();
 
                             }
 
@@ -371,7 +370,7 @@ public class CalendarFragment extends Fragment {
             frag_tita_login_box.setVisibility(View.INVISIBLE);
             constraint_frag_tita_main.setVisibility(View.VISIBLE);
 
-            SearchBackgroundTask();
+            ScheduleBackgroundTask();
 
             //설정버튼 액티비티 리스너
 
@@ -415,7 +414,7 @@ public class CalendarFragment extends Fragment {
                                 e.printStackTrace();
                             }
 
-                            SearchBackgroundTask();
+                            ScheduleBackgroundTask();
 
                         }
                     }
@@ -443,7 +442,7 @@ public class CalendarFragment extends Fragment {
 
     Disposable backgroundtask;
 
-    void SearchBackgroundTask() {
+    public void ScheduleBackgroundTask() {
 
         backgroundtask = Observable.fromCallable(() -> {
             // doInBackground

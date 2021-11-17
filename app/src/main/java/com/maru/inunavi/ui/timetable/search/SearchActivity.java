@@ -23,7 +23,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.maru.inunavi.IpAddress;
+import com.maru.inunavi.MainActivity;
 import com.maru.inunavi.R;
+import com.maru.inunavi.ui.timetable.CalendarFragment;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -35,6 +37,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -77,8 +80,11 @@ public class SearchActivity extends AppCompatActivity {
         //돌아가기 버튼
         tita_search_backButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)  { finish(); }
+            public void onClick(View view)  {
+                finish();
+            }
         });
+
 
         tita_search_searchbar.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
