@@ -58,7 +58,7 @@ public class CalendarFragment extends Fragment {
 
     private String userID = (MainActivity.cookieManager.getCookie(MainActivity.sessionURL)).replace("cookieKey=", "");
 
-    private Schedule schedule = new Schedule();
+    private Schedule schedule;
 
     String target;
 
@@ -272,6 +272,8 @@ public class CalendarFragment extends Fragment {
                 null,null,null,null,null,null,null,null,null,null,null,null,
                 null,null,null,null,null,null,null,null,null,null,null,null,
                 null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null};
+
+        schedule = new Schedule();
 
 
         SearchBackgroundTask();
