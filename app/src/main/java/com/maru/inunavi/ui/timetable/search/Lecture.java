@@ -16,6 +16,8 @@ public class Lecture {
     String how;
     int point;
 
+    String color;
+
 
     public Lecture(int id, String department, int grade, String category, String number, String lecturename, String professor, String classroom_raw, String classtime_raw, String classroom, String classtime, String how, int point) {
         this.id = id;
@@ -32,8 +34,6 @@ public class Lecture {
         this.how = how;
         this.point = point;
     }
-
-
 
 
     public int getId() {
@@ -140,4 +140,11 @@ public class Lecture {
         this.point = point;
     }
 
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
 }

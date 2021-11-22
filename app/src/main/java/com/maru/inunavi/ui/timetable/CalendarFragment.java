@@ -336,7 +336,9 @@ public class CalendarFragment extends Fragment {
 
                             if(CallType == 2001) {
 
+                                schedule.colorCount = 0;
                                 ScheduleBackgroundTask();
+
 
                             }
 

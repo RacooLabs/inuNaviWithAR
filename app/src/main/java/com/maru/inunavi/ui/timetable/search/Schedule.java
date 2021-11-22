@@ -14,7 +14,25 @@ import com.maru.inunavi.R;
 
 public class Schedule {
 
+    public int colorCount = 0;
+
     public Lecture lectureSchedule[] = new Lecture[328];
+    public String colors[] = {
+            "#5d9134",
+            "#257199",
+            "#FC6935",
+            "#cf9a3a",
+            "#a33c4f",
+            "#536174",
+            "#a18c3b",
+            "#694e33",
+            "#798a0e",
+            "#8D1E1F",
+            "#3E454C",
+            "#2986C3",
+            "#822fbd",
+            "#404040",
+            "#634b47"};
 
     public void addSchedule(Lecture lecture){
 
@@ -24,6 +42,7 @@ public class Schedule {
         String classTime = lecture.getClasstime();
         String [] tokens=classTime.split(",");
 
+
         for(int i=0;i<tokens.length; i++){
 
             String startEndTime[] = tokens[i].split("-");
@@ -32,9 +51,12 @@ public class Schedule {
 
             for(int j=startTime; j<endTime;j++){
                 lectureSchedule[j] = lecture;
+                lectureSchedule[j].setColor(colors[colorCount]);
             }
 
         }
+
+        colorCount++;
 
     }
 
@@ -91,7 +113,7 @@ public class Schedule {
                     TextView view1 = new TextView(context);
                     view1.setText(lectureSchedule[i].getLecturename());
                     view1.setTextColor(Color.WHITE);
-                    view1.setBackgroundColor(Color.BLACK);
+                    view1.setBackgroundColor(Color.parseColor(lectureSchedule[i].getColor()));
 
                     LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(schedule_textView[i].getWidth(),
                             schedule_textView[i].getHeight() * sameCount);
@@ -109,10 +131,10 @@ public class Schedule {
                     TextView view1 = new TextView(context);
                     view1.setText(lectureSchedule[i].getLecturename());
                     view1.setTextColor(Color.WHITE);
-                    view1.setBackgroundColor(Color.BLACK);
+                    view1.setBackgroundColor(Color.parseColor(lectureSchedule[i].getColor()));
 
                     LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(schedule_textView[i].getWidth(),
-                            schedule_textView[i].getHeight() * 4);
+                            schedule_textView[i].getHeight() * sameCount);
                     lp.gravity = Gravity.CENTER;
 
                     view1.setX(positionX);
