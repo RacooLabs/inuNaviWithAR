@@ -4,6 +4,18 @@ public class Lecture {
 
     int id; // 학과
     String department;
+    int grade; // 학년
+    String category;
+    String number;
+    String lecturename;
+    String professor;
+    String classroom_raw;
+    String classtime_raw;
+    String classroom;
+    String classtime;
+    String how;
+    int point;
+
 
     public Lecture(int id, String department, int grade, String category, String number, String lecturename, String professor, String classroom_raw, String classtime_raw, String classroom, String classtime, String how, int point) {
         this.id = id;
@@ -21,17 +33,8 @@ public class Lecture {
         this.point = point;
     }
 
-    int grade; // 학년
-    String category;
-    String number;
-    String lecturename;
-    String professor;
-    String classroom_raw;
-    String classtime_raw;
-    String classroom;
-    String classtime;
-    String how;
-    int point;
+
+
 
     public int getId() {
         return id;

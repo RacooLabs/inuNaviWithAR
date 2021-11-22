@@ -12,8 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.CookieManager;
 import android.widget.Button;
+import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResult;
@@ -61,6 +63,8 @@ public class CalendarFragment extends Fragment {
     private Schedule schedule;
 
     public static String target;
+    public View root;
+    public RelativeLayout linearLayout_frag_tita;
 
 
 
@@ -68,13 +72,15 @@ public class CalendarFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
 
-        View root = inflater.inflate(R.layout.timetable_fragment, container, false);
+        root = inflater.inflate(R.layout.timetable_fragment, container, false);
         LinearLayout frag_tita_login_box = root.findViewById(R.id.frag_tita_login_box);
         ConstraintLayout constraint_frag_tita_main = root.findViewById(R.id.constraint_frag_tita_main);
 
         Button button_frag_tita_login = root.findViewById(R.id.button_frag_tita_login);
         ImageView imageView_frag_tita_setting = root.findViewById(R.id.imageView_frag_tita_setting);
         ImageView imageView_frag_tita_add = root.findViewById(R.id.imageView_frag_tita_add);
+
+        linearLayout_frag_tita = root.findViewById(R.id.linearLayout_frag_tita);
 
         frag_tita_login_box.setVisibility(View.VISIBLE);
         constraint_frag_tita_main.setVisibility(View.INVISIBLE);
@@ -410,6 +416,7 @@ public class CalendarFragment extends Fragment {
                             try {
                                 target = IpAddress.isTest ? "http://192.168.0.106/inuNavi/ScheduleList.php?userID=\"" + URLEncoder.encode(userID, "UTF-8") +"\"":
                                         "http://219.248.233.170/project1_war_exploded/user/login";
+
                             } catch (UnsupportedEncodingException e) {
                                 e.printStackTrace();
                             }
@@ -482,21 +489,44 @@ public class CalendarFragment extends Fragment {
 
                 int count = 0;
 
-                String lectureName;
-                String lectureProfessor;
-                String lectureNumber;
-                String lectureTime;
+                int id;
+                String department;
+                String grade;
+                String category;
+                String number;
+                String lecturename;
+                String professor;
+                String classroom_raw;
+                String classtime_raw;
+                String classroom;
+                String classtime;
+                String how;
+                String point;
 
 
 
                 while (count < jsonArray.length()) {
                     JSONObject object = jsonArray.getJSONObject(count);
 
-                    lectureName = object.getString("lectureName");
-                    lectureProfessor = object.getString("lectureProfessor");
-                    lectureNumber = object.getString("lectureNumber");
-                    lectureTime = object.getString("lectureTime");
-                    schedule.addSchedule(lectureName, lectureProfessor, lectureTime, lectureNumber);
+                    id = object.getInt("id");
+                    department = object.getString("department");
+                    grade = object.getString("grade");
+                    category = object.getString("category");
+                    number = object.getString("number");
+                    lecturename = object.getString("lecturename");
+                    professor = object.getString("professor");
+                    classroom_raw = object.getString("classroom_raw");
+                    classtime_raw = object.getString("classtime_raw");
+                    classroom = object.getString("classroom");
+                    classtime = object.getString("classtime");
+                    how = object.getString("how");
+                    point = object.getString("point");
+
+                    Lecture lecture = new Lecture(id, department, Integer.parseInt(grade), category, number, lecturename,
+                            professor, classroom_raw, classtime_raw, classroom, classtime, how, Integer.parseInt(point));
+
+                    schedule.addSchedule(lecture);
+
                     count++;
 
                 }
@@ -508,7 +538,7 @@ public class CalendarFragment extends Fragment {
                 e.printStackTrace();
             }
 
-            schedule.setting(schedule_textView, getActivity());
+            schedule.setting(schedule_textView, getActivity(), linearLayout_frag_tita);
 
             backgroundtask.dispose();
 

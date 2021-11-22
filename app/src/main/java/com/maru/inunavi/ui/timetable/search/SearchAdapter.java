@@ -182,10 +182,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
                                     lectureIDList.add(mData.get(holder.getAdapterPosition()).getNumber());
 
-                                    schedule.addSchedule(mData.get(holder.getAdapterPosition()).getLecturename(),
-                                            mData.get(holder.getAdapterPosition()).getProfessor(),
-                                                    mData.get(holder.getAdapterPosition()).getClasstime(),
-                                                    mData.get(holder.getAdapterPosition()).getNumber());
+                                    schedule.addSchedule(mData.get(holder.getAdapterPosition()));
 
                                 }else{
                                     AlertDialog.Builder builder = new AlertDialog.Builder(parent);
@@ -267,24 +264,44 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
                 int count = 0;
 
-                String lectureName;
-                String lectureProfessor;
-                String lectureNumber;
-                String lectureTime;
+                int id;
+                String department;
+                String grade;
+                String category;
+                String number;
+                String lecturename;
+                String professor;
+                String classroom_raw;
+                String classtime_raw;
+                String classroom;
+                String classtime;
+                String how;
+                String point;
 
 
 
                 while (count < jsonArray.length()) {
                     JSONObject object = jsonArray.getJSONObject(count);
 
-                    lectureName = object.getString("lectureName");
-                    lectureProfessor = object.getString("lectureProfessor");
-                    lectureNumber = object.getString("lectureNumber");
-                    lectureTime = object.getString("lectureTime");
+                    id = object.getInt("id");
+                    department = object.getString("department");
+                    grade = object.getString("grade");
+                    category = object.getString("category");
+                    number = object.getString("number");
+                    lecturename = object.getString("lecturename");
+                    professor = object.getString("professor");
+                    classroom_raw = object.getString("classroom_raw");
+                    classtime_raw = object.getString("classtime_raw");
+                    classroom = object.getString("classroom");
+                    classtime = object.getString("classtime");
+                    how = object.getString("how");
+                    point = object.getString("point");
 
+                    Lecture lecture = new Lecture(id, department, Integer.parseInt(grade), category, number, lecturename,
+                            professor, classroom_raw, classtime_raw, classroom, classtime, how, Integer.parseInt(point));
 
-                    lectureIDList.add(lectureNumber);
-                    schedule.addSchedule(lectureName, lectureProfessor, lectureTime, lectureNumber);
+                    schedule.addSchedule(lecture);
+
                     count++;
 
                 }
