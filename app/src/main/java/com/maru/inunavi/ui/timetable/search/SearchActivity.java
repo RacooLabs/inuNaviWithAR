@@ -64,7 +64,20 @@ public class SearchActivity extends AppCompatActivity {
 
 
 
+
     private ArrayList<Lecture> lectureList = new ArrayList<>();
+
+    @Override
+    public void onBackPressed() {
+
+        Intent intent = new Intent(SearchActivity.this, MainActivity.class);
+        intent.putExtra("CallType", 2001);
+        setResult(Activity.RESULT_OK, intent);
+        finish();
+
+        super.onBackPressed();
+
+    }
 
     @Override protected void onCreate(Bundle savedInstanceState) {
 
@@ -87,6 +100,8 @@ public class SearchActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+
 
 
         tita_search_searchbar.setOnEditorActionListener(new TextView.OnEditorActionListener() {
