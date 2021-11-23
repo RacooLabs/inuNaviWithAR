@@ -97,7 +97,7 @@ public class SearchActivity extends AppCompatActivity {
 
                     main_keyword = tita_search_searchbar.getText().toString();
 
-                    target = (IpAddress.isTest ? "http://192.168.0.106/inuNavi/LectureList.php" :
+                    target = (IpAddress.isTest ? "http://192.168.0.101/inuNavi/LectureList.php" :
                             "http://219.248.233.170/project1_war_exploded/user/login")+ "?main_keyword=\"" + main_keyword + "\"&keyword_option=\"" + keyword_option
                              + "\"&major_option=\"전체\"" + "\"&cse_option=\"전체\"" + "&sort_option=\"기본\"" + "&grade_option=\"전체\"" + "&category_option=\"전체\"" + "&score_option=\"전체\"";
 
@@ -131,7 +131,7 @@ public class SearchActivity extends AppCompatActivity {
                             String score_option = intent.getStringExtra("score_option");
 
 
-                            target = (IpAddress.isTest ? "http://192.168.0.106/inuNavi/LectureList.php" :
+                            target = (IpAddress.isTest ? "http://192.168.0.101/inuNavi/LectureList.php" :
                                     "http://219.248.233.170/project1_war_exploded/user/login")+ "?main_keyword=\"" + main_keyword + "\"&keyword_option=\"" + keyword_option
                                     + "\"&major_option=\"" + major_option + "\"&cse_option=\""+ cse_option +"\"&sort_option=\"" + sort_option + "\"&grade_option=\"" + grade_option +
                                     "\"&category_option=\"" + category_option +"\"&score_option=\"" + score_option +"\"";

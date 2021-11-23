@@ -1,4 +1,4 @@
-package com.maru.inunavi.user;
+package com.maru.inunavi.ui.timetable.search;
 
 import android.util.Log;
 
@@ -10,30 +10,27 @@ import com.maru.inunavi.IpAddress;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SignUpRequest extends StringRequest {
+public class DeleteRequest extends StringRequest {
 
 
-    final static private String URL = IpAddress.isTest ? "http://192.168.0.101/inuNavi/UserRegister.php" :
+    final static private String URL = IpAddress.isTest ? "http://192.168.0.101/inuNavi/LectureDelete.php" :
             "http://219.248.233.170/project1_war_exploded/user/insert";
 
 
     private Map<String, String> parameters;
 
-    public SignUpRequest(String userID, String userPassword, String userEmail, String userName ,Response.Listener<String> listener){
+    public DeleteRequest(String userID, String lectureNumber, Response.Listener<String> listener){
 
         super(Method.POST, URL, listener, new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
-            Log.d("@@@", "error_signup_requst:24");
+            Log.d("@@@", "error_addrequest_requst:24" + error);
         }
     });
 
         parameters = new HashMap<>();
-        parameters.put("id", userID);
-        parameters.put("name", userName);
-        parameters.put("password", userPassword);
-        parameters.put("email", userEmail);
-
+        parameters.put("userID", userID);
+        parameters.put("lectureNumber", lectureNumber);
 
     }
 

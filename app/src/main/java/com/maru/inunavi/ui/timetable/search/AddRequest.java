@@ -13,7 +13,7 @@ import java.util.Map;
 public class AddRequest extends StringRequest {
 
 
-    final static private String URL = IpAddress.isTest ? "http://192.168.0.106/inuNavi/LectureAdd.php" :
+    final static private String URL = IpAddress.isTest ? "http://192.168.0.101/inuNavi/LectureAdd.php" :
             "http://219.248.233.170/project1_war_exploded/user/insert";
 
 

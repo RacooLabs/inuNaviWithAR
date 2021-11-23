@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class ValidateRequest extends StringRequest {
 
-    final static private String URL = IpAddress.isTest ? "http://192.168.0.106/inuNavi/UserValidate.php?id=" :
+    final static private String URL = IpAddress.isTest ? "http://192.168.0.101/inuNavi/UserValidate.php?id=" :
             "http://219.248.233.170/project1_war_exploded/user/check/id?id=";
 
     private Map<String, String> parameters;

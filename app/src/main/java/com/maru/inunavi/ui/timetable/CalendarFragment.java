@@ -64,7 +64,7 @@ public class CalendarFragment extends Fragment {
 
     public static String target;
     public View root;
-    public RelativeLayout linearLayout_frag_tita;
+    public RelativeLayout relativeLayout_frag_tita;
 
 
 
@@ -80,7 +80,7 @@ public class CalendarFragment extends Fragment {
         ImageView imageView_frag_tita_setting = root.findViewById(R.id.imageView_frag_tita_setting);
         ImageView imageView_frag_tita_add = root.findViewById(R.id.imageView_frag_tita_add);
 
-        linearLayout_frag_tita = root.findViewById(R.id.linearLayout_frag_tita);
+        relativeLayout_frag_tita = root.findViewById(R.id.linearLayout_frag_tita);
 
         frag_tita_login_box.setVisibility(View.VISIBLE);
         constraint_frag_tita_main.setVisibility(View.INVISIBLE);
@@ -281,7 +281,7 @@ public class CalendarFragment extends Fragment {
                 null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null};
 
         schedule = new Schedule();
-
+        schedule.colorCount = 0;
 
 
         //설정 콜백
@@ -336,6 +336,10 @@ public class CalendarFragment extends Fragment {
 
                             if(CallType == 2001) {
 
+
+                                target = IpAddress.isTest ? "http://192.168.0.101/inuNavi/ScheduleList.php?userID=\"" + userID +"\"":
+                                        "http://219.248.233.170/project1_war_exploded/user/login";
+
                                 schedule.colorCount = 0;
                                 ScheduleBackgroundTask();
 
@@ -364,14 +368,8 @@ public class CalendarFragment extends Fragment {
 
             userID = MainActivity.cookieManager.getCookie(url).replace("cookieKey=", "");
 
-            {
-                try {
-                    target = IpAddress.isTest ? "http://192.168.0.106/inuNavi/ScheduleList.php?userID=\"" + URLEncoder.encode(userID, "UTF-8") +"\"":
-                            "http://219.248.233.170/project1_war_exploded/user/login";
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
-            }
+            target = IpAddress.isTest ? "http://192.168.0.101/inuNavi/ScheduleList.php?userID=\"" + userID +"\"":
+                    "http://219.248.233.170/project1_war_exploded/user/login";
 
             Log.d("@@@ fragmentcalendar : 50", cookieManager.getCookie(url));
 
@@ -415,13 +413,8 @@ public class CalendarFragment extends Fragment {
                             frag_tita_login_box.setVisibility(View.INVISIBLE);
                             constraint_frag_tita_main.setVisibility(View.VISIBLE);
 
-                            try {
-                                target = IpAddress.isTest ? "http://192.168.0.106/inuNavi/ScheduleList.php?userID=\"" + URLEncoder.encode(userID, "UTF-8") +"\"":
-                                        "http://219.248.233.170/project1_war_exploded/user/login";
-
-                            } catch (UnsupportedEncodingException e) {
-                                e.printStackTrace();
-                            }
+                            target = IpAddress.isTest ? "http://192.168.0.101/inuNavi/ScheduleList.php?userID=\"" + userID +"\"":
+                                    "http://219.248.233.170/project1_war_exploded/user/login";
 
                             ScheduleBackgroundTask();
 
@@ -452,6 +445,10 @@ public class CalendarFragment extends Fragment {
     Disposable backgroundtask;
 
     public void ScheduleBackgroundTask() {
+
+
+        schedule = new Schedule();
+
 
         backgroundtask = Observable.fromCallable(() -> {
             // doInBackground
@@ -540,14 +537,20 @@ public class CalendarFragment extends Fragment {
                 e.printStackTrace();
             }
 
-            schedule.setting(schedule_textView, getActivity(), linearLayout_frag_tita);
+            schedule.setting(schedule_textView,relativeLayout_frag_tita, getActivity(), this);
 
             backgroundtask.dispose();
 
 
         });
 
+
+
     }
+
+
+
+
 
 
     @Override

@@ -59,7 +59,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
     {
         try {
-            target = IpAddress.isTest ? "http://192.168.0.106/inuNavi/ScheduleList.php?userID=\"" + URLEncoder.encode(userID, "UTF-8") +"\"":
+            target = IpAddress.isTest ? "http://192.168.0.101/inuNavi/ScheduleList.php?userID=\"" + URLEncoder.encode(userID, "UTF-8") +"\"":
                     "http://219.248.233.170/project1_war_exploded/user/login";
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -142,10 +142,13 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             public void onClick(View view) {
 
                 boolean validate = false;
+                boolean alreadyIn = false;
+
 
                 validate = schedule.validate(mData.get(holder.getAdapterPosition()).getClasstime());
+                alreadyIn = schedule.alreadyIn(mData.get(holder.getAdapterPosition()).getNumber());
 
-                if(!alreadyIn(lectureIDList, mData.get(holder.getAdapterPosition()).getNumber())){
+                if(alreadyIn){
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(parent);
                     AlertDialog dialog = builder.setMessage("이미 추가한 강의입니다.").setPositiveButton("확인", null)
@@ -319,7 +322,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     }
 
 
-    public boolean alreadyIn(ArrayList<String> lectureIDList, String item){
+    /*public boolean alreadyIn(ArrayList<String> lectureIDList, String item){
         for(int i=0;i< lectureIDList.size(); i++){
             if(lectureIDList.get(i).equals(item)){
                 return false;
@@ -328,6 +331,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
         return true;
 
-    }
+    }*/
 
 }
