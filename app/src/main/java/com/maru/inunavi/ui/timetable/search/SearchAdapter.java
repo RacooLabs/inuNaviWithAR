@@ -68,7 +68,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
 
 
-
     public interface OnItemClickListener {
         void onItemClick(View v, int position) ;
     }

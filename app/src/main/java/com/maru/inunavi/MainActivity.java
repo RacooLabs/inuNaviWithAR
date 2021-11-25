@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     public static CookieManager cookieManager;
 
     public static String sessionURL = IpAddress.isTest ? "http://192.168.0.101/inuNavi/" :
-            "http://219.248.233.170/project1_war_exploded/user/";
+            "http://58.234.251.64:7777";
 
 
     @Override

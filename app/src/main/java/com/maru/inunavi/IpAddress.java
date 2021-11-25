@@ -1,5 +1,5 @@
 package com.maru.inunavi;
 
 public class IpAddress {
-    public static boolean isTest = true;
+    public static boolean isTest = false;
 }
