@@ -58,14 +58,9 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     String target;
 
     {
-        try {
-            target = IpAddress.isTest ? "http://192.168.0.101/inuNavi/ScheduleList.php?userID=\"" + URLEncoder.encode(userID, "UTF-8") +"\"":
-                    "http://219.248.233.170/project1_war_exploded/user/login";
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+        target = IpAddress.isTest ? "http://192.168.0.101/inuNavi/ScheduleList.php?userID=\"" + userID +"\"":
+                "http://58.234.251.64:7777/user/select/class?id=" + userID;
     }
-
 
 
     public interface OnItemClickListener {

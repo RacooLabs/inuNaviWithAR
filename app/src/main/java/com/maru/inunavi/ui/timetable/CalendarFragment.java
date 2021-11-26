@@ -302,6 +302,8 @@ public class CalendarFragment extends Fragment {
                                 frag_tita_login_box.setVisibility(View.VISIBLE);
                                 constraint_frag_tita_main.setVisibility(View.INVISIBLE);
                                 cookieManager.removeAllCookies(null);
+                                schedule = null;
+                                relativeLayout_frag_tita.removeAllViews();
 
                             }
 
@@ -338,7 +340,7 @@ public class CalendarFragment extends Fragment {
 
 
                                 target = IpAddress.isTest ? "http://192.168.0.101/inuNavi/ScheduleList.php?userID=\"" + userID +"\"":
-                                        "http://219.248.233.170/project1_war_exploded/user/login";
+                                        "http://58.234.251.64:7777/user/select/class?id=" + userID;
 
                                 schedule.colorCount = 0;
                                 ScheduleBackgroundTask();
@@ -369,7 +371,7 @@ public class CalendarFragment extends Fragment {
             userID = MainActivity.cookieManager.getCookie(url).replace("cookieKey=", "");
 
             target = IpAddress.isTest ? "http://192.168.0.101/inuNavi/ScheduleList.php?userID=\"" + userID +"\"":
-                    "http://219.248.233.170/project1_war_exploded/user/login";
+                    "http://58.234.251.64:7777/user/select/class?id=" + userID;
 
             Log.d("@@@ fragmentcalendar : 50", cookieManager.getCookie(url));
 
@@ -414,7 +416,7 @@ public class CalendarFragment extends Fragment {
                             constraint_frag_tita_main.setVisibility(View.VISIBLE);
 
                             target = IpAddress.isTest ? "http://192.168.0.101/inuNavi/ScheduleList.php?userID=\"" + userID +"\"":
-                                    "http://219.248.233.170/project1_war_exploded/user/login";
+                                    "http://58.234.251.64:7777/user/select/class?id=" + userID;
 
                             ScheduleBackgroundTask();
 
@@ -532,7 +534,6 @@ public class CalendarFragment extends Fragment {
 
 
 
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -545,12 +546,7 @@ public class CalendarFragment extends Fragment {
         });
 
 
-
     }
-
-
-
-
 
 
     @Override

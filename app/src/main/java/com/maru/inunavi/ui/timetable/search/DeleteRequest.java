@@ -14,7 +14,7 @@ public class DeleteRequest extends StringRequest {
 
 
     final static private String URL = IpAddress.isTest ? "http://192.168.0.101/inuNavi/LectureDelete.php" :
-            "http://58.234.251.64:7777/delete/class";
+            "http://58.234.251.64:7777/user/delete/class";
 
 
     private Map<String, String> parameters;
@@ -29,8 +29,8 @@ public class DeleteRequest extends StringRequest {
     });
 
         parameters = new HashMap<>();
-        parameters.put("userID", userID);
-        parameters.put("lectureNumber", lectureNumber);
+        parameters.put("id", userID);
+        parameters.put("class_id", lectureNumber);
 
     }
 

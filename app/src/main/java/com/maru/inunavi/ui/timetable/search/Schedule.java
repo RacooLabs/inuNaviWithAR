@@ -141,218 +141,222 @@ public class Schedule {
 
             //schedule_textView[i].setText(lectureSchedule[i].getLecturename());
             //schedule_textView[i].setBackgroundColor(Color.BLACK);
+                if (!((i>=0 && i<=15 ) || (i>=47 && i<=63) || (i>=95 && i<=111) || (i>=143 && i<=159) || (i>=191 && i<=207) || (i>=239 && i<=255) || (i>=287 && i<=335))){
 
-                if (sameCount == 1) {
-                    positionX = (int) schedule_textView[i].getX();
-                    positionY = (int) schedule_textView[i].getY();
-                }
+                    if (sameCount == 1) {
 
-                if (this.lectureSchedule[i+1] == null){
+                        Log.d("@@@ Schedule147", ""+i);
+                        positionX = (int) schedule_textView[i].getX();
+                        positionY = (int) schedule_textView[i].getY();
+                    }
 
-                    TextView textView = new TextView(context);
-                    textView.setText(lectureSchedule[i].getLecturename());
-                    textView.setTextColor(Color.WHITE);
-                    textView.setBackgroundColor(Color.parseColor(lectureSchedule[i].getColor()));
+                    if (this.lectureSchedule[i+1] == null){
 
-                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(schedule_textView[i].getWidth(),
-                            schedule_textView[i].getHeight() * sameCount);
-                    lp.gravity = Gravity.CENTER;
+                        TextView textView = new TextView(context);
+                        textView.setText(lectureSchedule[i].getLecturename());
+                        textView.setTextColor(Color.WHITE);
+                        textView.setBackgroundColor(Color.parseColor(lectureSchedule[i].getColor()));
 
-                    textView.setX(positionX);
-                    textView.setY(positionY);
-                    textView.setLayoutParams(lp);
-                    container.addView(textView);
+                        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(schedule_textView[i].getWidth(),
+                                schedule_textView[i].getHeight() * sameCount);
+                        lp.gravity = Gravity.CENTER;
 
-                    String lectureName = lectureSchedule[i].getLecturename();
-                    String lectureNumber = lectureSchedule[i].getNumber();
-                    String professor = lectureSchedule[i].getProfessor();
-                    String classTime = lectureSchedule[i].getClasstime_raw();
-                    String classRoom = lectureSchedule[i].getClassroom_raw();
+                        textView.setX(positionX);
+                        textView.setY(positionY);
+                        textView.setLayoutParams(lp);
+                        container.addView(textView);
 
-                    textView.setOnClickListener(new View.OnClickListener() {
+                        String lectureName = lectureSchedule[i].getLecturename();
+                        String lectureNumber = lectureSchedule[i].getNumber();
+                        String professor = lectureSchedule[i].getProfessor();
+                        String classTime = lectureSchedule[i].getClasstime_raw();
+                        String classRoom = lectureSchedule[i].getClassroom_raw();
 
-                        @Override
-                        public void onClick(View view) {
+                        textView.setOnClickListener(new View.OnClickListener() {
 
-                            AlertDialog.Builder dlg = new AlertDialog.Builder(context);
-                            dlg.setTitle(lectureName);
-                            dlg.setMessage(professor + "\n" + classTime+ "\n" +
-                                    classRoom);
+                            @Override
+                            public void onClick(View view) {
 
-                            dlg.setPositiveButton("확인",new DialogInterface.OnClickListener(){
-                                public void onClick(DialogInterface dialog, int which) {
+                                AlertDialog.Builder dlg = new AlertDialog.Builder(context);
+                                dlg.setTitle(lectureName);
+                                dlg.setMessage(professor + "\n" + classTime+ "\n" +
+                                        classRoom);
 
-                                }
-                            });
+                                dlg.setPositiveButton("확인",new DialogInterface.OnClickListener(){
+                                    public void onClick(DialogInterface dialog, int which) {
 
-                            dlg.setNegativeButton("삭제",new DialogInterface.OnClickListener(){
+                                    }
+                                });
 
-                                public void onClick(DialogInterface dialog, int which) {
+                                dlg.setNegativeButton("삭제",new DialogInterface.OnClickListener(){
 
-                                    Response.Listener<String> responseListener = new Response.Listener<String>() {
+                                    public void onClick(DialogInterface dialog, int which) {
 
-                                        @Override
-                                        public void onResponse(String response) {
+                                        Response.Listener<String> responseListener = new Response.Listener<String>() {
 
-                                            try {
+                                            @Override
+                                            public void onResponse(String response) {
 
-                                                Log.d("@@@", "SearchAdapter_78 : " + response);
+                                                try {
 
-                                                JSONObject jsonResponse = new JSONObject(response);
+                                                    Log.d("@@@", "SearchAdapter_78 : " + response);
 
-                                                boolean success = jsonResponse.getBoolean("success");
+                                                    JSONObject jsonResponse = new JSONObject(response);
 
-                                                if (success) {
-                                                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                                                    AlertDialog dialog = builder.setMessage("강의를 삭제하였습니다.").setPositiveButton("확인", null)
-                                                            .create();
-                                                    dialog.show();
+                                                    boolean success = jsonResponse.getBoolean("success");
 
-                                                    container.removeAllViewsInLayout();
-                                                    calendarFragment.ScheduleBackgroundTask();
+                                                    if (success) {
+                                                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                                                        AlertDialog dialog = builder.setMessage("강의를 삭제하였습니다.").setPositiveButton("확인", null)
+                                                                .create();
+                                                        dialog.show();
+
+                                                        container.removeAllViewsInLayout();
+                                                        calendarFragment.ScheduleBackgroundTask();
 
 
 
-                                                }else{
-                                                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                                                    AlertDialog dialog = builder.setMessage("강의 삭제를 실패하였습니다.").setPositiveButton("확인", null)
-                                                            .create();
-                                                    dialog.show();
+                                                    }else{
+                                                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                                                        AlertDialog dialog = builder.setMessage("강의 삭제를 실패하였습니다.").setPositiveButton("확인", null)
+                                                                .create();
+                                                        dialog.show();
+                                                    }
+
+                                                } catch (Exception e) {
+
+                                                    e.printStackTrace();
+
                                                 }
-
-                                            } catch (Exception e) {
-
-                                                e.printStackTrace();
 
                                             }
 
-                                        }
+                                        };
 
-                                    };
-
-                                    DeleteRequest deleteRequest = new DeleteRequest(userID, lectureNumber,responseListener);
-                                    RequestQueue queue = Volley.newRequestQueue(context);
-                                    queue.add(deleteRequest);
+                                        DeleteRequest deleteRequest = new DeleteRequest(userID, lectureNumber,responseListener);
+                                        RequestQueue queue = Volley.newRequestQueue(context);
+                                        queue.add(deleteRequest);
 
 
 
-                                }
-                            });
+                                    }
+                                });
 
-                            dlg.show();
+                                dlg.show();
 
-                        }
-                    });
+                            }
+                        });
 
-                    sameCount = 1;
+                        sameCount = 1;
 
-                }else if (!this.lectureSchedule[i].getNumber().equals(this.lectureSchedule[i+1].getNumber())){
+                    }else if (!this.lectureSchedule[i].getNumber().equals(this.lectureSchedule[i+1].getNumber())){
 
-                    TextView textView = new TextView(context);
-                    textView.setText(lectureSchedule[i].getLecturename());
-                    textView.setTextColor(Color.WHITE);
-                    textView.setBackgroundColor(Color.parseColor(lectureSchedule[i].getColor()));
+                        TextView textView = new TextView(context);
+                        textView.setText(lectureSchedule[i].getLecturename());
+                        textView.setTextColor(Color.WHITE);
+                        textView.setBackgroundColor(Color.parseColor(lectureSchedule[i].getColor()));
 
-                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(schedule_textView[i].getWidth(),
-                            schedule_textView[i].getHeight() * sameCount);
-                    lp.gravity = Gravity.CENTER;
+                        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(schedule_textView[i].getWidth(),
+                                schedule_textView[i].getHeight() * sameCount);
+                        lp.gravity = Gravity.CENTER;
 
-                    textView.setX(positionX);
-                    textView.setY(positionY);
-                    textView.setLayoutParams(lp);
-                    container.addView(textView);
+                        textView.setX(positionX);
+                        textView.setY(positionY);
+                        textView.setLayoutParams(lp);
+                        container.addView(textView);
 
-                    String lectureName = lectureSchedule[i].getLecturename();
-                    String lectureNumber = lectureSchedule[i].getNumber();
-                    String professor = lectureSchedule[i].getProfessor();
-                    String classTime = lectureSchedule[i].getClasstime_raw();
-                    String classRoom = lectureSchedule[i].getClassroom_raw();
+                        String lectureName = lectureSchedule[i].getLecturename();
+                        String lectureNumber = lectureSchedule[i].getNumber();
+                        String professor = lectureSchedule[i].getProfessor();
+                        String classTime = lectureSchedule[i].getClasstime_raw();
+                        String classRoom = lectureSchedule[i].getClassroom_raw();
 
-                    textView.setOnClickListener(new View.OnClickListener() {
+                        textView.setOnClickListener(new View.OnClickListener() {
 
-                        @Override
-                        public void onClick(View view) {
+                            @Override
+                            public void onClick(View view) {
 
-                            AlertDialog.Builder dlg = new AlertDialog.Builder(context);
-                            dlg.setTitle(lectureName); //제목
-                            dlg.setMessage(professor + "\n" + classTime+ "\n" +
-                                    classRoom);
+                                AlertDialog.Builder dlg = new AlertDialog.Builder(context);
+                                dlg.setTitle(lectureName); //제목
+                                dlg.setMessage(professor + "\n" + classTime+ "\n" +
+                                        classRoom);
 //                버튼 클릭시 동작
-                            dlg.setPositiveButton("확인",new DialogInterface.OnClickListener(){
-                                public void onClick(DialogInterface dialog, int which) {
+                                dlg.setPositiveButton("확인",new DialogInterface.OnClickListener(){
+                                    public void onClick(DialogInterface dialog, int which) {
 
-                                }
-                            });
+                                    }
+                                });
 
-                            dlg.setNegativeButton("삭제",new DialogInterface.OnClickListener(){
-                                public void onClick(DialogInterface dialog, int which) {
+                                dlg.setNegativeButton("삭제",new DialogInterface.OnClickListener(){
+                                    public void onClick(DialogInterface dialog, int which) {
 
-                                    Response.Listener<String> responseListener = new Response.Listener<String>() {
+                                        Response.Listener<String> responseListener = new Response.Listener<String>() {
 
-                                        @Override
-                                        public void onResponse(String response) {
+                                            @Override
+                                            public void onResponse(String response) {
 
-                                            try {
+                                                try {
 
-                                                Log.d("@@@", "SearchAdapter_78 : " + response);
+                                                    Log.d("@@@", "SearchAdapter_78 : " + response);
 
-                                                JSONObject jsonResponse = new JSONObject(response);
+                                                    JSONObject jsonResponse = new JSONObject(response);
 
-                                                boolean success = jsonResponse.getBoolean("success");
+                                                    boolean success = jsonResponse.getBoolean("success");
 
-                                                if (success) {
-                                                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                                                    AlertDialog dialog = builder.setMessage("강의를 삭제하였습니다.").setPositiveButton("확인", null)
-                                                            .create();
-                                                    dialog.show();
+                                                    if (success) {
+                                                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                                                        AlertDialog dialog = builder.setMessage("강의를 삭제하였습니다.").setPositiveButton("확인", null)
+                                                                .create();
+                                                        dialog.show();
 
-                                                    container.removeAllViewsInLayout();
+                                                        container.removeAllViewsInLayout();
 
-                                                    calendarFragment.ScheduleBackgroundTask();
+                                                        calendarFragment.ScheduleBackgroundTask();
 
 
-                                                }else{
-                                                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                                                    AlertDialog dialog = builder.setMessage("강의 삭제를 실패하였습니다.").setPositiveButton("확인", null)
-                                                            .create();
-                                                    dialog.show();
+                                                    }else{
+                                                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                                                        AlertDialog dialog = builder.setMessage("강의 삭제를 실패하였습니다.").setPositiveButton("확인", null)
+                                                                .create();
+                                                        dialog.show();
+                                                    }
+
+                                                } catch (Exception e) {
+
+                                                    e.printStackTrace();
+
                                                 }
-
-                                            } catch (Exception e) {
-
-                                                e.printStackTrace();
 
                                             }
 
-                                        }
+                                        };
 
-                                    };
-
-                                    DeleteRequest deleteRequest = new DeleteRequest(userID, lectureNumber,responseListener);
-                                    RequestQueue queue = Volley.newRequestQueue(context);
-                                    queue.add(deleteRequest);
+                                        DeleteRequest deleteRequest = new DeleteRequest(userID, lectureNumber,responseListener);
+                                        RequestQueue queue = Volley.newRequestQueue(context);
+                                        queue.add(deleteRequest);
 
 
-                                }
-                            });
+                                    }
+                                });
 
-                            dlg.show();
+                                dlg.show();
 
-                        }
-                    });
+                            }
+                        });
 
-                    sameCount = 1;
+                        sameCount = 1;
 
-                }else{
+                    }else{
 
-                    sameCount++;
-                    Log.d("@@@ schedule 92", " error");
+                        sameCount++;
+                        Log.d("@@@ schedule 92", " error");
+
+                    }
 
                 }
+
 
             }
-
-
 
         }
 
