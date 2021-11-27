@@ -81,7 +81,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                }else {
 
-                   String userID = editText_sign_up_id.getText().toString();
+                   String userID = editText_sign_up_id.getText().toString().trim();
 
                    if (userID.contains(" ")){
                        setNotEditText(editText_sign_up_id, sign_up_id_done_icon, textView_id_warning, "아이디에 공백이 있습니다.");
@@ -152,9 +152,9 @@ public class SignUpActivity extends AppCompatActivity {
                    passwordValidate = false;
                }else{
 
-                   String userId = editText_sign_up_id.getText().toString();
-                   String userPassword = editText_sign_up_password.getText().toString();
-                   String userPasswordCheck = editText_sign_up_password_second.getText().toString();
+                   String userId = editText_sign_up_id.getText().toString().trim();
+                   String userPassword = editText_sign_up_password.getText().toString().trim();
+                   String userPasswordCheck = editText_sign_up_password_second.getText().toString().trim();
 
                    if(userPassword.contains(userId)){
                        setNotEditText(editText_sign_up_password, sign_up_password_done_icon, textView_password_warning, "비밀번호에 아이디가 포함되어있습니다.");
@@ -241,7 +241,7 @@ public class SignUpActivity extends AppCompatActivity {
                    emailValidate = false;
                }else{
 
-                   String userEmail = editText_sign_up_email.getText().toString();
+                   String userEmail = editText_sign_up_email.getText().toString().trim();
                    Pattern p = Pattern.compile("^[_a-zA-Z0-9-\\.]+@[\\.a-zA-Z0-9-]+\\.[a-zA-Z]+$");
                    Matcher m = p.matcher(userEmail);
                    Log.d("@@@", userEmail);
@@ -278,7 +278,7 @@ public class SignUpActivity extends AppCompatActivity {
                    nameValidate = false;
                }else{
 
-                   String userName = editText_sign_up_name.getText().toString();
+                   String userName = editText_sign_up_name.getText().toString().trim();
 
                    if (userName.equals("")) {
                        setNotEditText(editText_sign_up_name, sign_up_name_done_icon, textView_name_warning, "이름을 입력하세요.");
@@ -303,10 +303,10 @@ public class SignUpActivity extends AppCompatActivity {
        button_sign_up.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
-               String userID = editText_sign_up_id.getText().toString();
+               String userID = editText_sign_up_id.getText().toString().trim();
                String userPassword = editText_sign_up_password.getText().toString();
-               String userEmail = editText_sign_up_email.getText().toString();
-               String userName = editText_sign_up_name.getText().toString();
+               String userEmail = editText_sign_up_email.getText().toString().trim();
+               String userName = editText_sign_up_name.getText().toString().trim();
 
 
                editText_sign_up_id.clearFocus();

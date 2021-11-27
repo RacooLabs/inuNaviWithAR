@@ -339,7 +339,13 @@ public class SearchOptionActivity extends AppCompatActivity implements Serializa
                 Intent intent = new Intent(SearchOptionActivity.this, SearchActivity.class);
                 intent.putExtra("CallType", 0);
 
-                main_keyword = tita_search_option_searchbar.getText().toString();
+
+                if(tita_search_option_searchbar.getText() == null){
+                    main_keyword = "";
+                }else{
+                    main_keyword = tita_search_option_searchbar.getText().toString().trim();
+                }
+
                 major_option = tita_search_option_major_text.getText().toString();
                 cse_option = tita_search_option_cse_text.getText().toString();
                 sort_option =  tita_search_option_sort_text.getText().toString();

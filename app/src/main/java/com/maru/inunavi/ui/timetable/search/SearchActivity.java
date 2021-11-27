@@ -1,12 +1,14 @@
 package com.maru.inunavi.ui.timetable.search;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -110,7 +112,12 @@ public class SearchActivity extends AppCompatActivity {
 
                 if(i == EditorInfo.IME_ACTION_SEARCH){
 
-                    main_keyword = tita_search_searchbar.getText().toString();
+                    if(tita_search_searchbar.getText() == null){
+                        main_keyword = "";
+                    }else{
+                        main_keyword = tita_search_searchbar.getText().toString().trim();
+                    }
+
 
                     target = (IpAddress.isTest ? "http://192.168.0.101/inuNavi/LectureList.php" :
                             "http://58.234.251.64:7777/selectLecture")+ "?main_keyword=\"" + main_keyword + "\"&keyword_option=\"" + keyword_option
@@ -119,6 +126,9 @@ public class SearchActivity extends AppCompatActivity {
                     Log.d("@@@searchActivity 119", target);
 
                     SearchBackgroundTask();
+
+                    InputMethodManager mInputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    mInputMethodManager.hideSoftInputFromWindow(tita_search_searchbar.getWindowToken(), 0);
 
                 }
 
