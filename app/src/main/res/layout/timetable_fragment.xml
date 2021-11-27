@@ -2643,6 +2643,84 @@
                 android:lines="1"
                 android:ellipsize="end"/>
 
+            <TextView
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:gravity="right" />
+
+
+            <TextView
+                android:id="@+id/timetable_cell47"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:background="@drawable/cell_shape"
+                android:gravity="center"
+                android:textColor="@color/main_text_color"
+                android:textStyle="bold"
+                android:lines="1"
+                android:ellipsize="end"/>
+
+            <TextView
+                android:id="@+id/timetable_cell95"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:background="@drawable/cell_shape"
+                android:gravity="center"
+                android:textColor="@color/main_text_color"
+                android:textStyle="bold"
+                android:lines="1"
+                android:ellipsize="end"/>
+
+            <TextView
+                android:id="@+id/timetable_cell143"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:background="@drawable/cell_shape"
+                android:gravity="center"
+                android:textColor="@color/main_text_color"
+                android:textStyle="bold"
+                android:lines="1"
+                android:ellipsize="end"/>
+
+            <TextView
+                android:id="@+id/timetable_cell191"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:background="@drawable/cell_shape"
+                android:gravity="center"
+                android:textColor="@color/main_text_color"
+                android:textStyle="bold"
+                android:lines="1"
+                android:ellipsize="end"/>
+
+            <TextView
+                android:id="@+id/timetable_cell239"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:background="@drawable/cell_shape"
+                android:gravity="center"
+                android:textColor="@color/main_text_color"
+                android:textStyle="bold"
+                android:lines="1"
+                android:ellipsize="end"/>
+
+            <TextView
+                android:id="@+id/timetable_cell287"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:background="@drawable/cell_shape"
+                android:gravity="center"
+                android:textColor="@color/main_text_color"
+                android:textStyle="bold"
+                android:lines="1"
+                android:ellipsize="end"/>
+
 
         </GridLayout>
 

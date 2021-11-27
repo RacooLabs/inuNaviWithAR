@@ -90,7 +90,8 @@ public class CalendarFragment extends Fragment {
 
         schedule_textView = new TextView[] {
 
-                null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,root.findViewById(R.id.timetable_cell16),
+                null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,
+                root.findViewById(R.id.timetable_cell16),
                 root.findViewById(R.id.timetable_cell17),
                 root.findViewById(R.id.timetable_cell18),
                 root.findViewById(R.id.timetable_cell19),
@@ -121,7 +122,9 @@ public class CalendarFragment extends Fragment {
                 root.findViewById(R.id.timetable_cell44),
                 root.findViewById(R.id.timetable_cell45),
                 root.findViewById(R.id.timetable_cell46),
-                null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,root.findViewById(R.id.timetable_cell64),
+                root.findViewById(R.id.timetable_cell47),
+                null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,
+                root.findViewById(R.id.timetable_cell64),
                 root.findViewById(R.id.timetable_cell65),
                 root.findViewById(R.id.timetable_cell66),
                 root.findViewById(R.id.timetable_cell67),
@@ -152,7 +155,9 @@ public class CalendarFragment extends Fragment {
                 root.findViewById(R.id.timetable_cell92),
                 root.findViewById(R.id.timetable_cell93),
                 root.findViewById(R.id.timetable_cell94),
-                null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,root.findViewById(R.id.timetable_cell112),
+                root.findViewById(R.id.timetable_cell95),
+                null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,
+                root.findViewById(R.id.timetable_cell112),
                 root.findViewById(R.id.timetable_cell113),
                 root.findViewById(R.id.timetable_cell114),
                 root.findViewById(R.id.timetable_cell115),
@@ -183,7 +188,9 @@ public class CalendarFragment extends Fragment {
                 root.findViewById(R.id.timetable_cell140),
                 root.findViewById(R.id.timetable_cell141),
                 root.findViewById(R.id.timetable_cell142),
-                null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,root.findViewById(R.id.timetable_cell160),
+                root.findViewById(R.id.timetable_cell143),
+                null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,
+                root.findViewById(R.id.timetable_cell160),
                 root.findViewById(R.id.timetable_cell161),
                 root.findViewById(R.id.timetable_cell162),
                 root.findViewById(R.id.timetable_cell163),
@@ -214,7 +221,9 @@ public class CalendarFragment extends Fragment {
                 root.findViewById(R.id.timetable_cell188),
                 root.findViewById(R.id.timetable_cell189),
                 root.findViewById(R.id.timetable_cell190),
-                null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,root.findViewById(R.id.timetable_cell208),
+                root.findViewById(R.id.timetable_cell191),
+                null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,
+                root.findViewById(R.id.timetable_cell208),
                 root.findViewById(R.id.timetable_cell209),
                 root.findViewById(R.id.timetable_cell210),
                 root.findViewById(R.id.timetable_cell211),
@@ -245,7 +254,9 @@ public class CalendarFragment extends Fragment {
                 root.findViewById(R.id.timetable_cell236),
                 root.findViewById(R.id.timetable_cell237),
                 root.findViewById(R.id.timetable_cell238),
-                null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,root.findViewById(R.id.timetable_cell256),
+                root.findViewById(R.id.timetable_cell239),
+                null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,
+                root.findViewById(R.id.timetable_cell256),
                 root.findViewById(R.id.timetable_cell257),
                 root.findViewById(R.id.timetable_cell258),
                 root.findViewById(R.id.timetable_cell259),
@@ -276,12 +287,15 @@ public class CalendarFragment extends Fragment {
                 root.findViewById(R.id.timetable_cell284),
                 root.findViewById(R.id.timetable_cell285),
                 root.findViewById(R.id.timetable_cell286),
-                null,null,null,null,null,null,null,null,null,null,null,null,
+                root.findViewById(R.id.timetable_cell287),
+                null,null,null,null,null,null,null,null,null,null,null,
                 null,null,null,null,null,null,null,null,null,null,null,null,
                 null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null};
 
+        userID = "";
+        relativeLayout_frag_tita.removeAllViews();
         schedule = new Schedule();
-        schedule.colorCount = 0;
+        schedule.ResetSchedule();
 
 
         //설정 콜백
@@ -302,7 +316,9 @@ public class CalendarFragment extends Fragment {
                                 frag_tita_login_box.setVisibility(View.VISIBLE);
                                 constraint_frag_tita_main.setVisibility(View.INVISIBLE);
                                 cookieManager.removeAllCookies(null);
-                                schedule = null;
+                                schedule = new Schedule();
+                                schedule.ResetSchedule();
+                                userID = "";
                                 relativeLayout_frag_tita.removeAllViews();
 
                             }
@@ -336,13 +352,15 @@ public class CalendarFragment extends Fragment {
 
                             int CallType = intent.getIntExtra("CallType", 0);
 
+                            Log.d("@@@ CalendarFragment342", CallType + " : " + Activity.RESULT_OK);
                             if(CallType == 2001) {
 
+                                userID = MainActivity.cookieManager.getCookie(url).replace("cookieKey=", "");
 
                                 target = IpAddress.isTest ? "http://192.168.0.101/inuNavi/ScheduleList.php?userID=\"" + userID +"\"":
                                         "http://58.234.251.64:7777/user/select/class?id=" + userID;
 
-                                schedule.colorCount = 0;
+                                schedule.ResetSchedule();
                                 ScheduleBackgroundTask();
 
 
@@ -378,6 +396,7 @@ public class CalendarFragment extends Fragment {
             frag_tita_login_box.setVisibility(View.INVISIBLE);
             constraint_frag_tita_main.setVisibility(View.VISIBLE);
 
+            schedule.ResetSchedule();
             ScheduleBackgroundTask();
 
             //설정버튼 액티비티 리스너
@@ -418,7 +437,11 @@ public class CalendarFragment extends Fragment {
                             target = IpAddress.isTest ? "http://192.168.0.101/inuNavi/ScheduleList.php?userID=\"" + userID +"\"":
                                     "http://58.234.251.64:7777/user/select/class?id=" + userID;
 
-                            ScheduleBackgroundTask();
+                            try{
+                                ScheduleBackgroundTask();
+                            }catch (Exception e) {
+                                e.printStackTrace();
+                            }
 
                         }
                     }
@@ -478,7 +501,8 @@ public class CalendarFragment extends Fragment {
 
             return null;
 
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe((result) -> {
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).onErrorReturn(___ -> "{response : []}").subscribe((result) -> {
+
 
             // onPostExecute
 
@@ -544,6 +568,8 @@ public class CalendarFragment extends Fragment {
 
 
         });
+
+
 
 
     }

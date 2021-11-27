@@ -63,6 +63,7 @@ public class Schedule {
         String [] tokens=classTime.split(",");
 
 
+
         for(int i=0;i<tokens.length; i++){
 
             String startEndTime[] = tokens[i].split("-");
@@ -70,6 +71,7 @@ public class Schedule {
             endTime = Integer.parseInt(startEndTime[1]);
 
             for(int j=startTime; j<endTime+1;j++){
+                Log.d("@@Schedule 74 " , startTime + " : " + endTime);
                 lectureSchedule[j] = lecture;
                 lectureSchedule[j].setColor(colors[colorCount]);
             }
@@ -77,6 +79,13 @@ public class Schedule {
         }
 
         colorCount++;
+
+    }
+
+    public void ResetSchedule() {
+
+        lectureSchedule = new Lecture[328];
+        colorCount = 0;
 
     }
 
@@ -139,9 +148,10 @@ public class Schedule {
 
             if(this.lectureSchedule[i] != null){
 
+                Log.d("Schedule 151 : ", i +"");
             //schedule_textView[i].setText(lectureSchedule[i].getLecturename());
             //schedule_textView[i].setBackgroundColor(Color.BLACK);
-                if (!((i>=0 && i<=15 ) || (i>=47 && i<=63) || (i>=95 && i<=111) || (i>=143 && i<=159) || (i>=191 && i<=207) || (i>=239 && i<=255) || (i>=287 && i<=335))){
+                if (!((i>=0 && i<=15 ) || (i>=48 && i<=63) || (i>=96 && i<=111) || (i>=144 && i<=159) || (i>=192 && i<=207) || (i>=240 && i<=255) || (i>=288 && i<=335))){
 
                     if (sameCount == 1) {
 
@@ -151,6 +161,8 @@ public class Schedule {
                     }
 
                     if (this.lectureSchedule[i+1] == null){
+
+                        Log.d("Schedule 165 : ", (i+1) +"");
 
                         TextView textView = new TextView(context);
                         textView.setText(lectureSchedule[i].getLecturename());
