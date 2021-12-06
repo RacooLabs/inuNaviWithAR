@@ -84,9 +84,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mapView.getMapAsync(this);
         mapFragment = this;
 
-        Button search_button = layout.findViewById(R.id.search_button);
-        Button clear_button = layout.findViewById(R.id.clear_button);
-        Button reset_button = layout.findViewById(R.id.reset_button);
+        TextView search_button = layout.findViewById(R.id.search_button);
+        TextView clear_button = layout.findViewById(R.id.clear_button);
+        TextView reset_button = layout.findViewById(R.id.reset_button);
+
         TextView now_navi_button = layout.findViewById(R.id.now_navi_button);
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());

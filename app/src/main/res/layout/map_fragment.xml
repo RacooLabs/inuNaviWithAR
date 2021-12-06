@@ -21,52 +21,79 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
 
-    <AutoCompleteTextView
-        android:id="@+id/autoCompleteTextView_search"
+    <LinearLayout
+        android:id="@+id/autoCompleteTextView_search_wrapper"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@android:color/white"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_height="80dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:lines="1"
-        android:imeOptions="actionSearch"
-        android:inputType="text">
+        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="center">
+
+        <AutoCompleteTextView
+            android:id="@+id/autoCompleteTextView_search"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:background="@drawable/layout_search_roundedbox_map"
+            android:elevation="12dp"
+            android:hint="검색"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:lines="1"
+            android:maxLength="20"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:textColor="@color/hint_text_normal"
+            android:textSize="@dimen/main_text_size">
+
+        </AutoCompleteTextView>
+
+    </LinearLayout>
 
 
-    </AutoCompleteTextView>
 
-    <Button
+    <TextView
         android:id="@+id/search_button"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="33dp"
+        android:layout_height="33dp"
+        android:gravity="center"
         android:text="O"
-        app:layout_constraintRight_toRightOf="@id/autoCompleteTextView_search"
-        app:layout_constraintTop_toTopOf="@id/autoCompleteTextView_search"
-        app:layout_constraintBottom_toBottomOf="@id/autoCompleteTextView_search"
+        android:textColor="@color/white"
+        android:layout_marginRight="16.5dp"
+        app:layout_constraintRight_toRightOf="@id/autoCompleteTextView_search_wrapper"
+        app:layout_constraintTop_toTopOf="@id/autoCompleteTextView_search_wrapper"
+        app:layout_constraintBottom_toBottomOf="@id/autoCompleteTextView_search_wrapper"
+        android:background="@drawable/layout_map_search_btn"
         android:visibility="visible"/>
 
-    <Button
+    <TextView
         android:id="@+id/clear_button"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="33dp"
+        android:layout_height="33dp"
+        android:gravity="center"
         android:text="X"
-        app:layout_constraintRight_toRightOf="@id/autoCompleteTextView_search"
-        app:layout_constraintTop_toTopOf="@id/autoCompleteTextView_search"
-        app:layout_constraintBottom_toBottomOf="@id/autoCompleteTextView_search"
+        android:textColor="@color/white"
+        android:layout_marginRight="16.5dp"
+        app:layout_constraintRight_toRightOf="@id/autoCompleteTextView_search_wrapper"
+        app:layout_constraintTop_toTopOf="@id/autoCompleteTextView_search_wrapper"
+        app:layout_constraintBottom_toBottomOf="@id/autoCompleteTextView_search_wrapper"
+        android:background="@drawable/layout_map_search_btn"
         android:visibility="invisible"/>
 
-    <Button
+    <TextView
         android:id="@+id/reset_button"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="33dp"
+        android:layout_height="33dp"
+        android:gravity="center"
         android:text="R"
-        app:layout_constraintRight_toRightOf="@id/autoCompleteTextView_search"
-        app:layout_constraintTop_toTopOf="@id/autoCompleteTextView_search"
-        app:layout_constraintBottom_toBottomOf="@id/autoCompleteTextView_search"
+        android:textColor="@color/white"
+        android:layout_marginRight="16.5dp"
+        app:layout_constraintRight_toRightOf="@id/autoCompleteTextView_search_wrapper"
+        app:layout_constraintTop_toTopOf="@id/autoCompleteTextView_search_wrapper"
+        app:layout_constraintBottom_toBottomOf="@id/autoCompleteTextView_search_wrapper"
+        android:background="@drawable/layout_map_search_btn"
         android:visibility="invisible"/>
 
     <TextView
@@ -80,7 +107,8 @@
         android:background="@drawable/layout_map_sub_button"
         android:gravity="center"
         android:textColor="@color/black"
-        android:textSize="@dimen/main_text_size"
+        android:textSize="@dimen/small_text_size"
+        android:textStyle="bold"
         android:clickable="true"
         android:layout_margin="12dp"/>
 
@@ -88,14 +116,15 @@
         android:id="@+id/now_navi_button"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:text="지금\n경로"
+        android:text="다음\n강의실"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toTopOf="@id/AR_button"
         android:visibility="visible"
         android:background="@drawable/layout_map_sub_button"
         android:gravity="center"
         android:textColor="@color/black"
-        android:textSize="@dimen/main_text_size"
+        android:textSize="@dimen/small_text_size"
+
         android:clickable="true"
         android:layout_margin="12dp"/>
 
