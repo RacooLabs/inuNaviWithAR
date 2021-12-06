@@ -1,5 +1,7 @@
 package com.maru.inunavi.user;
 
+import static com.maru.inunavi.IpAddress.DemoIP;
+
 import android.util.Log;
 
 import com.android.volley.Response;
@@ -13,7 +15,7 @@ import java.util.Map;
 public class ValidateRequest extends StringRequest {
 
     final static private String URL = IpAddress.isTest ? "http://192.168.0.101/inuNavi/UserValidate.php?id=" :
-            "http://58.234.251.64:7777/user/check/id?id=";
+            "http://" + DemoIP + "/user/check/id?id=";
 
     private Map<String, String> parameters;
 

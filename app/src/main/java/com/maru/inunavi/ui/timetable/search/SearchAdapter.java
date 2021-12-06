@@ -1,5 +1,7 @@
 package com.maru.inunavi.ui.timetable.search;
 
+import static com.maru.inunavi.IpAddress.DemoIP;
+
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -60,7 +62,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     {
         userID = (MainActivity.cookieManager.getCookie(MainActivity.sessionURL)).replace("cookieKey=", "");
         target = IpAddress.isTest ? "http://192.168.0.101/inuNavi/ScheduleList.php?userID=\"" + userID +"\"":
-                "http://58.234.251.64:7777/user/select/class?id=" + userID;
+                "http://" + DemoIP + "/user/select/class?id=" + userID;
     }
 
 

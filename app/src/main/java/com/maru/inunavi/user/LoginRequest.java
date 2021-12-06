@@ -1,5 +1,7 @@
 package com.maru.inunavi.user;
 
+import static com.maru.inunavi.IpAddress.DemoIP;
+
 import android.util.Log;
 
 import com.android.volley.Response;
@@ -13,7 +15,7 @@ import java.util.Map;
 public class LoginRequest extends StringRequest {
 
     final static private String URL = IpAddress.isTest ? "http://192.168.0.101/inuNavi/UserLogin.php" :
-            "http://58.234.251.64:7777/user/login";
+            "http://" + DemoIP + "/user/login";
 
     private Map<String, String> parameters;
 

@@ -1,5 +1,7 @@
 package com.maru.inunavi.ui.timetable.search;
 
+import static com.maru.inunavi.IpAddress.DemoIP;
+
 import android.util.Log;
 
 import com.android.volley.Response;
@@ -14,7 +16,7 @@ public class AddRequest extends StringRequest {
 
 
     final static private String URL = IpAddress.isTest ? "http://192.168.0.101/inuNavi/LectureAdd.php" :
-            "http://58.234.251.64:7777/user/insert/class";
+            "http://" + DemoIP + "/user/insert/class";
 
 
     private Map<String, String> parameters;
