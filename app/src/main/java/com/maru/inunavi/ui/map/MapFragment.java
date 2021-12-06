@@ -230,7 +230,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                 latLngList.clear();
 
-                latLngList.add(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()));
+                if(currentLocation != null){
+                    latLngList.add(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()));
+                }
+
                 latLngList.add(new LatLng(37.37635285186897, 126.63429909872082));
                 latLngList.add(new LatLng(37.3762381423054, 126.6344930682583));
                 latLngList.add(new LatLng(37.375298951155386, 126.63361343896047));

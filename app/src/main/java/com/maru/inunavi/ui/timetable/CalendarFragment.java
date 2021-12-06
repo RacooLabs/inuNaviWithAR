@@ -435,7 +435,7 @@ public class CalendarFragment extends Fragment {
                             frag_tita_login_box.setVisibility(View.INVISIBLE);
                             constraint_frag_tita_main.setVisibility(View.VISIBLE);
 
-                            target = IpAddress.isTest ? "http://192.168.0.101/inuNavi/ScheduleList.php?userID=\"" + userID +"\"":
+                            target = IpAddress.isTest ? "http://192.168.0.101/inuNavi/ScheduleList.php?id=\"" + userID +"\"":
                                     "http://" + DemoIP + "/user/select/class?id=" + userID;
 
                             try{
