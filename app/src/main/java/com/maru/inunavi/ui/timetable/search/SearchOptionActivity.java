@@ -144,7 +144,6 @@ public class SearchOptionActivity extends AppCompatActivity implements Serializa
 
                             tita_search_option_cse_text.setText(CSE);
 
-
                         }
                     }
                 });
