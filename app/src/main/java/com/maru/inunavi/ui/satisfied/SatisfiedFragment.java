@@ -67,7 +67,7 @@ public class SatisfiedFragment extends Fragment {
                             frag_satisfied_login_box.setVisibility(View.INVISIBLE);
                             constraint_frag_satisfied_main.setVisibility(View.VISIBLE);
 
-                            target = IpAddress.isTest ? "http://192.168.0.101/inuNavi/ScheduleList.php?userID=\"" + userID +"\"":
+                            target = IpAddress.isTest ? "http://192.168.0.101/inuNavi/ScheduleList.php?id=\"" + userID +"\"":
                                     "http://" + DemoIP + "/user/select/class?id=" + userID;
 
 
@@ -90,7 +90,7 @@ public class SatisfiedFragment extends Fragment {
 
             userID = MainActivity.cookieManager.getCookie(url).replace("cookieKey=", "");
 
-            target = IpAddress.isTest ? "http://192.168.0.101/inuNavi/ScheduleList.php?userID=\"" + userID +"\"":
+            target = IpAddress.isTest ? "http://192.168.0.101/inuNavi/ScheduleList.php?id=\"" + userID +"\"":
                     "http://" + DemoIP + "/user/select/class?id=" + userID;
 
 

@@ -43,6 +43,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,6 +95,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         fetchLocation();
 
         AutoCompleteTextView autoCompleteTextView_search = layout.findViewById(R.id.autoCompleteTextView_search);
+
+        SlidingUpPanelLayout mapSlidingLayout = layout.findViewById(R.id.map_sliding_layout);
+
+        //mapSlidingLayout.setPanelHeight(800);
+        //mapSlidingLayout.setParallaxOffset(200);
+        //mapSlidingLayout.setPanelHeight(50);
+        //mapSlidingLayout.setPanelState(SlidingUpPanelLayout.PanelState.DRAGGING);
+        mapSlidingLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
 
 
         autoCompleteTextView_search.setOnFocusChangeListener(new View.OnFocusChangeListener() {

@@ -358,7 +358,7 @@ public class CalendarFragment extends Fragment {
 
                                 userID = MainActivity.cookieManager.getCookie(url).replace("cookieKey=", "");
 
-                                target = IpAddress.isTest ? "http://192.168.0.101/inuNavi/ScheduleList.php?userID=\"" + userID +"\"":
+                                target = IpAddress.isTest ? "http://192.168.0.101/inuNavi/ScheduleList.php?id=\"" + userID +"\"":
                                         "http://" + DemoIP +"/user/select/class?id=" + userID;
 
                                 schedule.ResetSchedule();
@@ -389,7 +389,7 @@ public class CalendarFragment extends Fragment {
 
             userID = MainActivity.cookieManager.getCookie(url).replace("cookieKey=", "");
 
-            target = IpAddress.isTest ? "http://192.168.0.101/inuNavi/ScheduleList.php?userID=\"" + userID +"\"":
+            target = IpAddress.isTest ? "http://192.168.0.101/inuNavi/ScheduleList.php?id=\"" + userID +"\"":
                     "http://" + DemoIP + "/user/select/class?id=" + userID;
 
             Log.d("@@@ fragmentcalendar : 50", cookieManager.getCookie(url));
@@ -438,13 +438,11 @@ public class CalendarFragment extends Fragment {
                             target = IpAddress.isTest ? "http://192.168.0.101/inuNavi/ScheduleList.php?id=\"" + userID +"\"":
                                     "http://" + DemoIP + "/user/select/class?id=" + userID;
 
-                            try{
-                                ScheduleBackgroundTask();
-                            }catch (Exception e) {
-                                e.printStackTrace();
-                            }
+                            schedule.ResetSchedule();
+                            ScheduleBackgroundTask();
 
                         }
+
                     }
                 });
 
