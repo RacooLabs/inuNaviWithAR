@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+
+    android:id="@+id/dragView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="false"
+    android:orientation="vertical"
+    android:visibility="visible"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/View_homeBottomBar"
+        android:layout_height="48dp"
+        android:layout_width="match_parent"
+        android:background="#CCCCCC"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/map_frag_recyclerview_sliding"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:background="#FFFFFF"
+        android:scrollbars="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/View_homeBottomBar"
+        app:layout_constraintLeft_toLeftOf="@+id/View_homeBottomBar"
+        app:layout_constraintRight_toRightOf="@+id/View_homeBottomBar"/>
+
+    >
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

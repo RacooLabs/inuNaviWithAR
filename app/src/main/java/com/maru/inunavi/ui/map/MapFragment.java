@@ -10,12 +10,15 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -33,6 +36,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.QuickContactBadge;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -63,6 +68,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private List<LatLng> latLngList = new ArrayList<>();
 
+    RecyclerView recyclerView;
+    MapSearchAdapter adapter;
+
+
     public MapFragment() {
 
     }
@@ -79,88 +88,69 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         View layout = inflater.inflate(R.layout.map_fragment, container, false);
 
-        String[] items = {"인문대학", "center", "infor"};
 
         mapView = (MapView) layout.findViewById(R.id.map);
         mapView.getMapAsync(this);
         mapFragment = this;
 
-        TextView search_button = layout.findViewById(R.id.search_button);
-        TextView clear_button = layout.findViewById(R.id.clear_button);
-        TextView reset_button = layout.findViewById(R.id.reset_button);
-
         TextView now_navi_button = layout.findViewById(R.id.now_navi_button);
+        ImageView map_frag_back = layout.findViewById(R.id.map_frag_back);
+        ImageView map_frag_cancel = layout.findViewById(R.id.map_frag_cancel);
+        ImageView map_frag_search_icon = layout.findViewById(R.id.map_frag_search_icon);
+
+        EditText editText_search = layout.findViewById(R.id.editText_search);
+        SlidingUpPanelLayout mapSlidingLayout = layout.findViewById(R.id.map_sliding_layout);
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
         fetchLocation();
 
-        AutoCompleteTextView autoCompleteTextView_search = layout.findViewById(R.id.autoCompleteTextView_search);
-
-        SlidingUpPanelLayout mapSlidingLayout = layout.findViewById(R.id.map_sliding_layout);
-
-        //mapSlidingLayout.setPanelHeight(800);
-        //mapSlidingLayout.setParallaxOffset(200);
-        //mapSlidingLayout.setPanelHeight(50);
-        //mapSlidingLayout.setPanelState(SlidingUpPanelLayout.PanelState.DRAGGING);
-        mapSlidingLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+        //리사이클러뷰 설정
+        recyclerView = (RecyclerView)layout.findViewById(R.id.map_frag_recyclerview_sliding);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false)) ;
+        ArrayList<Place> list = new ArrayList<>();
 
 
-        autoCompleteTextView_search.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        list.add(new Place("정보기술대학", 7, 320));
+        list.add(new Place( "공과·도시과학대학", 8, 400));
+        list.add(new Place("공동실험 실습관", 9, 500));
+        list.add(new Place("정보기술대학", 7, 320));
+        list.add(new Place( "공과·도시과학대학", 8, 400));
+        list.add(new Place("공동실험 실습관", 9, 500));
+
+        adapter = new MapSearchAdapter(list);
+        recyclerView.setAdapter(adapter);
+
+        //검색 결과 창 숨김.
+        mapSlidingLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+
+
+        //검색창의 포커스 여부 설정
+        editText_search.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
 
                 if (hasFocus) {
-                    search_button.setVisibility(View.INVISIBLE);
-                    clear_button.setVisibility(View.VISIBLE);
-
-                } else {
-                    search_button.setVisibility(View.VISIBLE);
-                    clear_button.setVisibility(View.INVISIBLE);
+                    map_frag_back.setVisibility(View.VISIBLE);
+                    map_frag_cancel.setVisibility(View.VISIBLE);
+                    map_frag_search_icon.setVisibility(View.INVISIBLE);
 
                 }
-
-                reset_button.setVisibility(View.INVISIBLE);
             }
         });
 
 
-        autoCompleteTextView_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        //검색창 검색 버튼 누를때
+        editText_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
 
-                Log.d("@@@", autoCompleteTextView_search.getText().toString());
-
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
 
-                    if (autoCompleteTextView_search.getText().toString().equals("인문대학")) {
-
-                        if (polyline != null) polyline.remove();
-
-                        latLngList.clear();
-                        gMap.clear();
-
-                        latLngList.add(new LatLng(37.3747872226735, 126.63342072263077));
-                        latLngList.add(new LatLng(37.375203052050516, 126.63380415078625));
-                        latLngList.add(new LatLng(37.375773021330396, 126.63272604103146));
-                        latLngList.add(new LatLng(37.37541813530646, 126.63237418931232));
-                        latLngList.add(new LatLng(37.37556152380112, 126.63214864333851));
-
-                        PolylineOptions polylineOptions = new PolylineOptions().addAll(latLngList).clickable(true);
-                        polyline = gMap.addPolyline(polylineOptions);
-
-                        MarkerOptions markerOptions = new MarkerOptions();
-                        markerOptions.position(new LatLng(37.37556152380112, 126.63214864333851));
-                        markerOptions.title("인문대학");
-
-                        gMap.addMarker(markerOptions);
-
-                        search_button.setVisibility(View.INVISIBLE);
-                        clear_button.setVisibility(View.INVISIBLE);
-                        reset_button.setVisibility(View.VISIBLE);
-
-                    }
-
+                    map_frag_back.setVisibility(View.VISIBLE);
+                    map_frag_cancel.setVisibility(View.INVISIBLE);
                     hideKeyboard(layout);
+
+                    mapSlidingLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
 
                 }
 
@@ -169,64 +159,36 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         });
 
 
-        search_button.setOnClickListener(new View.OnClickListener() {
+
+        //검색창 뒤로 가기 누를때
+        map_frag_back.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
-                autoCompleteTextView_search.requestFocus();
-                openKeyboard(layout);
+                editText_search.clearFocus();
+                editText_search.setText("");
 
-                MarkerOptions markerOptions = new MarkerOptions();
+                map_frag_back.setVisibility(View.INVISIBLE);
+                map_frag_cancel.setVisibility(View.INVISIBLE);
+                map_frag_search_icon.setVisibility(View.VISIBLE);
 
-                LatLng SEOUL2 = new LatLng(37.37475843296176, 126.63338849213142);
-
-
-                markerOptions.position(SEOUL2);
-
-                markerOptions.title("정보대");
-
-                markerOptions.snippet("본진");
-
-                gMap.addMarker(markerOptions);
-
-                gMap.animateCamera(CameraUpdateFactory.newLatLngZoom( SEOUL2, 17));
-
-
-            }
-        });
-
-        clear_button.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                autoCompleteTextView_search.clearFocus();
                 hideKeyboard(layout);
+                mapSlidingLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
 
             }
         });
 
-        reset_button.setOnClickListener(new View.OnClickListener() {
-
+        //검색창 클리어
+        map_frag_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                search_button.setVisibility(View.VISIBLE);
-                clear_button.setVisibility(View.INVISIBLE);
-                reset_button.setVisibility(View.INVISIBLE);
-                autoCompleteTextView_search.clearFocus();
-
-
-                if (polyline != null) polyline.remove();
-                latLngList.clear();
+                editText_search.setText("");
 
 
             }
         });
-
-
-        autoCompleteTextView_search.setAdapter(new ArrayAdapter<String>(layout.getContext(),
-                android.R.layout.simple_dropdown_item_1line, items));
 
 
         now_navi_button.setOnClickListener(new View.OnClickListener() {
@@ -266,14 +228,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                 gMap.animateCamera(CameraUpdateFactory.newLatLngZoom( dest , 17));
 
-
-
-
             }
         });
 
-
         return layout;
+
     }
 
     private void fetchLocation() {
@@ -369,8 +328,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         gMap = googleMap;
 
-        //MarkerOptions markerOptions = new MarkerOptions();
-
 
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -405,7 +362,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     public void openKeyboard(View layout){
         InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputManager.showSoftInput(layout.findViewById(R.id.autoCompleteTextView_search), 0);
+        inputManager.showSoftInput(layout.findViewById(R.id.editText_search), 0);
     }
 
 }
