@@ -14,9 +14,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,6 +26,7 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -40,6 +43,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.QuickContactBadge;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,6 +55,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -97,6 +102,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         ImageView map_frag_back = layout.findViewById(R.id.map_frag_back);
         ImageView map_frag_cancel = layout.findViewById(R.id.map_frag_cancel);
         ImageView map_frag_search_icon = layout.findViewById(R.id.map_frag_search_icon);
+        Spinner map_frag_sliding_spinner = layout.findViewById(R.id.map_frag_sliding_spinner);
 
         EditText editText_search = layout.findViewById(R.id.editText_search);
         SlidingUpPanelLayout mapSlidingLayout = layout.findViewById(R.id.map_sliding_layout);
@@ -107,17 +113,23 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         //리사이클러뷰 설정
         recyclerView = (RecyclerView)layout.findViewById(R.id.map_frag_recyclerview_sliding);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false)) ;
-        ArrayList<Place> list = new ArrayList<>();
+        ArrayList<Place> placeList = new ArrayList<>();
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), new LinearLayoutManager(getContext()).getOrientation());
+        recyclerView.addItemDecoration(dividerItemDecoration);
+
+        //스피너 설정
+        String[] items = getResources().getStringArray(R.array.map_frag_sliding_spinner_list);
+        map_frag_sliding_spinner.setAdapter(new ArrayAdapter(getContext(), R.layout.map_fragment_custom_spinner_item, items));
 
 
-        list.add(new Place("정보기술대학", 7, 320));
-        list.add(new Place( "공과·도시과학대학", 8, 400));
-        list.add(new Place("공동실험 실습관", 9, 500));
-        list.add(new Place("정보기술대학", 7, 320));
-        list.add(new Place( "공과·도시과학대학", 8, 400));
-        list.add(new Place("공동실험 실습관", 9, 500));
+        placeList.add(new Place("정보기술대학", 7, 320, new LatLng(37.37428569643498, 126.63386849546436)));
+        placeList.add(new Place( "공과·도시과학대학", 8, 400 , new LatLng(37.37351897032315, 126.63275998245754)));
+        placeList.add(new Place("공동실험 실습관", 9, 500 , new LatLng(37.37269933308723, 126.63335830802647)));
+        placeList.add(new Place("정보기술대학", 7, 320 , new LatLng(37.37428569643498, 126.63386849546436)));
+        placeList.add(new Place( "공과·도시과학대학", 8, 400 , new LatLng(37.37351897032315, 126.63275998245754)));
+        placeList.add(new Place("공동실험 실습관", 9, 500 , new LatLng(37.37269933308723, 126.63335830802647)));
 
-        adapter = new MapSearchAdapter(list);
+        adapter = new MapSearchAdapter(placeList);
         recyclerView.setAdapter(adapter);
 
         //검색 결과 창 숨김.
@@ -152,6 +164,26 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                     mapSlidingLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
 
+                    gMap.clear();
+
+                    if(placeList!=null && !placeList.isEmpty()){
+
+                        for(int i=0; i<placeList.size(); i++){
+
+                            MarkerOptions markerOptions = new MarkerOptions();
+                            markerOptions.position(placeList.get(i).getLocation());
+                            markerOptions.title(placeList.get(i).getTitle());
+
+                            Marker marker = gMap.addMarker(markerOptions);
+                            marker.setTag(i + "번째 마커");
+
+                            //markerOptions.icon()
+
+                        }
+
+
+                    }
+
                 }
 
                 return false;
@@ -175,6 +207,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                 hideKeyboard(layout);
                 mapSlidingLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+
+                gMap.clear();
+
 
             }
         });
@@ -338,10 +373,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         gMap.getUiSettings().setMyLocationButtonEnabled(true);
 
+        gMap.getUiSettings().setMapToolbarEnabled(false);
+
         View locationButton = ((View) getView().findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
         View compassButton = ((View) getView().findViewWithTag("GoogleMapCompass"));
         RelativeLayout.LayoutParams rlpLocation = (RelativeLayout.LayoutParams) locationButton.getLayoutParams();
         RelativeLayout.LayoutParams rlpCompass = (RelativeLayout.LayoutParams) compassButton.getLayoutParams();
+
 // position on right bottom
         rlpLocation.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
         rlpLocation.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
@@ -350,6 +388,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         rlpCompass.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
         rlpCompass.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
         rlpCompass.setMargins(180, 200, 0, 0);
+
+        gMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(@NonNull Marker marker) {
+
+                Toast.makeText(getActivity(), marker.getTag() + "" + marker.getTitle(), Toast.LENGTH_SHORT).show();
+
+
+                return false;
+            }
+        });
 
 
 

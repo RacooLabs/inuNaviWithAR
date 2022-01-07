@@ -10,7 +10,7 @@
     android:layout_height="match_parent"
     android:gravity="bottom"
     app:umanoDragView="@id/dragView"
-    app:umanoScrollableView="@id/recyclerview_sliding"
+    app:umanoScrollableView="@id/map_frag_recyclerview_sliding"
     app:umanoPanelHeight="48dp"
     app:umanoOverlay="false"
     app:umanoParallaxOffset="0dp"
@@ -205,15 +205,30 @@
         xmlns:android="http://schemas.android.com/apk/res/android">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/View_homeBottomBar"
+            android:id="@+id/map_frag_sliding_topBar"
             android:layout_height="48dp"
             android:layout_width="match_parent"
-            android:background="#CCCCCC"
+            android:background="#ffffff"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed"
-            />
+            >
+
+            <Spinner
+                android:id="@+id/map_frag_sliding_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginLeft="20dp"
+
+                />
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         <androidx.recyclerview.widget.RecyclerView
@@ -222,9 +237,9 @@
             android:layout_height="300dp"
             android:background="#FFFFFF"
             android:scrollbars="vertical"
-            app:layout_constraintTop_toBottomOf="@+id/View_homeBottomBar"
-            app:layout_constraintLeft_toLeftOf="@+id/View_homeBottomBar"
-            app:layout_constraintRight_toRightOf="@+id/View_homeBottomBar"/>
+            app:layout_constraintTop_toBottomOf="@+id/map_frag_sliding_topBar"
+            app:layout_constraintLeft_toLeftOf="@+id/map_frag_sliding_topBar"
+            app:layout_constraintRight_toRightOf="@+id/map_frag_sliding_topBar"/>
 
         >
 
