@@ -82,28 +82,34 @@
 
         <ImageView
             android:id="@+id/imageView_frag_tita_setting"
-            android:layout_width="@dimen/top_bar_button_size"
-            android:layout_height="@dimen/top_bar_button_size"
-            android:src="@drawable/ic_settings_black_24dp"
             app:layout_constraintRight_toRightOf="@id/frag_tita_top_bar"
             app:layout_constraintBottom_toBottomOf="@id/frag_tita_top_bar"
             app:layout_constraintTop_toTopOf="@id/frag_tita_top_bar"
-            android:layout_marginRight="16dp"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"/>
+            android:layout_marginRight="10dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:padding="6dp"
+            android:src="@drawable/ic_settings_black_24dp"
+            android:background="@drawable/layout_map_back_button"
+            android:visibility="visible"
+            android:clickable="true"
+            />
 
 
         <ImageView
             android:id="@+id/imageView_frag_tita_add"
-            android:layout_width="@dimen/top_bar_button_size"
-            android:layout_height="@dimen/top_bar_button_size"
-            android:src="@drawable/ic_add_circle_outline_black_24dp"
             app:layout_constraintRight_toLeftOf="@id/imageView_frag_tita_setting"
             app:layout_constraintBottom_toBottomOf="@id/frag_tita_top_bar"
             app:layout_constraintTop_toTopOf="@id/frag_tita_top_bar"
-            android:layout_marginRight="20dp"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"/>
+            android:layout_marginRight="14dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:padding="6dp"
+            android:src="@drawable/ic_add_circle_outline_black_24dp"
+            android:background="@drawable/layout_map_back_button"
+            android:visibility="visible"
+            android:clickable="true"
+            />
 
 
 

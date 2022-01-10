@@ -98,7 +98,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mapView.getMapAsync(this);
         mapFragment = this;
 
-        TextView now_navi_button = layout.findViewById(R.id.now_navi_button);
+        ImageView now_navi_button = layout.findViewById(R.id.now_navi_button);
+
         ImageView map_frag_back = layout.findViewById(R.id.map_frag_back);
         ImageView map_frag_cancel = layout.findViewById(R.id.map_frag_cancel);
         ImageView map_frag_search_icon = layout.findViewById(R.id.map_frag_search_icon);
