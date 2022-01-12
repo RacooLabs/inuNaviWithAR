@@ -57,6 +57,7 @@ public class SettingActivity extends AppCompatActivity {
                     intent.putExtra("CallType", 1001);
                     setResult(Activity.RESULT_OK, intent);
                     finish();
+
                 }
 
             }

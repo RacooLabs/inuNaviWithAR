@@ -32,11 +32,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/autoCompleteTextView_search_wrapper"
@@ -147,7 +145,6 @@
                 android:layout_margin="12dp"
                 android:background="@drawable/layout_map_sub_button"
                 android:elevation="6dp"
-                android:layout_marginRight="6dp"
                 android:src="@drawable/ic_turn_sharp_right_black_24dp"
                 android:clickable="true"
                 android:padding="12dp"
@@ -165,7 +162,7 @@
             android:layout_height="66dp"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/map_frag_detail_box"
+            app:layout_constraintBottom_toTopOf="@id/map_frag_detail_box_wrapper"
             android:gravity="center"
             >
 
@@ -175,10 +172,12 @@
                 android:id="@+id/AR_button"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:layout_margin="12dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:layout_marginBottom="12dp"
+                android:layout_marginTop="2dp"
                 android:background="@drawable/layout_map_sub_button_ar"
                 android:elevation="6dp"
-                android:layout_marginRight="6dp"
                 android:padding="12dp"
                 android:src="@drawable/ic_view_in_ar_black_24dp"
                 android:clickable="true"
@@ -192,26 +191,168 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/map_frag_detail_box"
+            android:id="@+id/map_frag_detail_box_wrapper"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="190dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             android:visibility="visible">
 
-            <View
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/map_frag_detail_box"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/layout_map_detail_box"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="@id/map_frag_detail_box"
+                app:layout_constraintRight_toRightOf="@id/map_frag_detail_box"
+                app:layout_constraintBottom_toBottomOf="@id/map_frag_detail_box"
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_margin ="12dp"
-                android:elevation="4dp"
                 android:clickable="true"
-                />
+                android:elevation="6dp"
+                >
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/map_frag_detail_content_wrapper"
+                    android:layout_width="match_parent"
+                    android:layout_height="116dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/map_frag_detail_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginBottom="6dp"
+                        android:gravity="center_vertical"
+                        android:text="정보기술대학"
+                        android:textColor="@color/main_color"
+                        android:textSize="@dimen/main_text_size"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toTopOf="@id/map_frag_detail_distance"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_chainStyle="packed">
+
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/map_frag_detail_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="12dp"
+                        android:gravity="center_vertical"
+                        android:text="13호관"
+                        android:textColor="@color/main_text_color"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="@id/map_frag_detail_title"
+                        app:layout_constraintLeft_toRightOf="@id/map_frag_detail_title"
+                        app:layout_constraintTop_toTopOf="@id/map_frag_detail_title">
+
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/map_frag_detail_distance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="24dp"
+                        android:gravity="center_vertical"
+                        android:text="320m"
+                        android:textColor="@color/main_text_color"
+                        android:textSize="12sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/map_frag_detail_title">
+
+                    </TextView>
+
+                    <ImageView
+                        android:layout_width="90dp"
+                        android:layout_height="90dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:layout_marginRight="24dp"
+                        android:src="@drawable/ward7_example"
+                        android:scaleType="centerCrop"/>
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginRight="12dp"
+                        android:background="#F2F2F3"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/map_frag_detail_startButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/map_frag_detail_content_wrapper"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/map_frag_detail_endButton"
+                    android:layout_marginRight="6dp"
+                    android:background="@drawable/layout_map_list_button"
+                    android:clickable="true">
+
+                    <TextView
+
+                        android:layout_width="60dp"
+                        android:layout_height="36dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:gravity="center"
+                        android:text="출발"
+                        android:textSize="12sp"
+                        android:textColor="@color/main_color"
+
+                        />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/map_frag_detail_endButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/map_frag_detail_content_wrapper"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginRight="24dp"
+                    android:background="@drawable/layout_more_option_button_roundedbox"
+                    android:clickable="true"
+                    >
+
+                    <TextView
+
+                        android:layout_width="60dp"
+                        android:layout_height="36dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:gravity="center"
+                        android:text="도착"
+                        android:textSize="12sp"
+                        android:textColor="@color/white"
+
+                        />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

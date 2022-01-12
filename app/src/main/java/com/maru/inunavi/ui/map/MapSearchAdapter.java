@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.RequestQueue;
@@ -64,6 +65,7 @@ public class MapSearchAdapter extends RecyclerView.Adapter<MapSearchAdapter.View
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
+        ConstraintLayout map_search_item_wrapper;
         TextView map_search_item_title;
         TextView map_search_item_num;
         TextView map_search_item_distance;
@@ -73,9 +75,26 @@ public class MapSearchAdapter extends RecyclerView.Adapter<MapSearchAdapter.View
 
             super(itemView);
 
+            map_search_item_wrapper = itemView.findViewById(R.id.map_search_item_wrapper);
             map_search_item_title = itemView.findViewById(R.id.map_search_item_title);
             map_search_item_num = itemView.findViewById(R.id.map_search_item_num);
             map_search_item_distance = itemView.findViewById(R.id.map_search_item_distance);
+
+            map_search_item_wrapper.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+
+                    int pos = getAdapterPosition() ;
+
+                    if (pos != RecyclerView.NO_POSITION) {
+                        if(mListener != null){
+                            mListener.onItemClick(v,pos);
+                        }
+                    }
+
+                }
+            });
 
         }
 

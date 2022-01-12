@@ -47,8 +47,8 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
                 @Override
                 public void onClick(View v) {
 
-
                     int pos = getAdapterPosition() ;
+
                     if (pos != RecyclerView.NO_POSITION) {
                         if(mListener != null){
                             mListener.onItemClick(v,pos);
