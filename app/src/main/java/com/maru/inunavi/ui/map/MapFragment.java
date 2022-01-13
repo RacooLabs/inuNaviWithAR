@@ -21,6 +21,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -89,7 +93,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private MapFragmentState mapFragmentState = DEFAULT_MODE;
 
     // 검색했을 때 검새결과를 받을 리스트
-    private ArrayList<Place> placeList;
+    public static ArrayList<Place> placeList;
+
+    //detail 박스에 포커싱된 자료 번호
+    private int detailFocusedPlaceID = 0;
 
     //레이아웃 변수
     private View layout;
@@ -113,10 +120,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private ImageView now_navi_button;
     private ImageView AR_button;
 
+
+    // 디테일 박스
+
+    private ConstraintLayout map_frag_detail_box;
+
     // 디테일 박스 구성 레이아웃
     private TextView map_frag_detail_title;
-    private TextView map_frag_detail_num;
+    private TextView map_frag_detail_sort;
     private TextView map_frag_detail_distance;
+
+
 
 
     public MapFragment() {
@@ -133,7 +147,21 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                 switch (mapFragmentState){
                     case DEFAULT_MODE:
-                        System.exit(0);
+
+                        if(editText_search.isFocused()){
+                            editText_search.clearFocus();
+                            editText_search.setText("");
+
+                            map_frag_back.setVisibility(View.INVISIBLE);
+                            map_frag_cancel.setVisibility(View.INVISIBLE);
+                            map_frag_search_icon.setVisibility(View.VISIBLE);
+
+                            hideKeyboard(layout);
+                            gMap.clear();
+                        }else{
+                            System.exit(0);
+                        }
+
                         break;
 
                     case SEARCH_MODE :
@@ -201,9 +229,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         now_navi_button = layout.findViewById(R.id.now_navi_button);
         AR_button = layout.findViewById(R.id.AR_button);
 
+        // 디테일 박스
+
+        map_frag_detail_box = layout.findViewById(R.id.map_frag_detail_box);
+
         // 디테일 박스 구성 레이아웃
         map_frag_detail_title = layout.findViewById(R.id.map_frag_detail_title);
-        map_frag_detail_num = layout.findViewById(R.id.map_frag_detail_num);
+        map_frag_detail_sort = layout.findViewById(R.id.map_frag_detail_sort);
         map_frag_detail_distance = layout.findViewById(R.id.map_frag_detail_distance);
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
@@ -216,12 +248,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), new LinearLayoutManager(getContext()).getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
 
-        placeList.add(new Place("정보기술대학", 7, 320, new LatLng(37.37428569643498, 126.63386849546436)));
-        placeList.add(new Place( "공과·도시과학대학", 8, 400 , new LatLng(37.37351897032315, 126.63275998245754)));
-        placeList.add(new Place("공동실험 실습관", 9, 500 , new LatLng(37.37269933308723, 126.63335830802647)));
-        placeList.add(new Place("정보기술대학", 7, 320 , new LatLng(37.37428569643498, 126.63386849546436)));
-        placeList.add(new Place( "공과·도시과학대학", 8, 400 , new LatLng(37.37351897032315, 126.63275998245754)));
-        placeList.add(new Place("공동실험 실습관", 9, 500 , new LatLng(37.37269933308723, 126.63335830802647)));
+        placeList.add(new Place(1,"정보기술대학", "부속건물", 320, new LatLng(37.37428569643498, 126.63386849546436)));
+        placeList.add(new Place( 2,"공과·도시과학대학", "부속건물", 400 , new LatLng(37.37351897032315, 126.63275998245754)));
+        placeList.add(new Place(3, "공동실험 실습관", "부속건물", 500 , new LatLng(37.37269933308723, 126.63335830802647)));
+        placeList.add(new Place(1,"정보기술대학", "부속건물", 320 , new LatLng(37.37428569643498, 126.63386849546436)));
+        placeList.add(new Place( 2,"공과·도시과학대학", "부속건물", 400 , new LatLng(37.37351897032315, 126.63275998245754)));
+        placeList.add(new Place(3,"공동실험 실습관", "부속건물", 500 , new LatLng(37.37269933308723, 126.63335830802647)));
 
         adapter = new MapSearchAdapter(placeList);
         recyclerView.setAdapter(adapter);
@@ -233,8 +265,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                 setMapFragmentMode(DETAIL_MODE, autoCompleteTextView_search_wrapper, mapSlidingLayout, map_frag_detail_box_wrapper, now_navi_button_wrapper, AR_button_wrapper);
                 map_frag_detail_title.setText(placeList.get(position).getTitle());
-                map_frag_detail_num.setText(placeList.get(position).getNum() + "호관");
+                map_frag_detail_sort.setText(placeList.get(position).getSort());
                 map_frag_detail_distance.setText((int)(placeList.get(position).getDistance()) + "m");
+
+                detailFocusedPlaceID = placeList.get(position).getplaceID();
 
                 gMap.animateCamera(CameraUpdateFactory.newLatLngZoom( placeList.get(position).getLocation() , 17));
 
@@ -248,6 +282,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         //초기 모드 설정
         setMapFragmentMode(DEFAULT_MODE,autoCompleteTextView_search_wrapper, mapSlidingLayout, map_frag_detail_box_wrapper, now_navi_button_wrapper, AR_button_wrapper);
+
 
         //검색창의 포커스 여부 설정
         editText_search.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -313,8 +348,23 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                 switch (mapFragmentState){
                     case DEFAULT_MODE:
-                        System.exit(0);
+
+                        if(editText_search.isFocused()){
+                            editText_search.clearFocus();
+                            editText_search.setText("");
+
+                            map_frag_back.setVisibility(View.INVISIBLE);
+                            map_frag_cancel.setVisibility(View.INVISIBLE);
+                            map_frag_search_icon.setVisibility(View.VISIBLE);
+
+                            hideKeyboard(layout);
+                            gMap.clear();
+                        }else{
+                            System.exit(0);
+                        }
+
                         break;
+
 
                     case SEARCH_MODE :
 
@@ -354,6 +404,40 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
 
             }
+        });
+
+        // 디테일 박스 리스너 설정
+
+        ActivityResultLauncher<Intent> detailActivityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            Intent intent = result.getData();
+
+                            int CallType = intent.getIntExtra("CallType", 0);
+
+
+                            if(CallType == 2001) {
+
+                            }
+
+                        }
+
+                    }
+                });
+
+        map_frag_detail_box.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(getActivity(), MapDetailActivity.class);
+                intent.putExtra("placeID", detailFocusedPlaceID);
+                detailActivityResultLauncher.launch(intent);
+
+            }
+
         });
 
 
@@ -531,8 +615,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                 setMapFragmentMode(DETAIL_MODE, autoCompleteTextView_search_wrapper, mapSlidingLayout, map_frag_detail_box_wrapper, now_navi_button_wrapper, AR_button_wrapper);
                 map_frag_detail_title.setText(placeList.get((Integer.parseInt(marker.getTag().toString()))).getTitle());
-                map_frag_detail_num.setText(placeList.get((Integer.parseInt(marker.getTag().toString()))).getNum() + "호관");
+                map_frag_detail_sort.setText(placeList.get((Integer.parseInt(marker.getTag().toString()))).getSort());
                 map_frag_detail_distance.setText((int)(placeList.get((Integer.parseInt(marker.getTag().toString()))).getDistance()) + "m");
+
+                detailFocusedPlaceID = placeList.get(Integer.parseInt(marker.getTag().toString())).getplaceID();
 
                 return false;
 

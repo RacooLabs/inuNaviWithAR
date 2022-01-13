@@ -123,7 +123,7 @@ public class MapSearchAdapter extends RecyclerView.Adapter<MapSearchAdapter.View
     public void onBindViewHolder(MapSearchAdapter.ViewHolder holder, int position) {
 
         holder.map_search_item_title.setText(mData.get(position).getTitle());
-        holder.map_search_item_num.setText(mData.get(position).getNum() + "호관");
+        holder.map_search_item_num.setText(mData.get(position).getSort());
         holder.map_search_item_distance.setText((int)(mData.get(position).getDistance()) + "m");
 
     }

@@ -7,12 +7,13 @@
     <dimen name="top_bar_textSize">20sp</dimen>
     <dimen name="small_text_size">12sp</dimen>
 
-    <dimen name="top_bar_height">64dp</dimen>
+    <dimen name="top_bar_height">60dp</dimen>
     <dimen name="top_bar_button_size">24dp</dimen>
     <dimen name="top_bar_leftPadding">16dp</dimen>
     <dimen name="major_item_leftPadding">20dp</dimen>
     <dimen name="editText_padding">10dp</dimen>
     <dimen name="editText_height">40dp</dimen>
+    <dimen name="default_button_height">36dp</dimen>
 
 
 </resources>

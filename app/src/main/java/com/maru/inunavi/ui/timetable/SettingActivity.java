@@ -33,6 +33,8 @@ public class SettingActivity extends AppCompatActivity {
 
         ImageView tita_setting_backButton = findViewById(R.id.tita_setting_backButton);
 
+
+
         //돌아가기 버튼
         tita_setting_backButton.setOnClickListener(new View.OnClickListener() {
             @Override

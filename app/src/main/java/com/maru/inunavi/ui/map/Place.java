@@ -5,18 +5,27 @@ import com.google.android.gms.maps.model.LatLng;
 public class Place {
 
 
-
+    private int placeID;
     private String title;
-    private int num;
+    private String sort;
     private double distance;
     private LatLng location;
 
-    public Place(String title, int num, double distance, LatLng location) {
+    // 이미지
+    // 운영시간
+    // 전화번호
+
+    public Place(int placeID, String title, String sort, double distance, LatLng location) {
+        this.placeID = placeID;
         this.title = title;
-        this.num = num;
+        this.sort = sort;
         this.distance = distance;
         this.location = location;
     }
+
+    public int getplaceID() {return placeID;}
+
+    public void setplaceID() {this.placeID = placeID;}
 
     public String getTitle() {
         return title;
@@ -26,12 +35,12 @@ public class Place {
         this.title = title;
     }
 
-    public int getNum() {
-        return num;
+    public String getSort() {
+        return sort;
     }
 
-    public void setNum(int num) {
-        this.num = num;
+    public void setSort(int num) {
+        this.sort = sort;
     }
 
     public double getDistance() {

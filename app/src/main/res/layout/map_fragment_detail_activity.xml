@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:id="@+id/map_frag_detail_activity_topBar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/top_bar_height"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/top_bar_leftPadding"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="center_vertical"
+
+        >
+
+        <ImageView
+            android:id="@+id/map_frag_detail_activity_backButton"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:padding="6dp"
+            android:src="@drawable/ic_clear_black_24dp"
+            android:background="@drawable/layout_map_back_button"
+            android:visibility="visible"
+            android:clickable="true"/>
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/map_frag_detail_activity_img"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/map_frag_detail_activity_topBar"
+        android:src="@drawable/ward7_example"
+        android:scaleType="centerCrop"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/map_frag_detail_activity_title_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="116dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/map_frag_detail_activity_img">
+
+        <TextView
+            android:id="@+id/map_frag_detail_activity_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
+            android:gravity="center_vertical"
+            android:text="정보기술대학"
+            android:textColor="@color/main_color"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="24dp"
+            app:layout_constraintRight_toLeftOf="@+id/map_frag_detail_activity_sort"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            android:layout_marginRight="12dp"
+            >
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/map_frag_detail_activity_sort"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="부속건물"
+            android:textColor="@color/main_text_color"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/map_frag_detail_activity_title"
+            app:layout_constraintLeft_toRightOf="@id/map_frag_detail_activity_title"
+            app:layout_constraintTop_toTopOf="@id/map_frag_detail_activity_title"
+            app:layout_constraintRight_toRightOf="parent">
+
+        </TextView>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/map_frag_detail_activity_startButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/map_frag_detail_activity_title"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/map_frag_detail_activity_endButton"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:background="@drawable/layout_map_list_button"
+            android:clickable="true"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            android:layout_marginRight="12dp"
+            android:layout_marginBottom="6dp">
+
+
+
+
+            <TextView
+
+                android:layout_width="60dp"
+                android:layout_height="@dimen/default_button_height"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:gravity="center"
+                android:text="출발"
+                android:textSize="12sp"
+                android:textColor="@color/main_color"
+
+
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/map_frag_detail_activity_endButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/map_frag_detail_activity_startButton"
+            app:layout_constraintBottom_toBottomOf="@id/map_frag_detail_activity_startButton"
+            app:layout_constraintLeft_toRightOf="@id/map_frag_detail_activity_startButton"
+            app:layout_constraintRight_toRightOf="parent"
+            android:background="@drawable/layout_more_option_button_roundedbox"
+            android:clickable="true"
+            >
+
+            <TextView
+
+                android:layout_width="60dp"
+                android:layout_height="@dimen/default_button_height"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:gravity="center"
+                android:text="도착"
+                android:textSize="12sp"
+                android:textColor="@color/white"
+
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:background="#F2F2F3"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/map_frag_detail_activity_time"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/map_frag_detail_activity_title_wrapper">
+
+        <ImageView
+            android:id="@+id/map_frag_detail_activity_clock_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_schedule_black_24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="12dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/main_text_color"
+            android:text="평일 9:30 ~ 17:00"
+            app:layout_constraintLeft_toRightOf="@id/map_frag_detail_activity_clock_icon"
+            app:layout_constraintTop_toTopOf="@id/map_frag_detail_activity_clock_icon"
+            app:layout_constraintBottom_toBottomOf="@id/map_frag_detail_activity_clock_icon"
+            android:layout_marginLeft="12dp"/>
+
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:background="#F2F2F3"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/map_frag_detail_activity_callNum"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/map_frag_detail_activity_time">
+
+        <ImageView
+            android:id="@+id/map_frag_detail_activity_call_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_call_black_24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="12dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/main_text_color"
+            android:text="032 - 123 - 4567"
+            app:layout_constraintLeft_toRightOf="@id/map_frag_detail_activity_call_icon"
+            app:layout_constraintTop_toTopOf="@id/map_frag_detail_activity_call_icon"
+            app:layout_constraintBottom_toBottomOf="@id/map_frag_detail_activity_call_icon"
+            android:layout_marginLeft="12dp"/>
+
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:background="#F2F2F3"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -240,12 +240,12 @@
                     </TextView>
 
                     <TextView
-                        android:id="@+id/map_frag_detail_num"
+                        android:id="@+id/map_frag_detail_sort"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="12dp"
                         android:gravity="center_vertical"
-                        android:text="13호관"
+                        android:text="부속건물"
                         android:textColor="@color/main_text_color"
                         android:textSize="12sp"
                         android:textStyle="bold"
@@ -307,7 +307,7 @@
                     <TextView
 
                         android:layout_width="60dp"
-                        android:layout_height="36dp"
+                        android:layout_height="@dimen/default_button_height"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
@@ -336,7 +336,7 @@
                     <TextView
 
                         android:layout_width="60dp"
-                        android:layout_height="36dp"
+                        android:layout_height="@dimen/default_button_height"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
