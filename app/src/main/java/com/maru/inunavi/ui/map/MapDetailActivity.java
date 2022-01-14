@@ -13,14 +13,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.maru.inunavi.MainActivity;
 import com.maru.inunavi.R;
+import com.maru.inunavi.ui.recommend.RecommendAdapter;
 import com.maru.inunavi.ui.timetable.SettingAdapter;
+import com.maru.inunavi.ui.timetable.search.Lecture;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MapDetailActivity extends AppCompatActivity {
 
+    private RecyclerView recyclerView;
+    private MapDetailActivityAdapter adapter;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
 
@@ -44,11 +50,7 @@ public class MapDetailActivity extends AppCompatActivity {
         TextView map_frag_detail_activity_time = findViewById(R.id.map_frag_detail_activity_time);
         TextView map_frag_detail_activity_callNum = findViewById(R.id.map_frag_detail_activity_callNum);
 
-        map_frag_detail_activity_title.setText(title);
-        map_frag_detail_activity_sort.setText(sort);
-        map_frag_detail_activity_time.setText(time);
-        map_frag_detail_activity_callNum.setText(callNum);
-
+        
         //돌아가기 버튼
         map_frag_detail_activity_backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,6 +58,31 @@ public class MapDetailActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        
+        // 장소 정보 출력
+        map_frag_detail_activity_title.setText(title);
+        map_frag_detail_activity_sort.setText(sort);
+        map_frag_detail_activity_time.setText(time);
+        map_frag_detail_activity_callNum.setText(callNum);
+
+        recyclerView = findViewById(R.id.map_frag_detail_recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)) ;
+
+
+        ArrayList<Place> nearPlaceList = new ArrayList<Place>(Arrays.asList(
+            new Place(1,"정보기술대학", "부속건물", 320, new LatLng(37.37428569643498, 126.63386849546436), "9:00 ~ 18:00", "032-832-1234"),
+            new Place( 2,"공과·도시과학대학", "부속건물", 400 , new LatLng(37.37351897032315, 126.63275998245754), "9:00 ~ 18:00", "032-832-1234"),
+            new Place(3, "공동실험 실습관", "부속건물", 500 , new LatLng(37.37269933308723, 126.63335830802647), "9:00 ~ 18:00", "032-832-1234"),
+            new Place(1,"정보기술대학", "부속건물", 320 , new LatLng(37.37428569643498, 126.63386849546436), "9:00 ~ 18:00", "032-832-1234"),
+            new Place( 2,"공과·도시과학대학", "부속건물", 400 , new LatLng(37.37351897032315, 126.63275998245754), "9:00 ~ 18:00", "032-832-1234"),
+            new Place(3,"공동실험 실습관", "부속건물", 500 , new LatLng(37.37269933308723, 126.63335830802647), "9:00 ~ 18:00", "032-832-1234")
+
+        ));
+
+
+        adapter = new MapDetailActivityAdapter(nearPlaceList);
+        recyclerView.setAdapter(adapter);
 
     }
 

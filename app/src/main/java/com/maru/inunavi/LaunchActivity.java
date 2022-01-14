@@ -53,7 +53,7 @@ public class LaunchActivity extends AppCompatActivity {
 
     // 여기서부터는 퍼미션 관련 코드입니다.
     static final int PERMISSIONS_REQUEST_CODE = 1000;
-    String[] PERMISSIONS  = {Manifest.permission.ACCESS_COARSE_LOCATION};
+    String[] PERMISSIONS  = {Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION};
 
     private boolean hasPermissions(String[] permissions) {
 
