@@ -2,25 +2,29 @@ package com.maru.inunavi.ui.map;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.io.Serializable;
+
 public class Place {
 
 
-    private int placeID;
-    private String title;
-    private String sort;
-    private double distance;
-    private LatLng location;
+    private int placeID = 0;
+    private String title = "";
+    private String sort = "";
+    private double distance = 0.0;
+    private LatLng location = null;
+    private String time = "-";
+    private String callNum = "-";
 
     // 이미지
-    // 운영시간
-    // 전화번호
 
-    public Place(int placeID, String title, String sort, double distance, LatLng location) {
+    public Place(int placeID, String title, String sort, double distance, LatLng location, String time, String callNum) {
         this.placeID = placeID;
         this.title = title;
         this.sort = sort;
         this.distance = distance;
         this.location = location;
+        this.time = time;
+        this.callNum = callNum;
     }
 
     public int getplaceID() {return placeID;}
@@ -59,5 +63,12 @@ public class Place {
         this.location = location;
     }
 
+    public String getTime() { return time; }
+
+    public void setTime(String time) { this.time = time;  }
+
+    public String getCallNum() { return callNum; }
+
+    public void setCallNum(String callNum) { this.callNum = callNum; }
 
 }

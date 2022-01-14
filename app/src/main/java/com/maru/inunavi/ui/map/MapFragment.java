@@ -73,6 +73,7 @@ import com.maru.inunavi.ui.timetable.SettingActivity;
 import com.maru.inunavi.ui.timetable.SettingAdapter;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -108,8 +109,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     // 검색했을 때 검새결과를 받을 리스트
     public static ArrayList<Place> placeList;
 
-    //detail 박스에 포커싱된 자료 번호
-    private int detailFocusedPlaceID = 0;
+    //detail 박스에 포커싱된 장소
+    private Place detailFocusedPlace;
 
     //레이아웃 변수
     private View layout;
@@ -160,6 +161,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             public void handleOnBackPressed() {
 
                 switch (mapFragmentState){
+
                     case DEFAULT_MODE:
 
                         if(editText_search.isFocused()){
@@ -172,8 +174,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                             hideKeyboard(layout);
                             gMap.clear();
+                            floatingMarkersOverlay.clearMarkers();
+
                         }else{
+
                             System.exit(0);
+
                         }
 
                         break;
@@ -190,11 +196,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                         map_frag_back.setVisibility(View.INVISIBLE);
                         map_frag_cancel.setVisibility(View.INVISIBLE);
                         map_frag_search_icon.setVisibility(View.VISIBLE);
-                        floatingMarkersOverlay.clearMarkers();
 
 
                         hideKeyboard(layout);
                         gMap.clear();
+                        floatingMarkersOverlay.clearMarkers();
+
                         break;
 
                     case DETAIL_MODE :
@@ -270,12 +277,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), new LinearLayoutManager(getContext()).getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
 
-        placeList.add(new Place(1,"정보기술대학", "부속건물", 320, new LatLng(37.37428569643498, 126.63386849546436)));
-        placeList.add(new Place( 2,"공과·도시과학대학", "부속건물", 400 , new LatLng(37.37351897032315, 126.63275998245754)));
-        placeList.add(new Place(3, "공동실험 실습관", "부속건물", 500 , new LatLng(37.37269933308723, 126.63335830802647)));
-        placeList.add(new Place(1,"정보기술대학", "부속건물", 320 , new LatLng(37.37428569643498, 126.63386849546436)));
-        placeList.add(new Place( 2,"공과·도시과학대학", "부속건물", 400 , new LatLng(37.37351897032315, 126.63275998245754)));
-        placeList.add(new Place(3,"공동실험 실습관", "부속건물", 500 , new LatLng(37.37269933308723, 126.63335830802647)));
+        placeList.add(new Place(1,"정보기술대학", "부속건물", 320, new LatLng(37.37428569643498, 126.63386849546436), "9:00 ~ 18:00", "032-832-1234"));
+        placeList.add(new Place( 2,"공과·도시과학대학", "부속건물", 400 , new LatLng(37.37351897032315, 126.63275998245754), "9:00 ~ 18:00", "032-832-1234"));
+        placeList.add(new Place(3, "공동실험 실습관", "부속건물", 500 , new LatLng(37.37269933308723, 126.63335830802647), "9:00 ~ 18:00", "032-832-1234"));
+        placeList.add(new Place(1,"정보기술대학", "부속건물", 320 , new LatLng(37.37428569643498, 126.63386849546436), "9:00 ~ 18:00", "032-832-1234"));
+        placeList.add(new Place( 2,"공과·도시과학대학", "부속건물", 400 , new LatLng(37.37351897032315, 126.63275998245754), "9:00 ~ 18:00", "032-832-1234"));
+        placeList.add(new Place(3,"공동실험 실습관", "부속건물", 500 , new LatLng(37.37269933308723, 126.63335830802647), "9:00 ~ 18:00", "032-832-1234"));
 
         adapter = new MapSearchAdapter(placeList);
         recyclerView.setAdapter(adapter);
@@ -290,7 +297,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 map_frag_detail_sort.setText(placeList.get(position).getSort());
                 map_frag_detail_distance.setText((int)(placeList.get(position).getDistance()) + "m");
 
-                detailFocusedPlaceID = placeList.get(position).getplaceID();
+                detailFocusedPlace= placeList.get(position);
 
                 gMap.animateCamera(CameraUpdateFactory.newLatLngZoom( placeList.get(position).getLocation() , 17));
 
@@ -338,11 +345,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                     map_frag_back.setVisibility(View.VISIBLE);
                     map_frag_cancel.setVisibility(View.INVISIBLE);
+
                     hideKeyboard(layout);
 
                     setMapFragmentMode(SEARCH_MODE,autoCompleteTextView_search_wrapper, mapSlidingLayout, map_frag_detail_box_wrapper, now_navi_button_wrapper, AR_button_wrapper);
 
                     gMap.clear();
+                    floatingMarkersOverlay.clearMarkers();
 
                     if(placeList!=null && !placeList.isEmpty()){
 
@@ -367,13 +376,22 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                             //Adding the marker to track by the overlay
                             //To remove that marker, you will need to call floatingMarkersOverlay.removeMarker(id)
+
+
                             floatingMarkersOverlay.addMarker(i, mi);
 
                         }
 
                     }
 
-                    gMap.animateCamera(CameraUpdateFactory.newLatLngZoom( placeList.get(0).getLocation() , 17));
+                    gMap.animateCamera(CameraUpdateFactory.newLatLngZoom( new LatLng(placeList.get(0).getLocation().latitude - 0.0008,
+                            placeList.get(0).getLocation().longitude) , 17));
+
+                    //gMap.animateCamera(CameraUpdateFactory.newLatLngZoom( placeList.get(0).getLocation(), 17));
+
+
+
+
 
                 }
 
@@ -401,6 +419,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                             hideKeyboard(layout);
                             gMap.clear();
+                            floatingMarkersOverlay.clearMarkers();
                         }else{
                             System.exit(0);
                         }
@@ -420,10 +439,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                         map_frag_back.setVisibility(View.INVISIBLE);
                         map_frag_cancel.setVisibility(View.INVISIBLE);
                         map_frag_search_icon.setVisibility(View.VISIBLE);
-                        floatingMarkersOverlay.clearMarkers();
 
                         hideKeyboard(layout);
                         gMap.clear();
+                        floatingMarkersOverlay.clearMarkers();
+
                         break;
 
                     case DETAIL_MODE :
@@ -482,7 +502,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             public void onClick(View view) {
 
                 Intent intent = new Intent(getActivity(), MapDetailActivity.class);
-                intent.putExtra("placeID", detailFocusedPlaceID);
+
+                intent.putExtra("title", detailFocusedPlace.getTitle());
+                intent.putExtra("sort", detailFocusedPlace.getSort());
+                intent.putExtra("time", detailFocusedPlace.getTime());
+                intent.putExtra("callNum", detailFocusedPlace.getCallNum());
+
                 detailActivityResultLauncher.launch(intent);
 
             }
@@ -497,6 +522,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 //fetchLocation();
 
                 gMap.clear();
+                floatingMarkersOverlay.clearMarkers();
+
 
                 latLngList.clear();
 
@@ -674,7 +701,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     map_frag_detail_sort.setText(placeList.get((Integer.parseInt(marker.getTag().toString()))).getSort());
                     map_frag_detail_distance.setText((int)(placeList.get((Integer.parseInt(marker.getTag().toString()))).getDistance()) + "m");
 
-                    detailFocusedPlaceID = placeList.get(Integer.parseInt(marker.getTag().toString())).getplaceID();
+                    detailFocusedPlace = placeList.get(Integer.parseInt(marker.getTag().toString()));
 
                     if (pointedMarker != null) {
                         pointedMarker.remove();
@@ -692,7 +719,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         });
 
         gMap.animateCamera(CameraUpdateFactory.newLatLngZoom( new LatLng(37.37532099190484, 126.63285407077159) , 17));
-
 
     }
 
