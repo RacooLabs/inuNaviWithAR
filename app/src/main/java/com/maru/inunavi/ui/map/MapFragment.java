@@ -11,6 +11,8 @@ import android.content.Context;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -38,6 +40,7 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -64,6 +67,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.maru.inunavi.ui.map.markerinfo.FloatingMarkerTitlesOverlay;
+import com.maru.inunavi.ui.map.markerinfo.MarkerInfo;
 import com.maru.inunavi.ui.timetable.SettingActivity;
 import com.maru.inunavi.ui.timetable.SettingAdapter;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
@@ -84,6 +89,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private FusedLocationProviderClient fusedLocationProviderClient;
     private static final int REQUEST_CODE = 101;
     private Location currentLocation;
+
+    //마커 타이틀 오버레이
+    private FloatingMarkerTitlesOverlay floatingMarkersOverlay;
 
     private List<LatLng> latLngList = new ArrayList<>();
 
@@ -318,14 +326,24 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                         for(int i=0; i<placeList.size(); i++){
 
-                            MarkerOptions markerOptions = new MarkerOptions();
+                           /* MarkerOptions markerOptions = new MarkerOptions();
                             markerOptions.position(placeList.get(i).getLocation());
                             markerOptions.title(placeList.get(i).getTitle());
 
-                            Marker marker = gMap.addMarker(markerOptions);
-                            marker.setTag(i); // 마커를 눌렀을 때 정보를 표시하기 위한 태그 정보
 
-                            //markerOptions.icon()
+                            Marker marker = gMap.addMarker(markerOptions);
+                            marker.setTag(i); // 마커를 눌렀을 때 정보를 표시하기 위한 태그 정보*/
+
+
+                            int color = Color.parseColor("#02468E");
+                            final float main_color_hsv = 211;
+                            MarkerInfo mi = new MarkerInfo(placeList.get(i).getLocation(), placeList.get(i).getTitle(), color);
+
+                            gMap.addMarker(new MarkerOptions().position(mi.getCoordinates()).icon(BitmapDescriptorFactory.defaultMarker(main_color_hsv))).setTag(i);
+
+                            //Adding the marker to track by the overlay
+                            //To remove that marker, you will need to call floatingMarkersOverlay.removeMarker(id)
+                            floatingMarkersOverlay.addMarker(i, mi);
 
                         }
 
@@ -595,6 +613,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         gMap.getUiSettings().setMapToolbarEnabled(false);
 
+        // 마커 타이틀 오버레이
+        floatingMarkersOverlay = layout.findViewById(R.id.map_floating_markers_overlay);
+        floatingMarkersOverlay.setSource(googleMap);
+
+
         View locationButton = ((View) getView().findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
         View compassButton = ((View) getView().findViewWithTag("GoogleMapCompass"));
         RelativeLayout.LayoutParams rlpLocation = (RelativeLayout.LayoutParams) locationButton.getLayoutParams();
@@ -625,9 +648,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             }
         });
 
-
-
     }
+
 
     public void hideKeyboard(View layout){
         InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -638,6 +660,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         inputManager.showSoftInput(layout.findViewById(R.id.editText_search), 0);
     }
+
+
 
     // custom methods
 

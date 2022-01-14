@@ -36,6 +36,11 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
+        <com.maru.inunavi.ui.map.markerinfo.FloatingMarkerTitlesOverlay
+            android:id="@+id/map_floating_markers_overlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/autoCompleteTextView_search_wrapper"
             android:layout_width="match_parent"
