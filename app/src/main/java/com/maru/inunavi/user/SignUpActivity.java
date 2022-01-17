@@ -1,6 +1,5 @@
 package com.maru.inunavi.user;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -365,19 +364,19 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     public void setNormalEditText(EditText e, ImageView i_done, TextView t){
-        e.setBackgroundResource(R.drawable.layout_login_roundedbox);
+        e.setBackgroundResource(R.drawable.layout_login_round_box);
         i_done.setVisibility(View.INVISIBLE);
         t.setVisibility(View.GONE);
     }
 
     public void setDoneEditText(EditText e, ImageView i_done, TextView t){
-        e.setBackgroundResource(R.drawable.layout_login_roundedbox_done);
+        e.setBackgroundResource(R.drawable.layout_login_round_box_done);
         i_done.setVisibility(View.VISIBLE);
         t.setVisibility(View.GONE);
     }
 
     public void setNotEditText(EditText e, ImageView i_done, TextView t, String msg){
-        e.setBackgroundResource(R.drawable.layout_login_roundedbox_not);
+        e.setBackgroundResource(R.drawable.layout_login_signup_round_box_not);
         i_done.setVisibility(View.INVISIBLE);
         t.setVisibility(View.VISIBLE);
         t.setText(msg);

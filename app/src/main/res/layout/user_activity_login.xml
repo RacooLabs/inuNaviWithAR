@@ -15,6 +15,7 @@
         app:layout_constraintBottom_toTopOf="@id/login_wrapper"
         app:layout_constraintVertical_chainStyle="packed"
         android:layout_marginBottom="30dp"
+        android:scaleType="centerCrop"
         />
 
 
@@ -39,13 +40,14 @@
                 android:id="@+id/editText_id"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/editText_height"
-                android:background="@drawable/layout_login_roundedbox"
+                android:background="@drawable/layout_map_navi_round_box"
                 android:hint="아이디"
                 android:imeOptions="actionNext"
                 android:inputType="text"
                 android:maxLength="20"
                 android:paddingLeft="@dimen/editText_padding"
                 android:paddingRight="@dimen/editText_padding"
+                android:textColor="@color/main_text_color"
                 android:textSize="@dimen/main_text_size"
 
                 />
@@ -74,13 +76,14 @@
                 android:id="@+id/editText_password"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/editText_height"
-                android:background="@drawable/layout_login_roundedbox"
+                android:background="@drawable/layout_map_navi_round_box"
                 android:hint="비밀번호"
                 android:imeOptions="actionDone"
                 android:inputType="textPassword"
                 android:maxLength="20"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
+                android:paddingLeft="@dimen/editText_padding"
+                android:paddingRight="@dimen/editText_padding"
+                android:textColor="@color/main_text_color"
                 android:textSize="@dimen/main_text_size" />
 
 
@@ -104,7 +107,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/editText_height"
             android:layout_marginTop="10dp"
-            android:background="@drawable/layout_login_button_roundedbox"
+            android:background="@drawable/layout_login_button_round_box"
             android:text="로그인"
             android:gravity="center"
             android:textColor="@color/white"

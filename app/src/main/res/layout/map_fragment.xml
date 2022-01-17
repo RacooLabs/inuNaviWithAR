@@ -17,6 +17,9 @@
     app:umanoShadowHeight="0dp"
     app:umanoFadeColor="@android:color/transparent">
 
+
+
+    <!-- 메인 레이아웃 -->
     <androidx.constraintlayout.widget.ConstraintLayout
 
         android:id="@+id/mainLayout"
@@ -45,6 +48,11 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
+
+
+
+
+        <!-- 검색창 레이아웃 -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/autoCompleteTextView_search_wrapper"
             android:layout_width="match_parent"
@@ -52,7 +60,8 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:gravity="center">
+            android:gravity="center"
+            android:visibility="gone">
 
             <EditText
                 android:id="@+id/editText_search"
@@ -64,7 +73,7 @@
                 android:layout_height="48dp"
                 android:layout_marginLeft="12dp"
                 android:layout_marginRight="12dp"
-                android:background="@drawable/layout_search_roundedbox_map"
+                android:background="@drawable/layout_map_roundedbox"
                 android:elevation="6dp"
                 android:hint="여기서 검색"
                 android:imeOptions="actionSearch"
@@ -134,10 +143,91 @@
 
 
 
+        <!--네비게이션 출발 목적지 검색창-->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/map_frag_navi_searchWrapper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:background="@color/white"
+            android:visibility="visible">
+
+            <ImageView
+                android:id="@+id/map_frag_navi_back"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="12dp"
+
+                android:padding="6dp"
+                android:src="@drawable/ic_arrow_back_black_24dp"
+                android:background="@drawable/layout_map_back_button"
+                android:clickable="true"/>
+
+            <EditText
+                android:id="@+id/map_frag_navi_searchBar_Start"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/editText_height"
+                android:layout_marginLeft="12dp"
+                app:layout_constraintBottom_toBottomOf="@id/map_frag_navi_back"
+                app:layout_constraintTop_toTopOf="@id/map_frag_navi_back"
+                app:layout_constraintLeft_toRightOf="@id/map_frag_navi_back"
+                app:layout_constraintRight_toLeftOf="@id/map_frag_navi_change"
+                android:background="@drawable/layout_map_navi_round_box"
+                android:hint="출발지"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:textColor="@color/main_text_color"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:maxLength="20"
+                android:textSize="@dimen/main_text_size" />
+
+            <EditText
+                android:id="@+id/map_frag_navi_searchBar_End"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/editText_height"
+                app:layout_constraintTop_toBottomOf="@id/map_frag_navi_searchBar_Start"
+                app:layout_constraintLeft_toLeftOf="@id/map_frag_navi_searchBar_Start"
+                app:layout_constraintRight_toRightOf="@id/map_frag_navi_searchBar_Start"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/layout_map_navi_round_box"
+                android:hint="도착지"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:textColor="@color/main_text_color"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:maxLength="20"
+                android:textSize="@dimen/main_text_size"/>
+
+            <ImageView
+                android:id="@+id/map_frag_navi_change"
+                app:layout_constraintBottom_toBottomOf="@id/map_frag_navi_searchBar_End"
+                app:layout_constraintTop_toTopOf="@id/map_frag_navi_searchBar_Start"
+                app:layout_constraintLeft_toRightOf="@id/map_frag_navi_searchBar_Start"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:padding="6dp"
+                android:layout_marginRight="12dp"
+                android:src="@drawable/ic_import_export_black_24dp"
+                android:background="@drawable/layout_map_back_button"
+                android:clickable="true"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 
 
+
+
+
+        <!-- 네비게이션 버튼 -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/now_navi_button_wrapper"
             android:layout_width="70dp"
@@ -165,6 +255,7 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <!-- AR 버튼 -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/AR_button_wrapper"
             android:layout_width="70dp"
@@ -199,6 +290,7 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <!-- 디테일 박스 레이아웃 -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/map_frag_detail_box_wrapper"
             android:layout_width="match_parent"
@@ -370,6 +462,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
+    <!-- 검색결과용 슬라이딩 패널 -->
     <androidx.constraintlayout.widget.ConstraintLayout
 
         android:id="@+id/dragView"

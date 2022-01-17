@@ -52,17 +52,17 @@
         <EditText
             android:id="@+id/tita_search_option_searchbar"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:background="@drawable/layout_search_roundedbox"
+            android:layout_height="@dimen/editText_height"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="24dp"
+            android:background="@drawable/layout_map_navi_round_box"
             android:hint="검색어"
             android:imeOptions="actionSearch"
             android:inputType="text"
             android:maxLength="20"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
-            android:textColor="@color/hint_text_normal"
+            android:textColor="@color/main_text_color"
             android:textSize="@dimen/main_text_size"/>
 
         <LinearLayout

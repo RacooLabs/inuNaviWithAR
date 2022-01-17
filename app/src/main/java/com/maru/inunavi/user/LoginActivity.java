@@ -98,12 +98,12 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void setNormalEditText(EditText e, TextView t){
-        e.setBackgroundResource(R.drawable.layout_login_roundedbox);
+        e.setBackgroundResource(R.drawable.layout_login_round_box);
         t.setVisibility(View.GONE);
     }
 
     public void setNotEditText(EditText e, TextView t, String msg){
-        e.setBackgroundResource(R.drawable.layout_login_roundedbox_not);
+        e.setBackgroundResource(R.drawable.layout_login_round_box_not);
         t.setVisibility(View.VISIBLE);
         t.setText(msg);
     }
