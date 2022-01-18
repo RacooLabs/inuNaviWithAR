@@ -152,7 +152,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             android:background="@color/white"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <ImageView
                 android:id="@+id/map_frag_navi_back"
@@ -251,7 +251,7 @@
 
         <!-- 네비게이션 버튼 -->
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/now_navi_button_wrapper"
+            android:id="@+id/navi_button_wrapper"
             android:layout_width="70dp"
             android:layout_height="66dp"
             app:layout_constraintRight_toRightOf="parent"
@@ -260,7 +260,7 @@
             >
 
             <ImageView
-                android:id="@+id/now_navi_button"
+                android:id="@+id/navi_button"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_margin="12dp"

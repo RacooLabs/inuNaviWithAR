@@ -139,9 +139,13 @@
 
         </activity>
 
+        <activity
+            android:name="com.maru.inunavi.ui.map.MapNaviSearchActivity"
+            android:exported="true"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait">
 
-
-
+        </activity>
 
 
         <meta-data

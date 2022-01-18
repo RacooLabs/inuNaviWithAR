@@ -3,6 +3,7 @@ package com.maru.inunavi.ui.map;
 
 import static com.maru.inunavi.ui.map.MapFragmentState.DEFAULT_MODE;
 import static com.maru.inunavi.ui.map.MapFragmentState.DETAIL_MODE;
+import static com.maru.inunavi.ui.map.MapFragmentState.DIRECTION_MODE;
 import static com.maru.inunavi.ui.map.MapFragmentState.SEARCH_MODE;
 
 import android.Manifest;
@@ -120,7 +121,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private ConstraintLayout autoCompleteTextView_search_wrapper;
     private SlidingUpPanelLayout mapSlidingLayout;
     private ConstraintLayout map_frag_detail_box_wrapper;
-    private ConstraintLayout now_navi_button_wrapper;
+    private ConstraintLayout navi_button_wrapper;
     private ConstraintLayout AR_button_wrapper;
 
     //검색창을 구성하는 레이아웃
@@ -133,7 +134,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private Spinner map_frag_sliding_spinner;
 
     // 추가 기능 버튼
-    private ImageView now_navi_button;
+    private ImageView navi_button;
     private ImageView AR_button;
 
 
@@ -145,6 +146,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private TextView map_frag_detail_title;
     private TextView map_frag_detail_sort;
     private TextView map_frag_detail_distance;
+
+    //네비게이션 검색 박스
+    private ConstraintLayout map_frag_navi_searchWrapper;
+    private ImageView map_frag_navi_back;
+    private EditText map_frag_navi_searchBar_Start;
+    private EditText map_frag_navi_searchBar_End;
+    private ImageView map_frag_navi_change;
+    private TextView map_frag_navi_searchButton_now;
 
 
 
@@ -186,11 +195,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                         break;
 
+
                     case SEARCH_MODE :
+                    case DIRECTION_MODE:
 
                         setMapFragmentMode(DEFAULT_MODE,autoCompleteTextView_search_wrapper,
-                                mapSlidingLayout, map_frag_detail_box_wrapper,
-                                now_navi_button_wrapper, AR_button_wrapper);
+                                mapSlidingLayout, map_frag_detail_box_wrapper,map_frag_navi_searchWrapper,
+                                navi_button_wrapper, AR_button_wrapper);
 
                         editText_search.clearFocus();
                         editText_search.setText("");
@@ -208,8 +219,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                     case DETAIL_MODE :
                         setMapFragmentMode(SEARCH_MODE,autoCompleteTextView_search_wrapper,
-                                mapSlidingLayout, map_frag_detail_box_wrapper,
-                                now_navi_button_wrapper, AR_button_wrapper);
+                                mapSlidingLayout, map_frag_detail_box_wrapper, map_frag_navi_searchWrapper,
+                                navi_button_wrapper, AR_button_wrapper);
 
                         if (pointedMarker != null) {
                             pointedMarker.remove();
@@ -217,6 +228,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                         }
 
                         break;
+
 
                 }
 
@@ -242,7 +254,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         autoCompleteTextView_search_wrapper = layout.findViewById(R.id.autoCompleteTextView_search_wrapper);
         mapSlidingLayout = layout.findViewById(R.id.map_sliding_layout);
         map_frag_detail_box_wrapper = layout.findViewById(R.id.map_frag_detail_box_wrapper);
-        now_navi_button_wrapper = layout.findViewById(R.id.now_navi_button_wrapper);
+        navi_button_wrapper = layout.findViewById(R.id.navi_button_wrapper);
         AR_button_wrapper = layout.findViewById(R.id.AR_button_wrapper);
 
         //검색창을 구성하는 레이아웃
@@ -256,7 +268,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         map_frag_sliding_spinner = layout.findViewById(R.id.map_frag_sliding_spinner);
 
         // 추가 기능 버튼
-        now_navi_button = layout.findViewById(R.id.now_navi_button);
+        navi_button = layout.findViewById(R.id.navi_button);
         AR_button = layout.findViewById(R.id.AR_button);
 
         // 디테일 박스
@@ -268,6 +280,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         map_frag_detail_sort = layout.findViewById(R.id.map_frag_detail_sort);
         map_frag_detail_distance = layout.findViewById(R.id.map_frag_detail_distance);
 
+        //네이게이션 검색 박스 레이아웃
+        map_frag_navi_searchWrapper = layout.findViewById(R.id.map_frag_navi_searchWrapper);
+        map_frag_navi_back = layout.findViewById(R.id.map_frag_navi_back);
+        map_frag_navi_searchBar_Start = layout.findViewById(R.id.map_frag_navi_searchBar_Start);
+        map_frag_navi_searchBar_End = layout.findViewById(R.id.map_frag_navi_searchBar_End);
+        map_frag_navi_change = layout.findViewById(R.id.map_frag_navi_change);
+        map_frag_navi_searchButton_now = layout.findViewById(R.id.map_frag_navi_searchButton_now);
+
+
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
         //fetchLocation();
 
@@ -276,6 +297,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         recyclerView = (RecyclerView)layout.findViewById(R.id.map_frag_recyclerview_sliding);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false)) ;
         placeList = new ArrayList<>();
+
+
 
         //선 넣는 코드
         //DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), new LinearLayoutManager(getContext()).getOrientation());
@@ -296,7 +319,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onItemClick(View v, int position) {
 
-                setMapFragmentMode(DETAIL_MODE, autoCompleteTextView_search_wrapper, mapSlidingLayout, map_frag_detail_box_wrapper, now_navi_button_wrapper, AR_button_wrapper);
+                setMapFragmentMode(DETAIL_MODE, autoCompleteTextView_search_wrapper, mapSlidingLayout, map_frag_detail_box_wrapper,
+                        map_frag_navi_searchWrapper, navi_button_wrapper, AR_button_wrapper);
                 map_frag_detail_title.setText(placeList.get(position).getTitle());
                 map_frag_detail_sort.setText(placeList.get(position).getSort());
                 map_frag_detail_distance.setText((int)(placeList.get(position).getDistance()) + "m");
@@ -322,7 +346,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         map_frag_sliding_spinner.setAdapter(new ArrayAdapter(getContext(), R.layout.map_fragment_custom_spinner_item, items));
 
         //초기 모드 설정
-        setMapFragmentMode(DEFAULT_MODE,autoCompleteTextView_search_wrapper, mapSlidingLayout, map_frag_detail_box_wrapper, now_navi_button_wrapper, AR_button_wrapper);
+        setMapFragmentMode(DEFAULT_MODE,autoCompleteTextView_search_wrapper, mapSlidingLayout, map_frag_detail_box_wrapper,
+                map_frag_navi_searchWrapper, navi_button_wrapper, AR_button_wrapper);
 
 
         //검색창의 포커스 여부 설정
@@ -352,7 +377,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                     hideKeyboard(layout);
 
-                    setMapFragmentMode(SEARCH_MODE,autoCompleteTextView_search_wrapper, mapSlidingLayout, map_frag_detail_box_wrapper, now_navi_button_wrapper, AR_button_wrapper);
+                    setMapFragmentMode(SEARCH_MODE,autoCompleteTextView_search_wrapper, mapSlidingLayout, map_frag_detail_box_wrapper,
+                            map_frag_navi_searchWrapper, navi_button_wrapper, AR_button_wrapper);
 
                     gMap.clear();
                     floatingMarkersOverlay.clearMarkers();
@@ -410,6 +436,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             public void onClick(View v) {
 
                 switch (mapFragmentState){
+
                     case DEFAULT_MODE:
 
                         if(editText_search.isFocused()){
@@ -429,12 +456,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                         break;
 
-
+                    case DIRECTION_MODE:
                     case SEARCH_MODE :
 
                         setMapFragmentMode(DEFAULT_MODE,autoCompleteTextView_search_wrapper,
-                                mapSlidingLayout, map_frag_detail_box_wrapper,
-                                now_navi_button_wrapper, AR_button_wrapper);
+                                mapSlidingLayout, map_frag_detail_box_wrapper, map_frag_navi_searchWrapper,
+                                navi_button_wrapper, AR_button_wrapper);
 
                         editText_search.clearFocus();
                         editText_search.setText("");
@@ -449,11 +476,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                         break;
 
+
                     case DETAIL_MODE :
 
                         setMapFragmentMode(SEARCH_MODE,autoCompleteTextView_search_wrapper,
-                                mapSlidingLayout, map_frag_detail_box_wrapper,
-                                now_navi_button_wrapper, AR_button_wrapper);
+                                mapSlidingLayout, map_frag_detail_box_wrapper, map_frag_navi_searchWrapper,
+                                navi_button_wrapper, AR_button_wrapper);
 
                         if (pointedMarker != null) {
                             pointedMarker.remove();
@@ -518,45 +546,47 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         });
 
 
-        now_navi_button.setOnClickListener(new View.OnClickListener() {
+        //네비게이션 버튼 누를때
+        navi_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                //fetchLocation();
+                setMapFragmentMode(DIRECTION_MODE,autoCompleteTextView_search_wrapper, mapSlidingLayout, map_frag_detail_box_wrapper,
+                        map_frag_navi_searchWrapper, navi_button_wrapper, AR_button_wrapper);
 
+            }
+        });
+
+        //네비게이션 검색 박스 뒤로가기 버튼 누를때
+        map_frag_navi_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                setMapFragmentMode(DEFAULT_MODE,autoCompleteTextView_search_wrapper,
+                        mapSlidingLayout, map_frag_detail_box_wrapper, map_frag_navi_searchWrapper,
+                        navi_button_wrapper, AR_button_wrapper);
+
+                editText_search.clearFocus();
+                editText_search.setText("");
+
+                map_frag_back.setVisibility(View.INVISIBLE);
+                map_frag_cancel.setVisibility(View.INVISIBLE);
+                map_frag_search_icon.setVisibility(View.VISIBLE);
+
+                hideKeyboard(layout);
                 gMap.clear();
                 floatingMarkersOverlay.clearMarkers();
 
+            }
+        });
 
-                latLngList.clear();
-
-                if(currentLocation != null){
-                    latLngList.add(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()));
-                }
-
-                latLngList.add(new LatLng(37.37635285186897, 126.63429909872082));
-                latLngList.add(new LatLng(37.3762381423054, 126.6344930682583));
-                latLngList.add(new LatLng(37.375298951155386, 126.63361343896047));
-                latLngList.add(new LatLng(37.374571249163154, 126.63295935563643));
-                latLngList.add(new LatLng(37.374427858775405, 126.63319843436867));
-
-                PolylineOptions polylineOptions = new PolylineOptions().addAll(latLngList).clickable(true);
-                polyline = gMap.addPolyline(polylineOptions);
-
-                MarkerOptions markerOptions = new MarkerOptions();
-
-                LatLng dest = new LatLng(37.374427858775405, 126.63319843436867);
-
-                markerOptions.position(dest);
-
-                markerOptions.title("정보대");
-
-                markerOptions.snippet("본진");
-
-                gMap.addMarker(markerOptions);
-
-                gMap.animateCamera(CameraUpdateFactory.newLatLngZoom( dest , 17));
-
+        //네비게이션 검색 출발지 검색창 누를 때
+        map_frag_navi_searchBar_Start.setClickable(true);
+        map_frag_navi_searchBar_Start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), MapNaviSearchActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -700,7 +730,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                 if(!marker.getTag().equals("pointedMarker")){
 
-                    setMapFragmentMode(DETAIL_MODE, autoCompleteTextView_search_wrapper, mapSlidingLayout, map_frag_detail_box_wrapper, now_navi_button_wrapper, AR_button_wrapper);
+                    setMapFragmentMode(DETAIL_MODE, autoCompleteTextView_search_wrapper, mapSlidingLayout, map_frag_detail_box_wrapper,
+                            map_frag_navi_searchWrapper, navi_button_wrapper, AR_button_wrapper);
                     map_frag_detail_title.setText(placeList.get((Integer.parseInt(marker.getTag().toString()))).getTitle());
                     map_frag_detail_sort.setText(placeList.get((Integer.parseInt(marker.getTag().toString()))).getSort());
                     map_frag_detail_distance.setText((int)(placeList.get((Integer.parseInt(marker.getTag().toString()))).getDistance()) + "m");
@@ -756,8 +787,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
-    public void setMapFragmentMode(MapFragmentState state, ConstraintLayout searchBar, SlidingUpPanelLayout slidingPanel, ConstraintLayout detailBox,
-                            ConstraintLayout naviButton, ConstraintLayout arButton){
+    public void setMapFragmentMode(MapFragmentState state, ConstraintLayout searchBar, SlidingUpPanelLayout slidingPanel, ConstraintLayout detailBox
+                            ,ConstraintLayout map_frag_navi_searchWrapper ,ConstraintLayout naviButton, ConstraintLayout arButton){
 
         switch (state){
 
@@ -768,6 +799,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 searchBar.setVisibility(View.VISIBLE);
                 slidingPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
                 detailBox.setVisibility(View.GONE);
+                map_frag_navi_searchWrapper.setVisibility(View.GONE);
 
                 naviButton.setVisibility(View.VISIBLE);
                 arButton.setVisibility(View.VISIBLE);
@@ -780,6 +812,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 searchBar.setVisibility(View.VISIBLE);
                 slidingPanel.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
                 detailBox.setVisibility(View.GONE);
+                map_frag_navi_searchWrapper.setVisibility(View.GONE);
 
                 naviButton.setVisibility(View.VISIBLE);
                 arButton.setVisibility(View.VISIBLE);
@@ -792,11 +825,24 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 searchBar.setVisibility(View.VISIBLE);
                 slidingPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
                 detailBox.setVisibility(View.VISIBLE);
+                map_frag_navi_searchWrapper.setVisibility(View.GONE);
 
                 naviButton.setVisibility(View.VISIBLE);
                 arButton.setVisibility(View.VISIBLE);
 
                 break;
+
+            case DIRECTION_MODE:
+                mapFragmentState = DIRECTION_MODE;
+                searchBar.setVisibility(View.GONE);
+                slidingPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+                detailBox.setVisibility(View.GONE);
+                map_frag_navi_searchWrapper.setVisibility(View.VISIBLE);
+
+                naviButton.setVisibility(View.INVISIBLE);
+                arButton.setVisibility(View.VISIBLE);
+                break;
+
 
             default :
 
