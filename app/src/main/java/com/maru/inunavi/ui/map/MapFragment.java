@@ -276,8 +276,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         recyclerView = (RecyclerView)layout.findViewById(R.id.map_frag_recyclerview_sliding);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false)) ;
         placeList = new ArrayList<>();
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), new LinearLayoutManager(getContext()).getOrientation());
-        recyclerView.addItemDecoration(dividerItemDecoration);
+
+        //선 넣는 코드
+        //DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), new LinearLayoutManager(getContext()).getOrientation());
+        //recyclerView.addItemDecoration(dividerItemDecoration);
 
         placeList.add(new Place(1,"정보기술대학", "부속건물", 320, new LatLng(37.37428569643498, 126.63386849546436), "9:00 ~ 18:00", "032-832-1234"));
         placeList.add(new Place( 2,"공과·도시과학대학", "부속건물", 400 , new LatLng(37.37351897032315, 126.63275998245754), "9:00 ~ 18:00", "032-832-1234"));
