@@ -89,10 +89,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap gMap;
     private Polyline polyline = null;
     private MapFragment mapFragment= null;
+    private GPSTracker gpsTracker;
 
     private FusedLocationProviderClient fusedLocationProviderClient;
     private static final int REQUEST_CODE = 101;
-    private Location currentLocation;
 
     //마커 타이틀 오버레이
     private FloatingMarkerTitlesOverlay floatingMarkersOverlay;
@@ -155,7 +155,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private ImageView map_frag_navi_change;
     private TextView map_frag_navi_searchButton_now;
 
-
+    //네비게이션 출발 목적지 저장 변수
+    private int startPlaceID = 0;
+    private int endPlaceID = 0;
+    private LatLng startLocation = null;
+    private LatLng endLocation = null;
 
 
     public MapFragment() {
@@ -203,9 +207,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                                 mapSlidingLayout, map_frag_detail_box_wrapper,map_frag_navi_searchWrapper,
                                 navi_button_wrapper, AR_button_wrapper);
 
-                        editText_search.clearFocus();
-                        editText_search.setText("");
-
                         map_frag_back.setVisibility(View.INVISIBLE);
                         map_frag_cancel.setVisibility(View.INVISIBLE);
                         map_frag_search_icon.setVisibility(View.VISIBLE);
@@ -249,6 +250,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mapView = (MapView) layout.findViewById(R.id.map);
         mapView.getMapAsync(this);
         mapFragment = this;
+        gpsTracker = new GPSTracker(getActivity());
 
         //map_fragment를 기본적으로 구성하는 레이아웃들
         autoCompleteTextView_search_wrapper = layout.findViewById(R.id.autoCompleteTextView_search_wrapper);
@@ -463,9 +465,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                                 mapSlidingLayout, map_frag_detail_box_wrapper, map_frag_navi_searchWrapper,
                                 navi_button_wrapper, AR_button_wrapper);
 
-                        editText_search.clearFocus();
-                        editText_search.setText("");
-
                         map_frag_back.setVisibility(View.INVISIBLE);
                         map_frag_cancel.setVisibility(View.INVISIBLE);
                         map_frag_search_icon.setVisibility(View.VISIBLE);
@@ -534,10 +533,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                 Intent intent = new Intent(getActivity(), MapDetailActivity.class);
 
-                intent.putExtra("title", detailFocusedPlace.getTitle());
-                intent.putExtra("sort", detailFocusedPlace.getSort());
-                intent.putExtra("time", detailFocusedPlace.getTime());
-                intent.putExtra("callNum", detailFocusedPlace.getCallNum());
+                intent.putExtra("placeID", detailFocusedPlace.getPlaceID());
 
                 detailActivityResultLauncher.launch(intent);
 
@@ -554,6 +550,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 setMapFragmentMode(DIRECTION_MODE,autoCompleteTextView_search_wrapper, mapSlidingLayout, map_frag_detail_box_wrapper,
                         map_frag_navi_searchWrapper, navi_button_wrapper, AR_button_wrapper);
 
+                gMap.clear();
+                floatingMarkersOverlay.clearMarkers();
+
             }
         });
 
@@ -566,8 +565,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                         mapSlidingLayout, map_frag_detail_box_wrapper, map_frag_navi_searchWrapper,
                         navi_button_wrapper, AR_button_wrapper);
 
-                editText_search.clearFocus();
-                editText_search.setText("");
+
+                map_frag_navi_searchBar_Start.setText("");
+                map_frag_navi_searchBar_End.setText("");
 
                 map_frag_back.setVisibility(View.INVISIBLE);
                 map_frag_cancel.setVisibility(View.INVISIBLE);
@@ -580,13 +580,98 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             }
         });
 
-        //네비게이션 검색 출발지 검색창 누를 때
+
+        //네비게이션 검색 출발지 검색창 설정
+        ActivityResultLauncher<Intent> mapNaviSearchActivityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+
+
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+
+                            Intent intent = result.getData();
+
+                            int CallType = intent.getIntExtra("CallType", 0);
+
+                            switch (CallType){
+                                case 1001:
+
+                                    startPlaceID = intent.getIntExtra("startPlaceID", 0);
+                                    String startPlaceTitle = intent.getStringExtra("startPlaceTitle");
+                                    map_frag_navi_searchBar_Start.setText(startPlaceTitle);
+                                    break;
+
+                                case 1002:
+
+                                    endPlaceID = intent.getIntExtra("endPlaceID", 0);
+                                    String endPlaceTitle = intent.getStringExtra("endPlaceTitle");
+                                    map_frag_navi_searchBar_End.setText(endPlaceTitle);
+                                    break;
+
+                                case 2001:
+
+                                    map_frag_navi_searchBar_Start.setText("내 위치");
+
+                                    startLocation = new LatLng(gpsTracker.getLatitude(), gpsTracker.getLongitude());
+
+                                    break;
+
+                                case 2002:
+
+                                    map_frag_navi_searchBar_End.setText("내 위치");
+
+                                    endLocation = new LatLng(gpsTracker.getLatitude(),gpsTracker.getLongitude());
+
+                                    break;
+
+                            }
+
+                        }
+
+                    }
+                });
+
         map_frag_navi_searchBar_Start.setClickable(true);
         map_frag_navi_searchBar_Start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Intent intent = new Intent(getActivity(), MapNaviSearchActivity.class);
-                startActivity(intent);
+                intent.putExtra("SearchSort", "출발지 검색");
+                mapNaviSearchActivityResultLauncher.launch(intent);
+
+            }
+        });
+
+        //네비게이션 검색 도착지 검색창 누를때
+        map_frag_navi_searchBar_End.setClickable(true);
+        map_frag_navi_searchBar_End.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), MapNaviSearchActivity.class);
+                intent.putExtra("SearchSort", "도착지 검색");
+                mapNaviSearchActivityResultLauncher.launch(intent);
+            }
+        });
+
+        //네비게이션 출발지 목적지 변경 누를때
+        map_frag_navi_change.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                int tmpPlaceID = 0;
+
+                tmpPlaceID = startPlaceID;
+                startPlaceID = endPlaceID;
+                endPlaceID = tmpPlaceID;
+
+                String tmpPlaceTitle = map_frag_navi_searchBar_Start.getText().toString();
+                map_frag_navi_searchBar_Start.setText(map_frag_navi_searchBar_End.getText().toString());
+                map_frag_navi_searchBar_End.setText(tmpPlaceTitle);
+
             }
         });
 
@@ -594,7 +679,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
-    private void fetchLocation() {
+
+    //구형 위치 가져오기 메소드
+  /*  public void fetchLocation() {
 
         if (ActivityCompat.checkSelfPermission(
                 getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
@@ -607,8 +694,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         Task<Location> task = fusedLocationProviderClient.getLastLocation();
 
         task.addOnSuccessListener(new OnSuccessListener<Location>() {
+
             @Override
             public void onSuccess(Location location) {
+
                 if (location != null) {
                     currentLocation = location;
                     Toast.makeText(getActivity(), currentLocation.getLatitude() + "" + currentLocation.getLongitude(), Toast.LENGTH_SHORT).show();
@@ -628,7 +717,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         });
 
 
-    }
+    }*/
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -682,7 +771,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         if (mapView != null) {
             mapView.onCreate(savedInstanceState);
-            fetchLocation();
+
         }
 
 
@@ -699,6 +788,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
             System.exit(0);
         }
+
         gMap.setMyLocationEnabled(true);
 
         gMap.getUiSettings().setMyLocationButtonEnabled(true);
@@ -774,18 +864,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     // default mode(only search bar), search mode( search bar, slidingPanel), detail mode ( search bar, detail box),
     // direction mode ( direction bar , direction information box)
-    public void defaultMode(ConstraintLayout searchBar, SlidingUpPanelLayout slidingPanel, ConstraintLayout detailBox,
-                            ConstraintLayout naviButton, ConstraintLayout arButton){
 
-        mapFragmentState = DEFAULT_MODE;
-        searchBar.setVisibility(View.VISIBLE);
-        slidingPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
-        detailBox.setVisibility(View.INVISIBLE);
-
-        naviButton.setVisibility(View.VISIBLE);
-        arButton.setVisibility(View.VISIBLE);
-
-    }
 
     public void setMapFragmentMode(MapFragmentState state, ConstraintLayout searchBar, SlidingUpPanelLayout slidingPanel, ConstraintLayout detailBox
                             ,ConstraintLayout map_frag_navi_searchWrapper ,ConstraintLayout naviButton, ConstraintLayout arButton){
@@ -795,6 +874,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             case DEFAULT_MODE:
 
                 mapFragmentState = DEFAULT_MODE;
+
+                editText_search.clearFocus();
+                editText_search.setText("");
 
                 searchBar.setVisibility(View.VISIBLE);
                 slidingPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
@@ -833,6 +915,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 break;
 
             case DIRECTION_MODE:
+
+                map_frag_navi_searchBar_Start.setText("");
+                map_frag_navi_searchBar_End.setText("");
+                startPlaceID = 0;
+                endPlaceID = 0;
+                startLocation = null;
+                endLocation = null;
+
                 mapFragmentState = DIRECTION_MODE;
                 searchBar.setVisibility(View.GONE);
                 slidingPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);

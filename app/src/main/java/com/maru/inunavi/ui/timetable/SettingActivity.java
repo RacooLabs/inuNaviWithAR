@@ -40,6 +40,7 @@ public class SettingActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 finish();
+                overridePendingTransition(0, 0);
             }
         });
 
@@ -59,6 +60,7 @@ public class SettingActivity extends AppCompatActivity {
                     intent.putExtra("CallType", 1001);
                     setResult(Activity.RESULT_OK, intent);
                     finish();
+                    overridePendingTransition(0, 0);
 
                 }
 

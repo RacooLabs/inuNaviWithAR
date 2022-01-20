@@ -78,6 +78,7 @@ public class SearchActivity extends AppCompatActivity {
         intent.putExtra("CallType", 2001);
         setResult(Activity.RESULT_OK, intent);
         finish();
+        overridePendingTransition(0, 0);
 
         super.onBackPressed();
 
@@ -102,6 +103,7 @@ public class SearchActivity extends AppCompatActivity {
                 intent.putExtra("CallType", 2001);
                 setResult(Activity.RESULT_OK, intent);
                 finish();
+                overridePendingTransition(0, 0);
             }
         });
 

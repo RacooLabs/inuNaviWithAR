@@ -70,6 +70,7 @@ public class LoginActivity extends AppCompatActivity {
                                 intent.putExtra("userID",userID);
                                 setResult(Activity.RESULT_OK, intent);
                                 finish();
+                                overridePendingTransition(0, 0);
 
                             }else{
                                 setNotEditText(editText_id, textView_login_id_warning,"");

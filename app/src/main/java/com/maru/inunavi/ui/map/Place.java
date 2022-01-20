@@ -27,9 +27,9 @@ public class Place {
         this.callNum = callNum;
     }
 
-    public int getplaceID() {return placeID;}
+    public int getPlaceID() {return placeID;}
 
-    public void setplaceID() {this.placeID = placeID;}
+    public void setPlaceID() {this.placeID = placeID;}
 
     public String getTitle() {
         return title;

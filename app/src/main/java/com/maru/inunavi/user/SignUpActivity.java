@@ -44,6 +44,7 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 finish();
+                overridePendingTransition(0, 0);
             }
         });
 
@@ -332,6 +333,7 @@ public class SignUpActivity extends AppCompatActivity {
                                if (success) {
                                    Toast.makeText(getApplicationContext(), "회원 등록을 완료하였습니다.", Toast.LENGTH_LONG).show();
                                    finish();
+                                   overridePendingTransition(0, 0);
 
                                }else{
                                    Toast.makeText(getApplicationContext(), "회원 등록에 실패하였습니다.", Toast.LENGTH_LONG).show();

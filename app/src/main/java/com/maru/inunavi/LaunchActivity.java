@@ -5,9 +5,11 @@ import android.annotation.TargetApi;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -24,14 +26,32 @@ public class LaunchActivity extends AppCompatActivity {
 
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
+        /*if (!checkLocationServicesStatus()) {
+
+
+        }*/
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) { //기기의 sdk버전 이 M 즉, 마시멜로보다 높습니까? 마시멜로는 6.0
             //퍼미션 상태 확인
-            if (!hasPermissions(PERMISSIONS)) {
 
+
+            if(!checkLocationServicesStatus()) {
+
+                showDialogForLocationServiceSetting();
+
+            }
+
+
+            if (!hasPermissions(PERMISSIONS)) {
                 //퍼미션 허가 안되어있다면 사용자에게 요청
+
                 requestPermissions(PERMISSIONS, PERMISSIONS_REQUEST_CODE);
 
-            }else{
+            }
+
+            Log.d("launchActivity line 49", String.valueOf(checkLocationServicesStatus()));
+
+            if(checkLocationServicesStatus() && hasPermissions(PERMISSIONS)){
 
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
@@ -40,9 +60,9 @@ public class LaunchActivity extends AppCompatActivity {
                         Intent mainIntent = new Intent(getBaseContext(), MainActivity.class);
                         startActivity(mainIntent);
                         finish();
+                        overridePendingTransition(0, 0);
                     }
                 }, 500);
-
 
             }
 
@@ -92,12 +112,21 @@ public class LaunchActivity extends AppCompatActivity {
                             == PackageManager.PERMISSION_GRANTED;
 
                     if (!locationPermissionAccepted)
-                        showDialogForPermission("위치 정보 권한을 사용합니다.");
+                        showDialogForPermission("위치 정보 권한이 필요합니다.");
                     else
                     {
-                        Intent mainIntent = new Intent(LaunchActivity.this, MainActivity.class);
-                        startActivity(mainIntent);
-                        finish();
+                        if(!checkLocationServicesStatus()) {
+
+                            showDialogForLocationServiceSetting();
+
+                        }else{
+
+                            Intent mainIntent = new Intent(LaunchActivity.this, MainActivity.class);
+                            startActivity(mainIntent);
+                            finish();
+                            overridePendingTransition(0, 0);
+
+                        }
                     }
                 }
                 break;
@@ -115,10 +144,62 @@ public class LaunchActivity extends AppCompatActivity {
         builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id){
                 finish();
+                overridePendingTransition(0, 0);
             }
         });
 
         builder.create().show();
     }
 
+
+
+    public boolean checkLocationServicesStatus() {
+
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+                || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+    }
+
+    private void showDialogForLocationServiceSetting() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("위치 서비스 비활성화");
+        builder.setMessage("앱을 사용하기 위해서는 위치 서비스가 필요합니다.\n"
+                + "위치 서비스를 켜세요.");
+        builder.setCancelable(true);
+        builder.setPositiveButton("설정", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+
+
+                final int GPS_ENABLE_REQUEST_CODE = 2001;
+
+                Intent callGPSSettingIntent
+                        = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivityForResult(callGPSSettingIntent, GPS_ENABLE_REQUEST_CODE);
+
+            }
+        });
+
+        builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+                finish();
+                overridePendingTransition(0, 0);
+            }
+        });
+
+        builder.create().show();
+
+    }
+
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        startActivity(new Intent(this, LaunchActivity.class));
+    }
 }

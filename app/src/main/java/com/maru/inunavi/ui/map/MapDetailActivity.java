@@ -38,11 +38,7 @@ public class MapDetailActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        String title = intent.getStringExtra("title");
-        String sort = intent.getStringExtra("sort");
-        String time = intent.getStringExtra("time");
-        String callNum = intent.getStringExtra("callNum");
-
+        int placeID = intent.getIntExtra("placeID",0);
 
         // 레이아웃 바인딩
         TextView map_frag_detail_activity_title = findViewById(R.id.map_frag_detail_activity_title);
@@ -56,15 +52,16 @@ public class MapDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 finish();
+                overridePendingTransition(0, 0);
             }
         });
 
         
         // 장소 정보 출력
-        map_frag_detail_activity_title.setText(title);
-        map_frag_detail_activity_sort.setText(sort);
-        map_frag_detail_activity_time.setText(time);
-        map_frag_detail_activity_callNum.setText(callNum);
+        map_frag_detail_activity_title.setText(placeList.get(placeID).getTitle());
+        map_frag_detail_activity_sort.setText(placeList.get(placeID).getSort());
+        map_frag_detail_activity_time.setText(placeList.get(placeID).getTime());
+        map_frag_detail_activity_callNum.setText(placeList.get(placeID).getCallNum());
 
         recyclerView = findViewById(R.id.map_frag_detail_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)) ;
