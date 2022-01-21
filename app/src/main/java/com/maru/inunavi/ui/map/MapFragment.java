@@ -12,11 +12,16 @@ import android.content.Context;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -32,6 +37,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -43,6 +49,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.Polyline;
@@ -101,6 +108,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     //선택된 마커
 
     private Marker pointedMarker = null;
+
+    private final int markerSize = 48;
 
     private List<LatLng> latLngList = new ArrayList<>();
 
@@ -170,73 +179,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //뒤로 가기 버튼 리스너
-        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
 
-                switch (mapFragmentState){
-
-                    case DEFAULT_MODE:
-
-                        if(editText_search.isFocused()){
-                            editText_search.clearFocus();
-                            editText_search.setText("");
-
-                            map_frag_back.setVisibility(View.INVISIBLE);
-                            map_frag_cancel.setVisibility(View.INVISIBLE);
-                            map_frag_search_icon.setVisibility(View.VISIBLE);
-
-                            hideKeyboard(layout);
-                            gMap.clear();
-                            floatingMarkersOverlay.clearMarkers();
-
-                        }else{
-
-                            System.exit(0);
-
-                        }
-
-                        break;
-
-
-                    case SEARCH_MODE :
-                    case DIRECTION_MODE:
-
-                        setMapFragmentMode(DEFAULT_MODE,autoCompleteTextView_search_wrapper,
-                                mapSlidingLayout, map_frag_detail_box_wrapper,map_frag_navi_searchWrapper,
-                                navi_button_wrapper, AR_button_wrapper);
-
-                        map_frag_back.setVisibility(View.INVISIBLE);
-                        map_frag_cancel.setVisibility(View.INVISIBLE);
-                        map_frag_search_icon.setVisibility(View.VISIBLE);
-
-
-                        hideKeyboard(layout);
-                        gMap.clear();
-                        floatingMarkersOverlay.clearMarkers();
-
-                        break;
-
-                    case DETAIL_MODE :
-                        setMapFragmentMode(SEARCH_MODE,autoCompleteTextView_search_wrapper,
-                                mapSlidingLayout, map_frag_detail_box_wrapper, map_frag_navi_searchWrapper,
-                                navi_button_wrapper, AR_button_wrapper);
-
-                        if (pointedMarker != null) {
-                            pointedMarker.remove();
-                            pointedMarker = null;
-                        }
-
-                        break;
-
-
-                }
-
-            }
-        };
-
-        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
 
     }
 
@@ -336,8 +279,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     pointedMarker = null;
                 }
 
-                pointedMarker = gMap.addMarker(new MarkerOptions().position(placeList.get(position).getLocation()));
-                pointedMarker.setTag("pointedMarker");
+                if(gMap!=null) {
+                    pointedMarker = gMap.addMarker(new MarkerOptions().position(placeList.get(position).getLocation()));
+                    pointedMarker.setTag("pointedMarker");
+                }
+
 
             }
 
@@ -382,10 +328,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     setMapFragmentMode(SEARCH_MODE,autoCompleteTextView_search_wrapper, mapSlidingLayout, map_frag_detail_box_wrapper,
                             map_frag_navi_searchWrapper, navi_button_wrapper, AR_button_wrapper);
 
-                    gMap.clear();
+                    if(gMap!=null) gMap.clear();
                     floatingMarkersOverlay.clearMarkers();
 
                     if(placeList!=null && !placeList.isEmpty()){
+
+                        /*BitmapDrawable bitmapDraw=(BitmapDrawable)getResources().getDrawable(R.drawable.ic_inumarker_default,null);
+                        Bitmap b=bitmapDraw.getBitmap();
+                        Bitmap inuMarker_default = Bitmap.createScaledBitmap(b, markerSize, markerSize, false);*/
 
                         for(int i=0; i<placeList.size(); i++){
 
@@ -399,12 +349,20 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
 
                             int color = Color.parseColor("#02468E");
-                            final float main_color_hsv = 211;
+
                             MarkerInfo mi = new MarkerInfo(placeList.get(i).getLocation(), placeList.get(i).getTitle(), color);
 
-                            Marker marker = gMap.addMarker(new MarkerOptions().position(mi.getCoordinates()).icon(BitmapDescriptorFactory.defaultMarker(main_color_hsv)));
+                            if(gMap!=null){
 
-                            marker.setTag(i);
+                                /*final float main_color_hsv = 211;
+                                Marker marker = gMap.addMarker(new MarkerOptions().position(mi.getCoordinates()).icon(BitmapDescriptorFactory.defaultMarker(main_color_hsv)));
+                                marker.setTag(i);*/
+
+                                Marker marker = gMap.addMarker(new MarkerOptions().position(mi.getCoordinates()).icon(bitmapDescriptorFromVector(getActivity(),R.drawable.ic_inumarker_default)));
+                                marker.setTag(i);
+
+                            }
+
 
                             //Adding the marker to track by the overlay
                             //To remove that marker, you will need to call floatingMarkersOverlay.removeMarker(id)
@@ -416,12 +374,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                     }
 
-                    gMap.animateCamera(CameraUpdateFactory.newLatLngZoom( new LatLng(placeList.get(0).getLocation().latitude - 0.0008,
-                            placeList.get(0).getLocation().longitude) , 17));
-
-                    //gMap.animateCamera(CameraUpdateFactory.newLatLngZoom( placeList.get(0).getLocation(), 17));
-
-
+                    if(gMap!=null){
+                        gMap.animateCamera(CameraUpdateFactory.newLatLngZoom( new LatLng(placeList.get(0).getLocation().latitude - 0.0008,
+                                placeList.get(0).getLocation().longitude) , 17));
+                    }
 
 
                 }
@@ -450,7 +406,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                             map_frag_search_icon.setVisibility(View.VISIBLE);
 
                             hideKeyboard(layout);
-                            gMap.clear();
+                            if(gMap!=null) gMap.clear();
                             floatingMarkersOverlay.clearMarkers();
                         }else{
                             System.exit(0);
@@ -470,7 +426,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                         map_frag_search_icon.setVisibility(View.VISIBLE);
 
                         hideKeyboard(layout);
-                        gMap.clear();
+                        if(gMap!=null) gMap.clear();
                         floatingMarkersOverlay.clearMarkers();
 
                         break;
@@ -550,7 +506,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 setMapFragmentMode(DIRECTION_MODE,autoCompleteTextView_search_wrapper, mapSlidingLayout, map_frag_detail_box_wrapper,
                         map_frag_navi_searchWrapper, navi_button_wrapper, AR_button_wrapper);
 
-                gMap.clear();
+                if(gMap!=null) gMap.clear();
                 floatingMarkersOverlay.clearMarkers();
 
             }
@@ -574,7 +530,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 map_frag_search_icon.setVisibility(View.VISIBLE);
 
                 hideKeyboard(layout);
-                gMap.clear();
+                if(gMap!=null) gMap.clear();
                 floatingMarkersOverlay.clearMarkers();
 
             }
@@ -680,45 +636,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
 
-    //구형 위치 가져오기 메소드
-  /*  public void fetchLocation() {
-
-        if (ActivityCompat.checkSelfPermission(
-                getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE);
-            return;
-        }
-
-
-        Task<Location> task = fusedLocationProviderClient.getLastLocation();
-
-        task.addOnSuccessListener(new OnSuccessListener<Location>() {
-
-            @Override
-            public void onSuccess(Location location) {
-
-                if (location != null) {
-                    currentLocation = location;
-                    Toast.makeText(getActivity(), currentLocation.getLatitude() + "" + currentLocation.getLongitude(), Toast.LENGTH_SHORT).show();
-                    assert mapView != null;
-                    mapView.getMapAsync(mapFragment);
-
-                    Log.d("@@@MapFragment282" , currentLocation.getLatitude() + " " + currentLocation.getLongitude());
-
-                    if(gMap != null){
-                        gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), 17));
-                    }
-
-                }
-
-            }
-
-        });
-
-
-    }*/
-
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -782,7 +699,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         gMap = googleMap;
 
-
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
@@ -805,14 +721,18 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         RelativeLayout.LayoutParams rlpLocation = (RelativeLayout.LayoutParams) locationButton.getLayoutParams();
         RelativeLayout.LayoutParams rlpCompass = (RelativeLayout.LayoutParams) compassButton.getLayoutParams();
 
+
+
+
         // position on right bottom
         rlpLocation.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
         rlpLocation.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
-        rlpLocation.setMargins(0, 200, 180, 0);
+        rlpLocation.setMargins(0, DpToPixel(80), 180, 0);
 
         rlpCompass.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
         rlpCompass.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
-        rlpCompass.setMargins(180, 200, 0, 0);
+        rlpCompass.setMargins(180, DpToPixel(80), 0, 0);
+
 
         gMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
@@ -833,7 +753,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                         pointedMarker = null;
                     }
 
-                    pointedMarker = gMap.addMarker(new MarkerOptions().position(placeList.get((Integer.parseInt(marker.getTag().toString()))).getLocation()));
+                    pointedMarker = gMap.addMarker(new MarkerOptions().position(placeList.get((Integer.parseInt(marker.getTag().toString()))).getLocation()).icon(bitmapDescriptorFromVector(getActivity(),R.drawable.ic_inumarker_picked)));
                     pointedMarker.setTag("pointedMarker");
 
                 }
@@ -843,7 +763,80 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             }
         });
 
-        gMap.animateCamera(CameraUpdateFactory.newLatLngZoom( new LatLng(37.37532099190484, 126.63285407077159) , 17));
+        gMap.moveCamera(CameraUpdateFactory.newLatLngZoom( new LatLng(37.37532099190484, 126.63285407077159) , 17));
+
+
+
+
+        //----------------------------------------------------------
+
+        //뒤로 가기 버튼 리스너
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+
+                switch (mapFragmentState){
+
+                    case DEFAULT_MODE:
+
+                        if(editText_search.isFocused()){
+                            editText_search.clearFocus();
+                            editText_search.setText("");
+
+                            map_frag_back.setVisibility(View.INVISIBLE);
+                            map_frag_cancel.setVisibility(View.INVISIBLE);
+                            map_frag_search_icon.setVisibility(View.VISIBLE);
+
+                            hideKeyboard(layout);
+                            if(gMap!=null) gMap.clear();
+                            floatingMarkersOverlay.clearMarkers();
+
+                        }else{
+
+                            System.exit(0);
+
+                        }
+
+                        break;
+
+
+                    case SEARCH_MODE :
+                    case DIRECTION_MODE:
+
+                        setMapFragmentMode(DEFAULT_MODE,autoCompleteTextView_search_wrapper,
+                                mapSlidingLayout, map_frag_detail_box_wrapper,map_frag_navi_searchWrapper,
+                                navi_button_wrapper, AR_button_wrapper);
+
+                        map_frag_back.setVisibility(View.INVISIBLE);
+                        map_frag_cancel.setVisibility(View.INVISIBLE);
+                        map_frag_search_icon.setVisibility(View.VISIBLE);
+
+
+                        hideKeyboard(layout);
+                        if(gMap!=null) gMap.clear();
+                        floatingMarkersOverlay.clearMarkers();
+
+                        break;
+
+                    case DETAIL_MODE :
+                        setMapFragmentMode(SEARCH_MODE,autoCompleteTextView_search_wrapper,
+                                mapSlidingLayout, map_frag_detail_box_wrapper, map_frag_navi_searchWrapper,
+                                navi_button_wrapper, AR_button_wrapper);
+
+                        if (pointedMarker != null) {
+                            pointedMarker.remove();
+                            pointedMarker = null;
+                        }
+
+                        break;
+
+
+                }
+
+            }
+        };
+
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
 
     }
 
@@ -950,6 +943,30 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
+
+    private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
+        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
+        vectorDrawable.setBounds(0, 0, DpToPixel(markerSize), DpToPixel(markerSize));
+        Bitmap bitmap = Bitmap.createBitmap(DpToPixel(markerSize), DpToPixel(markerSize), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        vectorDrawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
+    }
+
+    //dp에서 픽셀로 변환하는 메소드
+
+    public int DpToPixel(int dp){
+
+        Resources r = getContext().getResources();
+        int px = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                dp,
+                r.getDisplayMetrics()
+        );
+
+        return px;
+
+    }
 
 
 }

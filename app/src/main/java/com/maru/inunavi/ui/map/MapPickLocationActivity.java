@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,9 +64,8 @@ import java.util.List;
 
 public class MapPickLocationActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-    private MapView mapView = null;
     private GoogleMap gMap;
-
+    private SupportMapFragment mapFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,17 +73,12 @@ public class MapPickLocationActivity extends AppCompatActivity implements OnMapR
 
         setContentView(R.layout.map_activity_pick_location);
 
-        mapView = findViewById(R.id.map_pick_location);
+        mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map_pick_location);
 
-
-        if (mapView != null) {
-            mapView.onCreate(savedInstanceState);
-
-        }
+        mapFragment.getMapAsync(this);
 
     }
-
-
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -96,68 +91,51 @@ public class MapPickLocationActivity extends AppCompatActivity implements OnMapR
             System.exit(0);
         }
 
-        /*gMap.setMyLocationEnabled(true);
+        gMap.setMyLocationEnabled(true);
 
         gMap.getUiSettings().setMyLocationButtonEnabled(true);
 
         gMap.getUiSettings().setMapToolbarEnabled(false);
 
-        View locationButton = ((View) mapView.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
-        View compassButton = ((View) mapView.findViewWithTag("GoogleMapCompass"));
+        View locationButton = ((View) mapFragment.getView().findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
+        View compassButton = ((View) mapFragment.getView().findViewWithTag("GoogleMapCompass"));
         RelativeLayout.LayoutParams rlpLocation = (RelativeLayout.LayoutParams) locationButton.getLayoutParams();
         RelativeLayout.LayoutParams rlpCompass = (RelativeLayout.LayoutParams) compassButton.getLayoutParams();
 
         // position on right bottom
         rlpLocation.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
         rlpLocation.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
-        rlpLocation.setMargins(0, 200, 180, 0);
+        rlpLocation.setMargins(0, 24, 180, 0);
 
         rlpCompass.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
         rlpCompass.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
-        rlpCompass.setMargins(180, 200, 0, 0);*/
+        rlpCompass.setMargins(180, 24, 0, 0);
 
+
+        gMap.moveCamera(CameraUpdateFactory.newLatLngZoom( new LatLng(37.37532099190484, 126.63285407077159) , 17));
+
+        //--------------------------맵 초기화 완료---------------------------------------------
+
+        TextView map_activity_pick_location_checkButton = findViewById(R.id.map_activity_pick_location_checkButton);
+
+        map_activity_pick_location_checkButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                LatLng pickLocation = gMap.getCameraPosition().target;
+
+                MarkerOptions markerOptions = new MarkerOptions();
+
+                markerOptions.position(pickLocation);
+
+                gMap.addMarker(markerOptions);
+
+                gMap.animateCamera(CameraUpdateFactory.newLatLngZoom( pickLocation, 17));
+
+            }
+        });
 
     }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        mapView.onStart();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        mapView.onStop();
-    }
-
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        mapView.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        mapView.onPause();
-    }
-
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        mapView.onLowMemory();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mapView.onLowMemory();
-    }
-
-
-
 
 
 }

@@ -12,7 +12,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
-    <com.google.android.gms.maps.MapView
+    <fragment
         android:id="@+id/map_pick_location"
         tools:context=".MapsActivity"
         android:name="com.google.android.gms.maps.SupportMapFragment"
@@ -38,6 +38,8 @@
 
         >
 
+
+
         <ImageView
             android:id="@+id/map_activity_pick_location_backButton"
             android:layout_width="36dp"
@@ -60,7 +62,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/map_frag_navi_searchButton_now"
+        android:id="@+id/map_activity_pick_location_checkButton"
         android:layout_width="match_parent"
         android:layout_height="@dimen/top_bar_height"
         android:background="@drawable/layout_map_pick_location_button"
@@ -77,6 +79,27 @@
         android:layout_marginRight="12dp"
         android:textStyle="bold"
         />
+
+    <ImageView
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/inumarker_default"
+        app:layout_constraintBottom_toTopOf="@id/map_activity_pick_location_dot"
+        app:layout_constraintLeft_toLeftOf="@id/map_activity_pick_location_dot"
+        app:layout_constraintRight_toRightOf="@id/map_activity_pick_location_dot"
+        android:layout_marginBottom="4dp"/>
+
+
+
+    <ImageView
+        android:id="@+id/map_activity_pick_location_dot"
+        android:layout_width="4dp"
+        android:layout_height="4dp"
+        app:layout_constraintTop_toTopOf="@id/map_pick_location"
+        app:layout_constraintBottom_toBottomOf="@id/map_pick_location"
+        app:layout_constraintLeft_toLeftOf="@id/map_pick_location"
+        app:layout_constraintRight_toRightOf="@id/map_pick_location"
+        android:src="@drawable/layout_pick_location_dot"/>
 
 
 
