@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -71,13 +72,12 @@ public class MapNaviSearchActivity extends AppCompatActivity {
 
 
         ArrayList<Place> searchPlaceList = new ArrayList<Place>(Arrays.asList(
-            new Place(1,"정보기술대학", "부속건물", 320, new LatLng(37.37428569643498, 126.63386849546436), "9:00 ~ 18:00", "032-832-1234"),
-            new Place( 2,"공과·도시과학대학", "부속건물", 400 , new LatLng(37.37351897032315, 126.63275998245754), "9:00 ~ 18:00", "032-832-1234"),
-            new Place(3, "공동실험 실습관", "부속건물", 500 , new LatLng(37.37269933308723, 126.63335830802647), "9:00 ~ 18:00", "032-832-1234"),
-            new Place(1,"정보기술대학", "부속건물", 320 , new LatLng(37.37428569643498, 126.63386849546436), "9:00 ~ 18:00", "032-832-1234"),
-            new Place( 2,"공과·도시과학대학", "부속건물", 400 , new LatLng(37.37351897032315, 126.63275998245754), "9:00 ~ 18:00", "032-832-1234"),
-            new Place(3,"공동실험 실습관", "부속건물", 500 , new LatLng(37.37269933308723, 126.63335830802647), "9:00 ~ 18:00", "032-832-1234")
-
+            new Place("INFORMATION","정보기술대학", "부속건물", 320, new LatLng(37.37428569643498, 126.63386849546436), "9:00 ~ 18:00", "032-832-1234"),
+                new Place(  "ENGINEERING","공과·도시과학대학", "부속건물", 400 , new LatLng(37.37351897032315, 126.63275998245754), "9:00 ~ 18:00", "032-832-1234"),
+                new Place("LABS", "공동실험 실습관", "부속건물", 500 , new LatLng(37.37269933308723, 126.63335830802647), "9:00 ~ 18:00", "032-832-1234"),
+                new Place("INFORMATION","정보기술대학", "부속건물", 320, new LatLng(37.37428569643498, 126.63386849546436), "9:00 ~ 18:00", "032-832-1234"),
+                new Place(  "ENGINEERING","공과·도시과학대학", "부속건물", 400 , new LatLng(37.37351897032315, 126.63275998245754), "9:00 ~ 18:00", "032-832-1234"),
+                new Place("LABS", "공동실험 실습관", "부속건물", 500 , new LatLng(37.37269933308723, 126.63335830802647), "9:00 ~ 18:00", "032-832-1234")
         ));
 
         adapter = new MapNaviSearchActivityAdapter(searchPlaceList);
@@ -118,32 +118,41 @@ public class MapNaviSearchActivity extends AppCompatActivity {
                     @Override
                     public void onActivityResult(ActivityResult result) {
                         if (result.getResultCode() == Activity.RESULT_OK) {
+
                             Intent intent = result.getData();
 
                             int CallType = intent.getIntExtra("CallType", 0);
+                            double latitude = intent.getDoubleExtra("latitude", 0);
+                            double longitude = intent.getDoubleExtra("longitude", 0);
 
-                            if(CallType == 0) {
+                            if(CallType == 1) {
 
                                 if(searchSort.equals("출발지 검색")){
-                                   /* Intent intent = new Intent(MapNaviSearchActivity.this, MainActivity.class);
-                                    intent.putExtra("CallType", 2001);
-                                    setResult(Activity.RESULT_OK, intent);
+                                    Intent sendingIntent = new Intent(MapNaviSearchActivity.this, MainActivity.class);
+                                    sendingIntent.putExtra("CallType", 3001);
+                                    sendingIntent.putExtra("latitude",latitude);
+                                    sendingIntent.putExtra("longitude",longitude);
+                                    setResult(Activity.RESULT_OK, sendingIntent);
                                     finish();
-                                    overridePendingTransition(0, 0);*/
+                                    overridePendingTransition(0, 0);
+
+
 
                                 }else if(searchSort.equals("도착지 검색")){
 
-                                    /*Intent intent = new Intent(MapNaviSearchActivity.this, MainActivity.class);
-                                    intent.putExtra("CallType", 2002);
-                                    setResult(Activity.RESULT_OK, intent);
+
+                                    Intent sendingIntent = new Intent(MapNaviSearchActivity.this, MainActivity.class);
+                                    sendingIntent.putExtra("CallType", 3002);
+                                    sendingIntent.putExtra("latitude",latitude);
+                                    sendingIntent.putExtra("longitude",longitude);
+                                    setResult(Activity.RESULT_OK, sendingIntent);
                                     finish();
-                                    overridePendingTransition(0, 0);*/
+                                    overridePendingTransition(0, 0);
 
                                 }
 
 
                             }
-
 
                         }
 
@@ -171,7 +180,7 @@ public class MapNaviSearchActivity extends AppCompatActivity {
                 if(searchSort.equals("출발지 검색")){
                     Intent intent = new Intent(MapNaviSearchActivity.this, MainActivity.class);
                     intent.putExtra("CallType", 1001);
-                    intent.putExtra("startPlaceID", searchPlaceList.get(position).getPlaceID());
+                    intent.putExtra("startPlaceCode", searchPlaceList.get(position).getPlaceCode());
                     intent.putExtra("startPlaceTitle", searchPlaceList.get(position).getTitle());
                     setResult(Activity.RESULT_OK, intent);
                     finish();
@@ -181,7 +190,7 @@ public class MapNaviSearchActivity extends AppCompatActivity {
 
                     Intent intent = new Intent(MapNaviSearchActivity.this, MainActivity.class);
                     intent.putExtra("CallType", 1002);
-                    intent.putExtra("endPlaceID", searchPlaceList.get(position).getPlaceID());
+                    intent.putExtra("endPlaceCode", searchPlaceList.get(position).getPlaceCode());
                     intent.putExtra("endPlaceTitle", searchPlaceList.get(position).getTitle());
                     setResult(Activity.RESULT_OK, intent);
                     finish();

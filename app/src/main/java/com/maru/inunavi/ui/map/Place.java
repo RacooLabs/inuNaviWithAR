@@ -7,7 +7,7 @@ import java.io.Serializable;
 public class Place {
 
 
-    private int placeID = 0;
+    private String placeCode = "NONE";
     private String title = "";
     private String sort = "";
     private double distance = 0.0;
@@ -17,8 +17,8 @@ public class Place {
 
     // 이미지
 
-    public Place(int placeID, String title, String sort, double distance, LatLng location, String time, String callNum) {
-        this.placeID = placeID;
+    public Place(String placeCode, String title, String sort, double distance, LatLng location, String time, String callNum) {
+        this.placeCode = placeCode;
         this.title = title;
         this.sort = sort;
         this.distance = distance;
@@ -27,9 +27,9 @@ public class Place {
         this.callNum = callNum;
     }
 
-    public int getPlaceID() {return placeID;}
+    public String getPlaceCode() {return placeCode;}
 
-    public void setPlaceID() {this.placeID = placeID;}
+    public void setPlaceCode() {this.placeCode = placeCode;}
 
     public String getTitle() {
         return title;

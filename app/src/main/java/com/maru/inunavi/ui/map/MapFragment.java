@@ -20,6 +20,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
+import android.telecom.Call;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
@@ -119,7 +120,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private MapFragmentState mapFragmentState = DEFAULT_MODE;
 
     // 검색했을 때 검새결과를 받을 리스트
-    public static ArrayList<Place> placeList;
+    public ArrayList<Place> placeList;
 
     //detail 박스에 포커싱된 장소
     private Place detailFocusedPlace;
@@ -165,8 +166,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private TextView map_frag_navi_searchButton_now;
 
     //네비게이션 출발 목적지 저장 변수
-    private int startPlaceID = 0;
-    private int endPlaceID = 0;
+    private String startPlaceCode = "NONE";
+    private String endPlaceCode = "NONE";
     private LatLng startLocation = null;
     private LatLng endLocation = null;
 
@@ -249,12 +250,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         //DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), new LinearLayoutManager(getContext()).getOrientation());
         //recyclerView.addItemDecoration(dividerItemDecoration);
 
-        placeList.add(new Place(1,"정보기술대학", "부속건물", 320, new LatLng(37.37428569643498, 126.63386849546436), "9:00 ~ 18:00", "032-832-1234"));
-        placeList.add(new Place( 2,"공과·도시과학대학", "부속건물", 400 , new LatLng(37.37351897032315, 126.63275998245754), "9:00 ~ 18:00", "032-832-1234"));
-        placeList.add(new Place(3, "공동실험 실습관", "부속건물", 500 , new LatLng(37.37269933308723, 126.63335830802647), "9:00 ~ 18:00", "032-832-1234"));
-        placeList.add(new Place(1,"정보기술대학", "부속건물", 320 , new LatLng(37.37428569643498, 126.63386849546436), "9:00 ~ 18:00", "032-832-1234"));
-        placeList.add(new Place( 2,"공과·도시과학대학", "부속건물", 400 , new LatLng(37.37351897032315, 126.63275998245754), "9:00 ~ 18:00", "032-832-1234"));
-        placeList.add(new Place(3,"공동실험 실습관", "부속건물", 500 , new LatLng(37.37269933308723, 126.63335830802647), "9:00 ~ 18:00", "032-832-1234"));
+        placeList.add(new Place("INFORMATION","정보기술대학", "부속건물", 320, new LatLng(37.37428569643498, 126.63386849546436), "9:00 ~ 18:00", "032-832-1234"));
+        placeList.add(new Place(  "ENGINEERING","공과·도시과학대학", "부속건물", 400 , new LatLng(37.37351897032315, 126.63275998245754), "9:00 ~ 18:00", "032-832-1234"));
+        placeList.add(new Place("LABS", "공동실험 실습관", "부속건물", 500 , new LatLng(37.37269933308723, 126.63335830802647), "9:00 ~ 18:00", "032-832-1234"));
+        placeList.add(new Place("INFORMATION","정보기술대학", "부속건물", 320 , new LatLng(37.37428569643498, 126.63386849546436), "9:00 ~ 18:00", "032-832-1234"));
+        placeList.add(new Place( "ENGINEERING","공과·도시과학대학", "부속건물", 400 , new LatLng(37.37351897032315, 126.63275998245754), "9:00 ~ 18:00", "032-832-1234"));
+        placeList.add(new Place("LABS","공동실험 실습관", "부속건물", 500 , new LatLng(37.37269933308723, 126.63335830802647), "9:00 ~ 18:00", "032-832-1234"));
 
         adapter = new MapSearchAdapter(placeList);
         recyclerView.setAdapter(adapter);
@@ -280,7 +281,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 }
 
                 if(gMap!=null) {
-                    pointedMarker = gMap.addMarker(new MarkerOptions().position(placeList.get(position).getLocation()));
+                    pointedMarker = gMap.addMarker(new MarkerOptions().position(placeList.get(position).getLocation()).icon(bitmapDescriptorFromVector(getActivity(),R.drawable.ic_inumarker_picked)));
                     pointedMarker.setTag("pointedMarker");
                 }
 
@@ -288,6 +289,48 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             }
 
         });
+
+        // 검색 모드에서 슬라이딩 패널에 있는 길찾기 버튼을 눌렀을 때 리스너 콜백
+
+        adapter.setOnItemDirectionClickListener(new MapSearchAdapter.OnItemDirectionClickListener() {
+            @Override
+            public void onItemClick(View v, int position) {
+
+                setMapFragmentMode(DIRECTION_MODE,autoCompleteTextView_search_wrapper, mapSlidingLayout, map_frag_detail_box_wrapper,
+                        map_frag_navi_searchWrapper, navi_button_wrapper, AR_button_wrapper);
+
+                detailFocusedPlace= placeList.get(position);
+
+                if(gMap!=null) gMap.clear();
+                floatingMarkersOverlay.clearMarkers();
+                
+                
+                //내 위치는 출발지로, 도착지는 선택 아이템으로
+                map_frag_navi_searchBar_Start.setText("내 위치");
+
+                startLocation = new LatLng(gpsTracker.getLatitude(), gpsTracker.getLongitude());
+                startPlaceCode = "LOCATION";
+
+                endPlaceCode = detailFocusedPlace.getPlaceCode();
+                endLocation = null;
+
+                String endPlaceTitle = detailFocusedPlace.getTitle();
+                map_frag_navi_searchBar_End.setText(endPlaceTitle);
+
+
+                if(!map_frag_navi_searchBar_Start.getText().toString().equals("") &&
+                        !(map_frag_navi_searchBar_End.getText().toString().equals(""))){
+
+
+                    NaviInfo naviInfo = new NaviInfo(startPlaceCode, endPlaceCode, startLocation, endLocation);
+                    showBriefingDirection(naviInfo);
+
+                }
+
+            }
+
+        });
+
 
         //스피너 설정
         String[] items = getResources().getStringArray(R.array.map_frag_sliding_spinner_list);
@@ -489,7 +532,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                 Intent intent = new Intent(getActivity(), MapDetailActivity.class);
 
-                intent.putExtra("placeID", detailFocusedPlace.getPlaceID());
+                intent.putExtra("placeTitle", detailFocusedPlace.getTitle());
+                intent.putExtra("placeSort", detailFocusedPlace.getSort());
+                intent.putExtra("placeTime", detailFocusedPlace.getTime());
+                intent.putExtra("placeCallNum", detailFocusedPlace.getCallNum());
 
                 detailActivityResultLauncher.launch(intent);
 
@@ -552,17 +598,26 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                             int CallType = intent.getIntExtra("CallType", 0);
 
+                            double latitude;
+                            double longitude;
+
+
                             switch (CallType){
+
                                 case 1001:
 
-                                    startPlaceID = intent.getIntExtra("startPlaceID", 0);
+                                    startPlaceCode = intent.getStringExtra("startPlaceCode");
+                                    startLocation = null;
+
                                     String startPlaceTitle = intent.getStringExtra("startPlaceTitle");
                                     map_frag_navi_searchBar_Start.setText(startPlaceTitle);
                                     break;
 
                                 case 1002:
 
-                                    endPlaceID = intent.getIntExtra("endPlaceID", 0);
+                                    endPlaceCode = intent.getStringExtra("endPlaceCode");
+                                    endLocation = null;
+
                                     String endPlaceTitle = intent.getStringExtra("endPlaceTitle");
                                     map_frag_navi_searchBar_End.setText(endPlaceTitle);
                                     break;
@@ -572,6 +627,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                                     map_frag_navi_searchBar_Start.setText("내 위치");
 
                                     startLocation = new LatLng(gpsTracker.getLatitude(), gpsTracker.getLongitude());
+                                    startPlaceCode = "LOCATION";
+
 
                                     break;
 
@@ -580,8 +637,45 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                                     map_frag_navi_searchBar_End.setText("내 위치");
 
                                     endLocation = new LatLng(gpsTracker.getLatitude(),gpsTracker.getLongitude());
+                                    endPlaceCode = "LOCATION";
 
                                     break;
+
+                                case 3001:
+
+                                    map_frag_navi_searchBar_Start.setText("직접 선택한 위치");
+
+                                    latitude = intent.getDoubleExtra("latitude", 0);
+                                    longitude = intent.getDoubleExtra("longitude", 0);
+
+                                    startLocation = new LatLng(latitude,longitude);
+                                    startPlaceCode = "LOCATION";
+
+                                    break;
+
+
+                                case 3002:
+
+                                    map_frag_navi_searchBar_End.setText("직접 선택한 위치");
+
+
+                                    latitude = intent.getDoubleExtra("latitude", 0);
+                                    longitude = intent.getDoubleExtra("longitude", 0);
+
+                                    endLocation = new LatLng(latitude,longitude);
+                                    endPlaceCode = "LOCATION";
+
+                                    break;
+
+                            }
+
+
+                            // 경로 그리는 메소드
+                            if(!map_frag_navi_searchBar_Start.getText().toString().equals("") &&
+                                    !(map_frag_navi_searchBar_End.getText().toString().equals(""))){
+
+                                NaviInfo naviInfo = new NaviInfo(startPlaceCode, endPlaceCode, startLocation, endLocation);
+                                showBriefingDirection(naviInfo);
 
                             }
 
@@ -618,15 +712,23 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onClick(View view) {
 
-                int tmpPlaceID = 0;
+                String tmpPlaceCode = "NONE";
 
-                tmpPlaceID = startPlaceID;
-                startPlaceID = endPlaceID;
-                endPlaceID = tmpPlaceID;
+                tmpPlaceCode = startPlaceCode;
+                startPlaceCode = endPlaceCode;
+                endPlaceCode = tmpPlaceCode;
 
                 String tmpPlaceTitle = map_frag_navi_searchBar_Start.getText().toString();
                 map_frag_navi_searchBar_Start.setText(map_frag_navi_searchBar_End.getText().toString());
                 map_frag_navi_searchBar_End.setText(tmpPlaceTitle);
+
+                if(!map_frag_navi_searchBar_Start.getText().toString().equals("") &&
+                        !(map_frag_navi_searchBar_End.getText().toString().equals(""))){
+
+                    NaviInfo naviInfo = new NaviInfo(startPlaceCode, endPlaceCode, startLocation, endLocation);
+                    showBriefingDirection(naviInfo);
+
+                }
 
             }
         });
@@ -911,8 +1013,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                 map_frag_navi_searchBar_Start.setText("");
                 map_frag_navi_searchBar_End.setText("");
-                startPlaceID = 0;
-                endPlaceID = 0;
+                startPlaceCode = "NONE";
+                endPlaceCode = "NONE";
                 startLocation = null;
                 endLocation = null;
 
@@ -965,6 +1067,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         );
 
         return px;
+
+    }
+
+    public void showBriefingDirection(NaviInfo naviInfo){
+
+        Toast.makeText(getContext(), "경로 찾기 시작", Toast.LENGTH_SHORT).show();
 
     }
 

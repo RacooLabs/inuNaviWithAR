@@ -1,7 +1,5 @@
 package com.maru.inunavi.ui.map;
 
-import static com.maru.inunavi.ui.map.MapFragment.placeList;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -38,7 +36,10 @@ public class MapDetailActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        int placeID = intent.getIntExtra("placeID",0);
+        String placeTitle = intent.getStringExtra("placeTitle");
+        String placeSort = intent.getStringExtra("placeSort");
+        String placeTime = intent.getStringExtra("placeTime");
+        String placeCallNum = intent.getStringExtra("placeCallNum");
 
         // 레이아웃 바인딩
         TextView map_frag_detail_activity_title = findViewById(R.id.map_frag_detail_activity_title);
@@ -56,24 +57,23 @@ public class MapDetailActivity extends AppCompatActivity {
             }
         });
 
-        
         // 장소 정보 출력
-        map_frag_detail_activity_title.setText(placeList.get(placeID).getTitle());
-        map_frag_detail_activity_sort.setText(placeList.get(placeID).getSort());
-        map_frag_detail_activity_time.setText(placeList.get(placeID).getTime());
-        map_frag_detail_activity_callNum.setText(placeList.get(placeID).getCallNum());
+        map_frag_detail_activity_title.setText(placeTitle);
+        map_frag_detail_activity_sort.setText(placeSort);
+        map_frag_detail_activity_time.setText(placeTime);
+        map_frag_detail_activity_callNum.setText(placeCallNum);
 
         recyclerView = findViewById(R.id.map_frag_detail_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)) ;
 
 
         ArrayList<Place> nearPlaceList = new ArrayList<Place>(Arrays.asList(
-            new Place(1,"정보기술대학", "부속건물", 320, new LatLng(37.37428569643498, 126.63386849546436), "9:00 ~ 18:00", "032-832-1234"),
-            new Place( 2,"공과·도시과학대학", "부속건물", 400 , new LatLng(37.37351897032315, 126.63275998245754), "9:00 ~ 18:00", "032-832-1234"),
-            new Place(3, "공동실험 실습관", "부속건물", 500 , new LatLng(37.37269933308723, 126.63335830802647), "9:00 ~ 18:00", "032-832-1234"),
-            new Place(1,"정보기술대학", "부속건물", 320 , new LatLng(37.37428569643498, 126.63386849546436), "9:00 ~ 18:00", "032-832-1234"),
-            new Place( 2,"공과·도시과학대학", "부속건물", 400 , new LatLng(37.37351897032315, 126.63275998245754), "9:00 ~ 18:00", "032-832-1234"),
-            new Place(3,"공동실험 실습관", "부속건물", 500 , new LatLng(37.37269933308723, 126.63335830802647), "9:00 ~ 18:00", "032-832-1234")
+            new Place("INFORMATION","정보기술대학", "부속건물", 320, new LatLng(37.37428569643498, 126.63386849546436), "9:00 ~ 18:00", "032-832-1234"),
+            new Place( "ENGINEERING","공과·도시과학대학", "부속건물", 400 , new LatLng(37.37351897032315, 126.63275998245754), "9:00 ~ 18:00", "032-832-1234"),
+            new Place("LABS", "공동실험 실습관", "부속건물", 500 , new LatLng(37.37269933308723, 126.63335830802647), "9:00 ~ 18:00", "032-832-1234"),
+            new Place("INFORMATION","정보기술대학", "부속건물", 320 , new LatLng(37.37428569643498, 126.63386849546436), "9:00 ~ 18:00", "032-832-1234"),
+            new Place( "ENGINEERING","공과·도시과학대학", "부속건물", 400 , new LatLng(37.37351897032315, 126.63275998245754), "9:00 ~ 18:00", "032-832-1234"),
+            new Place("LABS","공동실험 실습관", "부속건물", 500 , new LatLng(37.37269933308723, 126.63335830802647), "9:00 ~ 18:00", "032-832-1234")
 
         ));
 

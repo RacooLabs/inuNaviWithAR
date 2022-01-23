@@ -53,6 +53,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
+import com.maru.inunavi.MainActivity;
 import com.maru.inunavi.R;
 import com.maru.inunavi.ui.map.markerinfo.FloatingMarkerTitlesOverlay;
 import com.maru.inunavi.ui.map.markerinfo.MarkerInfo;
@@ -77,6 +78,14 @@ public class MapPickLocationActivity extends AppCompatActivity implements OnMapR
                 .findFragmentById(R.id.map_pick_location);
 
         mapFragment.getMapAsync(this);
+
+        ImageView map_activity_pick_location_backButton = findViewById(R.id.map_activity_pick_location_backButton);
+        map_activity_pick_location_backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
     }
 
@@ -118,22 +127,22 @@ public class MapPickLocationActivity extends AppCompatActivity implements OnMapR
 
         TextView map_activity_pick_location_checkButton = findViewById(R.id.map_activity_pick_location_checkButton);
 
+        //맵 픽 버튼
         map_activity_pick_location_checkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 LatLng pickLocation = gMap.getCameraPosition().target;
-
-                MarkerOptions markerOptions = new MarkerOptions();
-
-                markerOptions.position(pickLocation);
-
-                gMap.addMarker(markerOptions);
-
-                gMap.animateCamera(CameraUpdateFactory.newLatLngZoom( pickLocation, 17));
+                Intent intent = new Intent(MapPickLocationActivity.this, MapNaviSearchActivity.class);
+                intent.putExtra("CallType", 1);
+                setResult(Activity.RESULT_OK, intent);
+                finish();
+                overridePendingTransition(0, 0);
 
             }
         });
+
+
 
     }
 
