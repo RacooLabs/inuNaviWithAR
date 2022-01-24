@@ -52,9 +52,13 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CustomCap;
+import com.google.android.gms.maps.model.JointType;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.maps.model.RoundCap;
+import com.google.android.gms.maps.model.SquareCap;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.maru.inunavi.MainActivity;
@@ -96,7 +100,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private MapView mapView = null;
     private GoogleMap gMap;
     private Polyline polyline = null;
-    private MapFragment mapFragment= null;
+    private MapFragment mapFragment = null;
     private GPSTracker gpsTracker;
 
     private FusedLocationProviderClient fusedLocationProviderClient;
@@ -112,6 +116,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private final int markerSize = 48;
 
+    // 길그릴때 사용하는 latLng 리스트
     private List<LatLng> latLngList = new ArrayList<>();
 
     private RecyclerView recyclerView;
@@ -156,6 +161,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private TextView map_frag_detail_title;
     private TextView map_frag_detail_sort;
     private TextView map_frag_detail_distance;
+    private ConstraintLayout map_frag_detail_startButton;
+    private ConstraintLayout map_frag_detail_endButton;
 
     //네비게이션 검색 박스
     private ConstraintLayout map_frag_navi_searchWrapper;
@@ -179,7 +186,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
 
     }
@@ -218,13 +224,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         AR_button = layout.findViewById(R.id.AR_button);
 
         // 디테일 박스
-
         map_frag_detail_box = layout.findViewById(R.id.map_frag_detail_box);
 
         // 디테일 박스 구성 레이아웃
         map_frag_detail_title = layout.findViewById(R.id.map_frag_detail_title);
         map_frag_detail_sort = layout.findViewById(R.id.map_frag_detail_sort);
         map_frag_detail_distance = layout.findViewById(R.id.map_frag_detail_distance);
+        map_frag_detail_startButton = layout.findViewById(R.id.map_frag_detail_startButton);
+        map_frag_detail_endButton = layout.findViewById(R.id.map_frag_detail_endButton);
 
         //네이게이션 검색 박스 레이아웃
         map_frag_navi_searchWrapper = layout.findViewById(R.id.map_frag_navi_searchWrapper);
@@ -240,22 +247,21 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
 
         //리사이클러뷰 설정
-        recyclerView = (RecyclerView)layout.findViewById(R.id.map_frag_recyclerview_sliding);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false)) ;
+        recyclerView = (RecyclerView) layout.findViewById(R.id.map_frag_recyclerview_sliding);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         placeList = new ArrayList<>();
-
 
 
         //선 넣는 코드
         //DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), new LinearLayoutManager(getContext()).getOrientation());
         //recyclerView.addItemDecoration(dividerItemDecoration);
 
-        placeList.add(new Place("INFORMATION","정보기술대학", "부속건물", 320, new LatLng(37.37428569643498, 126.63386849546436), "9:00 ~ 18:00", "032-832-1234"));
-        placeList.add(new Place(  "ENGINEERING","공과·도시과학대학", "부속건물", 400 , new LatLng(37.37351897032315, 126.63275998245754), "9:00 ~ 18:00", "032-832-1234"));
-        placeList.add(new Place("LABS", "공동실험 실습관", "부속건물", 500 , new LatLng(37.37269933308723, 126.63335830802647), "9:00 ~ 18:00", "032-832-1234"));
-        placeList.add(new Place("INFORMATION","정보기술대학", "부속건물", 320 , new LatLng(37.37428569643498, 126.63386849546436), "9:00 ~ 18:00", "032-832-1234"));
-        placeList.add(new Place( "ENGINEERING","공과·도시과학대학", "부속건물", 400 , new LatLng(37.37351897032315, 126.63275998245754), "9:00 ~ 18:00", "032-832-1234"));
-        placeList.add(new Place("LABS","공동실험 실습관", "부속건물", 500 , new LatLng(37.37269933308723, 126.63335830802647), "9:00 ~ 18:00", "032-832-1234"));
+        placeList.add(new Place("INFORMATION", "정보기술대학", "부속건물", 320, new LatLng(37.37428569643498, 126.63386849546436), "9:00 ~ 18:00", "0328321234"));
+        placeList.add(new Place("ENGINEERING", "공과·도시과학대학", "부속건물", 400, new LatLng(37.37351897032315, 126.63275998245754), "9:00 ~ 18:00", "0328321234"));
+        placeList.add(new Place("LABS", "공동실험 실습관", "부속건물", 500, new LatLng(37.37269933308723, 126.63335830802647), "9:00 ~ 18:00", "0328321234"));
+        placeList.add(new Place("INFORMATION", "정보기술대학", "부속건물", 320, new LatLng(37.37428569643498, 126.63386849546436), "9:00 ~ 18:00", "0328321234"));
+        placeList.add(new Place("ENGINEERING", "공과·도시과학대학", "부속건물", 400, new LatLng(37.37351897032315, 126.63275998245754), "9:00 ~ 18:00", "0328321234"));
+        placeList.add(new Place("LABS", "공동실험 실습관", "부속건물", 500, new LatLng(37.37269933308723, 126.63335830802647), "9:00 ~ 18:00", "0328321234"));
 
         adapter = new MapSearchAdapter(placeList);
         recyclerView.setAdapter(adapter);
@@ -269,19 +275,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                         map_frag_navi_searchWrapper, navi_button_wrapper, AR_button_wrapper);
                 map_frag_detail_title.setText(placeList.get(position).getTitle());
                 map_frag_detail_sort.setText(placeList.get(position).getSort());
-                map_frag_detail_distance.setText((int)(placeList.get(position).getDistance()) + "m");
+                map_frag_detail_distance.setText((int) (placeList.get(position).getDistance()) + "m");
 
-                detailFocusedPlace= placeList.get(position);
+                detailFocusedPlace = placeList.get(position);
 
-                gMap.animateCamera(CameraUpdateFactory.newLatLngZoom( placeList.get(position).getLocation() , 17));
+                gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(placeList.get(position).getLocation(), 17));
 
                 if (pointedMarker != null) {
                     pointedMarker.remove();
                     pointedMarker = null;
                 }
 
-                if(gMap!=null) {
-                    pointedMarker = gMap.addMarker(new MarkerOptions().position(placeList.get(position).getLocation()).icon(bitmapDescriptorFromVector(getActivity(),R.drawable.ic_inumarker_picked)));
+                if (gMap != null) {
+                    pointedMarker = gMap.addMarker(new MarkerOptions().position(placeList.get(position).getLocation()).icon(bitmapDescriptorFromVector(getActivity(), R.drawable.ic_inumarker_picked)));
                     pointedMarker.setTag("pointedMarker");
                 }
 
@@ -296,36 +302,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onItemClick(View v, int position) {
 
-                setMapFragmentMode(DIRECTION_MODE,autoCompleteTextView_search_wrapper, mapSlidingLayout, map_frag_detail_box_wrapper,
-                        map_frag_navi_searchWrapper, navi_button_wrapper, AR_button_wrapper);
-
-                detailFocusedPlace= placeList.get(position);
-
-                if(gMap!=null) gMap.clear();
-                floatingMarkersOverlay.clearMarkers();
-                
-                
-                //내 위치는 출발지로, 도착지는 선택 아이템으로
-                map_frag_navi_searchBar_Start.setText("내 위치");
-
-                startLocation = new LatLng(gpsTracker.getLatitude(), gpsTracker.getLongitude());
-                startPlaceCode = "LOCATION";
-
-                endPlaceCode = detailFocusedPlace.getPlaceCode();
-                endLocation = null;
-
-                String endPlaceTitle = detailFocusedPlace.getTitle();
-                map_frag_navi_searchBar_End.setText(endPlaceTitle);
-
-
-                if(!map_frag_navi_searchBar_Start.getText().toString().equals("") &&
-                        !(map_frag_navi_searchBar_End.getText().toString().equals(""))){
-
-
-                    NaviInfo naviInfo = new NaviInfo(startPlaceCode, endPlaceCode, startLocation, endLocation);
-                    showBriefingDirection(naviInfo);
-
-                }
+                detailFocusedPlace = placeList.get(position);
+                setFindRouteToPlaceFromMyLocation(detailFocusedPlace);
 
             }
 
@@ -337,7 +315,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         map_frag_sliding_spinner.setAdapter(new ArrayAdapter(getContext(), R.layout.map_fragment_custom_spinner_item, items));
 
         //초기 모드 설정
-        setMapFragmentMode(DEFAULT_MODE,autoCompleteTextView_search_wrapper, mapSlidingLayout, map_frag_detail_box_wrapper,
+        setMapFragmentMode(DEFAULT_MODE, autoCompleteTextView_search_wrapper, mapSlidingLayout, map_frag_detail_box_wrapper,
                 map_frag_navi_searchWrapper, navi_button_wrapper, AR_button_wrapper);
 
 
@@ -368,19 +346,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                     hideKeyboard(layout);
 
-                    setMapFragmentMode(SEARCH_MODE,autoCompleteTextView_search_wrapper, mapSlidingLayout, map_frag_detail_box_wrapper,
+                    setMapFragmentMode(SEARCH_MODE, autoCompleteTextView_search_wrapper, mapSlidingLayout, map_frag_detail_box_wrapper,
                             map_frag_navi_searchWrapper, navi_button_wrapper, AR_button_wrapper);
 
-                    if(gMap!=null) gMap.clear();
+                    if (gMap != null) gMap.clear();
                     floatingMarkersOverlay.clearMarkers();
 
-                    if(placeList!=null && !placeList.isEmpty()){
+                    if (placeList != null && !placeList.isEmpty()) {
 
                         /*BitmapDrawable bitmapDraw=(BitmapDrawable)getResources().getDrawable(R.drawable.ic_inumarker_default,null);
                         Bitmap b=bitmapDraw.getBitmap();
                         Bitmap inuMarker_default = Bitmap.createScaledBitmap(b, markerSize, markerSize, false);*/
 
-                        for(int i=0; i<placeList.size(); i++){
+                        for (int i = 0; i < placeList.size(); i++) {
 
                            /* MarkerOptions markerOptions = new MarkerOptions();
                             markerOptions.position(placeList.get(i).getLocation());
@@ -395,13 +373,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                             MarkerInfo mi = new MarkerInfo(placeList.get(i).getLocation(), placeList.get(i).getTitle(), color);
 
-                            if(gMap!=null){
+                            if (gMap != null) {
 
                                 /*final float main_color_hsv = 211;
                                 Marker marker = gMap.addMarker(new MarkerOptions().position(mi.getCoordinates()).icon(BitmapDescriptorFactory.defaultMarker(main_color_hsv)));
                                 marker.setTag(i);*/
 
-                                Marker marker = gMap.addMarker(new MarkerOptions().position(mi.getCoordinates()).icon(bitmapDescriptorFromVector(getActivity(),R.drawable.ic_inumarker_default)));
+                                Marker marker = gMap.addMarker(new MarkerOptions().position(mi.getCoordinates()).icon(bitmapDescriptorFromVector(getActivity(), R.drawable.ic_inumarker_default)));
                                 marker.setTag(i);
 
                             }
@@ -417,9 +395,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                     }
 
-                    if(gMap!=null){
-                        gMap.animateCamera(CameraUpdateFactory.newLatLngZoom( new LatLng(placeList.get(0).getLocation().latitude - 0.0008,
-                                placeList.get(0).getLocation().longitude) , 17));
+                    if (gMap != null) {
+                        gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(placeList.get(0).getLocation().latitude - 0.0008,
+                                placeList.get(0).getLocation().longitude), 17));
                     }
 
 
@@ -436,11 +414,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onClick(View v) {
 
-                switch (mapFragmentState){
+                switch (mapFragmentState) {
 
                     case DEFAULT_MODE:
 
-                        if(editText_search.isFocused()){
+                        if (editText_search.isFocused()) {
                             editText_search.clearFocus();
                             editText_search.setText("");
 
@@ -449,18 +427,18 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                             map_frag_search_icon.setVisibility(View.VISIBLE);
 
                             hideKeyboard(layout);
-                            if(gMap!=null) gMap.clear();
+                            if (gMap != null) gMap.clear();
                             floatingMarkersOverlay.clearMarkers();
-                        }else{
+                        } else {
                             System.exit(0);
                         }
 
                         break;
 
                     case DIRECTION_MODE:
-                    case SEARCH_MODE :
+                    case SEARCH_MODE:
 
-                        setMapFragmentMode(DEFAULT_MODE,autoCompleteTextView_search_wrapper,
+                        setMapFragmentMode(DEFAULT_MODE, autoCompleteTextView_search_wrapper,
                                 mapSlidingLayout, map_frag_detail_box_wrapper, map_frag_navi_searchWrapper,
                                 navi_button_wrapper, AR_button_wrapper);
 
@@ -469,15 +447,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                         map_frag_search_icon.setVisibility(View.VISIBLE);
 
                         hideKeyboard(layout);
-                        if(gMap!=null) gMap.clear();
+                        if (gMap != null) gMap.clear();
                         floatingMarkersOverlay.clearMarkers();
 
                         break;
 
 
-                    case DETAIL_MODE :
+                    case DETAIL_MODE:
 
-                        setMapFragmentMode(SEARCH_MODE,autoCompleteTextView_search_wrapper,
+                        setMapFragmentMode(SEARCH_MODE, autoCompleteTextView_search_wrapper,
                                 mapSlidingLayout, map_frag_detail_box_wrapper, map_frag_navi_searchWrapper,
                                 navi_button_wrapper, AR_button_wrapper);
 
@@ -517,7 +495,25 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                             int CallType = intent.getIntExtra("CallType", 0);
 
 
-                            if(CallType == 2001) {
+
+                            switch (CallType){
+
+                                // 출발 버튼 눌렀을 때
+                                case 1001:
+
+                                    setFindRouteFromPlace(detailFocusedPlace);
+
+                                    break;
+
+
+
+                                    // 도착 버튼 눌렀을 때
+
+                                case 1002:
+
+                                    setFindRouteToPlace(detailFocusedPlace);
+
+                                   break;
 
                             }
 
@@ -544,15 +540,37 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         });
 
 
+        // 디테일 박스 출발 리스너
+
+        map_frag_detail_startButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                setFindRouteFromPlace(detailFocusedPlace);
+
+            }
+        });
+
+        // 디테일 박스 도착 리스너
+        map_frag_detail_endButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                setFindRouteToPlace(detailFocusedPlace);
+
+            }
+        });
+
+
         //네비게이션 버튼 누를때
         navi_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                setMapFragmentMode(DIRECTION_MODE,autoCompleteTextView_search_wrapper, mapSlidingLayout, map_frag_detail_box_wrapper,
+                setMapFragmentMode(DIRECTION_MODE, autoCompleteTextView_search_wrapper, mapSlidingLayout, map_frag_detail_box_wrapper,
                         map_frag_navi_searchWrapper, navi_button_wrapper, AR_button_wrapper);
 
-                if(gMap!=null) gMap.clear();
+                if (gMap != null) gMap.clear();
                 floatingMarkersOverlay.clearMarkers();
 
             }
@@ -563,7 +581,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onClick(View view) {
 
-                setMapFragmentMode(DEFAULT_MODE,autoCompleteTextView_search_wrapper,
+                setMapFragmentMode(DEFAULT_MODE, autoCompleteTextView_search_wrapper,
                         mapSlidingLayout, map_frag_detail_box_wrapper, map_frag_navi_searchWrapper,
                         navi_button_wrapper, AR_button_wrapper);
 
@@ -576,7 +594,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 map_frag_search_icon.setVisibility(View.VISIBLE);
 
                 hideKeyboard(layout);
-                if(gMap!=null) gMap.clear();
+                if (gMap != null) gMap.clear();
                 floatingMarkersOverlay.clearMarkers();
 
             }
@@ -602,7 +620,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                             double longitude;
 
 
-                            switch (CallType){
+                            switch (CallType) {
 
                                 case 1001:
 
@@ -636,7 +654,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                                     map_frag_navi_searchBar_End.setText("내 위치");
 
-                                    endLocation = new LatLng(gpsTracker.getLatitude(),gpsTracker.getLongitude());
+                                    endLocation = new LatLng(gpsTracker.getLatitude(), gpsTracker.getLongitude());
                                     endPlaceCode = "LOCATION";
 
                                     break;
@@ -648,7 +666,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                                     latitude = intent.getDoubleExtra("latitude", 0);
                                     longitude = intent.getDoubleExtra("longitude", 0);
 
-                                    startLocation = new LatLng(latitude,longitude);
+                                    startLocation = new LatLng(latitude, longitude);
                                     startPlaceCode = "LOCATION";
 
                                     break;
@@ -662,7 +680,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                                     latitude = intent.getDoubleExtra("latitude", 0);
                                     longitude = intent.getDoubleExtra("longitude", 0);
 
-                                    endLocation = new LatLng(latitude,longitude);
+                                    endLocation = new LatLng(latitude, longitude);
                                     endPlaceCode = "LOCATION";
 
                                     break;
@@ -671,8 +689,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
 
                             // 경로 그리는 메소드
-                            if(!map_frag_navi_searchBar_Start.getText().toString().equals("") &&
-                                    !(map_frag_navi_searchBar_End.getText().toString().equals(""))){
+                            if (!map_frag_navi_searchBar_Start.getText().toString().equals("") &&
+                                    !(map_frag_navi_searchBar_End.getText().toString().equals(""))) {
 
                                 NaviInfo naviInfo = new NaviInfo(startPlaceCode, endPlaceCode, startLocation, endLocation);
                                 showBriefingDirection(naviInfo);
@@ -722,8 +740,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 map_frag_navi_searchBar_Start.setText(map_frag_navi_searchBar_End.getText().toString());
                 map_frag_navi_searchBar_End.setText(tmpPlaceTitle);
 
-                if(!map_frag_navi_searchBar_Start.getText().toString().equals("") &&
-                        !(map_frag_navi_searchBar_End.getText().toString().equals(""))){
+                if (!map_frag_navi_searchBar_Start.getText().toString().equals("") &&
+                        !(map_frag_navi_searchBar_End.getText().toString().equals(""))) {
 
                     NaviInfo naviInfo = new NaviInfo(startPlaceCode, endPlaceCode, startLocation, endLocation);
                     showBriefingDirection(naviInfo);
@@ -824,8 +842,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         RelativeLayout.LayoutParams rlpCompass = (RelativeLayout.LayoutParams) compassButton.getLayoutParams();
 
 
-
-
         // position on right bottom
         rlpLocation.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
         rlpLocation.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
@@ -840,13 +856,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public boolean onMarkerClick(@NonNull Marker marker) {
 
-                if(!marker.getTag().equals("pointedMarker")){
+                if (!marker.getTag().equals("pointedMarker")) {
 
                     setMapFragmentMode(DETAIL_MODE, autoCompleteTextView_search_wrapper, mapSlidingLayout, map_frag_detail_box_wrapper,
                             map_frag_navi_searchWrapper, navi_button_wrapper, AR_button_wrapper);
                     map_frag_detail_title.setText(placeList.get((Integer.parseInt(marker.getTag().toString()))).getTitle());
                     map_frag_detail_sort.setText(placeList.get((Integer.parseInt(marker.getTag().toString()))).getSort());
-                    map_frag_detail_distance.setText((int)(placeList.get((Integer.parseInt(marker.getTag().toString()))).getDistance()) + "m");
+                    map_frag_detail_distance.setText((int) (placeList.get((Integer.parseInt(marker.getTag().toString()))).getDistance()) + "m");
 
                     detailFocusedPlace = placeList.get(Integer.parseInt(marker.getTag().toString()));
 
@@ -855,7 +871,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                         pointedMarker = null;
                     }
 
-                    pointedMarker = gMap.addMarker(new MarkerOptions().position(placeList.get((Integer.parseInt(marker.getTag().toString()))).getLocation()).icon(bitmapDescriptorFromVector(getActivity(),R.drawable.ic_inumarker_picked)));
+                    pointedMarker = gMap.addMarker(new MarkerOptions().position(placeList.get((Integer.parseInt(marker.getTag().toString()))).getLocation()).icon(bitmapDescriptorFromVector(getActivity(), R.drawable.ic_inumarker_picked)));
                     pointedMarker.setTag("pointedMarker");
 
                 }
@@ -865,9 +881,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             }
         });
 
-        gMap.moveCamera(CameraUpdateFactory.newLatLngZoom( new LatLng(37.37532099190484, 126.63285407077159) , 17));
-
-
+        gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(37.37532099190484, 126.63285407077159), 17));
 
 
         //----------------------------------------------------------
@@ -877,11 +891,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void handleOnBackPressed() {
 
-                switch (mapFragmentState){
+                switch (mapFragmentState) {
 
                     case DEFAULT_MODE:
 
-                        if(editText_search.isFocused()){
+                        if (editText_search.isFocused()) {
                             editText_search.clearFocus();
                             editText_search.setText("");
 
@@ -890,10 +904,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                             map_frag_search_icon.setVisibility(View.VISIBLE);
 
                             hideKeyboard(layout);
-                            if(gMap!=null) gMap.clear();
+                            if (gMap != null) gMap.clear();
                             floatingMarkersOverlay.clearMarkers();
 
-                        }else{
+                        } else {
 
                             System.exit(0);
 
@@ -902,11 +916,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                         break;
 
 
-                    case SEARCH_MODE :
+                    case SEARCH_MODE:
                     case DIRECTION_MODE:
 
-                        setMapFragmentMode(DEFAULT_MODE,autoCompleteTextView_search_wrapper,
-                                mapSlidingLayout, map_frag_detail_box_wrapper,map_frag_navi_searchWrapper,
+                        setMapFragmentMode(DEFAULT_MODE, autoCompleteTextView_search_wrapper,
+                                mapSlidingLayout, map_frag_detail_box_wrapper, map_frag_navi_searchWrapper,
                                 navi_button_wrapper, AR_button_wrapper);
 
                         map_frag_back.setVisibility(View.INVISIBLE);
@@ -915,13 +929,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
 
                         hideKeyboard(layout);
-                        if(gMap!=null) gMap.clear();
+                        if (gMap != null) gMap.clear();
                         floatingMarkersOverlay.clearMarkers();
 
                         break;
 
-                    case DETAIL_MODE :
-                        setMapFragmentMode(SEARCH_MODE,autoCompleteTextView_search_wrapper,
+                    case DETAIL_MODE:
+                        setMapFragmentMode(SEARCH_MODE, autoCompleteTextView_search_wrapper,
                                 mapSlidingLayout, map_frag_detail_box_wrapper, map_frag_navi_searchWrapper,
                                 navi_button_wrapper, AR_button_wrapper);
 
@@ -943,16 +957,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
 
-    public void hideKeyboard(View layout){
+    public void hideKeyboard(View layout) {
         InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         inputManager.hideSoftInputFromWindow(layout.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
-    public void openKeyboard(View layout){
+    public void openKeyboard(View layout) {
         InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         inputManager.showSoftInput(layout.findViewById(R.id.editText_search), 0);
     }
-
 
 
     // custom methods
@@ -962,9 +975,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
 
     public void setMapFragmentMode(MapFragmentState state, ConstraintLayout searchBar, SlidingUpPanelLayout slidingPanel, ConstraintLayout detailBox
-                            ,ConstraintLayout map_frag_navi_searchWrapper ,ConstraintLayout naviButton, ConstraintLayout arButton){
+            , ConstraintLayout map_frag_navi_searchWrapper, ConstraintLayout naviButton, ConstraintLayout arButton) {
 
-        switch (state){
+        switch (state) {
 
             case DEFAULT_MODE:
 
@@ -996,7 +1009,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                 break;
 
-            case DETAIL_MODE:
+            case DETAIL_MODE :
 
                 mapFragmentState = DETAIL_MODE;
                 searchBar.setVisibility(View.VISIBLE);
@@ -1009,7 +1022,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                 break;
 
-            case DIRECTION_MODE:
+            case DIRECTION_MODE :
 
                 map_frag_navi_searchBar_Start.setText("");
                 map_frag_navi_searchBar_End.setText("");
@@ -1029,18 +1042,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 break;
 
 
-            default :
-
-                searchBar.setVisibility(View.VISIBLE);
-                slidingPanel.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
-                detailBox.setVisibility(View.INVISIBLE);
-
-                naviButton.setVisibility(View.VISIBLE);
-                arButton.setVisibility(View.VISIBLE);
-
-                break;
-
-
         }
 
     }
@@ -1056,8 +1057,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     //dp에서 픽셀로 변환하는 메소드
-
-    public int DpToPixel(int dp){
+    public int DpToPixel(int dp) {
 
         Resources r = getContext().getResources();
         int px = (int) TypedValue.applyDimension(
@@ -1070,11 +1070,140 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
-    public void showBriefingDirection(NaviInfo naviInfo){
+
+    // 길찾기 브리핑
+    public void showBriefingDirection(NaviInfo naviInfo) {
 
         Toast.makeText(getContext(), "경로 찾기 시작", Toast.LENGTH_SHORT).show();
 
+        latLngList.clear();
+        gMap.clear();
+
+        latLngList.add(new LatLng(37.3747872226735, 126.63342072263077));
+        latLngList.add(new LatLng(37.375203052050516, 126.63380415078625));
+        latLngList.add(new LatLng(37.375773021330396, 126.63272604103146));
+        latLngList.add(new LatLng(37.37541813530646, 126.63237418931232));
+        latLngList.add(new LatLng(37.37556152380112, 126.63214864333851));
+
+        PolylineOptions polylineOptions = new PolylineOptions().addAll(latLngList).color(R.color.main_color);
+        polyline = gMap.addPolyline(polylineOptions);
+
+        stylePolyline(polyline);
+
+
     }
 
+    private static final int COLOR_BLACK_ARGB = 0xff02468E;
+    private static final int POLYLINE_STROKE_WIDTH_PX = 14;
+
+    // gMap 폴리라인 디자인
+    private void stylePolyline(Polyline polyline) {
+
+        polyline.setStartCap(new RoundCap());
+        polyline.setEndCap(new RoundCap());
+        polyline.setWidth(POLYLINE_STROKE_WIDTH_PX);
+        polyline.setColor(COLOR_BLACK_ARGB);
+        polyline.setJointType(JointType.ROUND);
+
+
+    }
+
+
+
+
+    // 슬라이딩 패널에서 길찾기 버튼을 눌렀을 때 길찾기로 넘어가는 함수
+    public void setFindRouteToPlaceFromMyLocation(Place place) {
+
+        setMapFragmentMode(DIRECTION_MODE, autoCompleteTextView_search_wrapper, mapSlidingLayout, map_frag_detail_box_wrapper,
+                map_frag_navi_searchWrapper, navi_button_wrapper, AR_button_wrapper);
+
+        if (gMap != null) gMap.clear();
+        floatingMarkersOverlay.clearMarkers();
+
+
+        //내 위치는 출발지로, 도착지는 선택 아이템으로
+        map_frag_navi_searchBar_Start.setText("내 위치");
+
+        startLocation = new LatLng(gpsTracker.getLatitude(), gpsTracker.getLongitude());
+        startPlaceCode = "LOCATION";
+
+        endPlaceCode = place.getPlaceCode();
+        endLocation = null;
+
+        String endPlaceTitle = place.getTitle();
+        map_frag_navi_searchBar_End.setText(endPlaceTitle);
+
+        if (!map_frag_navi_searchBar_Start.getText().toString().equals("") &&
+                !(map_frag_navi_searchBar_End.getText().toString().equals(""))) {
+
+            NaviInfo naviInfo = new NaviInfo(startPlaceCode, endPlaceCode, startLocation, endLocation);
+            showBriefingDirection(naviInfo);
+
+        }
+
+    }
+
+    // 특정 장소가 선택된 상태에서 출발 버튼을 눌렀을 때 길안내를 하는 함수 (여기서는 도착이 알아서 지정되지 않음)
+    public void setFindRouteFromPlace(Place place){
+
+        setMapFragmentMode(DIRECTION_MODE, autoCompleteTextView_search_wrapper, mapSlidingLayout, map_frag_detail_box_wrapper,
+                map_frag_navi_searchWrapper, navi_button_wrapper, AR_button_wrapper);
+
+        if (gMap != null) gMap.clear();
+        floatingMarkersOverlay.clearMarkers();
+
+        startLocation = null;
+        startPlaceCode = place.getPlaceCode();
+
+        endPlaceCode = "NONE";
+        endLocation = null;
+
+        String startPlaceTitle = place.getTitle();
+        map_frag_navi_searchBar_Start.setText(startPlaceTitle);
+
+        if (!map_frag_navi_searchBar_Start.getText().toString().equals("") &&
+                !(map_frag_navi_searchBar_End.getText().toString().equals(""))) {
+
+            NaviInfo naviInfo = new NaviInfo(startPlaceCode, endPlaceCode, startLocation, endLocation);
+            showBriefingDirection(naviInfo);
+
+        }
+
+    }
+
+
+
+    // 특정 장소가 선택된 상태에서 도착 버튼을 눌렀을 때 길안내를 하는 함수 (여기서는 출발은 내위치로 알아서 지정됨)
+    public void setFindRouteToPlace(Place place){
+
+        setMapFragmentMode(DIRECTION_MODE, autoCompleteTextView_search_wrapper, mapSlidingLayout, map_frag_detail_box_wrapper,
+                map_frag_navi_searchWrapper, navi_button_wrapper, AR_button_wrapper);
+
+        if (gMap != null) gMap.clear();
+        floatingMarkersOverlay.clearMarkers();
+
+
+        //내 위치는 출발지로, 도착지는 선택 아이템으로
+        map_frag_navi_searchBar_Start.setText("내 위치");
+
+        startLocation = new LatLng(gpsTracker.getLatitude(), gpsTracker.getLongitude());
+        startPlaceCode = "LOCATION";
+
+        endPlaceCode = place.getPlaceCode();
+        endLocation = null;
+
+        String endPlaceTitle = place.getTitle();
+        map_frag_navi_searchBar_End.setText(endPlaceTitle);
+
+        if (!map_frag_navi_searchBar_Start.getText().toString().equals("") &&
+                !(map_frag_navi_searchBar_End.getText().toString().equals(""))) {
+
+            NaviInfo naviInfo = new NaviInfo(startPlaceCode, endPlaceCode, startLocation, endLocation);
+            showBriefingDirection(naviInfo);
+
+        }
+
+
+    }
 
 }
