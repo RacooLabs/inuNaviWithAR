@@ -1016,13 +1016,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             }
         });
 
-        //지도 경계 설정
-        LatLngBounds adelaideBounds = new LatLngBounds(
+        //지도 경계 설정 - 일단은 보류
+        /*LatLngBounds adelaideBounds = new LatLngBounds(
                 new LatLng(37.368355013388836, 126.62518635929207), // SW bounds
                 new LatLng(37.379929492345504, 126.63984034460945)  // NE bounds
         );
 
-        gMap.setLatLngBoundsForCameraTarget(adelaideBounds);
+        gMap.setLatLngBoundsForCameraTarget(adelaideBounds);*/
 
     }
 
@@ -1192,12 +1192,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         if(latLngList != null && !latLngList.isEmpty()){
             setStartMarker(latLngList.get(0));
             setEndMarker(latLngList.get(latLngList.size()-1));
+            LatLngBounds.Builder builder = new LatLngBounds.Builder();
 
-            LatLngBounds australiaBounds = new LatLngBounds(latLngList.get(0), latLngList.get(latLngList.size()-1));
 
-            gMap.animateCamera(CameraUpdateFactory.newLatLngBounds(australiaBounds, 0));
+            for (LatLng latLng : latLngList){
+                builder.include(latLng);
+            }
+
+            LatLngBounds bounds = builder.build();
+
+            gMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, DpToPixel(48)));
 
         }
+
 
 
         PolylineOptions polylineOptions = new PolylineOptions().addAll(latLngList).color(R.color.main_color);
