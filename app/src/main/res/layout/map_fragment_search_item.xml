@@ -95,7 +95,7 @@
             app:layout_constraintBottom_toBottomOf="@id/map_search_item_directionButton"
             app:layout_constraintLeft_toLeftOf="@id/map_search_item_directionButton"
             android:layout_marginLeft="8dp"
-            android:src="@drawable/ic_turn_sharp_right_black_24dp" />
+            android:src="@drawable/ic_turn_right_black_24dp" />
 
 
 

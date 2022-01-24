@@ -182,6 +182,8 @@ public class MapNaviSearchActivity extends AppCompatActivity {
                     intent.putExtra("CallType", 1001);
                     intent.putExtra("startPlaceCode", searchPlaceList.get(position).getPlaceCode());
                     intent.putExtra("startPlaceTitle", searchPlaceList.get(position).getTitle());
+                    intent.putExtra("startLatitude", searchPlaceList.get(position).getLocation().latitude);
+                    intent.putExtra("startLongitude", searchPlaceList.get(position).getLocation().longitude);
                     setResult(Activity.RESULT_OK, intent);
                     finish();
                     overridePendingTransition(0, 0);
@@ -192,6 +194,8 @@ public class MapNaviSearchActivity extends AppCompatActivity {
                     intent.putExtra("CallType", 1002);
                     intent.putExtra("endPlaceCode", searchPlaceList.get(position).getPlaceCode());
                     intent.putExtra("endPlaceTitle", searchPlaceList.get(position).getTitle());
+                    intent.putExtra("endLatitude", searchPlaceList.get(position).getLocation().latitude);
+                    intent.putExtra("endLongitude", searchPlaceList.get(position).getLocation().longitude);
                     setResult(Activity.RESULT_OK, intent);
                     finish();
                     overridePendingTransition(0, 0);

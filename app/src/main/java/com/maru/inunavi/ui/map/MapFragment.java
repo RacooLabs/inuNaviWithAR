@@ -4,6 +4,7 @@ package com.maru.inunavi.ui.map;
 import static com.maru.inunavi.ui.map.MapFragmentState.DEFAULT_MODE;
 import static com.maru.inunavi.ui.map.MapFragmentState.DETAIL_MODE;
 import static com.maru.inunavi.ui.map.MapFragmentState.DIRECTION_MODE;
+import static com.maru.inunavi.ui.map.MapFragmentState.DIRECTPIN_MODE;
 import static com.maru.inunavi.ui.map.MapFragmentState.SEARCH_MODE;
 
 import android.Manifest;
@@ -54,6 +55,7 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CustomCap;
 import com.google.android.gms.maps.model.JointType;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -84,13 +86,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.maru.inunavi.ui.map.markerinfo.FloatingMarkerTitlesOverlay;
 import com.maru.inunavi.ui.map.markerinfo.MarkerInfo;
-import com.maru.inunavi.ui.timetable.SettingActivity;
-import com.maru.inunavi.ui.timetable.SettingAdapter;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
-import java.io.Serializable;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -111,8 +110,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
 
     //선택된 마커
-
     private Marker pointedMarker = null;
+
+    private Marker startMarker = null; // 출발 마커
+    private Marker endMarker = null; // 도착 마커
 
     private final int markerSize = 48;
 
@@ -435,6 +436,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                         break;
 
+                    case DIRECTPIN_MODE:
                     case DIRECTION_MODE:
                     case SEARCH_MODE:
 
@@ -625,19 +627,33 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                                 case 1001:
 
                                     startPlaceCode = intent.getStringExtra("startPlaceCode");
-                                    startLocation = null;
-
+                                    startLocation = new LatLng(intent.getDoubleExtra("startLatitude", 0), intent.getDoubleExtra("startLongitude", 0));
                                     String startPlaceTitle = intent.getStringExtra("startPlaceTitle");
                                     map_frag_navi_searchBar_Start.setText(startPlaceTitle);
+
+                                    setStartMarker(startLocation);
+
                                     break;
 
                                 case 1002:
 
                                     endPlaceCode = intent.getStringExtra("endPlaceCode");
-                                    endLocation = null;
-
+                                    endLocation = new LatLng(intent.getDoubleExtra("endLatitude", 0), intent.getDoubleExtra("endLongitude", 0));
                                     String endPlaceTitle = intent.getStringExtra("endPlaceTitle");
                                     map_frag_navi_searchBar_End.setText(endPlaceTitle);
+
+                                    if (endMarker != null) {
+                                        endMarker.remove();
+                                        endMarker = null;
+                                    }
+
+
+                                    if (gMap != null) {
+
+                                        endMarker = gMap.addMarker(new MarkerOptions().position(endLocation).icon(bitmapDescriptorFromVector(getActivity(), R.drawable.ic_inumarker_end)));
+
+                                    }
+
                                     break;
 
                                 case 2001:
@@ -647,6 +663,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                                     startLocation = new LatLng(gpsTracker.getLatitude(), gpsTracker.getLongitude());
                                     startPlaceCode = "LOCATION";
 
+                                    setStartMarker(startLocation);
 
                                     break;
 
@@ -656,6 +673,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                                     endLocation = new LatLng(gpsTracker.getLatitude(), gpsTracker.getLongitude());
                                     endPlaceCode = "LOCATION";
+
+                                    setEndMarker(endLocation);
 
                                     break;
 
@@ -668,6 +687,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                                     startLocation = new LatLng(latitude, longitude);
                                     startPlaceCode = "LOCATION";
+
+                                    setStartMarker(startLocation);
 
                                     break;
 
@@ -682,6 +703,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                                     endLocation = new LatLng(latitude, longitude);
                                     endPlaceCode = "LOCATION";
+
+                                    setEndMarker(endLocation);
 
                                     break;
 
@@ -736,9 +759,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 startPlaceCode = endPlaceCode;
                 endPlaceCode = tmpPlaceCode;
 
+                LatLng tmpLocation = null;
+                tmpLocation = startLocation;
+                startLocation = endLocation;
+                endLocation = tmpLocation;
+
                 String tmpPlaceTitle = map_frag_navi_searchBar_Start.getText().toString();
                 map_frag_navi_searchBar_Start.setText(map_frag_navi_searchBar_End.getText().toString());
                 map_frag_navi_searchBar_End.setText(tmpPlaceTitle);
+
+                setStartMarker(startLocation);
+                setEndMarker(endLocation);
 
                 if (!map_frag_navi_searchBar_Start.getText().toString().equals("") &&
                         !(map_frag_navi_searchBar_End.getText().toString().equals(""))) {
@@ -856,10 +887,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public boolean onMarkerClick(@NonNull Marker marker) {
 
-                if (!marker.getTag().equals("pointedMarker")) {
+                if (!marker.getTag().equals("pointedMarker") && !marker.getTag().equals("directPinMarker")) {
 
                     setMapFragmentMode(DETAIL_MODE, autoCompleteTextView_search_wrapper, mapSlidingLayout, map_frag_detail_box_wrapper,
                             map_frag_navi_searchWrapper, navi_button_wrapper, AR_button_wrapper);
+
+
                     map_frag_detail_title.setText(placeList.get((Integer.parseInt(marker.getTag().toString()))).getTitle());
                     map_frag_detail_sort.setText(placeList.get((Integer.parseInt(marker.getTag().toString()))).getSort());
                     map_frag_detail_distance.setText((int) (placeList.get((Integer.parseInt(marker.getTag().toString()))).getDistance()) + "m");
@@ -916,6 +949,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                         break;
 
 
+                    case DIRECTPIN_MODE:
                     case SEARCH_MODE:
                     case DIRECTION_MODE:
 
@@ -954,6 +988,42 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
 
+        gMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+            @Override
+            public void onMapLongClick(@NonNull LatLng latLng) {
+
+                setMapFragmentMode(DIRECTPIN_MODE, autoCompleteTextView_search_wrapper, mapSlidingLayout, map_frag_detail_box_wrapper,
+                        map_frag_navi_searchWrapper, navi_button_wrapper, AR_button_wrapper);
+
+                map_frag_detail_title.setText("직접 위치 지정");
+                map_frag_detail_sort.setText("");
+                map_frag_detail_distance.setText("");
+
+                Place directPickPlace = new Place("LOCATION", "직접 선택한 위치", "", 0, latLng, "", "");
+
+                detailFocusedPlace = directPickPlace;
+
+                if (pointedMarker != null) {
+                    pointedMarker.remove();
+                    pointedMarker = null;
+                }
+
+                Marker marker = gMap.addMarker(new MarkerOptions().position(latLng).icon(bitmapDescriptorFromVector(getActivity(), R.drawable.ic_inumarker_default)));
+                marker.setTag("directPinMarker");
+
+                gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,gMap.getCameraPosition().zoom));
+
+            }
+        });
+
+        //지도 경계 설정
+        LatLngBounds adelaideBounds = new LatLngBounds(
+                new LatLng(37.368355013388836, 126.62518635929207), // SW bounds
+                new LatLng(37.379929492345504, 126.63984034460945)  // NE bounds
+        );
+
+        gMap.setLatLngBoundsForCameraTarget(adelaideBounds);
+
     }
 
 
@@ -986,6 +1056,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 editText_search.clearFocus();
                 editText_search.setText("");
 
+
                 searchBar.setVisibility(View.VISIBLE);
                 slidingPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
                 detailBox.setVisibility(View.GONE);
@@ -1009,10 +1080,20 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                 break;
 
-            case DETAIL_MODE :
+            case DIRECTPIN_MODE:
 
-                mapFragmentState = DETAIL_MODE;
+                mapFragmentState = DIRECTPIN_MODE;
+
                 searchBar.setVisibility(View.VISIBLE);
+                map_frag_back.setVisibility(View.VISIBLE);
+                map_frag_search_icon.setVisibility(View.INVISIBLE);
+
+                map_frag_detail_box.setClickable(false);
+                map_frag_detail_box.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.layout_map_detail_box_non_click));
+
+                if (gMap != null) gMap.clear();
+                floatingMarkersOverlay.clearMarkers();
+
                 slidingPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
                 detailBox.setVisibility(View.VISIBLE);
                 map_frag_navi_searchWrapper.setVisibility(View.GONE);
@@ -1021,6 +1102,28 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 arButton.setVisibility(View.VISIBLE);
 
                 break;
+
+            case DETAIL_MODE :
+
+                mapFragmentState = DETAIL_MODE;
+                searchBar.setVisibility(View.VISIBLE);
+
+                map_frag_detail_box.setClickable(true);
+                map_frag_detail_box.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.layout_map_detail_box));
+
+                map_frag_back.setVisibility(View.VISIBLE);
+                map_frag_search_icon.setVisibility(View.INVISIBLE);
+
+
+                slidingPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+                detailBox.setVisibility(View.VISIBLE);
+                map_frag_navi_searchWrapper.setVisibility(View.GONE);
+
+                naviButton.setVisibility(View.VISIBLE);
+                arButton.setVisibility(View.VISIBLE);
+
+                break;
+
 
             case DIRECTION_MODE :
 
@@ -1085,10 +1188,23 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         latLngList.add(new LatLng(37.37541813530646, 126.63237418931232));
         latLngList.add(new LatLng(37.37556152380112, 126.63214864333851));
 
+
+        if(latLngList != null && !latLngList.isEmpty()){
+            setStartMarker(latLngList.get(0));
+            setEndMarker(latLngList.get(latLngList.size()-1));
+
+            LatLngBounds australiaBounds = new LatLngBounds(latLngList.get(0), latLngList.get(latLngList.size()-1));
+
+            gMap.animateCamera(CameraUpdateFactory.newLatLngBounds(australiaBounds, 0));
+
+        }
+
+
         PolylineOptions polylineOptions = new PolylineOptions().addAll(latLngList).color(R.color.main_color);
         polyline = gMap.addPolyline(polylineOptions);
-
         stylePolyline(polyline);
+
+
 
 
     }
@@ -1110,7 +1226,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
 
 
-
     // 슬라이딩 패널에서 길찾기 버튼을 눌렀을 때 길찾기로 넘어가는 함수
     public void setFindRouteToPlaceFromMyLocation(Place place) {
 
@@ -1128,10 +1243,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         startPlaceCode = "LOCATION";
 
         endPlaceCode = place.getPlaceCode();
-        endLocation = null;
+        endLocation = place.getLocation();
 
         String endPlaceTitle = place.getTitle();
         map_frag_navi_searchBar_End.setText(endPlaceTitle);
+
+        setStartMarker(startLocation);
+        setEndMarker(endLocation);
 
         if (!map_frag_navi_searchBar_Start.getText().toString().equals("") &&
                 !(map_frag_navi_searchBar_End.getText().toString().equals(""))) {
@@ -1152,7 +1270,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         if (gMap != null) gMap.clear();
         floatingMarkersOverlay.clearMarkers();
 
-        startLocation = null;
+        startLocation = place.getLocation();
         startPlaceCode = place.getPlaceCode();
 
         endPlaceCode = "NONE";
@@ -1160,6 +1278,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         String startPlaceTitle = place.getTitle();
         map_frag_navi_searchBar_Start.setText(startPlaceTitle);
+
+        setStartMarker(startLocation);
 
         if (!map_frag_navi_searchBar_Start.getText().toString().equals("") &&
                 !(map_frag_navi_searchBar_End.getText().toString().equals(""))) {
@@ -1190,10 +1310,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         startPlaceCode = "LOCATION";
 
         endPlaceCode = place.getPlaceCode();
-        endLocation = null;
+        endLocation = place.getLocation();
 
         String endPlaceTitle = place.getTitle();
         map_frag_navi_searchBar_End.setText(endPlaceTitle);
+
+        setStartMarker(startLocation);
+        setEndMarker(endLocation);
+
 
         if (!map_frag_navi_searchBar_Start.getText().toString().equals("") &&
                 !(map_frag_navi_searchBar_End.getText().toString().equals(""))) {
@@ -1203,6 +1327,40 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         }
 
+
+
+
+    }
+
+    public void setStartMarker(LatLng startLocation){
+
+        if (startMarker != null) {
+            startMarker.remove();
+            startMarker = null;
+        }
+
+        if (gMap != null) {
+
+            startMarker = gMap.addMarker(new MarkerOptions().position(startLocation).icon(bitmapDescriptorFromVector(getActivity(), R.drawable.ic_inumarker_start)));
+            gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(startLocation,gMap.getCameraPosition().zoom));
+
+        }
+
+    }
+
+    public void setEndMarker(LatLng endLocation){
+
+        if (endMarker != null) {
+            endMarker.remove();
+            endMarker = null;
+        }
+
+        if (gMap != null) {
+
+            endMarker = gMap.addMarker(new MarkerOptions().position(endLocation).icon(bitmapDescriptorFromVector(getActivity(), R.drawable.ic_inumarker_end)));
+            gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(endLocation,gMap.getCameraPosition().zoom));
+
+        }
 
     }
 
