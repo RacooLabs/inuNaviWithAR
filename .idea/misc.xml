@@ -4,14 +4,21 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable-v24/cell_shape.xml" value="0.26145833333333335" />
+        <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable-v24/ic_add_circle_outline_black_24dp.xml" value="0.3764102564102564" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable-v24/ic_arrow_back_black_24dp.xml" value="0.25462962962962965" />
+        <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable-v24/ic_arrow_forward_ios_white_24dp.xml" value="0.26666666666666666" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable-v24/ic_call_black_24dp.xml" value="0.3314814814814815" />
+        <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable-v24/ic_cancel_black_24dp.xml" value="0.26666666666666666" />
+        <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable-v24/ic_clear_black_24dp.xml" value="0.3764102564102564" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable-v24/ic_dashboard_black_24dp.xml" value="0.3472222222222222" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable-v24/ic_date_range_white_24dp.xml" value="0.1" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable-v24/ic_done_black_24dp.xml" value="0.25925925925925924" />
+        <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable-v24/ic_event_black_24dp.xml" value="0.3764102564102564" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable-v24/ic_format_list_bulleted_black_24dp.xml" value="0.25462962962962965" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable-v24/ic_home_black_24dp.xml" value="0.16111111111111112" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable-v24/ic_import_export_black_24dp.xml" value="0.1" />
+        <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable-v24/ic_inumarker_default.xml" value="0.3764102564102564" />
+        <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable-v24/ic_inumarker_end.xml" value="0.3764102564102564" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable-v24/ic_inumarker_picked.xml" value="0.18055555555555555" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable-v24/ic_inumarker_start.xml" value="0.3764102564102564" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable-v24/ic_launcher_background.xml" value="0.1" />
@@ -21,8 +28,12 @@
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable-v24/ic_near_me_black_24dp.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable-v24/ic_place_black_24dp.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable-v24/ic_schedule_black_24dp.xml" value="0.3314814814814815" />
+        <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable-v24/ic_sentiment_satisfied_black_24dp.xml" value="0.3764102564102564" />
+        <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable-v24/ic_settings_black_24dp.xml" value="0.3764102564102564" />
+        <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable-v24/ic_thumb_up_black_24dp.xml" value="0.3764102564102564" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable-v24/ic_trip_origin_black_24dp.xml" value="0.28177083333333336" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable-v24/ic_turn_right_black_24dp.xml" value="0.3764102564102564" />
+        <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable-v24/ic_turn_right_white_24dp.xml" value="0.38871794871794874" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable-v24/ic_turn_sharp_left_black_24dp.xml" value="0.3109375" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable-v24/ic_turn_sharp_right_black_24dp.xml" value="0.3109375" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable-v24/ic_turn_sharp_right_black_24dp_white.xml" value="0.1712962962962963" />
@@ -41,7 +52,9 @@
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable-v24/layout_map_detail_box.xml" value="0.3109375" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable-v24/layout_map_detail_box_non_click.xml" value="0.19722222222222222" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable-v24/layout_map_list_button.xml" value="0.36041666666666666" />
+        <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable-v24/layout_map_navi_round_box.xml" value="0.26666666666666666" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable-v24/layout_map_navi_roundedbox.xml" value="0.3509259259259259" />
+        <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable-v24/layout_map_navi_route_button.xml" value="0.26666666666666666" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable-v24/layout_map_navi_search_button.xml" value="0.3472222222222222" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable-v24/layout_map_navi_search_button_now.xml" value="0.3472222222222222" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable-v24/layout_map_pick_location_button.xml" value="0.31145833333333334" />
@@ -67,6 +80,8 @@
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable/ic_event_black_24dp.xml" value="0.20989583333333334" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable/ic_format_list_bulleted_black_24dp.xml" value="0.16614583333333333" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable/ic_home_black_24dp.xml" value="0.25925925925925924" />
+        <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable/ic_inumarker_end.xml" value="0.3764102564102564" />
+        <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable/ic_inumarker_start.xml" value="0.3764102564102564" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable/ic_launcher_background.xml" value="0.25925925925925924" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.22135416666666666" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/drawable/ic_login_logo.xml" value="0.25925925925925924" />
@@ -108,7 +123,7 @@
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/fragment_timetable.xml" value="0.1" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/main_activity.xml" value="0.16145833333333334" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/map_activity_pick_location.xml" value="0.33" />
-        <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/map_fragment.xml" value="0.22" />
+        <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/map_fragment.xml" value="0.3218197135636057" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/map_fragment_custom_spinner_item.xml" value="0.2947916666666667" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/map_fragment_detail.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/map_fragment_detail_activity.xml" value="0.25" />

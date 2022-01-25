@@ -179,6 +179,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private LatLng startLocation = null;
     private LatLng endLocation = null;
 
+    // 네비 브리핑 디테일 박스
+    private ConstraintLayout map_frag_navi_detail_box_wrapper;
+
 
     public MapFragment() {
 
@@ -241,6 +244,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         map_frag_navi_searchBar_End = layout.findViewById(R.id.map_frag_navi_searchBar_End);
         map_frag_navi_change = layout.findViewById(R.id.map_frag_navi_change);
         map_frag_navi_searchButton_now = layout.findViewById(R.id.map_frag_navi_searchButton_now);
+
+        // 네비 브리핑 디테일 박스
+
+        map_frag_navi_detail_box_wrapper = layout.findViewById(R.id.map_frag_navi_detail_box_wrapper);
+
 
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
@@ -887,7 +895,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public boolean onMarkerClick(@NonNull Marker marker) {
 
-                if (!marker.getTag().equals("pointedMarker") && !marker.getTag().equals("directPinMarker")) {
+                if (!marker.getTag().equals("pointedMarker") && !marker.getTag().equals("directPinMarker")
+                && !marker.getTag().equals("startMarker") && !marker.getTag().equals("endMarker")) {
 
                     setMapFragmentMode(DETAIL_MODE, autoCompleteTextView_search_wrapper, mapSlidingLayout, map_frag_detail_box_wrapper,
                             map_frag_navi_searchWrapper, navi_button_wrapper, AR_button_wrapper);
@@ -992,7 +1001,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onMapLongClick(@NonNull LatLng latLng) {
 
-                setMapFragmentMode(DIRECTPIN_MODE, autoCompleteTextView_search_wrapper, mapSlidingLayout, map_frag_detail_box_wrapper,
+                if(mapFragmentState == DEFAULT_MODE){
+
+                     setMapFragmentMode(DIRECTPIN_MODE, autoCompleteTextView_search_wrapper, mapSlidingLayout, map_frag_detail_box_wrapper,
                         map_frag_navi_searchWrapper, navi_button_wrapper, AR_button_wrapper);
 
                 map_frag_detail_title.setText("직접 위치 지정");
@@ -1012,6 +1023,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 marker.setTag("directPinMarker");
 
                 gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,gMap.getCameraPosition().zoom));
+
+
+                }
+
 
             }
         });
@@ -1064,6 +1079,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                 naviButton.setVisibility(View.VISIBLE);
                 arButton.setVisibility(View.VISIBLE);
+                map_frag_navi_detail_box_wrapper.setVisibility(View.GONE);
 
                 break;
 
@@ -1077,6 +1093,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                 naviButton.setVisibility(View.VISIBLE);
                 arButton.setVisibility(View.VISIBLE);
+
+                map_frag_navi_detail_box_wrapper.setVisibility(View.GONE);
+
 
                 break;
 
@@ -1101,6 +1120,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 naviButton.setVisibility(View.VISIBLE);
                 arButton.setVisibility(View.VISIBLE);
 
+                map_frag_navi_detail_box_wrapper.setVisibility(View.GONE);
+
                 break;
 
             case DETAIL_MODE :
@@ -1122,10 +1143,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 naviButton.setVisibility(View.VISIBLE);
                 arButton.setVisibility(View.VISIBLE);
 
+                map_frag_navi_detail_box_wrapper.setVisibility(View.GONE);
+
                 break;
 
 
             case DIRECTION_MODE :
+
+                mapFragmentState = DIRECTION_MODE;
 
                 map_frag_navi_searchBar_Start.setText("");
                 map_frag_navi_searchBar_End.setText("");
@@ -1134,7 +1159,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 startLocation = null;
                 endLocation = null;
 
-                mapFragmentState = DIRECTION_MODE;
                 searchBar.setVisibility(View.GONE);
                 slidingPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
                 detailBox.setVisibility(View.GONE);
@@ -1142,6 +1166,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                 naviButton.setVisibility(View.INVISIBLE);
                 arButton.setVisibility(View.VISIBLE);
+
+                map_frag_navi_detail_box_wrapper.setVisibility(View.GONE);
+
                 break;
 
 
@@ -1211,8 +1238,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         polyline = gMap.addPolyline(polylineOptions);
         stylePolyline(polyline);
 
-
-
+        map_frag_navi_detail_box_wrapper.setVisibility(View.VISIBLE);
 
     }
 
@@ -1349,6 +1375,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         if (gMap != null) {
 
             startMarker = gMap.addMarker(new MarkerOptions().position(startLocation).icon(bitmapDescriptorFromVector(getActivity(), R.drawable.ic_inumarker_start)));
+            startMarker.setTag("startMarker");
             gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(startLocation,gMap.getCameraPosition().zoom));
 
         }
@@ -1365,6 +1392,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         if (gMap != null) {
 
             endMarker = gMap.addMarker(new MarkerOptions().position(endLocation).icon(bitmapDescriptorFromVector(getActivity(), R.drawable.ic_inumarker_end)));
+            endMarker.setTag("endMarker");
             gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(endLocation,gMap.getCameraPosition().zoom));
 
         }
