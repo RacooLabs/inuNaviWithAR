@@ -181,6 +181,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     // 네비 브리핑 디테일 박스
     private ConstraintLayout map_frag_navi_detail_box_wrapper;
+    private TextView map_frag_navi_route_button;
 
 
     public MapFragment() {
@@ -248,6 +249,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         // 네비 브리핑 디테일 박스
 
         map_frag_navi_detail_box_wrapper = layout.findViewById(R.id.map_frag_navi_detail_box_wrapper);
+        map_frag_navi_route_button = layout.findViewById(R.id.map_frag_navi_route_button);
 
 
 
@@ -790,6 +792,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             }
         });
 
+        //경로 안내 버튼 누를때
+
+        map_frag_navi_route_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(getActivity(), MapNavigationActivity.class);
+                startActivity(intent);
+
+
+            }
+        });
+
         return layout;
 
     }
@@ -884,11 +899,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         // position on right bottom
         rlpLocation.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
         rlpLocation.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
-        rlpLocation.setMargins(0, DpToPixel(80), 180, 0);
+        rlpLocation.setMargins(0, DpToPixel(80), 0, 0);
 
         rlpCompass.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
         rlpCompass.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
-        rlpCompass.setMargins(180, DpToPixel(80), 0, 0);
+        rlpCompass.setMargins(0, DpToPixel(80), 0, 0);
 
 
         gMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
