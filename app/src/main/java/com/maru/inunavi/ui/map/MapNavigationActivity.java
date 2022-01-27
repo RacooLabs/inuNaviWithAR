@@ -53,7 +53,6 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
 
     private GoogleMap gMap;
     private SupportMapFragment mapFragment;
-    private GPSTracker gpsTracker;
     private double bearing = 0;
     private Polyline polyline = null;
 
@@ -186,7 +185,6 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
     public void onMapReady(GoogleMap googleMap) {
 
         this.gMap = googleMap;
-        this.gpsTracker = new GPSTracker(this);
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {

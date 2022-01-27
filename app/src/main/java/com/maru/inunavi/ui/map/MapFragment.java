@@ -100,9 +100,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap gMap;
     private Polyline polyline = null;
     private MapFragment mapFragment = null;
-    private GPSTracker gpsTracker;
 
-    private FusedLocationProviderClient fusedLocationProviderClient;
+
+    //gps 위치 찾기
+    private FusedLocationProviderClient fusedLocationClient;
     private static final int REQUEST_CODE = 101;
 
     //마커 타이틀 오버레이
@@ -205,7 +206,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mapView = (MapView) layout.findViewById(R.id.map);
         mapView.getMapAsync(this);
         mapFragment = this;
-        gpsTracker = new GPSTracker(getContext());
 
         //map_fragment를 기본적으로 구성하는 레이아웃들
         autoCompleteTextView_search_wrapper = layout.findViewById(R.id.autoCompleteTextView_search_wrapper);
@@ -253,7 +253,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
 
 
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
         //fetchLocation();
 
 
@@ -643,6 +643,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                                     setStartMarker(startLocation);
 
+                                    // 경로 그리는 메소드
+                                    if (!map_frag_navi_searchBar_Start.getText().toString().equals("") &&
+                                            !(map_frag_navi_searchBar_End.getText().toString().equals(""))) {
+
+                                        NaviInfo naviInfo = new NaviInfo(startPlaceCode, endPlaceCode, startLocation, endLocation);
+                                        showBriefingDirection(naviInfo);
+
+                                    }
+
                                     break;
 
                                 case 1002:
@@ -652,15 +661,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                                     String endPlaceTitle = intent.getStringExtra("endPlaceTitle");
                                     map_frag_navi_searchBar_End.setText(endPlaceTitle);
 
-                                    if (endMarker != null) {
-                                        endMarker.remove();
-                                        endMarker = null;
-                                    }
+                                    setEndMarker(endLocation);
 
+                                    // 경로 그리는 메소드
+                                    if (!map_frag_navi_searchBar_Start.getText().toString().equals("") &&
+                                            !(map_frag_navi_searchBar_End.getText().toString().equals(""))) {
 
-                                    if (gMap != null) {
-
-                                        endMarker = gMap.addMarker(new MarkerOptions().position(endLocation).icon(bitmapDescriptorFromVector(getActivity(), R.drawable.ic_inumarker_end)));
+                                        NaviInfo naviInfo = new NaviInfo(startPlaceCode, endPlaceCode, startLocation, endLocation);
+                                        showBriefingDirection(naviInfo);
 
                                     }
 
@@ -669,22 +677,68 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                                 case 2001:
 
                                     map_frag_navi_searchBar_Start.setText("내 위치");
-                                    gpsTracker = new GPSTracker(getContext());
-                                    startLocation = new LatLng(gpsTracker.getLatitude(), gpsTracker.getLongitude());
-                                    startPlaceCode = "LOCATION";
 
-                                    setStartMarker(startLocation);
+                                    if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                                        return;
+                                    }
+
+                                    fusedLocationClient.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+                                        @Override
+                                        public void onSuccess(Location location) {
+
+                                            startLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                                            startPlaceCode = "LOCATION";
+
+                                            setStartMarker(startLocation);
+
+                                            // 경로 그리는 메소드
+                                            if (!map_frag_navi_searchBar_Start.getText().toString().equals("") &&
+                                                    !(map_frag_navi_searchBar_End.getText().toString().equals(""))) {
+
+                                                NaviInfo naviInfo = new NaviInfo(startPlaceCode, endPlaceCode, startLocation, endLocation);
+                                                showBriefingDirection(naviInfo);
+
+                                            }
+
+                                        }
+                                    });
+
 
                                     break;
 
                                 case 2002:
 
                                     map_frag_navi_searchBar_End.setText("내 위치");
-                                    gpsTracker = new GPSTracker(getContext());
-                                    endLocation = new LatLng(gpsTracker.getLatitude(), gpsTracker.getLongitude());
-                                    endPlaceCode = "LOCATION";
 
-                                    setEndMarker(endLocation);
+
+                                    if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                                        return;
+                                    }
+
+                                    fusedLocationClient.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+                                        @Override
+                                        public void onSuccess(Location location) {
+
+                                            endLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                                            endPlaceCode = "LOCATION";
+                                            setEndMarker(endLocation);
+
+                                            // 경로 그리는 메소드
+                                            if (!map_frag_navi_searchBar_Start.getText().toString().equals("") &&
+                                                    !(map_frag_navi_searchBar_End.getText().toString().equals(""))) {
+
+                                                NaviInfo naviInfo = new NaviInfo(startPlaceCode, endPlaceCode, startLocation, endLocation);
+                                                showBriefingDirection(naviInfo);
+
+                                            }
+
+
+                                        }
+                                    });
+
+
 
                                     break;
 
@@ -699,6 +753,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                                     startPlaceCode = "LOCATION";
 
                                     setStartMarker(startLocation);
+
+                                    // 경로 그리는 메소드
+                                    if (!map_frag_navi_searchBar_Start.getText().toString().equals("") &&
+                                            !(map_frag_navi_searchBar_End.getText().toString().equals(""))) {
+
+                                        NaviInfo naviInfo = new NaviInfo(startPlaceCode, endPlaceCode, startLocation, endLocation);
+                                        showBriefingDirection(naviInfo);
+
+                                    }
 
                                     break;
 
@@ -716,17 +779,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                                     setEndMarker(endLocation);
 
+                                    // 경로 그리는 메소드
+                                    if (!map_frag_navi_searchBar_Start.getText().toString().equals("") &&
+                                            !(map_frag_navi_searchBar_End.getText().toString().equals(""))) {
+
+                                        NaviInfo naviInfo = new NaviInfo(startPlaceCode, endPlaceCode, startLocation, endLocation);
+                                        showBriefingDirection(naviInfo);
+
+                                    }
+
                                     break;
-
-                            }
-
-
-                            // 경로 그리는 메소드
-                            if (!map_frag_navi_searchBar_Start.getText().toString().equals("") &&
-                                    !(map_frag_navi_searchBar_End.getText().toString().equals(""))) {
-
-                                NaviInfo naviInfo = new NaviInfo(startPlaceCode, endPlaceCode, startLocation, endLocation);
-                                showBriefingDirection(naviInfo);
 
                             }
 
@@ -1287,28 +1349,40 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         //내 위치는 출발지로, 도착지는 선택 아이템으로
         map_frag_navi_searchBar_Start.setText("내 위치");
 
-        gpsTracker = new GPSTracker(getContext());
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-        startLocation = new LatLng(gpsTracker.getLatitude(), gpsTracker.getLongitude());
-
-        startPlaceCode = "LOCATION";
-
-        endPlaceCode = place.getPlaceCode();
-        endLocation = place.getLocation();
-
-        String endPlaceTitle = place.getTitle();
-        map_frag_navi_searchBar_End.setText(endPlaceTitle);
-
-        setStartMarker(startLocation);
-        setEndMarker(endLocation);
-
-        if (!map_frag_navi_searchBar_Start.getText().toString().equals("") &&
-                !(map_frag_navi_searchBar_End.getText().toString().equals(""))) {
-
-            NaviInfo naviInfo = new NaviInfo(startPlaceCode, endPlaceCode, startLocation, endLocation);
-            showBriefingDirection(naviInfo);
-
+            return;
         }
+
+        fusedLocationClient.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+
+                startLocation = new LatLng(location.getLatitude(), location.getLongitude());
+
+                startPlaceCode = "LOCATION";
+
+                endPlaceCode = place.getPlaceCode();
+                endLocation = place.getLocation();
+
+                String endPlaceTitle = place.getTitle();
+                map_frag_navi_searchBar_End.setText(endPlaceTitle);
+
+                setStartMarker(startLocation);
+                setEndMarker(endLocation);
+
+                if (!map_frag_navi_searchBar_Start.getText().toString().equals("") &&
+                        !(map_frag_navi_searchBar_End.getText().toString().equals(""))) {
+
+                    NaviInfo naviInfo = new NaviInfo(startPlaceCode, endPlaceCode, startLocation, endLocation);
+                    showBriefingDirection(naviInfo);
+
+                }
+
+            }
+        });
+
+
 
     }
 
@@ -1356,29 +1430,41 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         //내 위치는 출발지로, 도착지는 선택 아이템으로
         map_frag_navi_searchBar_Start.setText("내 위치");
-        gpsTracker = new GPSTracker(getContext());
-        startLocation = new LatLng(gpsTracker.getLatitude(), gpsTracker.getLongitude());
-        startPlaceCode = "LOCATION";
 
-        endPlaceCode = place.getPlaceCode();
-        endLocation = place.getLocation();
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-        String endPlaceTitle = place.getTitle();
-        map_frag_navi_searchBar_End.setText(endPlaceTitle);
-
-        setStartMarker(startLocation);
-        setEndMarker(endLocation);
-
-
-        if (!map_frag_navi_searchBar_Start.getText().toString().equals("") &&
-                !(map_frag_navi_searchBar_End.getText().toString().equals(""))) {
-
-            NaviInfo naviInfo = new NaviInfo(startPlaceCode, endPlaceCode, startLocation, endLocation);
-            showBriefingDirection(naviInfo);
-
+            return;
         }
 
+        fusedLocationClient.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
 
+                startLocation = new LatLng(location.getLatitude(), location.getLongitude());
+
+                startPlaceCode = "LOCATION";
+
+
+                endPlaceCode = place.getPlaceCode();
+                endLocation = place.getLocation();
+
+                String endPlaceTitle = place.getTitle();
+                map_frag_navi_searchBar_End.setText(endPlaceTitle);
+
+                setStartMarker(startLocation);
+                setEndMarker(endLocation);
+
+
+                if (!map_frag_navi_searchBar_Start.getText().toString().equals("") &&
+                        !(map_frag_navi_searchBar_End.getText().toString().equals(""))) {
+
+                    NaviInfo naviInfo = new NaviInfo(startPlaceCode, endPlaceCode, startLocation, endLocation);
+                    showBriefingDirection(naviInfo);
+
+                }
+
+            }
+        });
 
 
     }
