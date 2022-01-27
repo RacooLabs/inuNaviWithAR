@@ -205,7 +205,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mapView = (MapView) layout.findViewById(R.id.map);
         mapView.getMapAsync(this);
         mapFragment = this;
-        gpsTracker = new GPSTracker(getActivity());
+        gpsTracker = new GPSTracker(getContext());
 
         //map_fragment를 기본적으로 구성하는 레이아웃들
         autoCompleteTextView_search_wrapper = layout.findViewById(R.id.autoCompleteTextView_search_wrapper);
@@ -669,7 +669,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                                 case 2001:
 
                                     map_frag_navi_searchBar_Start.setText("내 위치");
-
+                                    gpsTracker = new GPSTracker(getContext());
                                     startLocation = new LatLng(gpsTracker.getLatitude(), gpsTracker.getLongitude());
                                     startPlaceCode = "LOCATION";
 
@@ -680,7 +680,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                                 case 2002:
 
                                     map_frag_navi_searchBar_End.setText("내 위치");
-
+                                    gpsTracker = new GPSTracker(getContext());
                                     endLocation = new LatLng(gpsTracker.getLatitude(), gpsTracker.getLongitude());
                                     endPlaceCode = "LOCATION";
 
@@ -1287,7 +1287,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         //내 위치는 출발지로, 도착지는 선택 아이템으로
         map_frag_navi_searchBar_Start.setText("내 위치");
 
+        gpsTracker = new GPSTracker(getContext());
+
         startLocation = new LatLng(gpsTracker.getLatitude(), gpsTracker.getLongitude());
+
         startPlaceCode = "LOCATION";
 
         endPlaceCode = place.getPlaceCode();
@@ -1353,7 +1356,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         //내 위치는 출발지로, 도착지는 선택 아이템으로
         map_frag_navi_searchBar_Start.setText("내 위치");
-
+        gpsTracker = new GPSTracker(getContext());
         startLocation = new LatLng(gpsTracker.getLatitude(), gpsTracker.getLongitude());
         startPlaceCode = "LOCATION";
 
