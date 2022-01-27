@@ -13,6 +13,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -27,6 +28,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -38,6 +42,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.RoundCap;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.maru.inunavi.R;
 
 import java.util.ArrayList;
@@ -56,17 +61,24 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
     private Sensor m_ot_sensor;
     private int m_check_count = 0;
 
+
+
     private List<LatLng> latLngList = new ArrayList<>();
 
     private double azimuth;
 
     private boolean isMapReady = false;
 
+    private FusedLocationProviderClient fusedLocationClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.map_activity_navigation);
+
+        TextView textView1 = findViewById(R.id.text1);
+        TextView textView2 = findViewById(R.id.text2);
 
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map_navigation);
@@ -81,32 +93,59 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
             }
         });
 
-        m_sensor_manager  = (SensorManager)getSystemService(SENSOR_SERVICE);
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+
+        m_sensor_manager = (SensorManager) getSystemService(SENSOR_SERVICE);
         // SensorManager 를 이용해서 방향 센서 객체를 얻는다.
         m_ot_sensor = m_sensor_manager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
 
 
         new Thread(new Runnable() {
 
-            public void run(){
 
-                    while(true) {
+            public void run() {
 
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
+                while (true) {
 
-                                latLngList.clear();
-                                gMap.clear();
+                    runOnUiThread(new Runnable() {
 
-                                gpsTracker = new GPSTracker(getBaseContext());
 
-                                latLngList.add(new LatLng(gpsTracker.getLatitude(), gpsTracker.getLongitude()));
-                                latLngList.add(new LatLng(37.41334710580124, 126.6761408174503));
-                                latLngList.add(new LatLng(37.41366646718886, 126.67584115338498));
-                                latLngList.add(new LatLng(37.41428710900992, 126.67648220689182));
-                                latLngList.add(new LatLng(37.4147330038427, 126.67671738628489));
-                                latLngList.add(new LatLng(37.41501018037381, 126.67678566417317));
+                        @Override
+                        public void run() {
+
+                            if (ActivityCompat.checkSelfPermission(getBaseContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getBaseContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                                return;
+                            }
+
+                            fusedLocationClient.getLastLocation().addOnSuccessListener(MapNavigationActivity.this, new OnSuccessListener<Location>() {
+                                @Override
+                                public void onSuccess(Location location) {
+
+                                    latLngList.clear();
+                                    gMap.clear();
+
+                                    textView1.setText(location.getLatitude()+"");
+                                    textView2.setText(location.getLongitude()+"");
+
+                                    latLngList.add(new LatLng(location.getLatitude(), location.getLongitude()));
+                                    latLngList.add(new LatLng(37.41334710580124, 126.6761408174503));
+                                    latLngList.add(new LatLng(37.41366646718886, 126.67584115338498));
+                                    latLngList.add(new LatLng(37.41428710900992, 126.67648220689182));
+                                    latLngList.add(new LatLng(37.4147330038427, 126.67671738628489));
+                                    latLngList.add(new LatLng(37.41501018037381, 126.67678566417317));
+
+                                    updateCamera(gMap, azimuth);
+
+                                    PolylineOptions polylineOptions = new PolylineOptions().addAll(latLngList).color(R.color.main_color);
+                                    polyline = gMap.addPolyline(polylineOptions);
+                                    stylePolyline(polyline);
+
+                                }
+                            });
+
+
 
 
                             /*double dLon = (37.41501018037381 - gpsTracker.getLongitude());
@@ -117,11 +156,7 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
 
                                 //updateCamera(gMap, bearing);
 
-                                updateCamera(gMap, azimuth);
 
-                                PolylineOptions polylineOptions = new PolylineOptions().addAll(latLngList).color(R.color.main_color);
-                                polyline = gMap.addPolyline(polylineOptions);
-                                stylePolyline(polyline);
 
                             }
 
@@ -129,6 +164,7 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
 
                         try {
                             sleep(1000);
+
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -143,6 +179,8 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
 
 
     }
+
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -205,25 +243,40 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
 
             isMapReady = true;
 
-            CameraPosition currentPlace = new CameraPosition.Builder()
-                    .target(new LatLng(gpsTracker.getLatitude(), gpsTracker.getLongitude()))
-                    .bearing((float)bearing).tilt(65.5f).zoom(20).build();
+            if (ActivityCompat.checkSelfPermission(getBaseContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getBaseContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-            gMap.animateCamera(CameraUpdateFactory.newCameraPosition(currentPlace), new GoogleMap.CancelableCallback() {
+                return;
+            }
+
+            fusedLocationClient.getLastLocation().addOnSuccessListener(MapNavigationActivity.this, new OnSuccessListener<Location>() {
                 @Override
-                public void onCancel() {
-                    isMapReady = false;
+                public void onSuccess(Location location) {
 
-                }
+                    CameraPosition currentPlace = new CameraPosition.Builder()
+                            .target(new LatLng(location.getLatitude(), location.getLongitude()))
+                            .bearing((float)bearing).tilt(60).zoom(20).build();
 
-                @Override
-                public void onFinish() {
+                    gMap.animateCamera(CameraUpdateFactory.newCameraPosition(currentPlace), new GoogleMap.CancelableCallback() {
+                        @Override
+                        public void onCancel() {
+                            isMapReady = false;
 
-                    isMapReady = false;
+                        }
+
+                        @Override
+                        public void onFinish() {
+
+                            isMapReady = false;
+
+
+                        }
+                    });
 
 
                 }
             });
+
+
 
         }
 
@@ -233,7 +286,7 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
 
 
     private static final int COLOR_BLACK_ARGB = 0xff02468E;
-    private static final int POLYLINE_STROKE_WIDTH_PX = 20;
+    private static final int POLYLINE_STROKE_WIDTH_PX = 36;
 
 
     private void stylePolyline(Polyline polyline) {
