@@ -1214,7 +1214,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                 mapFragmentState = DETAIL_MODE;
                 searchBar.setVisibility(View.VISIBLE);
-                gMap.setPadding(0,DpToPixel(66), 0, DpToPixel(180));
+
+                if(gMap != null)
+                    gMap.setPadding(0,DpToPixel(66), 0, DpToPixel(180));
 
                 map_frag_detail_box.setClickable(true);
                 map_frag_detail_box.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.layout_map_detail_box));
@@ -1302,7 +1304,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         Toast.makeText(getContext(), "경로 찾기 시작", Toast.LENGTH_SHORT).show();
 
         latLngList.clear();
-        gMap.clear();
+
+        if(gMap != null)
+            gMap.clear();
 
         latLngList.add(new LatLng(37.3747872226735, 126.63342072263077));
         latLngList.add(new LatLng(37.375203052050516, 126.63380415078625));
@@ -1323,14 +1327,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
             LatLngBounds bounds = builder.build();
 
-            gMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, DpToPixel(48)));
+            if(gMap != null)
+                gMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, DpToPixel(48)));
 
         }
 
 
 
         PolylineOptions polylineOptions = new PolylineOptions().addAll(latLngList).color(R.color.main_color);
-        polyline = gMap.addPolyline(polylineOptions);
+
+        if(gMap != null)
+            polyline = gMap.addPolyline(polylineOptions);
         stylePolyline(polyline);
 
         map_frag_navi_detail_box_wrapper.setVisibility(View.VISIBLE);

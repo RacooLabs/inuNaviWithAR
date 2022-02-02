@@ -7,13 +7,12 @@ import static com.maru.inunavi.MainActivity.sessionURL;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -23,12 +22,10 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.maru.inunavi.IpAddress;
 import com.maru.inunavi.MainActivity;
 import com.maru.inunavi.user.LoginActivity;
 import com.maru.inunavi.R;
-import com.maru.inunavi.ui.recommend.RecommendFragment;
 
 
 public class SatisfiedFragment extends Fragment {
@@ -49,6 +46,7 @@ public class SatisfiedFragment extends Fragment {
 
         ConstraintLayout constraint_frag_satisfied_main = root.findViewById(R.id.constraint_frag_satisfied_main);
         Button button_frag_satisfied_login = root.findViewById(R.id.button_frag_satisfied_login);
+        TextView textView_overview_button = root.findViewById(R.id.textView_overview_button);
 
         ActivityResultLauncher<Intent> loginActivityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -105,6 +103,15 @@ public class SatisfiedFragment extends Fragment {
             constraint_frag_satisfied_main.setVisibility(View.INVISIBLE);
 
         }
+
+
+        textView_overview_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), MapOverviewActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
 

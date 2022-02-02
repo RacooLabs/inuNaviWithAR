@@ -58,7 +58,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:layout_marginLeft="24dp"
-                android:text="13"
+                android:text=""
                 android:textSize="24sp"
                 android:textColor="@color/main_color"
                 android:textStyle="bold"
@@ -81,7 +81,7 @@
                 android:id="@+id/map_activity_navigation_detail_distance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="앞으로 132m"
+                android:text="앞으로 m"
                 android:textSize="@dimen/main_text_size"
                 android:textColor="@color/main_text_color"
                 app:layout_constraintLeft_toLeftOf="@id/map_activity_navigation_detail_time"
@@ -90,7 +90,7 @@
 
 
             <TextView
-                android:id="@+id/map_frag_navi_route_button_stop"
+                android:id="@+id/map_activity_navigation_detail_button_stop"
                 android:layout_width="72dp"
                 android:layout_height="72dp"
                 android:background="@drawable/layout_map_navi_route_button_red"
@@ -98,30 +98,33 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginRight="24dp"
-                android:clickable="true" />
+                android:clickable="true"
+                android:elevation="2dp"/>
 
             <ImageView
-                android:id="@+id/map_frag_navi_route_icon_stop"
+                android:id="@+id/map_activity_navigation_detail_icon_stop"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:src="@drawable/ic_stop_black_24dp"
-                app:layout_constraintBottom_toTopOf="@id/map_frag_navi_route_stop_text"
-                app:layout_constraintTop_toTopOf="@id/map_frag_navi_route_button_stop"
-                app:layout_constraintLeft_toLeftOf="@id/map_frag_navi_route_button_stop"
-                app:layout_constraintRight_toRightOf="@id/map_frag_navi_route_button_stop"
-                app:layout_constraintVertical_chainStyle="packed"/>
+                app:layout_constraintBottom_toTopOf="@id/map_activity_navigation_detail_stop_text"
+                app:layout_constraintTop_toTopOf="@id/map_activity_navigation_detail_button_stop"
+                app:layout_constraintLeft_toLeftOf="@id/map_activity_navigation_detail_button_stop"
+                app:layout_constraintRight_toRightOf="@id/map_activity_navigation_detail_button_stop"
+                app:layout_constraintVertical_chainStyle="packed"
+                android:elevation="2dp"/>
             <TextView
-                android:id="@+id/map_frag_navi_route_stop_text"
+                android:id="@+id/map_activity_navigation_detail_stop_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/map_frag_navi_route_icon_stop"
-                app:layout_constraintLeft_toLeftOf="@id/map_frag_navi_route_button_stop"
-                app:layout_constraintRight_toRightOf="@id/map_frag_navi_route_button_stop"
-                app:layout_constraintBottom_toBottomOf="@id/map_frag_navi_route_button_stop"
+                app:layout_constraintTop_toBottomOf="@id/map_activity_navigation_detail_icon_stop"
+                app:layout_constraintLeft_toLeftOf="@id/map_activity_navigation_detail_button_stop"
+                app:layout_constraintRight_toRightOf="@id/map_activity_navigation_detail_button_stop"
+                app:layout_constraintBottom_toBottomOf="@id/map_activity_navigation_detail_button_stop"
                 android:textSize="@dimen/small_text_size"
                 android:textColor="@color/white"
                 android:textStyle="bold"
                 android:text="안내종료"
+                android:elevation="2dp"
 
                 />
 

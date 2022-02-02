@@ -335,7 +335,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:visibility="visible"
+            android:visibility="gone"
             android:clickable="true">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -593,7 +593,8 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:layout_marginRight="24dp"
-                    android:clickable="true" />
+                    android:clickable="true"
+                    android:elevation="2dp"/>
 
                 <ImageView
                     android:id="@+id/map_frag_navi_route_icon"
@@ -604,7 +605,8 @@
                     app:layout_constraintTop_toTopOf="@id/map_frag_navi_route_button"
                     app:layout_constraintLeft_toLeftOf="@id/map_frag_navi_route_button"
                     app:layout_constraintRight_toRightOf="@id/map_frag_navi_route_button"
-                    app:layout_constraintVertical_chainStyle="packed"/>
+                    app:layout_constraintVertical_chainStyle="packed"
+                    android:elevation="2dp"/>
                 <TextView
                     android:id="@+id/map_frag_navi_route_text"
                     android:layout_width="wrap_content"
@@ -617,6 +619,7 @@
                     android:textColor="@color/white"
                     android:textStyle="bold"
                     android:text="안내시작"
+                    android:elevation="2dp"
 
                     />
 

@@ -60,7 +60,8 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
     private Sensor m_ot_sensor;
     private int m_check_count = 0;
 
-
+    private TextView textView1;
+    private TextView textView2;
 
     private List<LatLng> latLngList = new ArrayList<>();
 
@@ -76,15 +77,15 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
 
         setContentView(R.layout.map_activity_navigation);
 
-        TextView textView1 = findViewById(R.id.text1);
-        TextView textView2 = findViewById(R.id.text2);
+        textView1 = findViewById(R.id.text1);
+        textView2 = findViewById(R.id.text2);
 
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map_navigation);
 
         mapFragment.getMapAsync(this);
 
-        TextView map_frag_navi_route_button_stop = findViewById(R.id.map_frag_navi_route_button_stop);
+        TextView map_frag_navi_route_button_stop = findViewById(R.id.map_activity_navigation_detail_button_stop);
         map_frag_navi_route_button_stop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -98,85 +99,6 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
         m_sensor_manager = (SensorManager) getSystemService(SENSOR_SERVICE);
         // SensorManager 를 이용해서 방향 센서 객체를 얻는다.
         m_ot_sensor = m_sensor_manager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
-
-
-        new Thread(new Runnable() {
-
-
-            public void run() {
-
-                while (true) {
-
-                    runOnUiThread(new Runnable() {
-
-
-                        @Override
-                        public void run() {
-
-                            if (ActivityCompat.checkSelfPermission(getBaseContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getBaseContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-                                return;
-                            }
-
-                            fusedLocationClient.getLastLocation().addOnSuccessListener(MapNavigationActivity.this, new OnSuccessListener<Location>() {
-                                @Override
-                                public void onSuccess(Location location) {
-
-                                    latLngList.clear();
-                                    gMap.clear();
-
-                                    textView1.setText(location.getLatitude()+"");
-                                    textView2.setText(location.getLongitude()+"");
-
-                                    latLngList.add(new LatLng(location.getLatitude(), location.getLongitude()));
-                                    latLngList.add(new LatLng(37.41334710580124, 126.6761408174503));
-                                    latLngList.add(new LatLng(37.41366646718886, 126.67584115338498));
-                                    latLngList.add(new LatLng(37.41428710900992, 126.67648220689182));
-                                    latLngList.add(new LatLng(37.4147330038427, 126.67671738628489));
-                                    latLngList.add(new LatLng(37.41501018037381, 126.67678566417317));
-
-                                    updateCamera(gMap, azimuth);
-
-                                    PolylineOptions polylineOptions = new PolylineOptions().addAll(latLngList).color(R.color.main_color);
-                                    polyline = gMap.addPolyline(polylineOptions);
-                                    stylePolyline(polyline);
-
-
-
-                                }
-                            });
-
-
-
-
-                            /*double dLon = (37.41501018037381 - gpsTracker.getLongitude());
-                            double y = Math.sin(dLon) * Math.cos(37.41501018037381);
-                            double x = Math.cos(gpsTracker.getLatitude()) * Math.sin(37.41501018037381) - Math.sin(gpsTracker.getLatitude()) * Math.cos(37.41501018037381) * Math.cos(dLon);
-                            bearing = Math.toDegrees((Math.atan2(y, x)));
-                            bearing = (360 - ((bearing + 360) % 360));*/
-
-                                //updateCamera(gMap, bearing);
-
-
-
-                            }
-
-                        });
-
-                        try {
-                            sleep(1000);
-
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-
-
-
-            }
-
-        }).start();
 
 
     }
@@ -196,30 +118,117 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
 
         gMap.setMyLocationEnabled(true);
 
-        gMap.getUiSettings().setMyLocationButtonEnabled(true);
+        gMap.getUiSettings().setMyLocationButtonEnabled(false);
 
         gMap.getUiSettings().setMapToolbarEnabled(false);
 
-        View locationButton = ((View) mapFragment.getView().findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
+        //View locationButton = ((View) mapFragment.getView().findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
         View compassButton = ((View) mapFragment.getView().findViewWithTag("GoogleMapCompass"));
-        RelativeLayout.LayoutParams rlpLocation = (RelativeLayout.LayoutParams) locationButton.getLayoutParams();
+        //RelativeLayout.LayoutParams rlpLocation = (RelativeLayout.LayoutParams) locationButton.getLayoutParams();
         RelativeLayout.LayoutParams rlpCompass = (RelativeLayout.LayoutParams) compassButton.getLayoutParams();
 
         // position on right bottom
-        rlpLocation.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
+        /*rlpLocation.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
         rlpLocation.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
-        rlpLocation.setMargins(0, DpToPixel(12), 0, 0);
+        rlpLocation.setMargins(0, DpToPixel(12), 0, 0);*/
 
         rlpCompass.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
         rlpCompass.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
         rlpCompass.setMargins(0, DpToPixel(12), 0, 0);
 
 
-        gMap.moveCamera(CameraUpdateFactory.newLatLngZoom( new LatLng(37.41346617430547, 126.67603169000573) , 17));
+        gMap.moveCamera(CameraUpdateFactory.newLatLngZoom( new LatLng(37.37532099190484, 126.63285407077159) , 17));
 
         gMap.getUiSettings().setScrollGesturesEnabled(false);
 
         //--------------------------맵 초기화 완료---------------------------------------------
+
+        gMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+
+            @Override
+            public void onMapLoaded() {
+
+                new Thread(new Runnable() {
+
+                    public void run() {
+
+                        while (true) {
+
+                            runOnUiThread(new Runnable() {
+
+
+                                @Override
+                                public void run() {
+
+                                    if (ActivityCompat.checkSelfPermission(getBaseContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getBaseContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                                        return;
+                                    }
+
+                                    fusedLocationClient.getLastLocation().addOnSuccessListener(MapNavigationActivity.this, new OnSuccessListener<Location>() {
+                                        @Override
+                                        public void onSuccess(Location location) {
+
+                                            latLngList.clear();
+                                            gMap.clear();
+
+                                            textView1.setText(location.getLatitude()+"");
+                                            textView2.setText(location.getLongitude()+"");
+
+                                            latLngList.add(new LatLng(location.getLatitude(), location.getLongitude()));
+                                            latLngList.add(new LatLng(37.41334710580124, 126.6761408174503));
+                                            latLngList.add(new LatLng(37.41366646718886, 126.67584115338498));
+                                            latLngList.add(new LatLng(37.41428710900992, 126.67648220689182));
+                                            latLngList.add(new LatLng(37.4147330038427, 126.67671738628489));
+                                            latLngList.add(new LatLng(37.41501018037381, 126.67678566417317));
+
+                                            updateCamera(gMap, azimuth);
+
+                                            PolylineOptions polylineOptions = new PolylineOptions().addAll(latLngList).color(R.color.main_color);
+                                            polyline = gMap.addPolyline(polylineOptions);
+                                            stylePolyline(polyline);
+
+
+
+                                        }
+                                    });
+
+
+
+
+                            /*double dLon = (37.41501018037381 - gpsTracker.getLongitude());
+                            double y = Math.sin(dLon) * Math.cos(37.41501018037381);
+                            double x = Math.cos(gpsTracker.getLatitude()) * Math.sin(37.41501018037381) - Math.sin(gpsTracker.getLatitude()) * Math.cos(37.41501018037381) * Math.cos(dLon);
+                            bearing = Math.toDegrees((Math.atan2(y, x)));
+                            bearing = (360 - ((bearing + 360) % 360));*/
+
+                                    //updateCamera(gMap, bearing);
+
+
+
+                                }
+
+                            });
+
+                            try {
+                                sleep(1000);
+
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+
+
+
+                    }
+
+                }).start();
+
+
+
+            }
+        });
 
     }
 
