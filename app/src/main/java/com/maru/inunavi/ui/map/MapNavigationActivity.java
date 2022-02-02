@@ -141,6 +141,8 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
                                     polyline = gMap.addPolyline(polylineOptions);
                                     stylePolyline(polyline);
 
+
+
                                 }
                             });
 
@@ -326,6 +328,7 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
         if(event.sensor.getType() == Sensor.TYPE_ORIENTATION) {
             String str;
             azimuth = event.values[0];
+
 
         }
 

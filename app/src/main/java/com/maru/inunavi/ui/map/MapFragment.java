@@ -49,6 +49,7 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
@@ -147,6 +148,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private ImageView map_frag_search_icon;
     private EditText editText_search;
 
+    private RecyclerView searchKeywordRecyclerView;
+    private SearchKeywordAdapter searchKeywordAdapter;
+    public ArrayList<String> searchKeywordList;
+    public ArrayList<Drawable> searchKeywordIconList;
+
+
     // 슬라이딩 패널에 들어가는 spinner
     private Spinner map_frag_sliding_spinner;
 
@@ -173,6 +180,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private EditText map_frag_navi_searchBar_End;
     private ImageView map_frag_navi_change;
     private TextView map_frag_navi_searchButton_now;
+
 
     //네비게이션 출발 목적지 저장 변수
     private String startPlaceCode = "NONE";
@@ -256,6 +264,48 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
         //fetchLocation();
 
+
+        //검색창 리사이클러뷰 설정
+
+        searchKeywordRecyclerView = layout.findViewById(R.id.map_frag_search_keyword_recyclerView);
+        searchKeywordRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
+        searchKeywordList = new ArrayList<>();
+        searchKeywordIconList = new ArrayList<>();
+
+        searchKeywordList.add("header");
+        searchKeywordList.add("식사");
+        searchKeywordList.add("카페");
+        searchKeywordList.add("편의점");
+        searchKeywordList.add("편의시설");
+        searchKeywordList.add("부속건물");
+        searchKeywordList.add("명소");
+        searchKeywordList.add("주차장 입구");
+        searchKeywordList.add("footer");
+
+        searchKeywordIconList.add( getResources().getDrawable(R.drawable.ic_cancel_black_24dp, null));
+        searchKeywordIconList.add( getResources().getDrawable(R.drawable.ic_restaurant_black_24dp, null));
+        searchKeywordIconList.add( getResources().getDrawable(R.drawable.ic_local_cafe_black_24dp, null));
+        searchKeywordIconList.add( getResources().getDrawable(R.drawable.ic_local_convenience_store_black_24dp, null));
+        searchKeywordIconList.add( getResources().getDrawable(R.drawable.ic_print_black_24dp, null));
+        searchKeywordIconList.add( getResources().getDrawable(R.drawable.ic_apartment_black_24dp, null));
+        searchKeywordIconList.add( getResources().getDrawable(R.drawable.ic_place_black_24dp, null));
+        searchKeywordIconList.add( getResources().getDrawable(R.drawable.ic_local_parking_black_24dp, null));
+        searchKeywordIconList.add( getResources().getDrawable(R.drawable.ic_cancel_black_24dp, null));
+
+
+        searchKeywordAdapter = new SearchKeywordAdapter(searchKeywordList, searchKeywordIconList);
+        searchKeywordRecyclerView.setAdapter(searchKeywordAdapter);
+
+
+        searchKeywordAdapter.setOnItemClickListener(new SearchKeywordAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, int position) {
+
+                startSearch(searchKeywordList.get(position));
+
+            }
+        });
+ 
 
         //리사이클러뷰 설정
         recyclerView = (RecyclerView) layout.findViewById(R.id.map_frag_recyclerview_sliding);
@@ -352,65 +402,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
 
-                    map_frag_back.setVisibility(View.VISIBLE);
-                    map_frag_cancel.setVisibility(View.INVISIBLE);
-
-                    hideKeyboard(layout);
-
-                    setMapFragmentMode(SEARCH_MODE, autoCompleteTextView_search_wrapper, mapSlidingLayout, map_frag_detail_box_wrapper,
-                            map_frag_navi_searchWrapper, navi_button_wrapper, AR_button_wrapper);
-
-                    if (gMap != null) gMap.clear();
-                    floatingMarkersOverlay.clearMarkers();
-
-                    if (placeList != null && !placeList.isEmpty()) {
-
-                        /*BitmapDrawable bitmapDraw=(BitmapDrawable)getResources().getDrawable(R.drawable.ic_inumarker_default,null);
-                        Bitmap b=bitmapDraw.getBitmap();
-                        Bitmap inuMarker_default = Bitmap.createScaledBitmap(b, markerSize, markerSize, false);*/
-
-                        for (int i = 0; i < placeList.size(); i++) {
-
-                           /* MarkerOptions markerOptions = new MarkerOptions();
-                            markerOptions.position(placeList.get(i).getLocation());
-                            markerOptions.title(placeList.get(i).getTitle());
-
-
-                            Marker marker = gMap.addMarker(markerOptions);
-                            marker.setTag(i); // 마커를 눌렀을 때 정보를 표시하기 위한 태그 정보*/
-
-
-                            int color = Color.parseColor("#02468E");
-
-                            MarkerInfo mi = new MarkerInfo(placeList.get(i).getLocation(), placeList.get(i).getTitle(), color);
-
-                            if (gMap != null) {
-
-                                /*final float main_color_hsv = 211;
-                                Marker marker = gMap.addMarker(new MarkerOptions().position(mi.getCoordinates()).icon(BitmapDescriptorFactory.defaultMarker(main_color_hsv)));
-                                marker.setTag(i);*/
-
-                                Marker marker = gMap.addMarker(new MarkerOptions().position(mi.getCoordinates()).icon(bitmapDescriptorFromVector(getActivity(), R.drawable.ic_inumarker_default)));
-                                marker.setTag(i);
-
-                            }
-
-
-                            //Adding the marker to track by the overlay
-                            //To remove that marker, you will need to call floatingMarkersOverlay.removeMarker(id)
-
-
-                            floatingMarkersOverlay.addMarker(i, mi);
-
-                        }
-
-                    }
-
-                    if (gMap != null) {
-                        gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(placeList.get(0).getLocation().latitude - 0.0008,
-                                placeList.get(0).getLocation().longitude), 17));
-                    }
-
+                    startSearch(editText_search.getText().toString());
 
                 }
 
@@ -961,11 +953,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         // position on right bottom
         rlpLocation.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
         rlpLocation.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
-        rlpLocation.setMargins(0, DpToPixel(80), 0, 0);
+        //rlpLocation.setMargins(0, DpToPixel(122), 0, 0);
 
         rlpCompass.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
         rlpCompass.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
-        rlpCompass.setMargins(0, DpToPixel(80), 0, 0);
+        //rlpCompass.setMargins(0, DpToPixel(122), 0, 0);
 
 
         gMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
@@ -1116,6 +1108,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         gMap.setLatLngBoundsForCameraTarget(adelaideBounds);*/
 
+        gMap.setPadding(0,DpToPixel(108),0,0);
+
     }
 
 
@@ -1143,6 +1137,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
             case DEFAULT_MODE:
 
+                if(gMap != null)
+                    gMap.setPadding(0,DpToPixel(108),0,0);
+
                 mapFragmentState = DEFAULT_MODE;
 
                 editText_search.clearFocus();
@@ -1157,10 +1154,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 naviButton.setVisibility(View.VISIBLE);
                 arButton.setVisibility(View.VISIBLE);
                 map_frag_navi_detail_box_wrapper.setVisibility(View.GONE);
+                searchKeywordRecyclerView.setVisibility(View.VISIBLE);
 
                 break;
 
             case SEARCH_MODE:
+
+                if(gMap != null)
+                    gMap.setPadding(0,DpToPixel(66), 0, DpToPixel(328));
 
                 mapFragmentState = SEARCH_MODE;
                 searchBar.setVisibility(View.VISIBLE);
@@ -1172,6 +1173,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 arButton.setVisibility(View.VISIBLE);
 
                 map_frag_navi_detail_box_wrapper.setVisibility(View.GONE);
+                searchKeywordRecyclerView.setVisibility(View.INVISIBLE);
+
 
 
                 break;
@@ -1179,6 +1182,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             case DIRECTPIN_MODE:
 
                 mapFragmentState = DIRECTPIN_MODE;
+
+                if(gMap != null)
+                    gMap.setPadding(0,DpToPixel(66), 0, DpToPixel(180));
+
 
                 searchBar.setVisibility(View.VISIBLE);
                 map_frag_back.setVisibility(View.VISIBLE);
@@ -1198,6 +1205,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 arButton.setVisibility(View.VISIBLE);
 
                 map_frag_navi_detail_box_wrapper.setVisibility(View.GONE);
+                searchKeywordRecyclerView.setVisibility(View.INVISIBLE);
+
 
                 break;
 
@@ -1205,6 +1214,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                 mapFragmentState = DETAIL_MODE;
                 searchBar.setVisibility(View.VISIBLE);
+                gMap.setPadding(0,DpToPixel(66), 0, DpToPixel(180));
 
                 map_frag_detail_box.setClickable(true);
                 map_frag_detail_box.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.layout_map_detail_box));
@@ -1221,6 +1231,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 arButton.setVisibility(View.VISIBLE);
 
                 map_frag_navi_detail_box_wrapper.setVisibility(View.GONE);
+                searchKeywordRecyclerView.setVisibility(View.INVISIBLE);
+
 
                 break;
 
@@ -1228,6 +1240,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             case DIRECTION_MODE :
 
                 mapFragmentState = DIRECTION_MODE;
+
+                if(gMap != null)
+                    gMap.setPadding(0,DpToPixel(170), 0, DpToPixel(140));
+
 
                 map_frag_navi_searchBar_Start.setText("");
                 map_frag_navi_searchBar_End.setText("");
@@ -1245,6 +1261,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 arButton.setVisibility(View.VISIBLE);
 
                 map_frag_navi_detail_box_wrapper.setVisibility(View.GONE);
+                searchKeywordRecyclerView.setVisibility(View.INVISIBLE);
+
 
                 break;
 
@@ -1501,6 +1519,53 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         }
 
+    }
+
+    public void startSearch(String keyword){
+
+        editText_search.setText(keyword);
+
+        map_frag_back.setVisibility(View.VISIBLE);
+        map_frag_cancel.setVisibility(View.INVISIBLE);
+        map_frag_search_icon.setVisibility(View.INVISIBLE);
+
+        hideKeyboard(layout);
+
+        setMapFragmentMode(SEARCH_MODE, autoCompleteTextView_search_wrapper, mapSlidingLayout, map_frag_detail_box_wrapper,
+                map_frag_navi_searchWrapper, navi_button_wrapper, AR_button_wrapper);
+
+        if (gMap != null) gMap.clear();
+        floatingMarkersOverlay.clearMarkers();
+
+        if (placeList != null && !placeList.isEmpty()) {
+
+            for (int i = 0; i < placeList.size(); i++) {
+
+                int color = Color.parseColor("#02468E");
+
+                MarkerInfo mi = new MarkerInfo(placeList.get(i).getLocation(), placeList.get(i).getTitle(), color);
+
+                if (gMap != null) {
+
+
+                    Marker marker = gMap.addMarker(new MarkerOptions().position(mi.getCoordinates()).icon(bitmapDescriptorFromVector(getActivity(), R.drawable.ic_inumarker_default)));
+                    marker.setTag(i);
+
+                }
+
+
+                //Adding the marker to track by the overlay
+                //To remove that marker, you will need to call floatingMarkersOverlay.removeMarker(id)
+                floatingMarkersOverlay.addMarker(i, mi);
+
+            }
+
+        }
+
+        if (gMap != null) {
+            gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(placeList.get(0).getLocation().latitude,
+                    placeList.get(0).getLocation().longitude), 17));
+        }
     }
 
 }

@@ -48,9 +48,6 @@
     <androidx.constraintlayout.widget.ConstraintLayout
 
         android:id="@+id/constraint_frag_satisfied_main"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context="com.maru.inunavi.ui.satisfied.SatisfiedFragment">
@@ -113,8 +110,8 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="10dp"
-                    android:background="@drawable/progress_bar"
-                    android:layout_centerInParent="true"/>
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/progress_bar" />
 
                 <TextView
                     android:layout_width="14dp"
@@ -191,7 +188,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="일주일 예상 소모 kcal"
+                android:text="일주일 총 이동 거리"
                 android:textStyle="bold"
                 android:textColor="@color/main_color"
                 android:textSize="@dimen/main_text_size"
@@ -202,7 +199,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="1340kcal"
+                android:text="약 1.5km"
                 android:textStyle="bold"
                 android:textColor="@color/main_color"
                 android:textSize="@dimen/top_bar_textSize"
