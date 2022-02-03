@@ -4,14 +4,19 @@ import static com.maru.inunavi.IpAddress.DemoIP;
 import static com.maru.inunavi.MainActivity.cookieManager;
 import static com.maru.inunavi.MainActivity.sessionURL;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResult;
@@ -47,6 +52,10 @@ public class SatisfiedFragment extends Fragment {
         ConstraintLayout constraint_frag_satisfied_main = root.findViewById(R.id.constraint_frag_satisfied_main);
         Button button_frag_satisfied_login = root.findViewById(R.id.button_frag_satisfied_login);
         TextView textView_overview_button = root.findViewById(R.id.textView_overview_button);
+
+        TextView satisfied_amountOfMovement_marker = root.findViewById(R.id.satisfied_amountOfMovement_marker);
+        TextView satisfied_tightness_marker = root.findViewById(R.id.satisfied_tightness_marker);
+        TextView satisfied_DistanceWeek = root.findViewById(R.id.satisfied_DistanceWeek);
 
         ActivityResultLauncher<Intent> loginActivityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -95,6 +104,54 @@ public class SatisfiedFragment extends Fragment {
             frag_satisfied_login_box.setVisibility(View.INVISIBLE);
             constraint_frag_satisfied_main.setVisibility(View.VISIBLE);
 
+            // 정보 초기화
+
+            View satisfied_amountOfMovement_marker_parent = (View)satisfied_amountOfMovement_marker.getParent();
+
+            int amountOfMovementPercent = 0;
+
+            satisfied_amountOfMovement_marker_parent.post(new Runnable() {
+                @Override
+                public void run() {
+                    int satisfied_amountOfMovement_marker_parent_width = satisfied_amountOfMovement_marker_parent.getWidth();
+                    RelativeLayout.LayoutParams satisfied_amountOfMovement_marker_params = (RelativeLayout.LayoutParams)satisfied_amountOfMovement_marker.getLayoutParams();
+
+                    int leftMargin = Math.max(0, (int)(satisfied_amountOfMovement_marker_parent_width*amountOfMovementPercent * 0.01 - DpToPixel(7)));
+
+                    satisfied_amountOfMovement_marker_params.setMargins(leftMargin, 0,0,0);
+                    satisfied_amountOfMovement_marker.setLayoutParams(satisfied_amountOfMovement_marker_params);
+
+                }
+            });
+
+
+
+            View satisfied_tightness_marker_parent = (View)satisfied_tightness_marker.getParent();
+
+            int tightnessPercent = 100;
+
+            satisfied_tightness_marker_parent.post(new Runnable() {
+                @Override
+                public void run() {
+
+                    int satisfied_tightness_marker_parent_width = satisfied_tightness_marker_parent.getWidth();
+                    RelativeLayout.LayoutParams satisfied_tightness_marker_params = (RelativeLayout.LayoutParams)satisfied_tightness_marker.getLayoutParams();
+
+                    int leftMargin = Math.max(0, (int)(satisfied_tightness_marker_parent_width*tightnessPercent * 0.01 - DpToPixel(7)));
+
+                    satisfied_tightness_marker_params.setMargins(leftMargin, 0,0,0);
+                    satisfied_tightness_marker.setLayoutParams(satisfied_tightness_marker_params);
+
+
+
+                }
+            });
+
+
+            /*satisfied_amountOfMovement_marker;
+            satisfied_tightness_marker;
+            satisfied_DistanceWeek;*/
+
 
         }else{
 
@@ -118,11 +175,26 @@ public class SatisfiedFragment extends Fragment {
         return root;
     }
 
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
 
     }
+
+    public int DpToPixel(int dp) {
+
+        Resources r = getContext().getResources();
+        int px = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                dp,
+                r.getDisplayMetrics()
+        );
+
+        return px;
+
+    }
+
 
 
 }
