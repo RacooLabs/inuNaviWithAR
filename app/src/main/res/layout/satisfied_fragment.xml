@@ -9,8 +9,6 @@
     tools:context="com.maru.inunavi.ui.satisfied.SatisfiedFragment">
 
 
-
-
     <LinearLayout
 
         android:id="@+id/frag_satisfied_login_box"

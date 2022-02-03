@@ -251,7 +251,7 @@ public class SearchActivity extends AppCompatActivity {
 
             return null;
 
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()) .subscribe((result) -> {
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).onErrorReturn(___ -> "{response : []}").subscribe((result) -> {
 
             // onPostExecute
 

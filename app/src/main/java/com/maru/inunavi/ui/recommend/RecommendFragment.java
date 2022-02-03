@@ -1,24 +1,44 @@
 package com.maru.inunavi.ui.recommend;
 
+import static com.maru.inunavi.IpAddress.DemoIP;
+import static com.maru.inunavi.MainActivity.cookieManager;
+import static com.maru.inunavi.MainActivity.sessionURL;
+
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.maru.inunavi.IpAddress;
+import com.maru.inunavi.MainActivity;
 import com.maru.inunavi.R;
 import com.maru.inunavi.ui.timetable.search.Lecture;
 import com.maru.inunavi.ui.timetable.search.Schedule;
+import com.maru.inunavi.user.LoginActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 
 public class RecommendFragment extends Fragment {
+
+    private String url = sessionURL;
+    private String userID;
+    public static String target;
 
     private RecyclerView recyclerView;
     private RecommendAdapter adapter;
@@ -29,13 +49,89 @@ public class RecommendFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
 
+
         root = inflater.inflate(R.layout.recommend_fragment, container, false);
+        LinearLayout frag_satisfied_login_box = root.findViewById(R.id.frag_recommend_login_box);
+
+        ConstraintLayout constraint_frag_recommend_main = root.findViewById(R.id.constraint_frag_recommend_main);
+        Button button_frag_recommend_login = root.findViewById(R.id.button_frag_recommend_login);
 
         recyclerView = (RecyclerView)root.findViewById(R.id.frag_recommend_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false)) ;
 
+        ActivityResultLauncher<Intent> loginActivityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            Intent intent = result.getData();
+
+                            int CallType = intent.getIntExtra("CallType", 2);
+                            String userID = intent.getStringExtra("userID");
+
+                            //로그인 요청, 쿠키 저장
+
+                            cookieManager.setCookie(url,"cookieKey="+userID);
+                            frag_satisfied_login_box.setVisibility(View.INVISIBLE);
+                            constraint_frag_recommend_main.setVisibility(View.VISIBLE);
+
+                            target = IpAddress.isTest ? "http://192.168.0.101/inuNavi/ScheduleList.php?id=\"" + userID +"\"":
+                                    "http://" + DemoIP + "/user/select/class?id=" + userID;
+
+                            setRecommendList();
+
+                        }
+                    }
+                });
 
 
+        button_frag_recommend_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                loginActivityResultLauncher.launch(intent);
+
+            }
+        });
+
+        if(cookieManager.getCookie(url) != null && !cookieManager.getCookie(url).equals("")){
+
+            userID = MainActivity.cookieManager.getCookie(url).replace("cookieKey=", "");
+
+            target = IpAddress.isTest ? "http://192.168.0.101/inuNavi/ScheduleList.php?id=\"" + userID +"\"":
+                    "http://" + DemoIP + "/user/select/class?id=" + userID;
+
+
+            frag_satisfied_login_box.setVisibility(View.INVISIBLE);
+            constraint_frag_recommend_main.setVisibility(View.VISIBLE);
+
+            // 정보 초기화
+
+            setRecommendList();
+
+
+
+        }else{
+
+            //로그인 버튼 리스너
+            frag_satisfied_login_box.setVisibility(View.VISIBLE);
+            constraint_frag_recommend_main.setVisibility(View.INVISIBLE);
+
+        }
+
+        return root;
+        
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+    }
+
+    public void setRecommendList(){
 
         ArrayList<Lecture> list = new ArrayList<Lecture>(Arrays.asList(
 
@@ -53,14 +149,6 @@ public class RecommendFragment extends Fragment {
 
         adapter = new RecommendAdapter(list);
         recyclerView.setAdapter(adapter);
-
-        return root;
-        
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
 
     }
 }
