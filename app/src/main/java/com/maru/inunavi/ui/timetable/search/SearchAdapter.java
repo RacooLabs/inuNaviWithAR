@@ -320,16 +320,4 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
     }
 
-
-    /*public boolean alreadyIn(ArrayList<String> lectureIDList, String item){
-        for(int i=0;i< lectureIDList.size(); i++){
-            if(lectureIDList.get(i).equals(item)){
-                return false;
-            }
-        }
-
-        return true;
-
-    }*/
-
 }

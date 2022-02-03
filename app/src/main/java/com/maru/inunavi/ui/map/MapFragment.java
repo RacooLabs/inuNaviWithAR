@@ -87,11 +87,25 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.maru.inunavi.ui.map.markerinfo.FloatingMarkerTitlesOverlay;
 import com.maru.inunavi.ui.map.markerinfo.MarkerInfo;
+import com.maru.inunavi.ui.timetable.search.Lecture;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
@@ -305,70 +319,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
             }
         });
- 
-
-        //리사이클러뷰 설정
-        recyclerView = (RecyclerView) layout.findViewById(R.id.map_frag_recyclerview_sliding);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
-        placeList = new ArrayList<>();
 
 
-        //선 넣는 코드
-        //DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), new LinearLayoutManager(getContext()).getOrientation());
-        //recyclerView.addItemDecoration(dividerItemDecoration);
-
-        placeList.add(new Place("INFORMATION", "정보기술대학", "부속건물", 320, new LatLng(37.37428569643498, 126.63386849546436), "9:00 ~ 18:00", "0328321234"));
-        placeList.add(new Place("ENGINEERING", "공과·도시과학대학", "부속건물", 400, new LatLng(37.37351897032315, 126.63275998245754), "9:00 ~ 18:00", "0328321234"));
-        placeList.add(new Place("LABS", "공동실험 실습관", "부속건물", 500, new LatLng(37.37269933308723, 126.63335830802647), "9:00 ~ 18:00", "0328321234"));
-        placeList.add(new Place("INFORMATION", "정보기술대학", "부속건물", 320, new LatLng(37.37428569643498, 126.63386849546436), "9:00 ~ 18:00", "0328321234"));
-        placeList.add(new Place("ENGINEERING", "공과·도시과학대학", "부속건물", 400, new LatLng(37.37351897032315, 126.63275998245754), "9:00 ~ 18:00", "0328321234"));
-        placeList.add(new Place("LABS", "공동실험 실습관", "부속건물", 500, new LatLng(37.37269933308723, 126.63335830802647), "9:00 ~ 18:00", "0328321234"));
-
-        adapter = new MapSearchAdapter(placeList);
-        recyclerView.setAdapter(adapter);
-
-        // 검색 모드 슬라이딩 어댑터에 클릭 리스너 설정. 디테일 박스 모드로 넘어감.
-        adapter.setOnItemClickListener(new MapSearchAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View v, int position) {
-
-                setMapFragmentMode(DETAIL_MODE, autoCompleteTextView_search_wrapper, mapSlidingLayout, map_frag_detail_box_wrapper,
-                        map_frag_navi_searchWrapper, navi_button_wrapper, AR_button_wrapper);
-                map_frag_detail_title.setText(placeList.get(position).getTitle());
-                map_frag_detail_sort.setText(placeList.get(position).getSort());
-                map_frag_detail_distance.setText((int) (placeList.get(position).getDistance()) + "m");
-
-                detailFocusedPlace = placeList.get(position);
-
-                gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(placeList.get(position).getLocation(), 17));
-
-                if (pointedMarker != null) {
-                    pointedMarker.remove();
-                    pointedMarker = null;
-                }
-
-                if (gMap != null) {
-                    pointedMarker = gMap.addMarker(new MarkerOptions().position(placeList.get(position).getLocation()).icon(bitmapDescriptorFromVector(getActivity(), R.drawable.ic_inumarker_picked)));
-                    pointedMarker.setTag("pointedMarker");
-                }
-
-
-            }
-
-        });
-
-        // 검색 모드에서 슬라이딩 패널에 있는 길찾기 버튼을 눌렀을 때 리스너 콜백
-
-        adapter.setOnItemDirectionClickListener(new MapSearchAdapter.OnItemDirectionClickListener() {
-            @Override
-            public void onItemClick(View v, int position) {
-
-                detailFocusedPlace = placeList.get(position);
-                setFindRouteToPlaceFromMyLocation(detailFocusedPlace);
-
-            }
-
-        });
 
 
         //스피너 설정
@@ -1161,7 +1113,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             case SEARCH_MODE:
 
                 if(gMap != null)
-                    gMap.setPadding(0,DpToPixel(66), 0, DpToPixel(328));
+                    gMap.setPadding(0,DpToPixel(66), 0, DpToPixel(300));
 
                 mapFragmentState = SEARCH_MODE;
                 searchBar.setVisibility(View.VISIBLE);
@@ -1541,6 +1493,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         setMapFragmentMode(SEARCH_MODE, autoCompleteTextView_search_wrapper, mapSlidingLayout, map_frag_detail_box_wrapper,
                 map_frag_navi_searchWrapper, navi_button_wrapper, AR_button_wrapper);
 
+        setSearchResultSlidingPanel();
+
         if (gMap != null) gMap.clear();
         floatingMarkersOverlay.clearMarkers();
 
@@ -1573,6 +1527,159 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(placeList.get(0).getLocation().latitude,
                     placeList.get(0).getLocation().longitude), 17));
         }
+    }
+
+    public void setSearchResultSlidingPanel(){
+
+        //리사이클러뷰 설정
+        recyclerView = (RecyclerView) layout.findViewById(R.id.map_frag_recyclerview_sliding);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
+        placeList = new ArrayList<>();
+
+        placeList.add(new Place("INFORMATION", "정보기술대학", "부속건물", 320, new LatLng(37.37428569643498, 126.63386849546436), "9:00 ~ 18:00", "0328321234"));
+        placeList.add(new Place("ENGINEERING", "공과·도시과학대학", "부속건물", 400, new LatLng(37.37351897032315, 126.63275998245754), "9:00 ~ 18:00", "0328321234"));
+        placeList.add(new Place("LABS", "공동실험 실습관", "부속건물", 500, new LatLng(37.37269933308723, 126.63335830802647), "9:00 ~ 18:00", "0328321234"));
+        placeList.add(new Place("INFORMATION", "정보기술대학", "부속건물", 320, new LatLng(37.37428569643498, 126.63386849546436), "9:00 ~ 18:00", "0328321234"));
+        placeList.add(new Place("ENGINEERING", "공과·도시과학대학", "부속건물", 400, new LatLng(37.37351897032315, 126.63275998245754), "9:00 ~ 18:00", "0328321234"));
+        placeList.add(new Place("LABS", "공동실험 실습관", "부속건물", 500, new LatLng(37.37269933308723, 126.63335830802647), "9:00 ~ 18:00", "0328321234"));
+
+        adapter = new MapSearchAdapter(placeList);
+        recyclerView.setAdapter(adapter);
+
+        // 검색 모드 슬라이딩 어댑터에 클릭 리스너 설정. 디테일 박스 모드로 넘어감.
+        adapter.setOnItemClickListener(new MapSearchAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, int position) {
+
+                setMapFragmentMode(DETAIL_MODE, autoCompleteTextView_search_wrapper, mapSlidingLayout, map_frag_detail_box_wrapper,
+                        map_frag_navi_searchWrapper, navi_button_wrapper, AR_button_wrapper);
+                map_frag_detail_title.setText(placeList.get(position).getTitle());
+                map_frag_detail_sort.setText(placeList.get(position).getSort());
+                map_frag_detail_distance.setText((int) (placeList.get(position).getDistance()) + "m");
+
+                detailFocusedPlace = placeList.get(position);
+
+                gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(placeList.get(position).getLocation(), 17));
+
+                if (pointedMarker != null) {
+                    pointedMarker.remove();
+                    pointedMarker = null;
+                }
+
+                if (gMap != null) {
+                    pointedMarker = gMap.addMarker(new MarkerOptions().position(placeList.get(position).getLocation()).icon(bitmapDescriptorFromVector(getActivity(), R.drawable.ic_inumarker_picked)));
+                    pointedMarker.setTag("pointedMarker");
+                }
+
+
+            }
+
+        });
+
+        // 검색 모드에서 슬라이딩 패널에 있는 길찾기 버튼을 눌렀을 때 리스너 콜백
+
+        adapter.setOnItemDirectionClickListener(new MapSearchAdapter.OnItemDirectionClickListener() {
+            @Override
+            public void onItemClick(View v, int position) {
+
+                detailFocusedPlace = placeList.get(position);
+                setFindRouteToPlaceFromMyLocation(detailFocusedPlace);
+
+            }
+
+        });
+
+        // 장소 검색 결과 가져오는 메소드
+
+
+    }
+
+    // 검색창에 검색어 쳤을 때
+
+    Disposable searchBackgroundTask;
+
+    void SearchBackgroundTask() {
+
+        searchBackgroundTask = Observable.fromCallable(() -> {
+            // doInBackground
+
+            try {
+                URL url = new URL(target);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                String temp;
+                StringBuilder stringBuilder = new StringBuilder();
+                while ((temp = bufferedReader.readLine()) != null) {
+                    stringBuilder.append(temp + "\n");
+                }
+
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+                return stringBuilder.toString().trim();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.d("@@@map fragment 229", e.toString());
+            }
+
+            return null;
+
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).onErrorReturn(___ -> "{response : []}").subscribe((result) -> {
+
+            // onPostExecute
+
+            try {
+
+                Log.d("@@@map fragment 1630", result);
+                JSONObject jsonObject = new JSONObject(result);
+                JSONArray jsonArray = jsonObject.getJSONArray("response");
+
+                int count = 0;
+
+                String placeCode = "NONE";
+                String title = "";
+                String sort = "";
+                double distance = 0.0;
+                LatLng location = null;
+                String time = "-";
+                String callNum = "-";
+
+                while (count < jsonArray.length()) {
+                    JSONObject object = jsonArray.getJSONObject(count);
+
+                    placeCode = object.getString("placeCode");
+                    title = object.getString("title");
+                    sort = object.getString("sort");
+                    distance = object.getDouble("distance");
+
+                    String[] locationString = object.getString("location").trim().split(",");
+                    if (locationString.length == 2) {
+                        location = new LatLng(Double.parseDouble(locationString[0]), Double.parseDouble(locationString[1]));
+                    }
+                    time = object.getString("time");
+                    callNum = object.getString("callNum");
+
+
+                    Place place = new Place(placeCode, title, sort, distance, location, time,
+                            callNum);
+
+                    placeList.add(place);
+
+                    count++;
+
+                }
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            searchBackgroundTask.dispose();
+
+        });
+
     }
 
 }
