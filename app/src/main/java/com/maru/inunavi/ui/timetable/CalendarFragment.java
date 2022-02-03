@@ -73,6 +73,7 @@ public class CalendarFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
 
+
         root = inflater.inflate(R.layout.timetable_fragment, container, false);
         LinearLayout frag_tita_login_box = root.findViewById(R.id.frag_tita_login_box);
         ConstraintLayout constraint_frag_tita_main = root.findViewById(R.id.constraint_frag_tita_main);

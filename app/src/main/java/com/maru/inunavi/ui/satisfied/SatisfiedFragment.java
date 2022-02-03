@@ -8,6 +8,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
@@ -15,8 +16,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResult;
@@ -52,6 +53,9 @@ public class SatisfiedFragment extends Fragment {
         ConstraintLayout constraint_frag_satisfied_main = root.findViewById(R.id.constraint_frag_satisfied_main);
         Button button_frag_satisfied_login = root.findViewById(R.id.button_frag_satisfied_login);
         TextView textView_overview_button = root.findViewById(R.id.textView_overview_button);
+
+        ImageView progressBar_amountOfMovement = root.findViewById(R.id.progressBar_amountOfMovement);
+        ImageView progressBar_tightness = root.findViewById(R.id.progressBar_tightness);
 
         TextView satisfied_amountOfMovement_marker = root.findViewById(R.id.satisfied_amountOfMovement_marker);
         TextView satisfied_tightness_marker = root.findViewById(R.id.satisfied_tightness_marker);
@@ -106,17 +110,15 @@ public class SatisfiedFragment extends Fragment {
 
             // 정보 초기화
 
-            View satisfied_amountOfMovement_marker_parent = (View)satisfied_amountOfMovement_marker.getParent();
+            int amountOfMovementPercent = 30;
 
-            int amountOfMovementPercent = 0;
-
-            satisfied_amountOfMovement_marker_parent.post(new Runnable() {
+            progressBar_amountOfMovement.post(new Runnable() {
                 @Override
                 public void run() {
-                    int satisfied_amountOfMovement_marker_parent_width = satisfied_amountOfMovement_marker_parent.getWidth();
-                    RelativeLayout.LayoutParams satisfied_amountOfMovement_marker_params = (RelativeLayout.LayoutParams)satisfied_amountOfMovement_marker.getLayoutParams();
+                    int progressBar_amountOfMovement_width = progressBar_amountOfMovement.getWidth() - DpToPixel(24);
+                    ConstraintLayout.LayoutParams satisfied_amountOfMovement_marker_params = (ConstraintLayout.LayoutParams)satisfied_amountOfMovement_marker.getLayoutParams();
 
-                    int leftMargin = Math.max(0, (int)(satisfied_amountOfMovement_marker_parent_width*amountOfMovementPercent * 0.01 - DpToPixel(7)));
+                    int leftMargin = (int)(progressBar_amountOfMovement_width*amountOfMovementPercent * 0.01 - DpToPixel(7));
 
                     satisfied_amountOfMovement_marker_params.setMargins(leftMargin, 0,0,0);
                     satisfied_amountOfMovement_marker.setLayoutParams(satisfied_amountOfMovement_marker_params);
@@ -128,21 +130,19 @@ public class SatisfiedFragment extends Fragment {
 
             View satisfied_tightness_marker_parent = (View)satisfied_tightness_marker.getParent();
 
-            int tightnessPercent = 100;
+            int tightnessPercent = 50;
 
             satisfied_tightness_marker_parent.post(new Runnable() {
                 @Override
                 public void run() {
 
-                    int satisfied_tightness_marker_parent_width = satisfied_tightness_marker_parent.getWidth();
-                    RelativeLayout.LayoutParams satisfied_tightness_marker_params = (RelativeLayout.LayoutParams)satisfied_tightness_marker.getLayoutParams();
+                    int progressBar_tightness_width = satisfied_tightness_marker_parent.getWidth() - DpToPixel(24) ;
+                    ConstraintLayout.LayoutParams satisfied_tightness_marker_params = (ConstraintLayout.LayoutParams)satisfied_tightness_marker.getLayoutParams();
 
-                    int leftMargin = Math.max(0, (int)(satisfied_tightness_marker_parent_width*tightnessPercent * 0.01 - DpToPixel(7)));
+                    int leftMargin = (int)(progressBar_tightness_width*tightnessPercent * 0.01 - DpToPixel(7));
 
                     satisfied_tightness_marker_params.setMargins(leftMargin, 0,0,0);
                     satisfied_tightness_marker.setLayoutParams(satisfied_tightness_marker_params);
-
-
 
                 }
             });
