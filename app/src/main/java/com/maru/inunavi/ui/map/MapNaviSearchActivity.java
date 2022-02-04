@@ -1,11 +1,23 @@
 package com.maru.inunavi.ui.map;
 
+import static com.maru.inunavi.IpAddress.DemoIP;
 import static com.maru.inunavi.ui.map.MapFragmentState.DETAIL_MODE;
+import static com.maru.inunavi.ui.map.MapFragmentState.SEARCH_MODE;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,26 +29,62 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.maru.inunavi.IpAddress;
 import com.maru.inunavi.MainActivity;
 import com.maru.inunavi.R;
 import com.maru.inunavi.ui.map.MapDetailActivityAdapter;
 import com.maru.inunavi.ui.map.Place;
+import com.maru.inunavi.ui.map.markerinfo.MarkerInfo;
 import com.maru.inunavi.ui.timetable.search.SearchCSEActivity;
 import com.maru.inunavi.ui.timetable.search.SearchOptionActivity;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class MapNaviSearchActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private MapNaviSearchActivityAdapter adapter;
+
+    private ImageView map_frag_navi_search_back;
+    private ImageView map_frag_navi_search_cancel;
+    private ConstraintLayout map_frag_navi_search_myLocation_wrapper;
+    private ConstraintLayout map_frag_navi_search_pickInMap_wrapper;
+    private EditText map_frag_navi_search_searchBar;
+    private TextView map_frag_navi_search_noResult;
+
+    //gps 위치 찾기
+    private FusedLocationProviderClient fusedLocationClient;
+    private LatLng myCurrentLocation = null;
+
+    private ArrayList<Place> searchPlaceList = new ArrayList<>();
+
+    private String searchSort;
+
 
     @Override protected void onCreate(Bundle savedInstanceState) {
 
@@ -44,13 +92,17 @@ public class MapNaviSearchActivity extends AppCompatActivity {
         setContentView(R.layout.map_fragment_navi_search);
 
         Intent intent = getIntent();
-        String searchSort = getIntent().getStringExtra("SearchSort");
+        searchSort = getIntent().getStringExtra("SearchSort");
 
         // 레이아웃 바인딩
-        ImageView map_frag_navi_search_back = findViewById(R.id.map_frag_navi_search_back);
-        ConstraintLayout map_frag_navi_search_myLocation_wrapper = findViewById(R.id.map_frag_navi_search_myLocation_wrapper);
-        ConstraintLayout map_frag_navi_search_pickInMap_wrapper = findViewById(R.id.map_frag_navi_search_pickInMap_wrapper);
-        EditText map_frag_navi_search_searchBar = findViewById(R.id.map_frag_navi_search_searchBar);
+        map_frag_navi_search_back = findViewById(R.id.map_frag_navi_search_back);
+        map_frag_navi_search_cancel = findViewById(R.id.map_frag_navi_search_cancel);
+        map_frag_navi_search_myLocation_wrapper = findViewById(R.id.map_frag_navi_search_myLocation_wrapper);
+        map_frag_navi_search_pickInMap_wrapper = findViewById(R.id.map_frag_navi_search_pickInMap_wrapper);
+        map_frag_navi_search_searchBar = findViewById(R.id.map_frag_navi_search_searchBar);
+        map_frag_navi_search_noResult = findViewById(R.id.map_frag_navi_search_noResult);
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         
         //돌아가기 버튼
@@ -66,22 +118,36 @@ public class MapNaviSearchActivity extends AppCompatActivity {
             map_frag_navi_search_searchBar.setHint(searchSort);
         }
 
+        //검색창의 포커스 여부 설정
+        map_frag_navi_search_searchBar.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
 
-        recyclerView = findViewById(R.id.map_frag_navi_search_recyclerview);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false)) ;
+                if (hasFocus) {
+                    map_frag_navi_search_cancel.setVisibility(View.VISIBLE);
+                }else{
+                    map_frag_navi_search_cancel.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
 
 
-        ArrayList<Place> searchPlaceList = new ArrayList<Place>(Arrays.asList(
-            new Place("INFORMATION","정보기술대학", "부속건물", 320, new LatLng(37.37428569643498, 126.63386849546436), "9:00 ~ 18:00", "0328321234"),
-                new Place(  "ENGINEERING","공과·도시과학대학", "부속건물", 400 , new LatLng(37.37351897032315, 126.63275998245754), "9:00 ~ 18:00", "0328321234"),
-                new Place("LABS", "공동실험 실습관", "부속건물", 500 , new LatLng(37.37269933308723, 126.63335830802647), "9:00 ~ 18:00", "0328321234"),
-                new Place("INFORMATION","정보기술대학", "부속건물", 320, new LatLng(37.37428569643498, 126.63386849546436), "9:00 ~ 18:00", "0328321234"),
-                new Place(  "ENGINEERING","공과·도시과학대학", "부속건물", 400 , new LatLng(37.37351897032315, 126.63275998245754), "9:00 ~ 18:00", "0328321234"),
-                new Place("LABS", "공동실험 실습관", "부속건물", 500 , new LatLng(37.37269933308723, 126.63335830802647), "9:00 ~ 18:00", "0328321234")
-        ));
+        //검색창 검색 버튼 누를때
+        map_frag_navi_search_searchBar.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
 
-        adapter = new MapNaviSearchActivityAdapter(searchPlaceList);
-        recyclerView.setAdapter(adapter);
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+
+                    startSearch(map_frag_navi_search_searchBar.getText().toString());
+
+                }
+
+
+                return false;
+            }
+        });
+
 
 
         //내 위치로 출발, 목적지 설정할 때
@@ -172,8 +238,59 @@ public class MapNaviSearchActivity extends AppCompatActivity {
         });
 
 
+
+
+    }
+
+    public void startSearch(String keyword){
+
+        map_frag_navi_search_searchBar.setText(keyword);
+        map_frag_navi_search_searchBar.clearFocus();
+
+        hideKeyboard();
+
+        // 서버에 검색 정보 받아오기
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+        }else{
+
+            fusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(Location location) {
+
+                    myCurrentLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                    SearchBackgroundTask();
+
+                }
+
+            });
+        }
+
+
+        setRecyclerView();
+
+
+
+    }
+
+    public void hideKeyboard() {
+        InputMethodManager inputManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputManager.hideSoftInputFromWindow(map_frag_navi_search_pickInMap_wrapper.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+
+
+
+    void setRecyclerView(){
+
+        recyclerView = findViewById(R.id.map_frag_navi_search_recyclerview);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false)) ;
+
+        adapter = new MapNaviSearchActivityAdapter(searchPlaceList);
+        recyclerView.setAdapter(adapter);
+
         //리사이클러 뷰 클릭했을 때
         adapter.setOnItemClickListener(new MapNaviSearchActivityAdapter.OnItemClickListener() {
+
             @Override
             public void onItemClick(View v, int position) {
 
@@ -206,6 +323,121 @@ public class MapNaviSearchActivity extends AppCompatActivity {
         });
 
     }
+
+    // 검색창에 검색어 쳤을 때
+
+    Disposable searchBackgroundTask;
+
+    void SearchBackgroundTask() {
+
+        searchBackgroundTask = Observable.fromCallable(() -> {
+
+            // doInBackground
+
+            String searchKeyword = map_frag_navi_search_searchBar.getText().toString();
+            String myLocation = myCurrentLocation.latitude + "," + myCurrentLocation.longitude;
+
+            String target = (IpAddress.isTest ? "http://192.168.0.101/inuNavi/PlaceSearchList.php" :
+                    "http://" + DemoIP + "/selectLecture")+ "?searchKeyword=\"" + searchKeyword + "\"&searchSortOption=\"" + "관련도순"
+                    + "\"&myLocation=\"" + myLocation + "\"";
+
+            try {
+                URL url = new URL(target);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                String temp;
+                StringBuilder stringBuilder = new StringBuilder();
+                while ((temp = bufferedReader.readLine()) != null) {
+                    stringBuilder.append(temp + "\n");
+                }
+
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+                return stringBuilder.toString().trim();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.d("@@@mapnavisearchactivity 229", e.toString());
+            }
+
+            return null;
+
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).onErrorReturn(___ -> "{response : []}").subscribe((result) -> {
+
+            // onPostExecute
+
+            try {
+
+                Log.d("@@@mapnavisearchactivity 1630", result);
+
+                searchPlaceList.clear();
+
+                JSONObject jsonObject = new JSONObject(result);
+                JSONArray jsonArray = jsonObject.getJSONArray("response");
+
+                int count = 0;
+
+                String placeCode = "NONE";
+                String title = "";
+                String sort = "";
+                double distance = 0.0;
+                LatLng location = null;
+                String time = "-";
+                String callNum = "-";
+
+                while (count < jsonArray.length()) {
+                    JSONObject object = jsonArray.getJSONObject(count);
+
+                    placeCode = object.getString("placeCode");
+                    title = object.getString("title");
+                    sort = object.getString("sort");
+                    distance = object.getDouble("distance");
+
+                    String[] locationString = object.getString("location").trim().split(",");
+                    if (locationString.length == 2) {
+                        location = new LatLng(Double.parseDouble(locationString[0]), Double.parseDouble(locationString[1]));
+                    }
+                    time = object.getString("time");
+                    callNum = object.getString("callNum");
+
+
+                    Place place = new Place(placeCode, title, sort, distance, location, time,
+                            callNum);
+
+                    searchPlaceList.add(place);
+
+                    count++;
+
+                }
+
+                if(count == 0){
+
+                    map_frag_navi_search_noResult.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.INVISIBLE);
+
+                }else {
+
+                    map_frag_navi_search_noResult.setVisibility(View.INVISIBLE);
+                    recyclerView.setVisibility(View.VISIBLE);
+
+                }
+
+
+                adapter.notifyDataSetChanged();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+
+            }
+
+            searchBackgroundTask.dispose();
+
+        });
+
+    }
+
 
 
 }

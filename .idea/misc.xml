@@ -144,14 +144,14 @@
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/main_activity.xml" value="0.25" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/map_activity_detail_direction.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/map_activity_navigation.xml" value="0.33" />
-        <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/map_activity_overview.xml" value="0.22" />
+        <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/map_activity_overview.xml" value="0.37621023513139695" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/map_activity_pick_location.xml" value="0.33" />
-        <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/map_fragment.xml" value="0.33" />
+        <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/map_fragment.xml" value="0.2" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/map_fragment_custom_spinner_item.xml" value="0.2947916666666667" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/map_fragment_detail.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/map_fragment_detail_activity.xml" value="0.25" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/map_fragment_detail_cardview.xml" value="0.22" />
-        <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/map_fragment_navi_search.xml" value="0.33" />
+        <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/map_fragment_navi_search.xml" value="0.22" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/map_fragment_navi_search_item.xml" value="0.25" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/map_fragment_pickLocation.xml" value="0.26458333333333334" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/map_fragment_search_activity.xml" value="0.25" />
@@ -165,6 +165,7 @@
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/recommend_cardview_subtitle.xml" value="0.25" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/recommend_fragment.xml" value="0.2" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/satisfied_fragment.xml" value="0.22" />
+        <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/satisfied_overview.xml" value="0.25" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/sliding_example.xml" value="0.2046875" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/sliging_test.xml" value="0.1" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/timetable_activity_search.xml" value="0.25" />

@@ -72,7 +72,7 @@ public class MapOverviewActivity extends AppCompatActivity implements OnMapReady
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.map_activity_overview);
+        setContentView(R.layout.satisfied_overview);
 
         map_overview_back = findViewById(R.id.map_overview_back);
 
@@ -221,7 +221,7 @@ public class MapOverviewActivity extends AppCompatActivity implements OnMapReady
         }
 
 
-        map_activity_overview_date.setText(overviewInfoList.get(i).getEndLectureTime());
+        map_activity_overview_date.setText(overviewInfoList.get(i).getEndLectureTime() + " 수업 시작");
         map_activity_overview_start_lecture_title.setText(overviewInfoList.get(i).getStartLectureName());
         map_activity_overview_end_lecture_title.setText(overviewInfoList.get(i).getEndLectureName());
         map_activity_overview_time_distance.setText(overviewInfoList.get(i).getTotalTime()+ "분 | " + overviewInfoList.get(i).getDistance() + "m");

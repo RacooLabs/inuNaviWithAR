@@ -300,14 +300,16 @@ public class SearchActivity extends AppCompatActivity {
                     lectureList.add(lecture);
                     count++;
 
-                    tita_search_info.setVisibility(View.INVISIBLE);
-
                 }
 
                 if(count == 0){
 
                     tita_search_info.setVisibility(View.VISIBLE);
                     tita_search_info.setText("조회된 강의가 없습니다.");
+
+                }else{
+
+                    tita_search_info.setVisibility(View.INVISIBLE);
 
                 }
 
@@ -319,7 +321,6 @@ public class SearchActivity extends AppCompatActivity {
             }
 
             backgroundtask.dispose();
-
 
         });
 

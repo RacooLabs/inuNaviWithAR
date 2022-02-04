@@ -680,6 +680,17 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <TextView
+            android:id="@+id/map_frag_no_searchResult"
+            android:layout_width="0dp"
+            android:layout_height="300dp"
+            app:layout_constraintTop_toBottomOf="@id/map_frag_sliding_topBar"
+            app:layout_constraintLeft_toLeftOf="@id/map_frag_sliding_topBar"
+            app:layout_constraintRight_toRightOf="@id/map_frag_sliding_topBar"
+            android:text="검색 결과가 없습니다."
+            android:textSize="14sp"
+            android:gravity="center"/>
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/map_frag_recyclerview_sliding"
@@ -687,9 +698,9 @@
             android:layout_height="300dp"
             android:background="#FFFFFF"
             android:scrollbars="vertical"
-            app:layout_constraintTop_toBottomOf="@+id/map_frag_sliding_topBar"
-            app:layout_constraintLeft_toLeftOf="@+id/map_frag_sliding_topBar"
-            app:layout_constraintRight_toRightOf="@+id/map_frag_sliding_topBar"/>
+            app:layout_constraintTop_toBottomOf="@id/map_frag_sliding_topBar"
+            app:layout_constraintLeft_toLeftOf="@id/map_frag_sliding_topBar"
+            app:layout_constraintRight_toRightOf="@id/map_frag_sliding_topBar"/>
 
         >
 

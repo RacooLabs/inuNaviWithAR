@@ -1,6 +1,7 @@
 package com.maru.inunavi.ui.map;
 
 
+import static com.maru.inunavi.IpAddress.DemoIP;
 import static com.maru.inunavi.ui.map.MapFragmentState.DEFAULT_MODE;
 import static com.maru.inunavi.ui.map.MapFragmentState.DETAIL_MODE;
 import static com.maru.inunavi.ui.map.MapFragmentState.DIRECTION_MODE;
@@ -64,11 +65,13 @@ import com.google.android.gms.maps.model.RoundCap;
 import com.google.android.gms.maps.model.SquareCap;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.maru.inunavi.IpAddress;
 import com.maru.inunavi.MainActivity;
 import com.maru.inunavi.R;
 
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -77,6 +80,7 @@ import android.widget.ImageView;
 import android.widget.QuickContactBadge;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TabWidget;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -120,6 +124,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     //gps 위치 찾기
     private FusedLocationProviderClient fusedLocationClient;
     private static final int REQUEST_CODE = 101;
+    private LatLng myCurrentLocation = null;
 
     //마커 타이틀 오버레이
     private FloatingMarkerTitlesOverlay floatingMarkersOverlay;
@@ -170,6 +175,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     // 슬라이딩 패널에 들어가는 spinner
     private Spinner map_frag_sliding_spinner;
+    private TextView map_frag_no_searchResult;
 
     // 추가 기능 버튼
     private ImageView navi_button;
@@ -245,6 +251,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         // 슬라이딩 패널에 들어가는 spinner
         map_frag_sliding_spinner = layout.findViewById(R.id.map_frag_sliding_spinner);
+        map_frag_no_searchResult = layout.findViewById(R.id.map_frag_no_searchResult);
 
         // 추가 기능 버튼
         navi_button = layout.findViewById(R.id.navi_button);
@@ -321,11 +328,22 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         });
 
 
-
-
         //스피너 설정
         String[] items = getResources().getStringArray(R.array.map_frag_sliding_spinner_list);
         map_frag_sliding_spinner.setAdapter(new ArrayAdapter(getContext(), R.layout.map_fragment_custom_spinner_item, items));
+        map_frag_sliding_spinner.setSelection(0, false);
+
+        map_frag_sliding_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                startSearch(editText_search.getText().toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
         //초기 모드 설정
         setMapFragmentMode(DEFAULT_MODE, autoCompleteTextView_search_wrapper, mapSlidingLayout, map_frag_detail_box_wrapper,
@@ -1483,6 +1501,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public void startSearch(String keyword){
 
         editText_search.setText(keyword);
+        editText_search.clearFocus();
 
         map_frag_back.setVisibility(View.VISIBLE);
         map_frag_cancel.setVisibility(View.INVISIBLE);
@@ -1493,40 +1512,27 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         setMapFragmentMode(SEARCH_MODE, autoCompleteTextView_search_wrapper, mapSlidingLayout, map_frag_detail_box_wrapper,
                 map_frag_navi_searchWrapper, navi_button_wrapper, AR_button_wrapper);
 
-        setSearchResultSlidingPanel();
-
-        if (gMap != null) gMap.clear();
-        floatingMarkersOverlay.clearMarkers();
-
-        if (placeList != null && !placeList.isEmpty()) {
-
-            for (int i = 0; i < placeList.size(); i++) {
-
-                int color = Color.parseColor("#02468E");
-
-                MarkerInfo mi = new MarkerInfo(placeList.get(i).getLocation(), placeList.get(i).getTitle(), color);
-
-                if (gMap != null) {
+        // 서버에 검색 정보 받아오기
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
 
-                    Marker marker = gMap.addMarker(new MarkerOptions().position(mi.getCoordinates()).icon(bitmapDescriptorFromVector(getActivity(), R.drawable.ic_inumarker_default)));
-                    marker.setTag(i);
+        }else{
+
+            fusedLocationClient.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(Location location) {
+
+                    myCurrentLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                    SearchBackgroundTask();
 
                 }
 
-
-                //Adding the marker to track by the overlay
-                //To remove that marker, you will need to call floatingMarkersOverlay.removeMarker(id)
-                floatingMarkersOverlay.addMarker(i, mi);
-
-            }
-
+            });
         }
 
-        if (gMap != null) {
-            gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(placeList.get(0).getLocation().latitude,
-                    placeList.get(0).getLocation().longitude), 17));
-        }
+        setSearchResultSlidingPanel();
+
+
     }
 
     public void setSearchResultSlidingPanel(){
@@ -1536,12 +1542,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         placeList = new ArrayList<>();
 
-        placeList.add(new Place("INFORMATION", "정보기술대학", "부속건물", 320, new LatLng(37.37428569643498, 126.63386849546436), "9:00 ~ 18:00", "0328321234"));
-        placeList.add(new Place("ENGINEERING", "공과·도시과학대학", "부속건물", 400, new LatLng(37.37351897032315, 126.63275998245754), "9:00 ~ 18:00", "0328321234"));
-        placeList.add(new Place("LABS", "공동실험 실습관", "부속건물", 500, new LatLng(37.37269933308723, 126.63335830802647), "9:00 ~ 18:00", "0328321234"));
-        placeList.add(new Place("INFORMATION", "정보기술대학", "부속건물", 320, new LatLng(37.37428569643498, 126.63386849546436), "9:00 ~ 18:00", "0328321234"));
-        placeList.add(new Place("ENGINEERING", "공과·도시과학대학", "부속건물", 400, new LatLng(37.37351897032315, 126.63275998245754), "9:00 ~ 18:00", "0328321234"));
-        placeList.add(new Place("LABS", "공동실험 실습관", "부속건물", 500, new LatLng(37.37269933308723, 126.63335830802647), "9:00 ~ 18:00", "0328321234"));
+
 
         adapter = new MapSearchAdapter(placeList);
         recyclerView.setAdapter(adapter);
@@ -1601,7 +1602,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     void SearchBackgroundTask() {
 
         searchBackgroundTask = Observable.fromCallable(() -> {
+
             // doInBackground
+
+            String searchKeyword = editText_search.getText().toString();
+            String searchSortOption = map_frag_sliding_spinner.getSelectedItem().toString();
+            String myLocation = myCurrentLocation.latitude + "," + myCurrentLocation.longitude;
+
+            String target = (IpAddress.isTest ? "http://192.168.0.101/inuNavi/PlaceSearchList.php" :
+                    "http://" + DemoIP + "/selectLecture")+ "?searchKeyword=\"" + searchKeyword + "\"&searchSortOption=\"" + searchSortOption
+                    + "\"&myLocation=\"" + myLocation + "\"";
 
             try {
                 URL url = new URL(target);
@@ -1633,6 +1643,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             try {
 
                 Log.d("@@@map fragment 1630", result);
+
+                placeList.clear();
+
                 JSONObject jsonObject = new JSONObject(result);
                 JSONArray jsonArray = jsonObject.getJSONArray("response");
 
@@ -1671,9 +1684,57 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                 }
 
+                if(count == 0){
+
+                    map_frag_no_searchResult.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.INVISIBLE);
+
+                }else {
+
+                    map_frag_no_searchResult.setVisibility(View.INVISIBLE);
+                    recyclerView.setVisibility(View.VISIBLE);
+
+                }
+
+
+                adapter.notifyDataSetChanged();
+
+                if (gMap != null) gMap.clear();
+                floatingMarkersOverlay.clearMarkers();
+
+                if (placeList != null && !placeList.isEmpty()) {
+
+                    for (int i = 0; i < placeList.size(); i++) {
+
+                        int color = Color.parseColor("#02468E");
+
+                        MarkerInfo mi = new MarkerInfo(placeList.get(i).getLocation(), placeList.get(i).getTitle(), color);
+
+                        if (gMap != null) {
+
+
+                            Marker marker = gMap.addMarker(new MarkerOptions().position(mi.getCoordinates()).icon(bitmapDescriptorFromVector(getActivity(), R.drawable.ic_inumarker_default)));
+                            marker.setTag(i);
+
+                        }
+
+
+                        //Adding the marker to track by the overlay
+                        //To remove that marker, you will need to call floatingMarkersOverlay.removeMarker(id)
+                        floatingMarkersOverlay.addMarker(i, mi);
+
+                    }
+
+                    if (gMap != null) {
+                        gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(placeList.get(0).getLocation().latitude,
+                                placeList.get(0).getLocation().longitude), 17));
+                    }
+
+                }
 
             } catch (Exception e) {
                 e.printStackTrace();
+
             }
 
             searchBackgroundTask.dispose();

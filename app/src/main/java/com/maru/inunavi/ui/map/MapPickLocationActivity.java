@@ -137,6 +137,8 @@ public class MapPickLocationActivity extends AppCompatActivity implements OnMapR
                 LatLng pickLocation = gMap.getCameraPosition().target;
                 Intent intent = new Intent(MapPickLocationActivity.this, MapNaviSearchActivity.class);
                 intent.putExtra("CallType", 1);
+                intent.putExtra("latitude", pickLocation.latitude );
+                intent.putExtra("longitude",pickLocation.longitude );
                 setResult(Activity.RESULT_OK, intent);
                 finish();
                 overridePendingTransition(0, 0);
