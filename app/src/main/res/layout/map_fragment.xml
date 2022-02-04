@@ -504,7 +504,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:visibility="gone"
+            android:visibility="visible"
             android:clickable="true">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -529,7 +529,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     android:layout_marginLeft="24dp"
-                    android:text="13"
+                    android:text=""
                     android:textSize="24sp"
                     android:textColor="@color/main_color"
                     android:textStyle="bold"
@@ -552,7 +552,7 @@
                     android:id="@+id/map_frag_navi_detail_distance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="132m"
+                    android:text="m"
                     android:textSize="@dimen/main_text_size"
                     android:textColor="@color/main_text_color"
                     app:layout_constraintLeft_toLeftOf="@id/map_frag_navi_detail_time"
@@ -576,7 +576,7 @@
                     android:id="@+id/map_frag_navi_detail_stepCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="200걸음"
+                    android:text="걸음"
                     android:textSize="@dimen/main_text_size"
                     android:textColor="@color/main_text_color"
                     app:layout_constraintLeft_toRightOf="@id/border_bar"

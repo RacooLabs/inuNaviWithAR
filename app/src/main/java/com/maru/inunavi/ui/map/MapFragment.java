@@ -211,6 +211,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     // 네비 브리핑 디테일 박스
     private ConstraintLayout map_frag_navi_detail_box_wrapper;
     private TextView map_frag_navi_route_button;
+    private TextView map_frag_navi_detail_time;
+    private TextView map_frag_navi_detail_distance;
+    private TextView map_frag_navi_detail_stepCount;
 
 
     public MapFragment() {
@@ -224,9 +227,23 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+
+        editText_search.setText("");
+
+        setMapFragmentMode(DEFAULT_MODE, autoCompleteTextView_search_wrapper, mapSlidingLayout, map_frag_detail_box_wrapper,
+                map_frag_navi_searchWrapper, navi_button_wrapper, AR_button_wrapper);
+
+    }
+
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
 
         layout = inflater.inflate(R.layout.map_fragment, container, false);
 
@@ -279,6 +296,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         map_frag_navi_detail_box_wrapper = layout.findViewById(R.id.map_frag_navi_detail_box_wrapper);
         map_frag_navi_route_button = layout.findViewById(R.id.map_frag_navi_route_button);
+        map_frag_navi_detail_time = layout.findViewById(R.id.map_frag_navi_detail_time);
+        map_frag_navi_detail_distance = layout.findViewById(R.id.map_frag_navi_detail_distance);
+        map_frag_navi_detail_stepCount = layout.findViewById(R.id.map_frag_navi_detail_stepCount);
 
 
 
@@ -326,6 +346,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
             }
         });
+
 
 
         //스피너 설정
@@ -1214,7 +1235,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 mapFragmentState = DIRECTION_MODE;
 
                 if(gMap != null)
-                    gMap.setPadding(0,DpToPixel(170), 0, DpToPixel(140));
+                    //Map.setPadding(0,DpToPixel(170), 0, DpToPixel(140));
+                    gMap.setPadding(0,DpToPixel(170), 0, DpToPixel(0));
 
 
                 map_frag_navi_searchBar_Start.setText("");
@@ -1273,44 +1295,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         Toast.makeText(getContext(), "경로 찾기 시작", Toast.LENGTH_SHORT).show();
 
+        if(gMap != null)
+            gMap.setPadding(0,DpToPixel(170), 0, DpToPixel(140));
+
         latLngList.clear();
 
         if(gMap != null)
             gMap.clear();
 
-        latLngList.add(new LatLng(37.3747872226735, 126.63342072263077));
-        latLngList.add(new LatLng(37.375203052050516, 126.63380415078625));
-        latLngList.add(new LatLng(37.375773021330396, 126.63272604103146));
-        latLngList.add(new LatLng(37.37541813530646, 126.63237418931232));
-        latLngList.add(new LatLng(37.37556152380112, 126.63214864333851));
 
-
-        if(latLngList != null && !latLngList.isEmpty()){
-            setStartMarker(latLngList.get(0));
-            setEndMarker(latLngList.get(latLngList.size()-1));
-            LatLngBounds.Builder builder = new LatLngBounds.Builder();
-
-
-            for (LatLng latLng : latLngList){
-                builder.include(latLng);
-            }
-
-            LatLngBounds bounds = builder.build();
-
-            if(gMap != null)
-                gMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, DpToPixel(48)));
-
-        }
-
-
-
-        PolylineOptions polylineOptions = new PolylineOptions().addAll(latLngList).color(R.color.main_color);
-
-        if(gMap != null)
-            polyline = gMap.addPolyline(polylineOptions);
-        stylePolyline(polyline);
-
-        map_frag_navi_detail_box_wrapper.setVisibility(View.VISIBLE);
+        GetRootBackgroundTask(naviInfo);
 
     }
 
@@ -1596,7 +1590,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     // 검색창에 검색어 쳤을 때
-
     Disposable searchBackgroundTask;
 
     void SearchBackgroundTask() {
@@ -1738,6 +1731,138 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             }
 
             searchBackgroundTask.dispose();
+
+        });
+
+    }
+
+
+    // 경로 가져오는 서버 통신 코드
+
+    Disposable getRouteBackgroundTask;
+
+    void GetRootBackgroundTask(NaviInfo naviInfo) {
+
+        getRouteBackgroundTask = Observable.fromCallable(() -> {
+
+            // doInBackground
+
+
+            String target = (IpAddress.isTest ? "http://192.168.0.101/inuNavi/GetRoot.php" :
+                    "http://" + DemoIP + "/selectLecture")+ "?startPlaceCode=\"" + naviInfo.getStartPlaceCode() + "\"&endPlaceCode=\"" + naviInfo.getEndPlaceCode()
+                    + "\"&startLocation=\"" + naviInfo.getStartLocation().latitude + "," + naviInfo.getStartLocation().longitude
+                    + "\"&endLocation=\"" + naviInfo.getEndLocation().latitude + "," + naviInfo.getEndLocation().longitude + "\"";
+
+            try {
+                URL url = new URL(target);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                String temp;
+                StringBuilder stringBuilder = new StringBuilder();
+                while ((temp = bufferedReader.readLine()) != null) {
+                    stringBuilder.append(temp + "\n");
+                }
+
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+                return stringBuilder.toString().trim();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.d("@@@map fragment 1798", e.toString());
+            }
+
+            return null;
+
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).onErrorReturn(___ -> "{response : []}").subscribe((result) -> {
+
+            // onPostExecute
+
+            try {
+
+                Log.d("@@@map fragment 1630", result);
+
+                JSONObject jsonObject = new JSONObject(result);
+                JSONArray jsonArray = jsonObject.getJSONArray("response");
+
+                int count = 0;
+
+                String route = "";
+                int time = 0;
+                int distance = 0;
+                int steps = 0;
+
+                while (count < 1) {
+                    JSONObject object = jsonArray.getJSONObject(count);
+
+                    route = object.getString("route");
+                    time = object.getInt("time");
+                    distance = object.getInt("distance");
+                    steps = object.getInt("steps");
+
+                    count++;
+
+                }
+
+                if(count == 0){
+
+
+                }else {
+
+
+                    map_frag_navi_detail_time.setText(time+"");
+                    map_frag_navi_detail_distance.setText(distance+"m");
+                    map_frag_navi_detail_stepCount.setText(steps+"걸음");
+
+                    route.trim();
+                    route.replaceAll(" ","");
+                    String[] routeStringSplit = route.split(",");
+
+                    for (int i=0;i<routeStringSplit.length;i+=2){
+
+                        latLngList.add(new LatLng(Double.parseDouble(routeStringSplit[i]),
+                                Double.parseDouble(routeStringSplit[i+1])));
+
+                    }
+
+                    if(latLngList != null && !latLngList.isEmpty()){
+                        setStartMarker(latLngList.get(0));
+                        setEndMarker(latLngList.get(latLngList.size()-1));
+                        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+
+
+                        for (LatLng latLng : latLngList){
+                            builder.include(latLng);
+                        }
+
+                        LatLngBounds bounds = builder.build();
+
+                        if(gMap != null)
+                            gMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, DpToPixel(48)));
+
+                    }
+
+
+                    PolylineOptions polylineOptions = new PolylineOptions().addAll(latLngList).color(R.color.main_color);
+
+                    if(gMap != null)
+                        polyline = gMap.addPolyline(polylineOptions);
+                    stylePolyline(polyline);
+
+                    map_frag_navi_detail_box_wrapper.setVisibility(View.VISIBLE);
+
+
+                }
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+
+            }
+
+            getRouteBackgroundTask.dispose();
 
         });
 
