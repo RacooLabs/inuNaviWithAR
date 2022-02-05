@@ -1,6 +1,7 @@
 package com.maru.inunavi.ui.map;
 
 
+import static com.maru.inunavi.IpAddress.DemoIP;
 import static java.lang.Thread.sleep;
 
 import android.Manifest;
@@ -18,6 +19,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
@@ -43,10 +45,24 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.RoundCap;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.maru.inunavi.IpAddress;
 import com.maru.inunavi.R;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
 public class MapNavigationActivity extends AppCompatActivity implements OnMapReadyCallback, SensorEventListener {
@@ -63,6 +79,12 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
     private TextView textView1;
     private TextView textView2;
 
+    private TextView map_activity_navigation_detail_time;
+    private TextView map_activity_navigation_detail_distance;
+
+    private String endPlaceCode;
+    private LatLng endLocation;
+
     private List<LatLng> latLngList = new ArrayList<>();
 
     private double azimuth;
@@ -77,8 +99,21 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
 
         setContentView(R.layout.map_activity_navigation);
 
+        Intent intent = getIntent();
+
+        if(intent!= null){
+
+            endPlaceCode = intent.getStringExtra("endPlaceCode");
+            endLocation = new LatLng(intent.getDoubleExtra("endLocationLatitude",0),intent.getDoubleExtra("endLocationLongitude",0));
+
+        }
+
+
         textView1 = findViewById(R.id.text1);
         textView2 = findViewById(R.id.text2);
+
+        map_activity_navigation_detail_time = findViewById(R.id.map_activity_navigation_detail_time);
+        map_activity_navigation_detail_distance = findViewById(R.id.map_activity_navigation_detail_distance);
 
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map_navigation);
@@ -96,10 +131,10 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
 
+
         m_sensor_manager = (SensorManager) getSystemService(SENSOR_SERVICE);
         // SensorManager 를 이용해서 방향 센서 객체를 얻는다.
         m_ot_sensor = m_sensor_manager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
-
 
     }
 
@@ -175,25 +210,12 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
                                             textView1.setText(location.getLatitude()+"");
                                             textView2.setText(location.getLongitude()+"");
 
-                                            latLngList.add(new LatLng(location.getLatitude(), location.getLongitude()));
-                                            latLngList.add(new LatLng(37.41334710580124, 126.6761408174503));
-                                            latLngList.add(new LatLng(37.41366646718886, 126.67584115338498));
-                                            latLngList.add(new LatLng(37.41428710900992, 126.67648220689182));
-                                            latLngList.add(new LatLng(37.4147330038427, 126.67671738628489));
-                                            latLngList.add(new LatLng(37.41501018037381, 126.67678566417317));
-
-                                            updateCamera(gMap, azimuth);
-
-                                            PolylineOptions polylineOptions = new PolylineOptions().addAll(latLngList).color(R.color.main_color);
-                                            polyline = gMap.addPolyline(polylineOptions);
-                                            stylePolyline(polyline);
+                                            GetRootBackgroundTask(new NaviInfo("LOCATION", endPlaceCode ,new LatLng(location.getLatitude(), location.getLongitude()), endLocation ));
 
 
 
                                         }
                                     });
-
-
 
 
                             /*double dLon = (37.41501018037381 - gpsTracker.getLongitude());
@@ -285,8 +307,6 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
                 }
             });
 
-
-
         }
 
 
@@ -340,6 +360,119 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
 
 
         }
+
+    }
+
+    // 경로 가져오는 서버 통신 코드
+
+    Disposable getRouteBackgroundTask;
+
+    void GetRootBackgroundTask(NaviInfo naviInfo) {
+
+        getRouteBackgroundTask = Observable.fromCallable(() -> {
+
+            // doInBackground
+
+            String target = (IpAddress.isTest ? "http://192.168.0.101/inuNavi/GetRootLive.php" :
+                    "http://" + DemoIP + "/selectLecture")+ "?startPlaceCode=\"" + naviInfo.getStartPlaceCode() + "\"&endPlaceCode=\"" + naviInfo.getEndPlaceCode()
+                    + "\"&startLocation=\"" + naviInfo.getStartLocation().latitude + "," + naviInfo.getStartLocation().longitude
+                    + "\"&endLocation=\"" + naviInfo.getEndLocation().latitude + "," + naviInfo.getEndLocation().longitude + "\"";
+
+            try {
+                URL url = new URL(target);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                String temp;
+                StringBuilder stringBuilder = new StringBuilder();
+                while ((temp = bufferedReader.readLine()) != null) {
+                    stringBuilder.append(temp + "\n");
+                }
+
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+                return stringBuilder.toString().trim();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.d("@@@MapNavigationActivity396", e.toString());
+            }
+
+            return null;
+
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).onErrorReturn(___ -> "{response : []}").subscribe((result) -> {
+
+            // onPostExecute
+
+            try {
+
+                Log.d("@@@MapNavigationActivity 407", result);
+
+                JSONObject jsonObject = new JSONObject(result);
+                JSONArray jsonArray = jsonObject.getJSONArray("response");
+
+                int count = 0;
+
+                String isArrive;
+                String route = "";
+                int time = 0;
+                int distance = 0;
+                int steps = 0;
+
+                while (count < 1) {
+                    JSONObject object = jsonArray.getJSONObject(count);
+
+                    isArrive = object.getString("isArrive");
+                    route = object.getString("route");
+                    time = object.getInt("time");
+                    distance = object.getInt("distance");
+                    steps = object.getInt("steps");
+
+                    count++;
+
+                }
+
+                if(count == 0){
+
+
+                }else {
+
+                    map_activity_navigation_detail_time.setText(time+"");
+                    map_activity_navigation_detail_distance.setText("앞으로 " + distance+"m");
+
+                    route.trim();
+                    route.replaceAll(" ","");
+                    String[] routeStringSplit = route.split(",");
+
+                    //테스트 용으로 일단 자기위치 넣음.
+                    latLngList.add(naviInfo.getStartLocation());
+
+                    for (int i=0;i<routeStringSplit.length;i+=2){
+
+                        latLngList.add(new LatLng(Double.parseDouble(routeStringSplit[i]),
+                                Double.parseDouble(routeStringSplit[i+1])));
+
+                    }
+
+                    updateCamera(gMap, azimuth);
+
+                    PolylineOptions polylineOptions = new PolylineOptions().addAll(latLngList).color(R.color.main_color);
+                    polyline = gMap.addPolyline(polylineOptions);
+                    stylePolyline(polyline);
+
+
+                }
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+
+            }
+
+            getRouteBackgroundTask.dispose();
+
+        });
 
     }
 

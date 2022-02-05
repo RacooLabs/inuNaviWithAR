@@ -489,8 +489,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                             int CallType = intent.getIntExtra("CallType", 0);
 
-
-
                             switch (CallType){
 
                                 // 출발 버튼 눌렀을 때
@@ -499,7 +497,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                                     setFindRouteFromPlace(detailFocusedPlace);
 
                                     break;
-
 
 
                                     // 도착 버튼 눌렀을 때
@@ -837,15 +834,46 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             }
         });
 
-        //경로 안내 버튼 누를때
+        ActivityResultLauncher<Intent> showRouteActivityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            Intent intent = result.getData();
+
+                            int CallType = intent.getIntExtra("CallType", 0);
+
+                            switch (CallType){
+
+                                // 경로 안내를 완료했을 때
+                                case 4001:
+
+                                    break;
+
+
+                                    //경로 안내를 중지했을 때
+                                case 4002:
+
+
+                            }
+
+                        }
+
+                    }
+                });
+
+        //경로 안내 시작 버튼 누를때
 
         map_frag_navi_route_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 Intent intent = new Intent(getActivity(), MapNavigationActivity.class);
-                startActivity(intent);
-
+                intent.putExtra("endPlaceCode", endPlaceCode);
+                intent.putExtra("endLocationLatitude", endLocation.latitude);
+                intent.putExtra("endLocationLongitude", endLocation.longitude);
+                showRouteActivityResultLauncher.launch(intent);
 
             }
         });
