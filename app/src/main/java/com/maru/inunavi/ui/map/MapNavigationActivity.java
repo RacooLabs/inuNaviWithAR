@@ -46,6 +46,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.RoundCap;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.maru.inunavi.IpAddress;
+import com.maru.inunavi.MainActivity;
 import com.maru.inunavi.R;
 
 import org.json.JSONArray;
@@ -85,6 +86,8 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
     private String endPlaceCode;
     private LatLng endLocation;
 
+    private Thread naviThread;
+
     private List<LatLng> latLngList = new ArrayList<>();
 
     private double azimuth;
@@ -92,6 +95,8 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
     private boolean isMapReady = false;
 
     private FusedLocationProviderClient fusedLocationClient;
+
+    private Boolean isThreadRun = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,6 +129,7 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
         map_frag_navi_route_button_stop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                isThreadRun = false;
                 finish();
             }
         });
@@ -183,11 +189,13 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
             @Override
             public void onMapLoaded() {
 
-                new Thread(new Runnable() {
+                isThreadRun = true;
+
+                naviThread = new Thread(new Runnable() {
 
                     public void run() {
 
-                        while (true) {
+                        while (isThreadRun) {
 
                             runOnUiThread(new Runnable() {
 
@@ -245,8 +253,9 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
 
                     }
 
-                }).start();
+                });
 
+                naviThread.start();
 
 
             }
@@ -414,7 +423,7 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
 
                 int count = 0;
 
-                String isArrive;
+                Boolean isArrived = false;
                 String route = "";
                 int time = 0;
                 int distance = 0;
@@ -423,7 +432,7 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
                 while (count < 1) {
                     JSONObject object = jsonArray.getJSONObject(count);
 
-                    isArrive = object.getString("isArrive");
+                    isArrived = object.getBoolean("isArrived");
                     route = object.getString("route");
                     time = object.getInt("time");
                     distance = object.getInt("distance");
@@ -438,29 +447,42 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
 
                 }else {
 
-                    map_activity_navigation_detail_time.setText(time+"");
-                    map_activity_navigation_detail_distance.setText("앞으로 " + distance+"m");
+                    if(isArrived){
 
-                    route.trim();
-                    route.replaceAll(" ","");
-                    String[] routeStringSplit = route.split(",");
+                        Intent sendingIntent = new Intent(MapNavigationActivity.this, MainActivity.class);
+                        sendingIntent.putExtra("CallType", 4001);
+                        setResult(Activity.RESULT_OK, sendingIntent);
+                        isThreadRun = false;
+                        finish();
+                        overridePendingTransition(0, 0);
 
-                    //테스트 용으로 일단 자기위치 넣음.
-                    latLngList.add(naviInfo.getStartLocation());
+                    }else{
 
-                    for (int i=0;i<routeStringSplit.length;i+=2){
+                        map_activity_navigation_detail_time.setText(time+"");
+                        map_activity_navigation_detail_distance.setText("앞으로 " + distance+"m");
 
-                        latLngList.add(new LatLng(Double.parseDouble(routeStringSplit[i]),
-                                Double.parseDouble(routeStringSplit[i+1])));
+                        route.trim();
+                        route.replaceAll(" ","");
+                        String[] routeStringSplit = route.split(",");
+
+                        //테스트 용으로 일단 자기위치 넣음.
+                        latLngList.add(naviInfo.getStartLocation());
+
+                        for (int i=0;i<routeStringSplit.length;i+=2){
+
+                            latLngList.add(new LatLng(Double.parseDouble(routeStringSplit[i]),
+                                    Double.parseDouble(routeStringSplit[i+1])));
+
+                        }
+
+                        updateCamera(gMap, azimuth);
+
+                        PolylineOptions polylineOptions = new PolylineOptions().addAll(latLngList).color(R.color.main_color);
+                        polyline = gMap.addPolyline(polylineOptions);
+                        stylePolyline(polyline);
+
 
                     }
-
-                    updateCamera(gMap, azimuth);
-
-                    PolylineOptions polylineOptions = new PolylineOptions().addAll(latLngList).color(R.color.main_color);
-                    polyline = gMap.addPolyline(polylineOptions);
-                    stylePolyline(polyline);
-
 
                 }
 
@@ -476,9 +498,15 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        isThreadRun = false;
+    }
 
-
-
-
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+            isThreadRun = false;
+    }
 }

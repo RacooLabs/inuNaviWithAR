@@ -839,21 +839,22 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 new ActivityResultCallback<ActivityResult>() {
                     @Override
                     public void onActivityResult(ActivityResult result) {
+
                         if (result.getResultCode() == Activity.RESULT_OK) {
                             Intent intent = result.getData();
 
                             int CallType = intent.getIntExtra("CallType", 0);
 
+
+
                             switch (CallType){
 
-                                // 경로 안내를 완료했을 때
+
                                 case 4001:
+                                    // 경로 안내를 완료했을 때
 
+                                    Toast.makeText(getContext(), "목적지에 도착하였습니다.", Toast.LENGTH_LONG).show();
                                     break;
-
-
-                                    //경로 안내를 중지했을 때
-                                case 4002:
 
 
                             }
