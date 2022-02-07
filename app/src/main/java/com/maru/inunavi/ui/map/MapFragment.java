@@ -908,7 +908,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                             cookieManager.setCookie(url,"cookieKey="+userID);
 
                             MainActivity.autoLogin = true;
+
                             if(MainActivity.autoLogin) {
+
                                 // 자동 로그인 데이터 저장
                                 SharedPreferences auto = getContext().getSharedPreferences("autoLogin", Activity.MODE_PRIVATE);
                                 SharedPreferences.Editor autoLoginEdit = auto.edit();
@@ -917,6 +919,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                                 autoLoginEdit.commit();
 
                             }
+
+                            GetNextPlaceBackgroundTask();
 
                         }
                     }
@@ -1044,11 +1048,18 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         gMap = googleMap;
 
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if(getContext()!=null){
 
-            System.exit(0);
+            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                System.exit(0);
+            }
+
+
         }
+
+
 
         gMap.setMyLocationEnabled(true);
 
@@ -1061,8 +1072,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         floatingMarkersOverlay.setSource(googleMap);
 
 
-        View locationButton = ((View) getView().findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
-        View compassButton = ((View) getView().findViewWithTag("GoogleMapCompass"));
+
+
+        View locationButton = ((View) layout.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
+        View compassButton = ((View) layout.findViewWithTag("GoogleMapCompass"));
         RelativeLayout.LayoutParams rlpLocation = (RelativeLayout.LayoutParams) locationButton.getLayoutParams();
         RelativeLayout.LayoutParams rlpCompass = (RelativeLayout.LayoutParams) compassButton.getLayoutParams();
 
@@ -1181,7 +1194,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             }
         };
 
-        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
+        Activity activity = getActivity();
+
+        if(activity != null && isAdded()){
+            requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
+        }
+
 
         gMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
@@ -2118,10 +2136,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                                 NaviInfo naviInfo = new NaviInfo(startPlaceCode, endPlaceCode, startLocation, endLocation);
                                 showBriefingDirection(naviInfo);
 
-                            }else{
-                                Toast.makeText(getContext(), "뭔가 널", Toast.LENGTH_LONG).show();
                             }
-
                         }
                     });
 
