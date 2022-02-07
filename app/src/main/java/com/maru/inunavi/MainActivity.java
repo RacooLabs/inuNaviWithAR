@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.webkit.CookieManager;
@@ -24,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
 
     public static String sessionURL = IpAddress.isTest ? "http://192.168.0.101/inuNavi/" :
             "http://" + DemoIP;
+
+    public static Boolean autoLogin = false;
 
 
     @Override
@@ -165,6 +169,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        SharedPreferences auto = getSharedPreferences("autoLogin", Activity.MODE_PRIVATE);
+        String userID = auto.getString("userId", null);
+        Boolean isAutoLogin = auto.getBoolean("isAutoLogin", false);
+
+        if(isAutoLogin){
+
+            cookieManager.setCookie(sessionURL,"cookieKey="+userID);
+            MainActivity.autoLogin = true;
+
+        }
 
 
 

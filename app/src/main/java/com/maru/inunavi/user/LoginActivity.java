@@ -6,10 +6,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.ActionMenuItemView;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -36,6 +38,8 @@ public class LoginActivity extends AppCompatActivity {
         TextView textView_login_password_warning = findViewById(R.id.textView_login_password_warning);
 
         TextView button_login = findViewById(R.id.button_login);
+
+        ImageView user_activity_login_backButton = findViewById(R.id.user_activity_login_backButton);
 
         
         //회원가입 하러가기 버튼
@@ -92,6 +96,15 @@ public class LoginActivity extends AppCompatActivity {
                 RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
                 queue.add(loginRequest);
 
+            }
+        });
+
+        // 로그인 창 닫기 버튼
+
+        user_activity_login_backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
             }
         });
 

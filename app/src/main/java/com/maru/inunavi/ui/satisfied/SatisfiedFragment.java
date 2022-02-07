@@ -7,6 +7,7 @@ import static com.maru.inunavi.MainActivity.sessionURL;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.media.Image;
 import android.os.Bundle;
@@ -77,6 +78,17 @@ public class SatisfiedFragment extends Fragment {
                             cookieManager.setCookie(url,"cookieKey="+userID);
                             frag_satisfied_login_box.setVisibility(View.INVISIBLE);
                             constraint_frag_satisfied_main.setVisibility(View.VISIBLE);
+
+                            MainActivity.autoLogin = true;
+                            if(MainActivity.autoLogin) {
+                                // 자동 로그인 데이터 저장
+                                SharedPreferences auto = getContext().getSharedPreferences("autoLogin", Activity.MODE_PRIVATE);
+                                SharedPreferences.Editor autoLoginEdit = auto.edit();
+                                autoLoginEdit.putString("userId", userID);
+                                autoLoginEdit.putBoolean("isAutoLogin", true);
+                                autoLoginEdit.commit();
+
+                            }
 
                             target = IpAddress.isTest ? "http://192.168.0.101/inuNavi/ScheduleList.php?id=\"" + userID +"\"":
                                     "http://" + DemoIP + "/user/select/class?id=" + userID;
@@ -184,17 +196,23 @@ public class SatisfiedFragment extends Fragment {
 
     public int DpToPixel(int dp) {
 
-        Resources r = getContext().getResources();
-        int px = (int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                dp,
-                r.getDisplayMetrics()
-        );
+        try{
+            Resources r = getContext().getResources();
 
-        return px;
+            int px = (int) TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    dp,
+                    r.getDisplayMetrics()
+            );
+
+            return px;
+
+        }catch (Exception e){
+
+        }
+
+        return 0;
 
     }
-
-
 
 }

@@ -164,7 +164,7 @@ public class Schedule {
 
                         Log.d("Schedule 165 : ", (i+1) +"");
 
-                        TextView textView = new TextView(context);
+                        TextView textView = new TextView(container.getContext());
                         textView.setText(lectureSchedule[i].getLecturename());
                         textView.setTextColor(Color.WHITE);
                         textView.setBackgroundColor(Color.parseColor(lectureSchedule[i].getColor()));

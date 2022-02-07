@@ -2,6 +2,8 @@ package com.maru.inunavi.ui.map;
 
 
 import static com.maru.inunavi.IpAddress.DemoIP;
+import static com.maru.inunavi.MainActivity.cookieManager;
+import static com.maru.inunavi.MainActivity.sessionURL;
 import static com.maru.inunavi.ui.map.MapFragmentState.DEFAULT_MODE;
 import static com.maru.inunavi.ui.map.MapFragmentState.DETAIL_MODE;
 import static com.maru.inunavi.ui.map.MapFragmentState.DIRECTION_MODE;
@@ -12,7 +14,9 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -38,6 +42,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -92,6 +97,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.maru.inunavi.ui.map.markerinfo.FloatingMarkerTitlesOverlay;
 import com.maru.inunavi.ui.map.markerinfo.MarkerInfo;
 import com.maru.inunavi.ui.timetable.search.Lecture;
+import com.maru.inunavi.user.LoginActivity;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 
@@ -119,7 +125,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap gMap;
     private Polyline polyline = null;
     private MapFragment mapFragment = null;
+    private String url = sessionURL;
 
+    private Boolean isLogin;
 
     //gps 위치 찾기
     private FusedLocationProviderClient fusedLocationClient;
@@ -207,6 +215,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private String endPlaceCode = "NONE";
     private LatLng startLocation = null;
     private LatLng endLocation = null;
+
 
     // 네비 브리핑 디테일 박스
     private ConstraintLayout map_frag_navi_detail_box_wrapper;
@@ -879,6 +888,94 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             }
         });
 
+
+        //지금 강의실 찾기 버튼 누를 때
+
+        //로그인 콜백 메소드
+        ActivityResultLauncher<Intent> loginActivityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            Intent intent = result.getData();
+
+                            int CallType = intent.getIntExtra("CallType", 2);
+                            String userID = intent.getStringExtra("userID");
+
+                            //로그인 요청, 쿠키 저장
+
+                            cookieManager.setCookie(url,"cookieKey="+userID);
+
+                            MainActivity.autoLogin = true;
+                            if(MainActivity.autoLogin) {
+                                // 자동 로그인 데이터 저장
+                                SharedPreferences auto = getContext().getSharedPreferences("autoLogin", Activity.MODE_PRIVATE);
+                                SharedPreferences.Editor autoLoginEdit = auto.edit();
+                                autoLoginEdit.putString("userId", userID);
+                                autoLoginEdit.putBoolean("isAutoLogin", true);
+                                autoLoginEdit.commit();
+
+                            }
+
+                        }
+                    }
+                });
+
+
+
+        map_frag_navi_searchButton_now.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //만약 로그인이 안되어 있으면
+
+                isLogin = false;
+
+
+                if(cookieManager.getCookie(url) == null || cookieManager.getCookie(url).equals("")) {
+
+                    isLogin = false;
+
+                    AlertDialog.Builder msgBuilder = new AlertDialog.Builder(getContext())
+                            .setTitle("알림")
+                            .setMessage("로그인이 필요합니다.")
+                            .setPositiveButton("로그인", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+
+                                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                                    loginActivityResultLauncher.launch(intent);
+
+                                }
+                            })
+                            .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+
+                                }
+                            });
+
+                    AlertDialog msgDlg = msgBuilder.create(); msgDlg.show();
+
+
+                    return;
+
+                }else{
+
+                    isLogin = true;
+
+                }
+
+
+                //여기서 정보 불러오기. 무슨 정보? 다음 강의실의 플레이스 정보.
+
+                GetNextPlaceBackgroundTask();
+
+
+            }
+        });
+
+
         return layout;
 
     }
@@ -1307,14 +1404,22 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     //dp에서 픽셀로 변환하는 메소드
     public int DpToPixel(int dp) {
 
-        Resources r = getContext().getResources();
-        int px = (int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                dp,
-                r.getDisplayMetrics()
-        );
+        try{
+            Resources r = getContext().getResources();
 
-        return px;
+            int px = (int) TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    dp,
+                    r.getDisplayMetrics()
+            );
+
+            return px;
+
+        }catch (Exception e){
+
+        }
+
+        return 0;
 
     }
 
@@ -1331,7 +1436,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         if(gMap != null)
             gMap.clear();
-
 
         GetRootBackgroundTask(naviInfo);
 
@@ -1767,7 +1871,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
 
     // 경로 가져오는 서버 통신 코드
-
     Disposable getRouteBackgroundTask;
 
     void GetRootBackgroundTask(NaviInfo naviInfo) {
@@ -1823,7 +1926,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 int distance = 0;
                 int steps = 0;
 
-                while (count < 1) {
+                while (count < jsonArray.length()) {
                     JSONObject object = jsonArray.getJSONObject(count);
 
                     route = object.getString("route");
@@ -1892,6 +1995,145 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             }
 
             getRouteBackgroundTask.dispose();
+
+        });
+
+    }
+
+    
+    // 다음 시간의 강의 장소 코드와 자표를 가져오는 서버 통신 코드
+    Disposable getNextPlaceBackgroundTask;
+
+    void GetNextPlaceBackgroundTask() {
+
+        getNextPlaceBackgroundTask = Observable.fromCallable(() -> {
+
+            // doInBackground
+
+
+            String target = (IpAddress.isTest ? "http://192.168.0.101/inuNavi/GetNextPlace.php" :
+                    "http://" + DemoIP + "/selectLecture")+ "?userID=\"" + MainActivity.cookieManager.getCookie(url).replace("cookieKey=", "") + "\"";
+
+
+            try {
+                URL url = new URL(target);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                String temp;
+                StringBuilder stringBuilder = new StringBuilder();
+                while ((temp = bufferedReader.readLine()) != null) {
+                    stringBuilder.append(temp + "\n");
+                }
+
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+                return stringBuilder.toString().trim();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.d("@@@map fragment 2053", e.toString());
+            }
+
+            return null;
+
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).onErrorReturn(___ -> "{response : []}").subscribe((result) -> {
+
+            // onPostExecute
+
+            try {
+
+                Log.d("@@@map fragment 2064", result);
+
+                JSONObject jsonObject = new JSONObject(result);
+                JSONArray jsonArray = jsonObject.getJSONArray("response");
+
+
+                String nextPlaceCode="";
+                String nextPlaceLocationString="";
+                String nextPlaceTitle="";
+                LatLng nextPlaceLocation = null;
+
+                int count = 0;
+
+                while (count < jsonArray.length()) {
+                    JSONObject object = jsonArray.getJSONObject(count);
+
+                    nextPlaceCode = object.getString("nextPlaceCode");
+                    nextPlaceLocationString = object.getString("nextPlaceLocationString");
+                    nextPlaceTitle = object.getString("nextPlaceTitle");
+
+                    count++;
+
+                }
+
+                if(count == 0){
+
+                    AlertDialog.Builder msgBuilder = new AlertDialog.Builder(getContext())
+                            .setTitle("알림")
+                            .setMessage("다음 강의 정보가 없습니다.")
+                            .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+
+                                }
+                            });
+
+                    AlertDialog msgDlg = msgBuilder.create(); msgDlg.show();
+
+                }else {
+
+                    String[] locationSplit = nextPlaceLocationString.split(",");
+
+                    if(locationSplit.length == 2){
+                        nextPlaceLocation = new LatLng(Double.parseDouble(locationSplit[0]),
+                                Double.parseDouble(locationSplit[1]));
+                    }
+
+                    map_frag_navi_searchBar_Start.setText("내 위치");
+                    map_frag_navi_searchBar_End.setText(nextPlaceTitle);
+
+                    endPlaceCode = nextPlaceCode;
+
+                    if(nextPlaceLocation != null){
+                        endLocation = nextPlaceLocation;
+                    }
+
+                    if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                        return;
+                    }
+
+                    fusedLocationClient.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+
+                            startLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                            startPlaceCode = "LOCATION";
+
+                            // 경로 그리는 메소드
+                            if (startLocation != null && endLocation!=null && isLogin) {
+
+                                NaviInfo naviInfo = new NaviInfo(startPlaceCode, endPlaceCode, startLocation, endLocation);
+                                showBriefingDirection(naviInfo);
+
+                            }else{
+                                Toast.makeText(getContext(), "뭔가 널", Toast.LENGTH_LONG).show();
+                            }
+
+                        }
+                    });
+
+
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+
+            }
+
+            getNextPlaceBackgroundTask.dispose();
 
         });
 

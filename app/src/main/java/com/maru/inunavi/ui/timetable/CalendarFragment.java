@@ -6,6 +6,7 @@ import static com.maru.inunavi.MainActivity.sessionURL;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -323,6 +324,12 @@ public class CalendarFragment extends Fragment {
                                 userID = "";
                                 relativeLayout_frag_tita.removeAllViews();
 
+                                MainActivity.autoLogin = false;
+                                SharedPreferences auto = getContext().getSharedPreferences("autoLogin", Activity.MODE_PRIVATE);
+                                SharedPreferences.Editor autoLoginEdit = auto.edit();
+                                autoLoginEdit.clear();
+                                autoLoginEdit.commit();
+
                             }
 
 
@@ -435,6 +442,17 @@ public class CalendarFragment extends Fragment {
                             cookieManager.setCookie(url,"cookieKey="+userID);
                             frag_tita_login_box.setVisibility(View.INVISIBLE);
                             constraint_frag_tita_main.setVisibility(View.VISIBLE);
+
+                            MainActivity.autoLogin = true;
+                            if(MainActivity.autoLogin) {
+                                // 자동 로그인 데이터 저장
+                                SharedPreferences auto = getContext().getSharedPreferences("autoLogin", Activity.MODE_PRIVATE);
+                                SharedPreferences.Editor autoLoginEdit = auto.edit();
+                                autoLoginEdit.putString("userId", userID);
+                                autoLoginEdit.putBoolean("isAutoLogin", true);
+                                autoLoginEdit.commit();
+
+                            }
 
                             target = IpAddress.isTest ? "http://192.168.0.101/inuNavi/ScheduleList.php?id=\"" + userID +"\"":
                                     "http://" + DemoIP + "/user/select/class?id=" + userID;

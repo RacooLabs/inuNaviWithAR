@@ -237,14 +237,22 @@ public class MapOverviewActivity extends AppCompatActivity implements OnMapReady
 
     public int DpToPixel(int dp) {
 
-        Resources r = this.getResources();
-        int px = (int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                dp,
-                r.getDisplayMetrics()
-        );
+        try{
+            Resources r = this.getResources();
 
-        return px;
+            int px = (int) TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    dp,
+                    r.getDisplayMetrics()
+            );
+
+            return px;
+
+        }catch (Exception e){
+
+        }
+
+        return 0;
 
     }
 
