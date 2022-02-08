@@ -402,7 +402,7 @@ public class CalendarFragment extends Fragment {
 
             Log.d("@@@ fragmentcalendar : 50", cookieManager.getCookie(url));
 
-            frag_tita_login_box.setVisibility(View.INVISIBLE);
+            frag_tita_login_box.setVisibility(View.GONE);
             constraint_frag_tita_main.setVisibility(View.VISIBLE);
 
             schedule.ResetSchedule();
@@ -440,7 +440,7 @@ public class CalendarFragment extends Fragment {
                                 ((BottomNavigationView) getActivity().findViewById(R.id.nav_view)).setSelectedItemId(R.id.navigation_satisfied);
                             }
                             cookieManager.setCookie(url,"cookieKey="+userID);
-                            frag_tita_login_box.setVisibility(View.INVISIBLE);
+                            frag_tita_login_box.setVisibility(View.GONE);
                             constraint_frag_tita_main.setVisibility(View.VISIBLE);
 
                             MainActivity.autoLogin = true;

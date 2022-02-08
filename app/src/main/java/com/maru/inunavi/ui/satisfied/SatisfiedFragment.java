@@ -111,7 +111,7 @@ public class SatisfiedFragment extends Fragment {
                             //로그인 요청, 쿠키 저장
 
                             cookieManager.setCookie(url,"cookieKey="+userID);
-                            frag_satisfied_login_box.setVisibility(View.INVISIBLE);
+                            frag_satisfied_login_box.setVisibility(View.GONE);
                             constraint_frag_satisfied_main.setVisibility(View.VISIBLE);
                             satisfied_blur_window.setVisibility(View.GONE);
 
@@ -151,7 +151,7 @@ public class SatisfiedFragment extends Fragment {
                     "http://" + DemoIP + "/user/select/class?id=" + userID;
 
 
-            frag_satisfied_login_box.setVisibility(View.INVISIBLE);
+            frag_satisfied_login_box.setVisibility(View.GONE);
             constraint_frag_satisfied_main.setVisibility(View.VISIBLE);
             satisfied_blur_window.setVisibility(View.GONE);
 
@@ -275,7 +275,7 @@ public class SatisfiedFragment extends Fragment {
 
                 if(count == 0){
 
-                    frag_satisfied_login_box.setVisibility(View.INVISIBLE);
+                    frag_satisfied_login_box.setVisibility(View.GONE);
                     constraint_frag_satisfied_main.setVisibility(View.GONE);
                     satisfied_blur_window.setVisibility(View.VISIBLE);
 

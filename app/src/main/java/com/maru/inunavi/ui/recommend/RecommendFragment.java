@@ -74,7 +74,7 @@ public class RecommendFragment extends Fragment {
                             //로그인 요청, 쿠키 저장
 
                             cookieManager.setCookie(url,"cookieKey="+userID);
-                            frag_satisfied_login_box.setVisibility(View.INVISIBLE);
+                            frag_satisfied_login_box.setVisibility(View.GONE);
                             constraint_frag_recommend_main.setVisibility(View.VISIBLE);
 
                             MainActivity.autoLogin = true;
@@ -116,7 +116,7 @@ public class RecommendFragment extends Fragment {
                     "http://" + DemoIP + "/user/select/class?id=" + userID;
 
 
-            frag_satisfied_login_box.setVisibility(View.INVISIBLE);
+            frag_satisfied_login_box.setVisibility(View.GONE);
             constraint_frag_recommend_main.setVisibility(View.VISIBLE);
 
             // 정보 초기화
