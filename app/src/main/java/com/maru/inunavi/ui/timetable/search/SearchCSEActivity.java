@@ -48,7 +48,7 @@ public class SearchCSEActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         List<SearchOptionAdapter.Item> data = new ArrayList<>();
 
-        //전공
+        //교양필수
         ArrayList<String> CSEArray = new ArrayList<String>(Arrays.asList("전체","대학영어2", "Academic English", "컴퓨팅적사고와SW", "글쓰기이론과실제",
                 "대학영어회화2","기타" ));
 

@@ -58,8 +58,7 @@ public class SearchCategoryActivity extends AppCompatActivity implements Seriali
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         List<SearchOptionAdapter.Item> data = new ArrayList<>();
 
-        ArrayList<String> categoryTypeList = new ArrayList<String>(Arrays.asList("전공선택", "전공기초", "전공필수", "교양필수","기초과학","교양선택", "교직", "일반선택",
-                "군사학"));
+        ArrayList<String> categoryTypeList = categoryList;
 
         for (int i =0;i<categoryTypeList.size();i++){
             SearchOptionAdapter.Item category_Type = new SearchOptionAdapter.Item(SearchOptionAdapter.MULTI_CHILD, categoryTypeList.get(i));

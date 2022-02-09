@@ -9,7 +9,7 @@
         android:id="@+id/navigation_map"
         android:name="com.maru.inunavi.ui.map.MapFragment"
         android:label="@string/title_map"
-        tools:layout="@layout/map_fragment" />
+        tools:layout="@layout/map_fragment"/>
 
     <fragment
         android:id="@+id/navigation_satisfied"

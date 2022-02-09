@@ -5,6 +5,7 @@ import static com.maru.inunavi.MainActivity.cookieManager;
 import static com.maru.inunavi.MainActivity.sessionURL;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -25,11 +26,14 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.maru.inunavi.IpAddress;
+import com.maru.inunavi.ui.satisfied.OverviewInfo;
 import com.maru.inunavi.ui.timetable.search.Lecture;
 import com.maru.inunavi.ui.timetable.search.Schedule;
 import com.maru.inunavi.ui.timetable.search.SearchActivity;
@@ -48,6 +52,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
@@ -67,6 +72,12 @@ public class CalendarFragment extends Fragment {
     public static String target;
     public View root;
     public RelativeLayout relativeLayout_frag_tita;
+
+    private TextView frag_tita_year_semester;
+
+    public static ArrayList<String> majorArray = new ArrayList<>();
+    public static ArrayList<String> CSEArray= new ArrayList<>();
+    public static ArrayList<String> categoryList= new ArrayList<>();
 
 
 
@@ -90,6 +101,7 @@ public class CalendarFragment extends Fragment {
 
         cookieManager = ((MainActivity)getActivity()).getCookieManager();
 
+        frag_tita_year_semester = root.findViewById(R.id.frag_tita_year_semester);
 
         schedule_textView = new TextView[] {
 
@@ -299,6 +311,8 @@ public class CalendarFragment extends Fragment {
         relativeLayout_frag_tita.removeAllViews();
         schedule = new Schedule();
         schedule.ResetSchedule();
+
+
 
 
         //설정 콜백
@@ -594,6 +608,100 @@ public class CalendarFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+
+    }
+
+
+    // 학기 경로 분석 결과를 가져오는 서버 통신 코드
+    Disposable getTimetableInfoTask;
+
+    void GetTimetableInfoTask() {
+
+        getTimetableInfoTask = Observable.fromCallable(() -> {
+
+            // doInBackground
+
+            String target = (IpAddress.isTest ? "http://192.168.0.101/inuNavi/getTimetableInfo.php" :
+                    "http://" + DemoIP + "/selectLecture");
+
+
+            try {
+                URL url = new URL(target);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                String temp;
+                StringBuilder stringBuilder = new StringBuilder();
+                while ((temp = bufferedReader.readLine()) != null) {
+                    stringBuilder.append(temp + "\n");
+                }
+
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+                return stringBuilder.toString().trim();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.d("@@@MapOverviewActivity 310", e.toString());
+            }
+
+            return null;
+
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).onErrorReturn(___ -> "{response : []}").subscribe((result) -> {
+
+            // onPostExecute
+
+            try {
+
+                Log.d("@@@MapOverviewActivity 321", result);
+
+                JSONObject jsonObject = new JSONObject(result);
+                JSONArray jsonArray = jsonObject.getJSONArray("response");
+
+                int year = 0;
+                int semester = 0;
+                String majorArrayString = "";
+                String CSEArrayString = "";
+                String categoryListString = "";
+
+                int count = 0;
+
+                while (count < jsonArray.length()) {
+                    JSONObject object = jsonArray.getJSONObject(count);
+
+                    year = object.getInt("year");
+                    semester = object.getInt("semester");
+                    majorArrayString = object.getString("majorArrayString");
+                    CSEArrayString = object.getString("CSEArrayString");
+                    categoryListString = object.getString("categoryListString");
+
+                    count++;
+
+
+                }
+
+                if(count == 0){
+
+
+                }else {
+
+                    majorArray.clear();
+                    CSEArray.clear();
+                    categoryList.clear();
+
+
+
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+
+            }
+
+            getTimetableInfoTask.dispose();
+
+        });
 
     }
 }

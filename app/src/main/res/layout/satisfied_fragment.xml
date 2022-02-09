@@ -275,7 +275,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="약 1.5km"
+                android:text="약 0m"
                 android:textStyle="bold"
                 android:textColor="@color/main_color"
                 android:textSize="@dimen/top_bar_textSize"

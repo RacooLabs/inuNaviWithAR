@@ -66,10 +66,11 @@
             android:gravity="center_vertical"
             >
             <TextView
+                android:id="@+id/frag_tita_year_semester"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="12sp"
-                android:text="2021년 2학기"/>
+                android:text="0000년 0학기"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
