@@ -17,6 +17,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.maru.inunavi.R;
+import com.maru.inunavi.ui.timetable.CalendarFragment;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -26,8 +27,7 @@ public class SearchOptionActivity extends AppCompatActivity implements Serializa
 
     ArrayList<String> gradeList = new ArrayList<String>(Arrays.asList("1학년", "2학년", "3학년", "4학년" ));
 
-    ArrayList<String> categoryList = new ArrayList<String>(Arrays.asList("전공선택", "전공기초", "전공필수", "교양필수","기초과학","교양선택", "교직", "일반선택",
-            "군사학"));
+    ArrayList<String> categoryList = CalendarFragment.categoryList;
 
     ArrayList<String> scoreList = new ArrayList<String>(Arrays.asList("1학점", "2학점", "3학점", "4학점"));
 

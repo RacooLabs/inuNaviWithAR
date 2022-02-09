@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.maru.inunavi.R;
+import com.maru.inunavi.ui.timetable.CalendarFragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -49,8 +50,7 @@ public class SearchCSEActivity extends AppCompatActivity {
         List<SearchOptionAdapter.Item> data = new ArrayList<>();
 
         //교양필수
-        ArrayList<String> CSEArray = new ArrayList<String>(Arrays.asList("전체","대학영어2", "Academic English", "컴퓨팅적사고와SW", "글쓰기이론과실제",
-                "대학영어회화2","기타" ));
+        ArrayList<String> CSEArray = CalendarFragment.CSEArray;
 
         for (int i =0;i<CSEArray.size();i++){
             SearchOptionAdapter.Item major = new SearchOptionAdapter.Item(SearchOptionAdapter.DEFAULT_CHILD, CSEArray.get(i));

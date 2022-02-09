@@ -53,6 +53,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
@@ -307,13 +308,14 @@ public class CalendarFragment extends Fragment {
                 null,null,null,null,null,null,null,null,null,null,null,null,
                 null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null};
 
+
+
         userID = "";
         relativeLayout_frag_tita.removeAllViews();
         schedule = new Schedule();
         schedule.ResetSchedule();
 
-
-
+        GetTimetableInfoTask();
 
         //설정 콜백
         ActivityResultLauncher<Intent> logoutActivityResultLauncher = registerForActivityResult(
@@ -621,9 +623,8 @@ public class CalendarFragment extends Fragment {
 
             // doInBackground
 
-            String target = (IpAddress.isTest ? "http://192.168.0.101/inuNavi/getTimetableInfo.php" :
+            String target = (IpAddress.isTest ? "http://192.168.0.101/inuNavi/GetTimetableInfo.php" :
                     "http://" + DemoIP + "/selectLecture");
-
 
             try {
                 URL url = new URL(target);
@@ -643,7 +644,7 @@ public class CalendarFragment extends Fragment {
 
             } catch (Exception e) {
                 e.printStackTrace();
-                Log.d("@@@MapOverviewActivity 310", e.toString());
+                Log.d("@@@CalendarFragment 647", e.toString());
             }
 
             return null;
@@ -654,7 +655,7 @@ public class CalendarFragment extends Fragment {
 
             try {
 
-                Log.d("@@@MapOverviewActivity 321", result);
+                Log.d("@@@CalendarFragment 658", result);
 
                 JSONObject jsonObject = new JSONObject(result);
                 JSONArray jsonArray = jsonObject.getJSONArray("response");
@@ -690,7 +691,20 @@ public class CalendarFragment extends Fragment {
                     CSEArray.clear();
                     categoryList.clear();
 
+                    majorArrayString.trim();
+                    majorArrayString.replaceAll(" ", "");
 
+                    CSEArrayString.trim();
+                    CSEArrayString.replaceAll(" ", "");
+
+                    categoryListString.trim();
+                    categoryListString.replaceAll(" ", "");
+
+                    majorArray = new ArrayList<String>(Arrays.asList(majorArrayString.split(",")));
+                    CSEArray = new ArrayList<String>(Arrays.asList(CSEArrayString.split(",")));
+                    categoryList = new ArrayList<String>(Arrays.asList(categoryListString.split(",")));
+
+                    frag_tita_year_semester.setText(year + "년 " + semester + "학기");
 
                 }
 
