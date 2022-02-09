@@ -1,6 +1,7 @@
 package com.maru.inunavi.ui.recommend;
 
 import static com.maru.inunavi.IpAddress.DemoIP;
+import static com.maru.inunavi.IpAddress.DemoIP_ClientTest;
 import static com.maru.inunavi.MainActivity.cookieManager;
 import static com.maru.inunavi.MainActivity.sessionURL;
 
@@ -88,7 +89,7 @@ public class RecommendFragment extends Fragment {
 
                             }
 
-                            target = IpAddress.isTest ? "http://192.168.0.101/inuNavi/ScheduleList.php?id=\"" + userID +"\"":
+                            target = IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/ScheduleList.php?id=\"" + userID +"\"":
                                     "http://" + DemoIP + "/user/select/class?id=" + userID;
 
                             setRecommendList();
@@ -112,7 +113,7 @@ public class RecommendFragment extends Fragment {
 
             userID = MainActivity.cookieManager.getCookie(url).replace("cookieKey=", "");
 
-            target = IpAddress.isTest ? "http://192.168.0.101/inuNavi/ScheduleList.php?id=\"" + userID +"\"":
+            target = IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/ScheduleList.php?id=\"" + userID +"\"":
                     "http://" + DemoIP + "/user/select/class?id=" + userID;
 
 

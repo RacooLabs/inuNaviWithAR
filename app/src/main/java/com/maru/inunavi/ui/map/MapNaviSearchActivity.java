@@ -1,6 +1,7 @@
 package com.maru.inunavi.ui.map;
 
 import static com.maru.inunavi.IpAddress.DemoIP;
+import static com.maru.inunavi.IpAddress.DemoIP_ClientTest;
 import static com.maru.inunavi.ui.map.MapFragmentState.DETAIL_MODE;
 import static com.maru.inunavi.ui.map.MapFragmentState.SEARCH_MODE;
 
@@ -337,7 +338,7 @@ public class MapNaviSearchActivity extends AppCompatActivity {
             String searchKeyword = map_frag_navi_search_searchBar.getText().toString();
             String myLocation = myCurrentLocation.latitude + "," + myCurrentLocation.longitude;
 
-            String target = (IpAddress.isTest ? "http://192.168.0.101/inuNavi/PlaceSearchList.php" :
+            String target = (IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/PlaceSearchList.php" :
                     "http://" + DemoIP + "/selectLecture")+ "?searchKeyword=\"" + searchKeyword + "\"&searchSortOption=\"" + "관련도순"
                     + "\"&myLocation=\"" + myLocation + "\"";
 

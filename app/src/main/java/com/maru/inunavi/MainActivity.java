@@ -1,6 +1,7 @@
 package com.maru.inunavi;
 
 import static com.maru.inunavi.IpAddress.DemoIP;
+import static com.maru.inunavi.IpAddress.DemoIP_ClientTest;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static CookieManager cookieManager;
 
-    public static String sessionURL = IpAddress.isTest ? "http://192.168.0.101/inuNavi/" :
+    public static String sessionURL = IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/" :
             "http://" + DemoIP;
 
     public static Boolean autoLogin = false;

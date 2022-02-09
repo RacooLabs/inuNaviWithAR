@@ -2,6 +2,7 @@ package com.maru.inunavi.ui.map;
 
 
 import static com.maru.inunavi.IpAddress.DemoIP;
+import static com.maru.inunavi.IpAddress.DemoIP_ClientTest;
 import static com.maru.inunavi.MainActivity.cookieManager;
 import static com.maru.inunavi.MainActivity.sessionURL;
 import static com.maru.inunavi.ui.map.MapFragmentState.DEFAULT_MODE;
@@ -1753,7 +1754,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             String searchSortOption = map_frag_sliding_spinner.getSelectedItem().toString();
             String myLocation = myCurrentLocation.latitude + "," + myCurrentLocation.longitude;
 
-            String target = (IpAddress.isTest ? "http://192.168.0.101/inuNavi/PlaceSearchList.php" :
+            String target = (IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/PlaceSearchList.php" :
                     "http://" + DemoIP + "/selectLecture")+ "?searchKeyword=\"" + searchKeyword + "\"&searchSortOption=\"" + searchSortOption
                     + "\"&myLocation=\"" + myLocation + "\"";
 
@@ -1898,7 +1899,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             // doInBackground
 
 
-            String target = (IpAddress.isTest ? "http://192.168.0.101/inuNavi/GetRoot.php" :
+            String target = (IpAddress.isTest ? "http://" + DemoIP_ClientTest + "/inuNavi/GetRoot.php" :
                     "http://" + DemoIP + "/selectLecture")+ "?startPlaceCode=\"" + naviInfo.getStartPlaceCode() + "\"&endPlaceCode=\"" + naviInfo.getEndPlaceCode()
                     + "\"&startLocation=\"" + naviInfo.getStartLocation().latitude + "," + naviInfo.getStartLocation().longitude
                     + "\"&endLocation=\"" + naviInfo.getEndLocation().latitude + "," + naviInfo.getEndLocation().longitude + "\"";
@@ -2029,7 +2030,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             // doInBackground
 
 
-            String target = (IpAddress.isTest ? "http://192.168.0.101/inuNavi/GetNextPlace.php" :
+            String target = (IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/GetNextPlace.php" :
                     "http://" + DemoIP + "/selectLecture")+ "?userID=\"" + MainActivity.cookieManager.getCookie(url).replace("cookieKey=", "") + "\"";
 
 

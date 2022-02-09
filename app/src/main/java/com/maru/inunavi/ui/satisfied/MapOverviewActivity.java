@@ -2,6 +2,7 @@ package com.maru.inunavi.ui.satisfied;
 
 
 import static com.maru.inunavi.IpAddress.DemoIP;
+import static com.maru.inunavi.IpAddress.DemoIP_ClientTest;
 import static com.maru.inunavi.MainActivity.sessionURL;
 
 import android.Manifest;
@@ -286,7 +287,7 @@ public class MapOverviewActivity extends AppCompatActivity implements OnMapReady
 
             // doInBackground
 
-            String target = (IpAddress.isTest ? "http://192.168.0.101/inuNavi/GetOverviewRoot.php" :
+            String target = (IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/GetOverviewRoot.php" :
                     "http://" + DemoIP + "/selectLecture")+ "?userID=\"" + MainActivity.cookieManager.getCookie(url).replace("cookieKey=", "") + "\"";
 
 

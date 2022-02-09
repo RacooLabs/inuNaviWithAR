@@ -1,4 +1,4 @@
-package com.maru.inunavi.ui.timetable.search;
+package com.maru.inunavi.user;
 
 import static com.maru.inunavi.IpAddress.DemoIP;
 import static com.maru.inunavi.IpAddress.DemoIP_ClientTest;
@@ -13,32 +13,31 @@ import com.maru.inunavi.IpAddress;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AddRequest extends StringRequest {
+public class ChangePasswordRequest extends StringRequest {
 
-
-    final static private String URL = IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/LectureAdd.php" :
-            "http://" + DemoIP + "/user/insert/class";
-
+    final static private String URL = IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/UserLogin.php" :
+            "http://" + DemoIP + "/user/login";
 
     private Map<String, String> parameters;
 
-    public AddRequest(String userID, String lectureNumber, Response.Listener<String> listener){
+    public ChangePasswordRequest(String userID, String userPassword, Response.Listener<String> listener){
+
 
         super(Method.POST, URL, listener, new Response.ErrorListener() {
-        @Override
-        public void onErrorResponse(VolleyError error) {
-            Log.d("@@@", "error_addrequest_requst:24" + error);
-        }
-    });
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("@@@", String.valueOf(error));
+            }
+        });
 
         parameters = new HashMap<>();
         parameters.put("id", userID);
-        parameters.put("class_id", lectureNumber);
-
+        parameters.put("password", userPassword);
     }
 
     @Override
     public Map<String, String> getParams() {
         return parameters;
     }
+
 }

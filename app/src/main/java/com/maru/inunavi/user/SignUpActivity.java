@@ -53,20 +53,17 @@ public class SignUpActivity extends AppCompatActivity {
        EditText editText_sign_up_password = findViewById(R.id.editText_sign_up_password);
        EditText editText_sign_up_password_second = findViewById(R.id.editText_sign_up_password_second);
        EditText editText_sign_up_email = findViewById(R.id.editText_sign_up_email);
-       EditText editText_sign_up_name = findViewById(R.id.editText_sign_up_name);
 
 
        ImageView sign_up_id_done_icon = findViewById(R.id.sign_up_id_done_icon);
        ImageView sign_up_password_done_icon = findViewById(R.id.sign_up_password_done_icon);
        ImageView sign_up_password_second_done_icon = findViewById(R.id.sign_up_password_second_done_icon);
        ImageView sign_up_email_done_icon = findViewById(R.id.sign_up_email_done_icon);
-       ImageView sign_up_name_done_icon = findViewById(R.id.sign_up_name_done_icon);
 
        TextView textView_id_warning = findViewById(R.id.textView_id_warning);
        TextView textView_password_warning = findViewById(R.id.textView_password_warning);
        TextView textView_password_second_warning = findViewById(R.id.textView_password_second_warning);
        TextView textView_email_warning = findViewById(R.id.textView_email_warning);
-       TextView textView_name_warning = findViewById(R.id.textView_name_warning);
 
        TextView button_sign_up = findViewById(R.id.button_sign_up);
 
@@ -269,36 +266,7 @@ public class SignUpActivity extends AppCompatActivity {
            }
        });
 
-       editText_sign_up_name.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-           @Override
-           public void onFocusChange(View view, boolean b) {
 
-               if(b){
-                   setNormalEditText(editText_sign_up_name, sign_up_name_done_icon, textView_name_warning);
-                   nameValidate = false;
-               }else{
-
-                   String userName = editText_sign_up_name.getText().toString().trim();
-
-                   if (userName.equals("")) {
-                       setNotEditText(editText_sign_up_name, sign_up_name_done_icon, textView_name_warning, "이름을 입력하세요.");
-                       nameValidate = false;
-
-                   }else if (userName.length() > 15){
-                       setNotEditText(editText_sign_up_name, sign_up_name_done_icon, textView_name_warning, "이름은 14자 이하입니다.");
-                       nameValidate = false;
-
-                   }else{
-
-                       setDoneEditText(editText_sign_up_name, sign_up_name_done_icon, textView_name_warning);
-                       nameValidate = true;
-
-                   }
-
-               }
-               
-           }
-       });
 
        button_sign_up.setOnClickListener(new View.OnClickListener() {
            @Override
@@ -306,14 +274,14 @@ public class SignUpActivity extends AppCompatActivity {
                String userID = editText_sign_up_id.getText().toString().trim();
                String userPassword = editText_sign_up_password.getText().toString();
                String userEmail = editText_sign_up_email.getText().toString().trim();
-               String userName = editText_sign_up_name.getText().toString().trim();
+
 
 
                editText_sign_up_id.clearFocus();
                editText_sign_up_password.clearFocus();
                editText_sign_up_password_second.clearFocus();
                editText_sign_up_email.clearFocus();
-               editText_sign_up_name.clearFocus();
+
 
                if(idValidate && passwordValidate && passwordCheckValidate && emailValidate && nameValidate){
 
@@ -350,7 +318,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                    };
 
-                   SignUpRequest signupRequest = new SignUpRequest(userID,userPassword, userEmail, userName,responseListener);
+                   SignUpRequest signupRequest = new SignUpRequest(userID,userPassword, userEmail,responseListener);
                    RequestQueue queue = Volley.newRequestQueue(SignUpActivity.this);
                    queue.add(signupRequest);
 

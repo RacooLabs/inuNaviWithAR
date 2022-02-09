@@ -1,6 +1,7 @@
 package com.maru.inunavi.ui.timetable.search;
 
 import static com.maru.inunavi.IpAddress.DemoIP;
+import static com.maru.inunavi.IpAddress.DemoIP_ClientTest;
 
 import android.util.Log;
 
@@ -15,7 +16,7 @@ import java.util.Map;
 public class DeleteRequest extends StringRequest {
 
 
-    final static private String URL = IpAddress.isTest ? "http://192.168.0.101/inuNavi/LectureDelete.php" :
+    final static private String URL = IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/LectureDelete.php" :
             "http://" + DemoIP + "/user/delete/class";
 
 

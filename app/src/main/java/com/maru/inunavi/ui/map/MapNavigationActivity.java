@@ -2,6 +2,7 @@ package com.maru.inunavi.ui.map;
 
 
 import static com.maru.inunavi.IpAddress.DemoIP;
+import static com.maru.inunavi.IpAddress.DemoIP_ClientTest;
 import static java.lang.Thread.sleep;
 
 import android.Manifest;
@@ -390,7 +391,7 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
 
             // doInBackground
 
-            String target = (IpAddress.isTest ? "http://192.168.0.101/inuNavi/GetRootLive.php" :
+            String target = (IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/GetRootLive.php" :
                     "http://" + DemoIP + "/selectLecture")+ "?startPlaceCode=\"" + naviInfo.getStartPlaceCode() + "\"&endPlaceCode=\"" + naviInfo.getEndPlaceCode()
                     + "\"&startLocation=\"" + naviInfo.getStartLocation().latitude + "," + naviInfo.getStartLocation().longitude
                     + "\"&endLocation=\"" + naviInfo.getEndLocation().latitude + "," + naviInfo.getEndLocation().longitude + "\"";

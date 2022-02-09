@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -46,6 +47,10 @@ public class SettingActivity extends AppCompatActivity {
 
         ArrayList<String> list = new ArrayList<>();
         list.add("로그아웃");
+        list.add("비밀번호 수정");
+        list.add("회원 탈퇴");
+        list.add("앱 정보");
+        list.add("오류 신고");
         adapter = new SettingAdapter(list);
         recyclerView.setAdapter(adapter);
 
@@ -55,12 +60,51 @@ public class SettingActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View v, int position) {
 
-                if(position==0){
+                if(((TextView)v).getText().equals("로그아웃")){
+
                     Intent intent = new Intent(SettingActivity.this, MainActivity.class);
                     intent.putExtra("CallType", 1001);
                     setResult(Activity.RESULT_OK, intent);
                     finish();
                     overridePendingTransition(0, 0);
+
+                }else if(((TextView)v).getText().equals("비밀번호 수정")){
+
+                    Intent intent = new Intent(SettingActivity.this, MainActivity.class);
+                    intent.putExtra("CallType", 1002);
+                    setResult(Activity.RESULT_OK, intent);
+                    finish();
+                    overridePendingTransition(0, 0);
+
+
+                }else if(((TextView)v).getText().equals("회원 탈퇴")){
+
+                    Intent intent = new Intent(SettingActivity.this, MainActivity.class);
+                    intent.putExtra("CallType", 1003);
+                    setResult(Activity.RESULT_OK, intent);
+                    finish();
+                    overridePendingTransition(0, 0);
+
+
+                }else if(((TextView)v).getText().equals("앱 정보")){
+
+                    Intent intent = new Intent(SettingActivity.this, MainActivity.class);
+                    intent.putExtra("CallType", 1004);
+                    setResult(Activity.RESULT_OK, intent);
+                    finish();
+                    overridePendingTransition(0, 0);
+
+
+                }else if(((TextView)v).getText().equals("오류 신고")){
+
+                    Intent intent = new Intent(SettingActivity.this, MainActivity.class);
+                    intent.putExtra("CallType", 1005);
+                    setResult(Activity.RESULT_OK, intent);
+                    finish();
+                    overridePendingTransition(0, 0);
+
+                }else{
+
 
                 }
 

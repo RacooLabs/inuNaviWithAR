@@ -173,6 +173,14 @@
 
         </activity>
 
+        <activity
+            android:name="com.maru.inunavi.user.ChangePasswordActivity"
+            android:exported="true"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait">
+
+        </activity>
+
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

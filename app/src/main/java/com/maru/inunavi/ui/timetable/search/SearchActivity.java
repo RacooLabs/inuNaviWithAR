@@ -1,6 +1,7 @@
 package com.maru.inunavi.ui.timetable.search;
 
 import static com.maru.inunavi.IpAddress.DemoIP;
+import static com.maru.inunavi.IpAddress.DemoIP_ClientTest;
 
 import android.app.Activity;
 import android.content.Context;
@@ -123,7 +124,7 @@ public class SearchActivity extends AppCompatActivity {
                     }
 
 
-                    target = (IpAddress.isTest ? "http://192.168.0.101/inuNavi/LectureList.php" :
+                    target = (IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/LectureList.php" :
                             "http://" + DemoIP + "/selectLecture")+ "?main_keyword=\"" + main_keyword + "\"&keyword_option=\"" + keyword_option
                              + "\"&major_option=\"전체\"" + "&cse_option=\"전체\"" + "&sort_option=\"기본\"" + "&grade_option=\"전체\"" + "&category_option=\"전체\"" + "&score_option=\"전체\"";
 
@@ -162,7 +163,7 @@ public class SearchActivity extends AppCompatActivity {
                             String score_option = intent.getStringExtra("score_option");
 
 
-                            target = (IpAddress.isTest ? "http://192.168.0.101/inuNavi/LectureList.php" :
+                            target = (IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/LectureList.php" :
                                     "http://" + DemoIP + "/selectLecture")+ "?main_keyword=\"" + main_keyword + "\"&keyword_option=\"" + keyword_option
                                     + "\"&major_option=\"" + major_option + "\"&cse_option=\""+ cse_option +"\"&sort_option=\"" + sort_option + "\"&grade_option=\"" + grade_option +
                                     "\"&category_option=\"" + category_option +"\"&score_option=\"" + score_option +"\"";

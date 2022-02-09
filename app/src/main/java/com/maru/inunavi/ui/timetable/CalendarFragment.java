@@ -1,6 +1,7 @@
 package com.maru.inunavi.ui.timetable;
 
 import static com.maru.inunavi.IpAddress.DemoIP;
+import static com.maru.inunavi.IpAddress.DemoIP_ClientTest;
 import static com.maru.inunavi.MainActivity.cookieManager;
 import static com.maru.inunavi.MainActivity.sessionURL;
 
@@ -37,6 +38,7 @@ import com.maru.inunavi.ui.satisfied.OverviewInfo;
 import com.maru.inunavi.ui.timetable.search.Lecture;
 import com.maru.inunavi.ui.timetable.search.Schedule;
 import com.maru.inunavi.ui.timetable.search.SearchActivity;
+import com.maru.inunavi.user.ChangePasswordActivity;
 import com.maru.inunavi.user.LoginActivity;
 import com.maru.inunavi.MainActivity;
 import com.maru.inunavi.R;
@@ -346,6 +348,13 @@ public class CalendarFragment extends Fragment {
                                 autoLoginEdit.clear();
                                 autoLoginEdit.commit();
 
+                            } else if( CallType == 1002){
+
+                                // 비밀 번호 변경 요청
+
+                                Intent startIntent = new Intent(getActivity(), ChangePasswordActivity.class);
+                                startActivity(startIntent);
+
                             }
 
 
@@ -382,7 +391,7 @@ public class CalendarFragment extends Fragment {
 
                                 userID = MainActivity.cookieManager.getCookie(url).replace("cookieKey=", "");
 
-                                target = IpAddress.isTest ? "http://192.168.0.101/inuNavi/ScheduleList.php?id=\"" + userID +"\"":
+                                target = IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/ScheduleList.php?id=\"" + userID +"\"":
                                         "http://" + DemoIP +"/user/select/class?id=" + userID;
 
                                 schedule.ResetSchedule();
@@ -413,7 +422,7 @@ public class CalendarFragment extends Fragment {
 
             userID = MainActivity.cookieManager.getCookie(url).replace("cookieKey=", "");
 
-            target = IpAddress.isTest ? "http://192.168.0.101/inuNavi/ScheduleList.php?id=\"" + userID +"\"":
+            target = IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/ScheduleList.php?id=\"" + userID +"\"":
                     "http://" + DemoIP + "/user/select/class?id=" + userID;
 
             Log.d("@@@ fragmentcalendar : 50", cookieManager.getCookie(url));
@@ -470,7 +479,7 @@ public class CalendarFragment extends Fragment {
 
                             }
 
-                            target = IpAddress.isTest ? "http://192.168.0.101/inuNavi/ScheduleList.php?id=\"" + userID +"\"":
+                            target = IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/ScheduleList.php?id=\"" + userID +"\"":
                                     "http://" + DemoIP + "/user/select/class?id=" + userID;
 
                             schedule.ResetSchedule();
@@ -623,7 +632,7 @@ public class CalendarFragment extends Fragment {
 
             // doInBackground
 
-            String target = (IpAddress.isTest ? "http://192.168.0.101/inuNavi/GetTimetableInfo.php" :
+            String target = (IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/GetTimetableInfo.php" :
                     "http://" + DemoIP + "/selectLecture");
 
             try {
