@@ -13,33 +13,30 @@ import com.maru.inunavi.IpAddress;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SignUpRequest extends StringRequest {
+public class QuitRequest extends StringRequest {
 
-
-    final static private String URL = IpAddress.isTest ? "http://" + DemoIP_ClientTest + "/inuNavi/UserRegister.php" :
-            "http://" + DemoIP + "/user/insert";
-
+    final static private String URL = IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/Quit.php" :
+            "http://" + DemoIP + "/user/login";
 
     private Map<String, String> parameters;
 
-    public SignUpRequest(String userEmail, String userPassword,Response.Listener<String> listener){
+    public QuitRequest(String userEmail, String userPassword, Response.Listener<String> listener){
 
         super(Method.POST, URL, listener, new Response.ErrorListener() {
-        @Override
-        public void onErrorResponse(VolleyError error) {
-            Log.d("@@@", "error_signup_requst:24");
-        }
-    });
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("@@@", String.valueOf(error));
+            }
+        });
 
         parameters = new HashMap<>();
         parameters.put("email", userEmail);
         parameters.put("password", userPassword);
-
-
     }
 
     @Override
     public Map<String, String> getParams() {
         return parameters;
     }
+
 }

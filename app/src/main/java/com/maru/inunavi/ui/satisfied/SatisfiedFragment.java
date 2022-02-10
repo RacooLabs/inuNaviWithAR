@@ -63,7 +63,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class SatisfiedFragment extends Fragment {
 
     private String url = sessionURL;
-    private String userID;
+    private String userEmail;
     public View root;
     public static String target;
 
@@ -107,11 +107,11 @@ public class SatisfiedFragment extends Fragment {
                             Intent intent = result.getData();
 
                             int CallType = intent.getIntExtra("CallType", 2);
-                            String userID = intent.getStringExtra("userID");
+                            String userEmail = intent.getStringExtra("userEmail");
 
                             //로그인 요청, 쿠키 저장
 
-                            cookieManager.setCookie(url,"cookieKey="+userID);
+                            cookieManager.setCookie(url,"cookieKey="+userEmail);
                             frag_satisfied_login_box.setVisibility(View.GONE);
                             constraint_frag_satisfied_main.setVisibility(View.VISIBLE);
                             satisfied_blur_window.setVisibility(View.GONE);
@@ -121,7 +121,7 @@ public class SatisfiedFragment extends Fragment {
                                 // 자동 로그인 데이터 저장
                                 SharedPreferences auto = getContext().getSharedPreferences("autoLogin", Activity.MODE_PRIVATE);
                                 SharedPreferences.Editor autoLoginEdit = auto.edit();
-                                autoLoginEdit.putString("userId", userID);
+                                autoLoginEdit.putString("userEmail", userEmail);
                                 autoLoginEdit.putBoolean("isAutoLogin", true);
                                 autoLoginEdit.commit();
 
@@ -146,10 +146,10 @@ public class SatisfiedFragment extends Fragment {
 
         if(cookieManager.getCookie(url) != null && !cookieManager.getCookie(url).equals("")){
 
-            userID = MainActivity.cookieManager.getCookie(url).replace("cookieKey=", "");
+            userEmail = MainActivity.cookieManager.getCookie(url).replace("cookieKey=", "");
 
-            target = IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/ScheduleList.php?id=\"" + userID +"\"":
-                    "http://" + DemoIP + "/user/select/class?id=" + userID;
+            target = IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/ScheduleList.php?email=\"" + userEmail +"\"":
+                    "http://" + DemoIP + "/user/select/class?id=" + userEmail;
 
 
             frag_satisfied_login_box.setVisibility(View.GONE);
@@ -220,7 +220,7 @@ public class SatisfiedFragment extends Fragment {
 
 
             String target = (IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/GetAnalysisResult.php" :
-                    "http://" + DemoIP + "/selectLecture")+ "?userID=\"" + MainActivity.cookieManager.getCookie(url).replace("cookieKey=", "") + "\"";
+                    "http://" + DemoIP + "/selectLecture")+ "?userEmail=\"" + MainActivity.cookieManager.getCookie(url).replace("cookieKey=", "") + "\"";
 
 
             try {

@@ -52,7 +52,7 @@ public class Schedule {
             "#404040",
             "#634b47"};
 
-    private String userID;
+    private String userEmail;
 
     public void addSchedule(Lecture lecture){
 
@@ -137,7 +137,7 @@ public class Schedule {
 
     public void setting(TextView[] schedule_textView, RelativeLayout container, Context context, CalendarFragment calendarFragment){
 
-        userID = MainActivity.cookieManager.getCookie(url).replace("cookieKey=", "");
+        userEmail = MainActivity.cookieManager.getCookie(url).replace("cookieKey=", "");
 
         int positionX = 0;
         int positionY = 0;
@@ -245,7 +245,7 @@ public class Schedule {
 
                                         };
 
-                                        DeleteRequest deleteRequest = new DeleteRequest(userID, lectureNumber,responseListener);
+                                        DeleteRequest deleteRequest = new DeleteRequest(userEmail, lectureNumber,responseListener);
                                         RequestQueue queue = Volley.newRequestQueue(context);
                                         queue.add(deleteRequest);
 
@@ -343,7 +343,7 @@ public class Schedule {
 
                                         };
 
-                                        DeleteRequest deleteRequest = new DeleteRequest(userID, lectureNumber,responseListener);
+                                        DeleteRequest deleteRequest = new DeleteRequest(userEmail, lectureNumber,responseListener);
                                         RequestQueue queue = Volley.newRequestQueue(context);
                                         queue.add(deleteRequest);
 

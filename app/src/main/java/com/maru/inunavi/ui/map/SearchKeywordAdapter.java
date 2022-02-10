@@ -19,7 +19,7 @@ import java.util.ArrayList;
 public class SearchKeywordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
-    private String userID = "";
+    private String userEmail = "";
     private ArrayList<String> placeList;
 
     private final int TYPE_HEADER = 0;

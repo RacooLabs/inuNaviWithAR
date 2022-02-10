@@ -49,7 +49,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
     SearchActivity parent;
 
-    private String userID = "";
+    private String userEmail = "";
     private ArrayList<String> lectureIDList;
     private Schedule schedule = new Schedule();
 
@@ -61,9 +61,9 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     String target;
 
     {
-        userID = (MainActivity.cookieManager.getCookie(MainActivity.sessionURL)).replace("cookieKey=", "");
-        target = IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/ScheduleList.php?id=\"" + userID +"\"":
-                "http://" + DemoIP + "/user/select/class?id=" + userID;
+        userEmail = (MainActivity.cookieManager.getCookie(MainActivity.sessionURL)).replace("cookieKey=", "");
+        target = IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/ScheduleList.php?email=\"" + userEmail +"\"":
+                "http://" + DemoIP + "/user/select/class?id=" + userEmail;
     }
 
 
@@ -202,9 +202,9 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
                     };
 
-                    userID = (MainActivity.cookieManager.getCookie(MainActivity.sessionURL)).replace("cookieKey=", "");
+                    userEmail = (MainActivity.cookieManager.getCookie(MainActivity.sessionURL)).replace("cookieKey=", "");
 
-                    AddRequest addRequest = new AddRequest(userID, mData.get(holder.getAdapterPosition()).getNumber(),responseListener);
+                    AddRequest addRequest = new AddRequest(userEmail, mData.get(holder.getAdapterPosition()).getNumber(),responseListener);
                     RequestQueue queue = Volley.newRequestQueue(parent);
                     queue.add(addRequest);
 

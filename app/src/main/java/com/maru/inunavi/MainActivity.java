@@ -171,12 +171,12 @@ public class MainActivity extends AppCompatActivity {
         });
 
         SharedPreferences auto = getSharedPreferences("autoLogin", Activity.MODE_PRIVATE);
-        String userID = auto.getString("userId", null);
+        String userEmail = auto.getString("userEmail", null);
         Boolean isAutoLogin = auto.getBoolean("isAutoLogin", false);
 
         if(isAutoLogin){
 
-            cookieManager.setCookie(sessionURL,"cookieKey="+userID);
+            cookieManager.setCookie(sessionURL,"cookieKey="+userEmail);
             MainActivity.autoLogin = true;
 
         }

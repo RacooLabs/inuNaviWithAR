@@ -22,7 +22,7 @@ public class AddRequest extends StringRequest {
 
     private Map<String, String> parameters;
 
-    public AddRequest(String userID, String lectureNumber, Response.Listener<String> listener){
+    public AddRequest(String userEmail, String lectureNumber, Response.Listener<String> listener){
 
         super(Method.POST, URL, listener, new Response.ErrorListener() {
         @Override
@@ -32,7 +32,7 @@ public class AddRequest extends StringRequest {
     });
 
         parameters = new HashMap<>();
-        parameters.put("id", userID);
+        parameters.put("email", userEmail);
         parameters.put("class_id", lectureNumber);
 
     }

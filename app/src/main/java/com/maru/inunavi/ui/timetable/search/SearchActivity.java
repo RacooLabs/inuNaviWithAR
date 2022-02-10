@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -319,6 +320,7 @@ public class SearchActivity extends AppCompatActivity {
 
             } catch (Exception e) {
                 e.printStackTrace();
+                Toast.makeText(getApplicationContext(), "문제가 있음" + e, Toast.LENGTH_SHORT).show();
             }
 
             backgroundtask.dispose();

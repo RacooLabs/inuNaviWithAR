@@ -902,11 +902,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                             Intent intent = result.getData();
 
                             int CallType = intent.getIntExtra("CallType", 2);
-                            String userID = intent.getStringExtra("userID");
+                            String userEmail = intent.getStringExtra("userEmail");
 
                             //로그인 요청, 쿠키 저장
 
-                            cookieManager.setCookie(url,"cookieKey="+userID);
+                            cookieManager.setCookie(url,"cookieKey="+userEmail);
 
                             MainActivity.autoLogin = true;
 
@@ -915,7 +915,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                                 // 자동 로그인 데이터 저장
                                 SharedPreferences auto = getContext().getSharedPreferences("autoLogin", Activity.MODE_PRIVATE);
                                 SharedPreferences.Editor autoLoginEdit = auto.edit();
-                                autoLoginEdit.putString("userId", userID);
+                                autoLoginEdit.putString("userEmail", userEmail);
                                 autoLoginEdit.putBoolean("isAutoLogin", true);
                                 autoLoginEdit.commit();
 
@@ -2019,7 +2019,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
-    
+
     // 다음 시간의 강의 장소 코드와 자표를 가져오는 서버 통신 코드
     Disposable getNextPlaceBackgroundTask;
 
@@ -2031,7 +2031,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
 
             String target = (IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/GetNextPlace.php" :
-                    "http://" + DemoIP + "/selectLecture")+ "?userID=\"" + MainActivity.cookieManager.getCookie(url).replace("cookieKey=", "") + "\"";
+                    "http://" + DemoIP + "/selectLecture")+ "?userEmail=\"" + MainActivity.cookieManager.getCookie(url).replace("cookieKey=", "") + "\"";
 
 
             try {

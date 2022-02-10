@@ -20,7 +20,7 @@ public class LoginRequest extends StringRequest {
 
     private Map<String, String> parameters;
 
-    public LoginRequest(String userID, String userPassword, Response.Listener<String> listener){
+    public LoginRequest(String userEmail, String userPassword, Response.Listener<String> listener){
 
 
         super(Method.POST, URL, listener, new Response.ErrorListener() {
@@ -31,7 +31,7 @@ public class LoginRequest extends StringRequest {
         });
 
         parameters = new HashMap<>();
-        parameters.put("id", userID);
+        parameters.put("email", userEmail);
         parameters.put("password", userPassword);
     }
 

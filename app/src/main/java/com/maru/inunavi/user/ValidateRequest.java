@@ -15,14 +15,14 @@ import java.util.Map;
 
 public class ValidateRequest extends StringRequest {
 
-    final static private String URL = IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/UserValidate.php?id=" :
+    final static private String URL = IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/UserValidate.php?email=" :
             "http://" + DemoIP + "/user/check/id?id=";
 
     private Map<String, String> parameters;
 
-    public ValidateRequest(String userID, Response.Listener<String> listener){
+    public ValidateRequest(String userEmail, Response.Listener<String> listener){
 
-        super(Method.GET, URL  + userID, listener, new Response.ErrorListener() {
+        super(Method.GET, URL  + userEmail, listener, new Response.ErrorListener() {
 
             @Override
             public void onErrorResponse(VolleyError error) {

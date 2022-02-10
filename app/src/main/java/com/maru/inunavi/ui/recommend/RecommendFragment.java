@@ -39,7 +39,7 @@ import java.util.Arrays;
 public class RecommendFragment extends Fragment {
 
     private String url = sessionURL;
-    private String userID;
+    private String userEmail;
     public static String target;
 
     private RecyclerView recyclerView;
@@ -70,11 +70,11 @@ public class RecommendFragment extends Fragment {
                             Intent intent = result.getData();
 
                             int CallType = intent.getIntExtra("CallType", 2);
-                            String userID = intent.getStringExtra("userID");
+                            String userEmail = intent.getStringExtra("userEmail");
 
                             //로그인 요청, 쿠키 저장
 
-                            cookieManager.setCookie(url,"cookieKey="+userID);
+                            cookieManager.setCookie(url,"cookieKey="+userEmail);
                             frag_satisfied_login_box.setVisibility(View.GONE);
                             constraint_frag_recommend_main.setVisibility(View.VISIBLE);
 
@@ -83,14 +83,14 @@ public class RecommendFragment extends Fragment {
                                 // 자동 로그인 데이터 저장
                                 SharedPreferences auto = getContext().getSharedPreferences("autoLogin", Activity.MODE_PRIVATE);
                                 SharedPreferences.Editor autoLoginEdit = auto.edit();
-                                autoLoginEdit.putString("userId", userID);
+                                autoLoginEdit.putString("userEmail", userEmail);
                                 autoLoginEdit.putBoolean("isAutoLogin", true);
                                 autoLoginEdit.commit();
 
                             }
 
-                            target = IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/ScheduleList.php?id=\"" + userID +"\"":
-                                    "http://" + DemoIP + "/user/select/class?id=" + userID;
+                            target = IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/ScheduleList.php?email=\"" + userEmail +"\"":
+                                    "http://" + DemoIP + "/user/select/class?id=" + userEmail;
 
                             setRecommendList();
 
@@ -111,10 +111,10 @@ public class RecommendFragment extends Fragment {
 
         if(cookieManager.getCookie(url) != null && !cookieManager.getCookie(url).equals("")){
 
-            userID = MainActivity.cookieManager.getCookie(url).replace("cookieKey=", "");
+            userEmail = MainActivity.cookieManager.getCookie(url).replace("cookieKey=", "");
 
-            target = IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/ScheduleList.php?id=\"" + userID +"\"":
-                    "http://" + DemoIP + "/user/select/class?id=" + userID;
+            target = IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/ScheduleList.php?email=\"" + userEmail +"\"":
+                    "http://" + DemoIP + "/user/select/class?id=" + userEmail;
 
 
             frag_satisfied_login_box.setVisibility(View.GONE);

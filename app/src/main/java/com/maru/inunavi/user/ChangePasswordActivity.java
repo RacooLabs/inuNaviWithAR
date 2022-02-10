@@ -32,6 +32,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
     private String url = sessionURL;
 
+    private String userEmail = MainActivity.cookieManager.getCookie(url).replace("cookieKey=", "");
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,12 +133,11 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
                                }
 
-
                            }
 
                        };
 
-                       LoginRequest checkOriginPasswordRequest = new LoginRequest(MainActivity.cookieManager.getCookie(url).replace("cookieKey=", ""),originPassword, responseListener);
+                       LoginRequest checkOriginPasswordRequest = new LoginRequest(userEmail,originPassword, responseListener);
                        RequestQueue queue = Volley.newRequestQueue(ChangePasswordActivity.this);
                        queue.add(checkOriginPasswordRequest);
 
@@ -259,6 +260,9 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
                                 JSONObject jsonResponse = new JSONObject(response);
 
+
+                                Log.d("@@@ changePassword ", response);
+
                                 boolean success = jsonResponse.getBoolean("success");
 
                                 if (success) {
@@ -281,9 +285,9 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
                     };
 
-                    /*ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest(userID,userPassword, userEmail,responseListener);
+                    ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest(userEmail,userNewPassword,responseListener);
                     RequestQueue queue = Volley.newRequestQueue(ChangePasswordActivity.this);
-                    queue.add(changePasswordRequest);*/
+                    queue.add(changePasswordRequest);
 
 
                 }else{

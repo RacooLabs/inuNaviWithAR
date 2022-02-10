@@ -288,7 +288,7 @@ public class MapOverviewActivity extends AppCompatActivity implements OnMapReady
             // doInBackground
 
             String target = (IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/GetOverviewRoot.php" :
-                    "http://" + DemoIP + "/selectLecture")+ "?userID=\"" + MainActivity.cookieManager.getCookie(url).replace("cookieKey=", "") + "\"";
+                    "http://" + DemoIP + "/selectLecture")+ "?userEmail=\"" + MainActivity.cookieManager.getCookie(url).replace("cookieKey=", "") + "\"";
 
 
             try {

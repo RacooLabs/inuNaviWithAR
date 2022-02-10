@@ -69,7 +69,7 @@ public class CalendarFragment extends Fragment {
 
     private TextView schedule_textView[];
 
-    private String userID;
+    private String userEmail;
     private Schedule schedule;
 
     public static String target;
@@ -312,7 +312,7 @@ public class CalendarFragment extends Fragment {
 
 
 
-        userID = "";
+        userEmail = "";
         relativeLayout_frag_tita.removeAllViews();
         schedule = new Schedule();
         schedule.ResetSchedule();
@@ -339,7 +339,7 @@ public class CalendarFragment extends Fragment {
                                 cookieManager.removeAllCookies(null);
                                 schedule = new Schedule();
                                 schedule.ResetSchedule();
-                                userID = "";
+                                userEmail = "";
                                 relativeLayout_frag_tita.removeAllViews();
 
                                 MainActivity.autoLogin = false;
@@ -350,10 +350,7 @@ public class CalendarFragment extends Fragment {
 
                             } else if( CallType == 1002){
 
-                                // 비밀 번호 변경 요청
 
-                                Intent startIntent = new Intent(getActivity(), ChangePasswordActivity.class);
-                                startActivity(startIntent);
 
                             }
 
@@ -389,10 +386,10 @@ public class CalendarFragment extends Fragment {
                             Log.d("@@@ CalendarFragment342", CallType + " : " + Activity.RESULT_OK);
                             if(CallType == 2001) {
 
-                                userID = MainActivity.cookieManager.getCookie(url).replace("cookieKey=", "");
+                                userEmail = MainActivity.cookieManager.getCookie(url).replace("cookieKey=", "");
 
-                                target = IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/ScheduleList.php?id=\"" + userID +"\"":
-                                        "http://" + DemoIP +"/user/select/class?id=" + userID;
+                                target = IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/ScheduleList.php?email=\"" + userEmail +"\"":
+                                        "http://" + DemoIP +"/user/select/class?id=" + userEmail;
 
                                 schedule.ResetSchedule();
                                 ScheduleBackgroundTask();
@@ -420,10 +417,10 @@ public class CalendarFragment extends Fragment {
         if(cookieManager.getCookie(url) != null && !cookieManager.getCookie(url).equals("")){
 
 
-            userID = MainActivity.cookieManager.getCookie(url).replace("cookieKey=", "");
+            userEmail = MainActivity.cookieManager.getCookie(url).replace("cookieKey=", "");
 
-            target = IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/ScheduleList.php?id=\"" + userID +"\"":
-                    "http://" + DemoIP + "/user/select/class?id=" + userID;
+            target = IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/ScheduleList.php?email=\"" + userEmail +"\"":
+                    "http://" + DemoIP + "/user/select/class?id=" + userEmail;
 
             Log.d("@@@ fragmentcalendar : 50", cookieManager.getCookie(url));
 
@@ -457,14 +454,14 @@ public class CalendarFragment extends Fragment {
                             Intent intent = result.getData();
 
                             int CallType = intent.getIntExtra("CallType", 2);
-                            String userID = intent.getStringExtra("userID");
+                            String userEmail = intent.getStringExtra("userEmail");
 
                             //로그인 요청, 쿠키 저장
 
                             if(CallType == 2) {
                                 ((BottomNavigationView) getActivity().findViewById(R.id.nav_view)).setSelectedItemId(R.id.navigation_satisfied);
                             }
-                            cookieManager.setCookie(url,"cookieKey="+userID);
+                            cookieManager.setCookie(url,"cookieKey="+userEmail);
                             frag_tita_login_box.setVisibility(View.GONE);
                             constraint_frag_tita_main.setVisibility(View.VISIBLE);
 
@@ -473,14 +470,14 @@ public class CalendarFragment extends Fragment {
                                 // 자동 로그인 데이터 저장
                                 SharedPreferences auto = getContext().getSharedPreferences("autoLogin", Activity.MODE_PRIVATE);
                                 SharedPreferences.Editor autoLoginEdit = auto.edit();
-                                autoLoginEdit.putString("userId", userID);
+                                autoLoginEdit.putString("userEmail", userEmail);
                                 autoLoginEdit.putBoolean("isAutoLogin", true);
                                 autoLoginEdit.commit();
 
                             }
 
-                            target = IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/ScheduleList.php?id=\"" + userID +"\"":
-                                    "http://" + DemoIP + "/user/select/class?id=" + userID;
+                            target = IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/ScheduleList.php?email=\"" + userEmail +"\"":
+                                    "http://" + DemoIP + "/user/select/class?id=" + userEmail;
 
                             schedule.ResetSchedule();
                             ScheduleBackgroundTask();

@@ -31,7 +31,7 @@ public class LoginActivity extends AppCompatActivity {
 
         TextView signUpButton = findViewById(R.id.button_moveTo_sign_up);
 
-        EditText editText_id = findViewById(R.id.editText_id);
+        EditText editText_id = findViewById(R.id.editText_email);
         EditText editText_password = findViewById(R.id.editText_password);
 
         TextView textView_login_id_warning = findViewById(R.id.textView_login_id_warning);
@@ -55,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
         button_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String userID = editText_id.getText().toString();
+                String userEmail = editText_id.getText().toString();
                 String userPassword = editText_password.getText().toString();
 
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
@@ -71,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(), "로그인 성공", Toast.LENGTH_LONG).show();
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 intent.putExtra("CallType", 1);
-                                intent.putExtra("userID",userID);
+                                intent.putExtra("userEmail",userEmail);
                                 setResult(Activity.RESULT_OK, intent);
                                 finish();
                                 overridePendingTransition(0, 0);
@@ -92,7 +92,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 };
 
-                LoginRequest loginRequest = new LoginRequest(userID, userPassword, responseListener);
+                LoginRequest loginRequest = new LoginRequest(userEmail, userPassword, responseListener);
                 RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
                 queue.add(loginRequest);
 

@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.maru.inunavi.MainActivity;
 import com.maru.inunavi.R;
+import com.maru.inunavi.user.ChangePasswordActivity;
 import com.maru.inunavi.user.LoginActivity;
 
 import java.util.ArrayList;
@@ -70,11 +71,15 @@ public class SettingActivity extends AppCompatActivity {
 
                 }else if(((TextView)v).getText().equals("비밀번호 수정")){
 
-                    Intent intent = new Intent(SettingActivity.this, MainActivity.class);
+                    /*Intent intent = new Intent(SettingActivity.this, MainActivity.class);
                     intent.putExtra("CallType", 1002);
                     setResult(Activity.RESULT_OK, intent);
                     finish();
-                    overridePendingTransition(0, 0);
+                    overridePendingTransition(0, 0);*/
+                    // 비밀 번호 변경 요청
+
+                    Intent startIntent = new Intent(SettingActivity.this, ChangePasswordActivity.class);
+                    startActivity(startIntent);
 
 
                 }else if(((TextView)v).getText().equals("회원 탈퇴")){
@@ -88,20 +93,17 @@ public class SettingActivity extends AppCompatActivity {
 
                 }else if(((TextView)v).getText().equals("앱 정보")){
 
-                    Intent intent = new Intent(SettingActivity.this, MainActivity.class);
+                    /*Intent intent = new Intent(SettingActivity.this, MainActivity.class);
                     intent.putExtra("CallType", 1004);
-                    setResult(Activity.RESULT_OK, intent);
-                    finish();
-                    overridePendingTransition(0, 0);
+                    setResult(Activity.RESULT_OK, intent);*/
+
 
 
                 }else if(((TextView)v).getText().equals("오류 신고")){
 
-                    Intent intent = new Intent(SettingActivity.this, MainActivity.class);
+                    /*Intent intent = new Intent(SettingActivity.this, MainActivity.class);
                     intent.putExtra("CallType", 1005);
-                    setResult(Activity.RESULT_OK, intent);
-                    finish();
-                    overridePendingTransition(0, 0);
+                    setResult(Activity.RESULT_OK, intent);*/
 
                 }else{
 

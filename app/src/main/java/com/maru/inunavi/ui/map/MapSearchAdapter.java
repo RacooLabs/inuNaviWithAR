@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class MapSearchAdapter extends RecyclerView.Adapter<MapSearchAdapter.ViewHolder> {
 
 
-    private String userID = "";
+    private String userEmail = "";
     private ArrayList<String> placeList;
 
     private OnItemDirectionClickListener dListener = null;

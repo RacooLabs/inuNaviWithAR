@@ -18,7 +18,7 @@ public class MapNaviSearchActivityAdapter extends RecyclerView.Adapter<MapNaviSe
 
     private List<Place> mData;
 
-    private String userID = "";
+    private String userEmail = "";
 
     private OnItemClickListener mListener = null ;
 

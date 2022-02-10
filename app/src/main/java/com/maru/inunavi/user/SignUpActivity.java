@@ -22,15 +22,12 @@ import java.util.regex.Pattern;
 
 public class SignUpActivity extends AppCompatActivity {
 
-    private String userID;
-    private String userPassword;
     private String userEmail;
+    private String userPassword;
 
-    private boolean idValidate = false; //사용자 아이디 가능 체크
+    private boolean emailValidate = false; //사용자 이메일 가능 체크
     private boolean passwordValidate = false; //사용자 비밀번호 체크
     private boolean passwordCheckValidate = false; //사용자 비밀번호 체크
-    private boolean emailValidate = false; //사용자 이메일 가능 체크
-    private boolean nameValidate = false; //사용자 이름 가능 체크
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,96 +46,98 @@ public class SignUpActivity extends AppCompatActivity {
         });
 
 
-       EditText editText_sign_up_id = findViewById(R.id.editText_sign_up_id);
-       EditText editText_sign_up_password = findViewById(R.id.editText_sign_up_password);
-       EditText editText_sign_up_password_second = findViewById(R.id.editText_sign_up_password_second);
-       EditText editText_sign_up_email = findViewById(R.id.editText_sign_up_email);
+        EditText editText_sign_up_email = findViewById(R.id.editText_sign_up_email);
+        EditText editText_sign_up_password = findViewById(R.id.editText_sign_up_password);
+        EditText editText_sign_up_password_second = findViewById(R.id.editText_sign_up_password_second);
 
 
-       ImageView sign_up_id_done_icon = findViewById(R.id.sign_up_id_done_icon);
-       ImageView sign_up_password_done_icon = findViewById(R.id.sign_up_password_done_icon);
-       ImageView sign_up_password_second_done_icon = findViewById(R.id.sign_up_password_second_done_icon);
-       ImageView sign_up_email_done_icon = findViewById(R.id.sign_up_email_done_icon);
-
-       TextView textView_id_warning = findViewById(R.id.textView_id_warning);
-       TextView textView_password_warning = findViewById(R.id.textView_password_warning);
-       TextView textView_password_second_warning = findViewById(R.id.textView_password_second_warning);
-       TextView textView_email_warning = findViewById(R.id.textView_email_warning);
-
-       TextView button_sign_up = findViewById(R.id.button_sign_up);
-
-       editText_sign_up_id.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-           @Override
-           public void onFocusChange(View view, boolean b) {
-
-               if(b) {
-
-                   setNormalEditText(editText_sign_up_id, sign_up_id_done_icon, textView_id_warning);
-                   idValidate = false;
-
-               }else {
-
-                   String userID = editText_sign_up_id.getText().toString().trim();
-
-                   if (userID.contains(" ")){
-                       setNotEditText(editText_sign_up_id, sign_up_id_done_icon, textView_id_warning, "아이디에 공백이 있습니다.");
-                       idValidate = false;
-
-                   } else if (userID.equals("")) {
-                       setNotEditText(editText_sign_up_id, sign_up_id_done_icon, textView_id_warning, "아이디를 입력하세요.");
-                       idValidate = false;
-
-                   } else if (userID.length() > 15 || userID.length() < 6) {
-                       setNotEditText(editText_sign_up_id, sign_up_id_done_icon, textView_id_warning, "아이디는 6자 이상 14자 이하입니다.");
-                       idValidate = false;
-
-                   } else {
-
-                       Response.Listener<String> responseListener = new Response.Listener<String>() {
-
-                           @Override
-                           public void onResponse(String response) {
-
-                               try {
-
-                                   Log.d("@@@", "signupactivity_107 : " + response);
-                                   JSONObject jsonResponse = new JSONObject(response);
-                                   boolean success = jsonResponse.getBoolean("success");
+        ImageView sign_up_email_done_icon = findViewById(R.id.sign_up_email_done_icon);
+        ImageView sign_up_password_done_icon = findViewById(R.id.sign_up_password_done_icon);
+        ImageView sign_up_password_second_done_icon = findViewById(R.id.sign_up_password_second_done_icon);
 
 
-                                   if (success) {
-                                       setDoneEditText(editText_sign_up_id, sign_up_id_done_icon, textView_id_warning);
-                                       idValidate = true;
-                                   }else{
-                                       setNotEditText(editText_sign_up_id, sign_up_id_done_icon,  textView_id_warning, "아이디가 이미 존재합니다.");
-                                       idValidate = false;
-                                   }
-
-                               } catch (Exception e) {
-
-                                   Log.d("@@@", "validate error");
-                                   e.printStackTrace();
-
-                                   setNotEditText(editText_sign_up_id, sign_up_id_done_icon,  textView_id_warning, "서버 연결 실패");
-                                   idValidate = false;
+        TextView textView_email_warning = findViewById(R.id.textView_email_warning);
+        TextView textView_password_warning = findViewById(R.id.textView_password_warning);
+        TextView textView_password_second_warning = findViewById(R.id.textView_password_second_warning);
 
 
-                               }
+        TextView button_sign_up = findViewById(R.id.button_sign_up);
+
+        editText_sign_up_email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+
+                if(b){
+                    setNormalEditText(editText_sign_up_email, sign_up_email_done_icon, textView_email_warning);
+                    emailValidate = false;
+                }else{
+
+                    String userEmail = editText_sign_up_email.getText().toString().trim();
+                    Pattern p = Pattern.compile("^[_a-zA-Z0-9-\\.]+@[\\.a-zA-Z0-9-]+\\.[a-zA-Z]+$");
+                    Matcher m = p.matcher(userEmail);
+                    Log.d("@@@", userEmail);
 
 
-                           }
+                    if (userEmail.equals("")) {
+                        setNotEditText(editText_sign_up_email, sign_up_email_done_icon,  textView_email_warning, "이메일을 입력하세요.");
+                        emailValidate = false;
 
-                       };
+                    }else if (!m.matches()) {
 
-                       ValidateRequest validateRequest = new ValidateRequest(userID, responseListener);
-                       RequestQueue queue = Volley.newRequestQueue(SignUpActivity.this);
-                       queue.add(validateRequest);
+                        setNotEditText(editText_sign_up_email, sign_up_email_done_icon,  textView_email_warning, "이메일 형식을 입력하세요.");
+                        emailValidate = false;
 
-                   }
-               }
+                    }else{
 
-           }
-       });
+                        Response.Listener<String> responseListener = new Response.Listener<String>() {
+
+                            @Override
+                            public void onResponse(String response) {
+
+                                try {
+
+                                    Log.d("@@@", "signupactivity_107 : " + response);
+                                    JSONObject jsonResponse = new JSONObject(response);
+                                    boolean success = jsonResponse.getBoolean("success");
+
+
+                                    if (success) {
+                                        setDoneEditText(editText_sign_up_email, sign_up_email_done_icon, textView_email_warning);
+                                        emailValidate = true;
+                                    }else{
+                                        setNotEditText(editText_sign_up_email, sign_up_email_done_icon,  textView_email_warning, "이메일이 이미 존재합니다.");
+                                        emailValidate = false;
+                                    }
+
+                                } catch (Exception e) {
+
+                                    Log.d("@@@", "validate error");
+                                    e.printStackTrace();
+
+                                    setNotEditText(editText_sign_up_email, sign_up_email_done_icon,  textView_email_warning, "서버 연결 실패");
+                                    emailValidate = false;
+
+
+                                }
+
+
+                            }
+
+                        };
+
+                        ValidateRequest validateRequest = new ValidateRequest(userEmail, responseListener);
+                        RequestQueue queue = Volley.newRequestQueue(SignUpActivity.this);
+                        queue.add(validateRequest);
+
+                    }
+
+                }
+
+
+            }
+        });
+
+
 
        editText_sign_up_password.setOnFocusChangeListener(new View.OnFocusChangeListener() {
            @Override
@@ -149,11 +148,11 @@ public class SignUpActivity extends AppCompatActivity {
                    passwordValidate = false;
                }else{
 
-                   String userId = editText_sign_up_id.getText().toString().trim();
+                   String userEmail = editText_sign_up_email.getText().toString().trim();
                    String userPassword = editText_sign_up_password.getText().toString().trim();
                    String userPasswordCheck = editText_sign_up_password_second.getText().toString().trim();
 
-                   if(userPassword.contains(userId)){
+                   if(userPassword.contains(userEmail)){
                        setNotEditText(editText_sign_up_password, sign_up_password_done_icon, textView_password_warning, "비밀번호에 아이디가 포함되어있습니다.");
                        passwordValidate = false;
 
@@ -229,61 +228,21 @@ public class SignUpActivity extends AppCompatActivity {
            }
        });
 
-       editText_sign_up_email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-           @Override
-           public void onFocusChange(View view, boolean b) {
-
-               if(b){
-                   setNormalEditText(editText_sign_up_email, sign_up_email_done_icon, textView_email_warning);
-                   emailValidate = false;
-               }else{
-
-                   String userEmail = editText_sign_up_email.getText().toString().trim();
-                   Pattern p = Pattern.compile("^[_a-zA-Z0-9-\\.]+@[\\.a-zA-Z0-9-]+\\.[a-zA-Z]+$");
-                   Matcher m = p.matcher(userEmail);
-                   Log.d("@@@", userEmail);
-
-
-                   if (userEmail.equals("")) {
-                       setNotEditText(editText_sign_up_email, sign_up_email_done_icon,  textView_email_warning, "이메일을 입력하세요.");
-                       emailValidate = false;
-
-                   }else if (!m.matches()) {
-
-                       setNotEditText(editText_sign_up_email, sign_up_email_done_icon,  textView_email_warning, "이메일 형식을 입력하세요.");
-                       emailValidate = false;
-
-                   }else{
-
-                       setDoneEditText(editText_sign_up_email, sign_up_email_done_icon, textView_email_warning);
-                       emailValidate = true;
-
-                   }
-
-               }
-
-
-           }
-       });
-
 
 
        button_sign_up.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
-               String userID = editText_sign_up_id.getText().toString().trim();
-               String userPassword = editText_sign_up_password.getText().toString();
                String userEmail = editText_sign_up_email.getText().toString().trim();
+               String userPassword = editText_sign_up_password.getText().toString();
 
-
-
-               editText_sign_up_id.clearFocus();
+               editText_sign_up_email.clearFocus();
                editText_sign_up_password.clearFocus();
                editText_sign_up_password_second.clearFocus();
                editText_sign_up_email.clearFocus();
 
 
-               if(idValidate && passwordValidate && passwordCheckValidate && emailValidate && nameValidate){
+               if(emailValidate && passwordValidate && passwordCheckValidate){
 
                    Response.Listener<String> responseListener = new Response.Listener<String>() {
 
@@ -318,7 +277,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                    };
 
-                   SignUpRequest signupRequest = new SignUpRequest(userID,userPassword, userEmail,responseListener);
+                   SignUpRequest signupRequest = new SignUpRequest(userEmail,userPassword,responseListener);
                    RequestQueue queue = Volley.newRequestQueue(SignUpActivity.this);
                    queue.add(signupRequest);
 
