@@ -32,7 +32,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
     private String url = sessionURL;
 
-    private String userEmail = MainActivity.cookieManager.getCookie(url).replace("cookieKey=", "");
+    private String userEmail;
 
 
     @Override
@@ -50,6 +50,10 @@ public class ChangePasswordActivity extends AppCompatActivity {
                 overridePendingTransition(0, 0);
             }
         });
+
+        if(MainActivity.cookieManager != null) {
+            userEmail = MainActivity.cookieManager.getCookie(url).replace("cookieKey=", "");
+        }
 
 
        EditText editText_change_password_origin = findViewById(R.id.editText_change_password_origin);

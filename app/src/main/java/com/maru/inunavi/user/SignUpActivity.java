@@ -152,19 +152,15 @@ public class SignUpActivity extends AppCompatActivity {
                    String userPassword = editText_sign_up_password.getText().toString().trim();
                    String userPasswordCheck = editText_sign_up_password_second.getText().toString().trim();
 
-                   if(userPassword.contains(userEmail)){
-                       setNotEditText(editText_sign_up_password, sign_up_password_done_icon, textView_password_warning, "비밀번호에 아이디가 포함되어있습니다.");
+                   if (userPassword.contains(" ")) {
+                       setNotEditText(editText_sign_up_password, sign_up_password_done_icon, textView_password_warning, "비밀번호에 공백이 있습니다.");
                        passwordValidate = false;
 
-                   }else if (userPassword.contains(" ")){
-                       setNotEditText(editText_sign_up_password, sign_up_password_done_icon,  textView_password_warning, "비밀번호에 공백이 있습니다.");
+                   } else if (userPassword.equals("")) {
+                       setNotEditText(editText_sign_up_password, sign_up_password_done_icon, textView_password_warning, "비밀번호를 입력하세요.");
                        passwordValidate = false;
 
-                   }else if (userPassword.equals("")) {
-                       setNotEditText(editText_sign_up_password, sign_up_password_done_icon,  textView_password_warning, "비밀번호를 입력하세요.");
-                       passwordValidate = false;
-
-                   }else if (userPassword.length() > 15 || userPassword.length() < 6){
+                   } else if (userPassword.length() > 15 || userPassword.length() < 6) {
                        setNotEditText(editText_sign_up_password, sign_up_password_done_icon, textView_password_warning, "비밀번호는 6자 이상 20자 이하입니다.");
                        passwordValidate = false;
 
@@ -233,6 +229,7 @@ public class SignUpActivity extends AppCompatActivity {
        button_sign_up.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
+
                String userEmail = editText_sign_up_email.getText().toString().trim();
                String userPassword = editText_sign_up_password.getText().toString();
 
@@ -242,33 +239,97 @@ public class SignUpActivity extends AppCompatActivity {
                editText_sign_up_email.clearFocus();
 
 
-               if(emailValidate && passwordValidate && passwordCheckValidate){
+               Pattern p = Pattern.compile("^[_a-zA-Z0-9-\\.]+@[\\.a-zA-Z0-9-]+\\.[a-zA-Z]+$");
+               Matcher m = p.matcher(userEmail);
+               Log.d("@@@", userEmail);
 
-                   Response.Listener<String> responseListener = new Response.Listener<String>() {
+
+               if (userEmail.equals("")) {
+                   setNotEditText(editText_sign_up_email, sign_up_email_done_icon,  textView_email_warning, "이메일을 입력하세요.");
+                   emailValidate = false;
+
+               }else if (!m.matches()) {
+
+                   setNotEditText(editText_sign_up_email, sign_up_email_done_icon,  textView_email_warning, "이메일 형식을 입력하세요.");
+                   emailValidate = false;
+
+               }else {
+
+                   Response.Listener<String> responseEmailListener = new Response.Listener<String>() {
 
                        @Override
                        public void onResponse(String response) {
 
                            try {
 
-                               Log.d("@@@", "signupactivity_329 : " + response);
-
+                               Log.d("@@@", "signupactivity_107 : " + response);
                                JSONObject jsonResponse = new JSONObject(response);
-
                                boolean success = jsonResponse.getBoolean("success");
 
+
                                if (success) {
-                                   Toast.makeText(getApplicationContext(), "회원 등록을 완료하였습니다.", Toast.LENGTH_LONG).show();
-                                   finish();
-                                   overridePendingTransition(0, 0);
+                                   setDoneEditText(editText_sign_up_email, sign_up_email_done_icon, textView_email_warning);
+                                   emailValidate = true;
+                               }else{
+                                   setNotEditText(editText_sign_up_email, sign_up_email_done_icon,  textView_email_warning, "이메일이 이미 존재합니다.");
+                                   emailValidate = false;
+                               }
+
+                               if(emailValidate && passwordValidate && passwordCheckValidate){
+
+                                   Response.Listener<String> responseListener = new Response.Listener<String>() {
+
+                                       @Override
+                                       public void onResponse(String response) {
+
+                                           try {
+
+                                               Log.d("@@@", "signupactivity_329 : " + response);
+
+                                               JSONObject jsonResponse = new JSONObject(response);
+
+                                               boolean success = jsonResponse.getBoolean("success");
+
+                                               if (success) {
+                                                   Toast.makeText(getApplicationContext(), "회원 등록을 완료하였습니다.", Toast.LENGTH_LONG).show();
+
+
+
+                                                   finish();
+                                                   overridePendingTransition(0, 0);
+
+                                               }else{
+                                                   Toast.makeText(getApplicationContext(), "회원 등록에 실패하였습니다.", Toast.LENGTH_LONG).show();
+                                               }
+
+                                           } catch (Exception e) {
+
+                                               e.printStackTrace();
+
+                                           }
+
+
+                                       }
+
+                                   };
+
+                                   SignUpRequest signupRequest = new SignUpRequest(userEmail,userPassword,responseListener);
+                                   RequestQueue queue = Volley.newRequestQueue(SignUpActivity.this);
+                                   queue.add(signupRequest);
+
 
                                }else{
-                                   Toast.makeText(getApplicationContext(), "회원 등록에 실패하였습니다.", Toast.LENGTH_LONG).show();
+                                   Toast.makeText(getApplicationContext(), "수정할 항목이 있습니다.", Toast.LENGTH_LONG).show();
                                }
 
                            } catch (Exception e) {
 
+                               Log.d("@@@", "validate error");
                                e.printStackTrace();
+
+                               setNotEditText(editText_sign_up_email, sign_up_email_done_icon,  textView_email_warning, "서버 연결 실패");
+                               emailValidate = false;
+
 
                            }
 
@@ -277,15 +338,12 @@ public class SignUpActivity extends AppCompatActivity {
 
                    };
 
-                   SignUpRequest signupRequest = new SignUpRequest(userEmail,userPassword,responseListener);
-                   RequestQueue queue = Volley.newRequestQueue(SignUpActivity.this);
-                   queue.add(signupRequest);
+                   ValidateRequest validateEmailRequest = new ValidateRequest(userEmail, responseEmailListener);
+                   RequestQueue queueEmail = Volley.newRequestQueue(SignUpActivity.this);
+                   queueEmail.add(validateEmailRequest);
 
 
-               }else{
-                   Toast.makeText(getApplicationContext(), "수정할 항목이 있습니다.", Toast.LENGTH_LONG).show();
                }
-
            }
        });
 

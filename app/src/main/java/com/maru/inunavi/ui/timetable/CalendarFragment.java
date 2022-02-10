@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -349,6 +350,10 @@ public class CalendarFragment extends Fragment {
                                 autoLoginEdit.commit();
 
                             } else if( CallType == 1002){
+
+
+
+                            } else if (CallType == 1003){
 
 
 
