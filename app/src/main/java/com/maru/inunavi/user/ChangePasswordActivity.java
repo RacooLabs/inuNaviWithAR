@@ -251,7 +251,13 @@ public class ChangePasswordActivity extends AppCompatActivity {
                 editText_change_password_second.clearFocus();
 
 
-                if(originPasswordValidate && newPasswordValidate && newPasswordCheckValidate){
+                String originPassword= editText_change_password_origin.getText().toString().trim();
+
+                if (originPassword.equals("")) {
+                    setNotEditText(editText_change_password_origin, change_password_origin_done_icon, textView_origin_warning, "기존 비밀번호를 입력하세요.");
+                    originPasswordValidate = false;
+
+                } else {
 
                     Response.Listener<String> responseListener = new Response.Listener<String>() {
 
@@ -260,47 +266,104 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
                             try {
 
-                                Log.d("@@@", "signupactivity_329 : " + response);
-
+                                Log.d("@@@", "signupactivity_107 : " + response);
                                 JSONObject jsonResponse = new JSONObject(response);
-
-
-                                Log.d("@@@ changePassword ", response);
-
                                 boolean success = jsonResponse.getBoolean("success");
 
                                 if (success) {
-                                    Toast.makeText(getApplicationContext(), "비밀번호 변경을 완료하였습니다.", Toast.LENGTH_LONG).show();
-                                    finish();
-                                    overridePendingTransition(0, 0);
+                                    setDoneEditText(editText_change_password_origin, change_password_origin_done_icon, textView_origin_warning);
+                                    originPasswordValidate = true;
+
+                                    String userPassword = editText_change_password.getText().toString().trim();
+
+                                    if(!userPassword.isEmpty() && !userPassword.equals("")){
+
+                                        if(!originPassword.equals(userPassword)){
+                                            setDoneEditText(editText_change_password, change_password_done_icon,  textView_password_warning);
+                                            newPasswordValidate = true;
+                                        }else{
+                                            setNotEditText(editText_change_password, change_password_done_icon,  textView_password_warning, "기존과 다른 비밀번호를 입력하세요.");
+                                            newPasswordValidate = false;
+                                        }
+
+                                    }
+
+                                    if(originPasswordValidate && newPasswordValidate && newPasswordCheckValidate){
+
+                                        Response.Listener<String> responseListener = new Response.Listener<String>() {
+
+                                            @Override
+                                            public void onResponse(String response) {
+
+                                                try {
+
+                                                    Log.d("@@@", "signupactivity_329 : " + response);
+
+                                                    JSONObject jsonResponse = new JSONObject(response);
+
+
+                                                    Log.d("@@@ changePassword ", response);
+
+                                                    boolean success = jsonResponse.getBoolean("success");
+
+                                                    if (success) {
+                                                        Toast.makeText(getApplicationContext(), "비밀번호 변경을 완료하였습니다.", Toast.LENGTH_LONG).show();
+                                                        finish();
+                                                        overridePendingTransition(0, 0);
+
+                                                    }else{
+                                                        Toast.makeText(getApplicationContext(), "비밀번호 변경에 실패하였습니다.", Toast.LENGTH_LONG).show();
+                                                    }
+
+                                                } catch (Exception e) {
+
+                                                    e.printStackTrace();
+
+                                                }
+
+
+                                            }
+
+                                        };
+
+                                        ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest(userEmail,userNewPassword,responseListener);
+                                        RequestQueue queue = Volley.newRequestQueue(ChangePasswordActivity.this);
+                                        queue.add(changePasswordRequest);
+
+
+                                    }else{
+                                        Toast.makeText(getApplicationContext(), "수정할 항목이 있습니다.", Toast.LENGTH_LONG).show();
+                                    }
+
+
 
                                 }else{
-                                    Toast.makeText(getApplicationContext(), "비밀번호 변경에 실패하였습니다.", Toast.LENGTH_LONG).show();
+                                    setNotEditText(editText_change_password_origin, change_password_origin_done_icon,  textView_origin_warning, "기존 비밀번호가 틀립니다.");
+                                    originPasswordValidate = false;
                                 }
 
                             } catch (Exception e) {
 
+                                Log.d("@@@", "validate error");
                                 e.printStackTrace();
 
-                            }
+                                setNotEditText(editText_change_password_origin, change_password_origin_done_icon,  textView_origin_warning, "서버 연결 실패");
+                                originPasswordValidate = false;
 
+                            }
 
                         }
 
                     };
 
-                    ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest(userEmail,userNewPassword,responseListener);
+                    LoginRequest checkOriginPasswordRequest = new LoginRequest(userEmail,originPassword, responseListener);
                     RequestQueue queue = Volley.newRequestQueue(ChangePasswordActivity.this);
-                    queue.add(changePasswordRequest);
+                    queue.add(checkOriginPasswordRequest);
 
-
-                }else{
-                    Toast.makeText(getApplicationContext(), "수정할 항목이 있습니다.", Toast.LENGTH_LONG).show();
                 }
 
             }
         });
-
 
     }
 

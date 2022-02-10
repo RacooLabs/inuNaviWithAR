@@ -189,6 +189,15 @@
 
         </activity>
 
+        <activity
+            android:name="com.maru.inunavi.AppInfo"
+            android:exported="true"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait">
+
+        </activity>
+
+
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

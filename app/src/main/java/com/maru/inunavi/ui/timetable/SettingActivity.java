@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.maru.inunavi.AppInfo;
 import com.maru.inunavi.MainActivity;
 import com.maru.inunavi.R;
 import com.maru.inunavi.ui.timetable.search.Schedule;
@@ -105,12 +106,6 @@ public class SettingActivity extends AppCompatActivity {
 
                 }else if(((TextView)v).getText().equals("비밀번호 수정")){
 
-                    /*Intent intent = new Intent(SettingActivity.this, MainActivity.class);
-                    intent.putExtra("CallType", 1002);
-                    setResult(Activity.RESULT_OK, intent);
-                    finish();
-                    overridePendingTransition(0, 0);*/
-
                     // 비밀 번호 변경 요청
 
                     Intent startIntent = new Intent(SettingActivity.this, ChangePasswordActivity.class);
@@ -125,17 +120,18 @@ public class SettingActivity extends AppCompatActivity {
 
                 }else if(((TextView)v).getText().equals("앱 정보")){
 
-                    /*Intent intent = new Intent(SettingActivity.this, MainActivity.class);
-                    intent.putExtra("CallType", 1004);
-                    setResult(Activity.RESULT_OK, intent);*/
-
-
+                    Intent intent = new Intent(SettingActivity.this, AppInfo.class);
+                    startActivity(intent);
 
                 }else if(((TextView)v).getText().equals("오류 신고")){
 
-                    /*Intent intent = new Intent(SettingActivity.this, MainActivity.class);
-                    intent.putExtra("CallType", 1005);
-                    setResult(Activity.RESULT_OK, intent);*/
+                    Intent email = new Intent(Intent.ACTION_SEND);
+                    email.setType("plain/text");
+                    String[] address = {"racoo340@gmail.com"};
+                    email.putExtra(Intent.EXTRA_EMAIL, address);
+                    email.putExtra(Intent.EXTRA_SUBJECT, " inunani 오류 신고");
+                    email.putExtra(Intent.EXTRA_TEXT, "오류 내용을 적어주세요\n------------------------------------\n");
+                    startActivity(email);
 
                 }else{
 
