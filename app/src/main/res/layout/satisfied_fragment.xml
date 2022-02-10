@@ -20,7 +20,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <Button
             android:id="@+id/button_frag_satisfied_login"
@@ -90,7 +90,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context="com.maru.inunavi.ui.satisfied.SatisfiedFragment"
-        android:visibility="gone">
+        android:visibility="visible">
 
 
         <LinearLayout
@@ -145,7 +145,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="60dp"
                 >
 
                 <ImageView
@@ -162,6 +162,30 @@
                     android:layout_marginBottom="6dp"
                     android:layout_marginLeft="12dp"
                     android:layout_marginRight="12dp"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/small_text_size"
+                    android:textColor="#0EA43F"
+                    android:text="적음"
+                    app:layout_constraintTop_toBottomOf="@id/progressBar_amountOfMovement"
+                    app:layout_constraintLeft_toLeftOf="@id/progressBar_amountOfMovement"
+                    android:layout_marginTop="4dp"
+                    android:textStyle="bold"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/small_text_size"
+                    android:textColor="#D21330"
+                    android:text="많음"
+                    app:layout_constraintTop_toBottomOf="@id/progressBar_amountOfMovement"
+                    app:layout_constraintRight_toRightOf="@id/progressBar_amountOfMovement"
+                    android:layout_marginTop="4dp"
+                    android:textStyle="bold"
                     />
 
                 <TextView
@@ -206,7 +230,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="60dp"
                 >
 
                 <ImageView
@@ -224,6 +248,30 @@
                     android:layout_marginLeft="12dp"
                     android:layout_marginRight="12dp"
 
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/small_text_size"
+                    android:textColor="#0EA43F"
+                    android:text="여유로움"
+                    app:layout_constraintTop_toBottomOf="@id/progressBar_tightness"
+                    app:layout_constraintLeft_toLeftOf="@id/progressBar_tightness"
+                    android:layout_marginTop="4dp"
+                    android:textStyle="bold"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/small_text_size"
+                    android:textColor="#D21330"
+                    android:text="촉박함"
+                    app:layout_constraintTop_toBottomOf="@id/progressBar_tightness"
+                    app:layout_constraintRight_toRightOf="@id/progressBar_tightness"
+                    android:layout_marginTop="4dp"
+                    android:textStyle="bold"
                     />
 
                 <TextView

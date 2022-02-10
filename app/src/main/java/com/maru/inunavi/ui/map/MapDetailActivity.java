@@ -113,11 +113,11 @@ public class MapDetailActivity extends AppCompatActivity {
         map_frag_detail_activity_callNum.setText(PhoneNumberUtils.formatNumber(placeCallNum, Locale.getDefault().getCountry()));
 
 
-        recyclerView = findViewById(R.id.map_frag_detail_recyclerView);
+     /*   recyclerView = findViewById(R.id.map_frag_detail_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)) ;
+*/
 
-
-        ArrayList<Place> nearPlaceList = new ArrayList<Place>(Arrays.asList(
+       /* ArrayList<Place> nearPlaceList = new ArrayList<Place>(Arrays.asList(
             new Place("INFORMATION","정보기술대학", "부속건물", 320, new LatLng(37.37428569643498, 126.63386849546436), "9:00 ~ 18:00", "0328321234"),
             new Place( "ENGINEERING","공과·도시과학대학", "부속건물", 400 , new LatLng(37.37351897032315, 126.63275998245754), "9:00 ~ 18:00", "0328321234"),
             new Place("LABS", "공동실험 실습관", "부속건물", 500 , new LatLng(37.37269933308723, 126.63335830802647), "9:00 ~ 18:00", "0328321234"),
@@ -128,7 +128,7 @@ public class MapDetailActivity extends AppCompatActivity {
         ));
 
         adapter = new MapDetailActivityAdapter(nearPlaceList);
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(adapter);*/
 
     }
 

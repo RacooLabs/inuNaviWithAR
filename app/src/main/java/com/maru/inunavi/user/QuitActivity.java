@@ -39,9 +39,9 @@ public class QuitActivity extends AppCompatActivity {
 
         setContentView(R.layout.user_quit);
 
-        TextView change_password_back_button = findViewById(R.id.textView_quit_back);
+        TextView textView_quit_back = findViewById(R.id.textView_quit_back);
 
-        change_password_back_button.setOnClickListener(new View.OnClickListener() {
+        textView_quit_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
