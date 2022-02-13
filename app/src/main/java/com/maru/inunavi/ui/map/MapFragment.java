@@ -196,6 +196,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private ConstraintLayout map_frag_detail_box;
 
     // 디테일 박스 구성 레이아웃
+    private ImageView map_frag_detail_image;
     private TextView map_frag_detail_title;
     private TextView map_frag_detail_sort;
     private TextView map_frag_detail_distance;
@@ -288,6 +289,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         map_frag_detail_box = layout.findViewById(R.id.map_frag_detail_box);
 
         // 디테일 박스 구성 레이아웃
+        map_frag_detail_image = layout.findViewById(R.id.map_frag_detail_image);
         map_frag_detail_title = layout.findViewById(R.id.map_frag_detail_title);
         map_frag_detail_sort = layout.findViewById(R.id.map_frag_detail_sort);
         map_frag_detail_distance = layout.findViewById(R.id.map_frag_detail_distance);
@@ -530,6 +532,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                 Intent intent = new Intent(getActivity(), MapDetailActivity.class);
 
+                intent.putExtra("placeCode", detailFocusedPlace.getPlaceCode());
                 intent.putExtra("placeTitle", detailFocusedPlace.getTitle());
                 intent.putExtra("placeSort", detailFocusedPlace.getSort());
                 intent.putExtra("placeTime", detailFocusedPlace.getTime());
@@ -1101,7 +1104,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     setMapFragmentMode(DETAIL_MODE, autoCompleteTextView_search_wrapper, mapSlidingLayout, map_frag_detail_box_wrapper,
                             map_frag_navi_searchWrapper, navi_button_wrapper, AR_button_wrapper);
 
+                    FindImage findImage = new FindImage();
 
+                    map_frag_detail_image.setImageResource(findImage.getPlaceImageId(placeList.get((Integer.parseInt(marker.getTag().toString()))).getPlaceCode()));
                     map_frag_detail_title.setText(placeList.get((Integer.parseInt(marker.getTag().toString()))).getTitle());
                     map_frag_detail_sort.setText(placeList.get((Integer.parseInt(marker.getTag().toString()))).getSort());
                     map_frag_detail_distance.setText((int) (placeList.get((Integer.parseInt(marker.getTag().toString()))).getDistance()) + "m");
@@ -1658,6 +1663,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         setMapFragmentMode(SEARCH_MODE, autoCompleteTextView_search_wrapper, mapSlidingLayout, map_frag_detail_box_wrapper,
                 map_frag_navi_searchWrapper, navi_button_wrapper, AR_button_wrapper);
 
+
+        setSearchResultSlidingPanel();
+
         // 서버에 검색 정보 받아오기
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
@@ -1676,7 +1684,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             });
         }
 
-        setSearchResultSlidingPanel();
+
 
 
     }
@@ -1688,8 +1696,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         placeList = new ArrayList<>();
 
-
-
         adapter = new MapSearchAdapter(placeList);
         recyclerView.setAdapter(adapter);
 
@@ -1700,6 +1706,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                 setMapFragmentMode(DETAIL_MODE, autoCompleteTextView_search_wrapper, mapSlidingLayout, map_frag_detail_box_wrapper,
                         map_frag_navi_searchWrapper, navi_button_wrapper, AR_button_wrapper);
+
+                FindImage findImage = new FindImage();
+
+                map_frag_detail_image.setImageResource(findImage.getPlaceImageId(placeList.get(position).getPlaceCode()));
                 map_frag_detail_title.setText(placeList.get(position).getTitle());
                 map_frag_detail_sort.setText(placeList.get(position).getSort());
                 map_frag_detail_distance.setText((int) (placeList.get(position).getDistance()) + "m");
