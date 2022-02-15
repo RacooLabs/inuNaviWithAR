@@ -1219,6 +1219,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 map_frag_detail_title.setText("직접 위치 지정");
                 map_frag_detail_sort.setText("");
                 map_frag_detail_distance.setText("");
+                map_frag_detail_image.setImageResource(0);
 
                 Place directPickPlace = new Place("LOCATION", "직접 선택한 위치", "", 0, latLng, "", "");
 
@@ -1952,7 +1953,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                 String route = "";
                 int time = 0;
-                int distance = 0;
+                double dist = 0;
                 int steps = 0;
 
                 while (count < jsonArray.length()) {
@@ -1960,7 +1961,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                     route = object.getString("route");
                     time = object.getInt("time");
-                    distance = object.getInt("distance");
+                    dist = object.getDouble("dist");
                     steps = object.getInt("steps");
 
                     count++;
@@ -1974,7 +1975,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
 
                     map_frag_navi_detail_time.setText(time+"");
-                    map_frag_navi_detail_distance.setText(distance+"m");
+                    map_frag_navi_detail_distance.setText((int)dist+"m");
                     map_frag_navi_detail_stepCount.setText(steps+"걸음");
 
                     route.trim();

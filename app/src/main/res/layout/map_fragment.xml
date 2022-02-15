@@ -367,7 +367,7 @@
                         android:layout_marginLeft="24dp"
                         android:layout_marginBottom="6dp"
                         android:gravity="center_vertical"
-                        android:maxWidth="140dp"
+                        android:maxWidth="160dp"
                         android:text="자연과학대학"
                         android:textColor="@color/main_color"
                         android:textStyle="bold"

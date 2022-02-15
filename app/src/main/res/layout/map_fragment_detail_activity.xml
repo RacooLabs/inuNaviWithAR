@@ -32,7 +32,7 @@
     <ImageView
         android:id="@+id/map_frag_detail_activity_img"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="240dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/map_frag_detail_activity_topBar"
@@ -185,6 +185,10 @@
             app:layout_constraintBottom_toBottomOf="@id/map_frag_detail_activity_clock_icon"
             app:layout_constraintRight_toRightOf="parent"
             android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:lineSpacingExtra ="4dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="6dp"
             android:paddingRight="12dp"/>
 
 
