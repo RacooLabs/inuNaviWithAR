@@ -4,8 +4,10 @@ import static com.maru.inunavi.MainActivity.sessionURL;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -176,6 +178,7 @@ public class Schedule {
                         textView.setX(positionX);
                         textView.setY(positionY);
                         textView.setLayoutParams(lp);
+                        textView.setPadding(4,4,4,0);
                         container.addView(textView);
 
                         String lectureName = lectureSchedule[i].getLecturename();

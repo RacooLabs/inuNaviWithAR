@@ -340,7 +340,7 @@
             app:layout_constraintTop_toBottomOf="@id/linearLayout_distance_calculate"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="20dp"
 
 
             android:background="@drawable/layout_more_option_button_roundedbox"

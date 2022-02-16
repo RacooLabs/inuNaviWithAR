@@ -252,9 +252,6 @@ public class SatisfiedFragment extends Fragment {
 
             userEmail = MainActivity.cookieManager.getCookie(url).replace("cookieKey=", "");
 
-            target = IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/ScheduleList.php?email=\"" + userEmail +"\"":
-                    "http://" + DemoIP + "/user/select/class?id=" + userEmail;
-
 
             frag_satisfied_login_box.setVisibility(View.GONE);
             constraint_frag_satisfied_main.setVisibility(View.VISIBLE);

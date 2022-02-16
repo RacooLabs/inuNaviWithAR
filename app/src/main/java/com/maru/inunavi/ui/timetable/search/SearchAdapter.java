@@ -2,6 +2,7 @@ package com.maru.inunavi.ui.timetable.search;
 
 import static com.maru.inunavi.IpAddress.DemoIP;
 import static com.maru.inunavi.IpAddress.DemoIP_ClientTest;
+import static com.maru.inunavi.MainActivity.sessionURL;
 
 import android.content.Context;
 import android.util.Log;
@@ -39,6 +40,8 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
@@ -50,20 +53,19 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     SearchActivity parent;
 
     private String userEmail = "";
-    private ArrayList<String> lectureIDList;
     private Schedule schedule = new Schedule();
 
     private OnItemClickListener mListener = null ;
     private ArrayList<Lecture> mData = null;
 
+    private String sUrl = sessionURL;
 
 
     String target;
 
     {
-        userEmail = (MainActivity.cookieManager.getCookie(MainActivity.sessionURL)).replace("cookieKey=", "");
-        target = IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/ScheduleList.php?email=\"" + userEmail +"\"":
-                "http://" + DemoIP + "/user/select/class?id=" + userEmail;
+        target = IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/ScheduleList.php":
+                "http://" + DemoIP +"/user/select/class";
     }
 
 
@@ -109,8 +111,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         mData = list;
         this.parent = parent;
         schedule = new Schedule();
-        lectureIDList = new ArrayList<String>();
-        SearchBackgroundTask();
+        GetUserTableInfoBackgroundTask();
 
     }
 
@@ -141,7 +142,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
                 boolean validate = false;
                 boolean alreadyIn = false;
-
 
                 validate = schedule.validate(mData.get(holder.getAdapterPosition()).getClasstime());
                 alreadyIn = schedule.alreadyIn(mData.get(holder.getAdapterPosition()).getNumber());
@@ -181,7 +181,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                                             .create();
                                     dialog.show();
 
-                                    lectureIDList.add(mData.get(holder.getAdapterPosition()).getNumber());
 
                                     schedule.addSchedule(mData.get(holder.getAdapterPosition()));
 
@@ -202,7 +201,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
                     };
 
-                    userEmail = (MainActivity.cookieManager.getCookie(MainActivity.sessionURL)).replace("cookieKey=", "");
+                    userEmail = (MainActivity.cookieManager.getCookie(sUrl)).replace("cookieKey=", "");
 
                     AddRequest addRequest = new AddRequest(userEmail, mData.get(holder.getAdapterPosition()).getNumber(),responseListener);
                     RequestQueue queue = Volley.newRequestQueue(parent);
@@ -220,21 +219,42 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
     @Override
     public int getItemCount() {
-        return mData.size();
+        return mData != null ? mData.size() : 0;
     }
 
 
     Disposable backgroundtask;
 
-
-    void SearchBackgroundTask() {
+    // 기존 시간표 불러오기.
+    void GetUserTableInfoBackgroundTask() {
 
         backgroundtask = Observable.fromCallable(() -> {
             // doInBackground
 
             try {
                 URL url = new URL(target);
-                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                //HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+
+
+                Map<String,Object> params = new LinkedHashMap<>();
+                params.put("email", MainActivity.cookieManager.getCookie(sUrl).replace("cookieKey=", ""));
+
+                StringBuilder postData = new StringBuilder();
+                for(Map.Entry<String,Object> param : params.entrySet()) {
+                    if(postData.length() != 0) postData.append('&');
+                    postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
+                    postData.append('=');
+                    postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
+                }
+                byte[] postDataBytes = postData.toString().getBytes("UTF-8");
+
+                HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                httpURLConnection.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.getOutputStream().write(postDataBytes);
+
                 InputStream inputStream = httpURLConnection.getInputStream();
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
                 String temp;

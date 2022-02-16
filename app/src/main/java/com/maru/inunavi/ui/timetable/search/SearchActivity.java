@@ -70,7 +70,6 @@ public class SearchActivity extends AppCompatActivity {
 
 
 
-
     private ArrayList<Lecture> lectureList = new ArrayList<>();
 
     @Override
@@ -108,7 +107,6 @@ public class SearchActivity extends AppCompatActivity {
                 overridePendingTransition(0, 0);
             }
         });
-
 
 
 
@@ -320,7 +318,6 @@ public class SearchActivity extends AppCompatActivity {
 
             } catch (Exception e) {
                 e.printStackTrace();
-                Toast.makeText(getApplicationContext(), "문제가 있음" + e, Toast.LENGTH_SHORT).show();
             }
 
             backgroundtask.dispose();

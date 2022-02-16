@@ -340,8 +340,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         searchKeywordList.add("편의점");
         searchKeywordList.add("편의시설");
         searchKeywordList.add("부속건물");
-        searchKeywordList.add("명소");
-        searchKeywordList.add("주차장 입구");
+        searchKeywordList.add("야외시설");
+        searchKeywordList.add("흡연실");
         searchKeywordList.add("footer");
 
         searchKeywordIconList.add( getResources().getDrawable(R.drawable.ic_cancel_black_24dp, null));
@@ -350,8 +350,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         searchKeywordIconList.add( getResources().getDrawable(R.drawable.ic_local_convenience_store_black_24dp, null));
         searchKeywordIconList.add( getResources().getDrawable(R.drawable.ic_print_black_24dp, null));
         searchKeywordIconList.add( getResources().getDrawable(R.drawable.ic_apartment_black_24dp, null));
-        searchKeywordIconList.add( getResources().getDrawable(R.drawable.ic_place_black_24dp, null));
-        searchKeywordIconList.add( getResources().getDrawable(R.drawable.ic_local_parking_black_24dp, null));
+        searchKeywordIconList.add( getResources().getDrawable(R.drawable.ic_sports_tennis_black_24dp, null));
+        searchKeywordIconList.add( getResources().getDrawable(R.drawable.ic_smoking_rooms_black_24dp, null));
         searchKeywordIconList.add( getResources().getDrawable(R.drawable.ic_cancel_black_24dp, null));
 
 
@@ -414,7 +414,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
 
-                    startSearch(editText_search.getText().toString());
+                    if(!editText_search.getText().toString().isEmpty() && !editText_search.getText().toString().equals("")){
+
+                        startSearch(editText_search.getText().toString());
+
+                    }
 
                 }
 

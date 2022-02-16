@@ -57,6 +57,8 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
@@ -66,14 +68,13 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class CalendarFragment extends Fragment {
 
-    private String url = sessionURL;
+    private String sUrl = sessionURL;
 
     private TextView schedule_textView[];
 
     private String userEmail;
     private Schedule schedule;
 
-    public static String target;
     public View root;
     public RelativeLayout relativeLayout_frag_tita;
 
@@ -391,10 +392,6 @@ public class CalendarFragment extends Fragment {
                             Log.d("@@@ CalendarFragment342", CallType + " : " + Activity.RESULT_OK);
                             if(CallType == 2001) {
 
-                                userEmail = MainActivity.cookieManager.getCookie(url).replace("cookieKey=", "");
-
-                                target = IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/ScheduleList.php?email=\"" + userEmail +"\"":
-                                        "http://" + DemoIP +"/user/select/class?id=" + userEmail;
 
                                 schedule.ResetSchedule();
                                 ScheduleBackgroundTask();
@@ -419,15 +416,8 @@ public class CalendarFragment extends Fragment {
             }
         });
 
-        if(cookieManager.getCookie(url) != null && !cookieManager.getCookie(url).equals("")){
+        if(cookieManager.getCookie(sUrl) != null && !cookieManager.getCookie(sUrl).equals("")){
 
-
-            userEmail = MainActivity.cookieManager.getCookie(url).replace("cookieKey=", "");
-
-            target = IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/ScheduleList.php?email=\"" + userEmail +"\"":
-                    "http://" + DemoIP + "/user/select/class?id=" + userEmail;
-
-            Log.d("@@@ fragmentcalendar : 50", cookieManager.getCookie(url));
 
             frag_tita_login_box.setVisibility(View.GONE);
             constraint_frag_tita_main.setVisibility(View.VISIBLE);
@@ -466,7 +456,7 @@ public class CalendarFragment extends Fragment {
                             if(CallType == 2) {
                                 ((BottomNavigationView) getActivity().findViewById(R.id.nav_view)).setSelectedItemId(R.id.navigation_satisfied);
                             }
-                            cookieManager.setCookie(url,"cookieKey="+userEmail);
+                            cookieManager.setCookie(sUrl,"cookieKey="+userEmail);
                             frag_tita_login_box.setVisibility(View.GONE);
                             constraint_frag_tita_main.setVisibility(View.VISIBLE);
 
@@ -481,8 +471,7 @@ public class CalendarFragment extends Fragment {
 
                             }
 
-                            target = IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/ScheduleList.php?email=\"" + userEmail +"\"":
-                                    "http://" + DemoIP + "/user/select/class?id=" + userEmail;
+
 
                             schedule.ResetSchedule();
                             ScheduleBackgroundTask();
@@ -514,16 +503,38 @@ public class CalendarFragment extends Fragment {
 
     public void ScheduleBackgroundTask() {
 
+        String target = IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/ScheduleList.php":
+                "http://" + DemoIP +"/user/select/class";
 
         schedule = new Schedule();
-
 
         backgroundtask = Observable.fromCallable(() -> {
             // doInBackground
 
             try {
                 URL url = new URL(target);
-                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+
+                //HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+
+                Map<String,Object> params = new LinkedHashMap<>();
+                params.put("email", MainActivity.cookieManager.getCookie(sUrl).replace("cookieKey=", ""));
+
+                StringBuilder postData = new StringBuilder();
+                for(Map.Entry<String,Object> param : params.entrySet()) {
+                    if(postData.length() != 0) postData.append('&');
+                    postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
+                    postData.append('=');
+                    postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
+                }
+                byte[] postDataBytes = postData.toString().getBytes("UTF-8");
+
+                HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                httpURLConnection.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.getOutputStream().write(postDataBytes);
+
                 InputStream inputStream = httpURLConnection.getInputStream();
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
                 String temp;
@@ -639,6 +650,7 @@ public class CalendarFragment extends Fragment {
 
             try {
                 URL url = new URL(target);
+
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 InputStream inputStream = httpURLConnection.getInputStream();
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
