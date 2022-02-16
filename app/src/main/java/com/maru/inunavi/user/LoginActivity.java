@@ -30,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.user_activity_login);
 
         TextView signUpButton = findViewById(R.id.button_moveTo_sign_up);
+        TextView textView_findingPassword = findViewById(R.id.textView_findingPassword);
 
         EditText editText_id = findViewById(R.id.editText_email);
         EditText editText_password = findViewById(R.id.editText_password);
@@ -41,6 +42,8 @@ public class LoginActivity extends AppCompatActivity {
 
         ImageView user_activity_login_backButton = findViewById(R.id.user_activity_login_backButton);
 
+
+
         
         //회원가입 하러가기 버튼
         signUpButton.setOnClickListener(new View.OnClickListener() {
@@ -48,6 +51,16 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent signUpIntent = new Intent(LoginActivity.this, SignUpActivity.class);
                 startActivity(signUpIntent);
+            }
+        });
+
+        //비밀 번호 찾기 버튼
+
+        textView_findingPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent findPasswordIntent = new Intent(LoginActivity.this, FindPasswordActivity.class);
+                startActivity(findPasswordIntent);
             }
         });
 

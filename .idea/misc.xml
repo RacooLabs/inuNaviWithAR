@@ -199,6 +199,9 @@
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/user_activity_login.xml" value="0.33" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/user_activity_signup.xml" value="0.33" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/user_change_password.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/user_find_password.xml" value="0.23541666666666666" />
+        <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/user_find_password_change.xml" value="0.22291666666666668" />
+        <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/user_find_password_check.xml" value="0.2359375" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/layout/user_quit.xml" value="0.2557291666666667" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/menu/bottom_nav_menu.xml" value="0.30462962962962964" />
         <entry key="..\:/Users/windo/AndroidStudioProjects/inuNavi/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.16458333333333333" />
