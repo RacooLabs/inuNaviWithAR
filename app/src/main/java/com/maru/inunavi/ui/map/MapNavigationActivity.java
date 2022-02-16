@@ -435,7 +435,7 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
                 Boolean isArrived = false;
                 String route = "";
                 int time = 0;
-                int distance = 0;
+                double distance = 0;
                 int steps = 0;
 
                 while (count < jsonArray.length()) {
@@ -444,7 +444,7 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
                     isArrived = object.getBoolean("isArrived");
                     route = object.getString("route");
                     time = object.getInt("time");
-                    distance = object.getInt("distance");
+                    distance = object.getDouble("distance");
                     steps = object.getInt("steps");
 
                     count++;
@@ -468,7 +468,7 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
                     }else{
 
                         map_activity_navigation_detail_time.setText(time+"");
-                        map_activity_navigation_detail_distance.setText("앞으로 " + distance+"m");
+                        map_activity_navigation_detail_distance.setText("앞으로 " + (int)distance+"m");
 
                         route.trim();
                         route.replaceAll(" ","");
