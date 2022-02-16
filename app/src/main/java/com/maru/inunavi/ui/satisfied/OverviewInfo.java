@@ -15,12 +15,12 @@ public class OverviewInfo {
     private String endLectureTime = "";
 
     private int totalTime = 0;
-    private int distance = 0;
+    private double distance = 0;
 
     private String directionString = "";
     private List<LatLng> directionList = new ArrayList<>();
 
-    public OverviewInfo(String startLectureName, String endLectureName,  String endLectureTime, int totalTime, int distance, String directionString) {
+    public OverviewInfo(String startLectureName, String endLectureName,  String endLectureTime, int totalTime, double distance, String directionString) {
         this.startLectureName = startLectureName;
         this.endLectureName = endLectureName;
         this.endLectureTime = endLectureTime;
@@ -93,7 +93,7 @@ public class OverviewInfo {
         this.totalTime = totalTime;
     }
 
-    public int getDistance() {
+    public double getDistance() {
         return distance;
     }
 

@@ -52,6 +52,9 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
@@ -97,6 +100,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.maru.inunavi.ui.map.markerinfo.FloatingMarkerTitlesOverlay;
 import com.maru.inunavi.ui.map.markerinfo.MarkerInfo;
+import com.maru.inunavi.ui.satisfied.AnalysisRequest;
 import com.maru.inunavi.ui.timetable.search.Lecture;
 import com.maru.inunavi.user.LoginActivity;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
@@ -225,6 +229,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private TextView map_frag_navi_detail_time;
     private TextView map_frag_navi_detail_distance;
     private TextView map_frag_navi_detail_stepCount;
+
+    // 다음 강의실 찾기 변수
+
+    //다음 강의실 정보 결과 응답 POST 방식
+    private Response.Listener<String> responseNextPlaceListener;
 
 
     public MapFragment() {
@@ -924,7 +933,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                             }
 
-                            GetNextPlaceBackgroundTask();
+                            //GetNextPlaceBackgroundTask();
+
+                            NextPlaceRequest nextPlaceRequest = new NextPlaceRequest(userEmail, responseNextPlaceListener);
+                            RequestQueue queueNextPlaceAnalysis = Volley.newRequestQueue(getContext());
+                            queueNextPlaceAnalysis.add(nextPlaceRequest);
 
                         }
                     }
@@ -977,11 +990,111 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                 //여기서 정보 불러오기. 무슨 정보? 다음 강의실의 플레이스 정보.
 
-                GetNextPlaceBackgroundTask();
+                //GetNextPlaceBackgroundTask();
+
+                String userEmail = MainActivity.cookieManager.getCookie(url).replace("cookieKey=", "");
+
+                NextPlaceRequest nextPlaceRequest = new NextPlaceRequest(userEmail, responseNextPlaceListener);
+                RequestQueue queueNextPlaceAnalysis = Volley.newRequestQueue(getContext());
+                queueNextPlaceAnalysis.add(nextPlaceRequest);
 
 
             }
         });
+
+        //다음 강의실 정보 결과 응답 POST 방식
+        responseNextPlaceListener = new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+
+                try {
+
+                    Log.d("@@@", "satisfiedFragment_116 : " + response);
+                    JSONObject jsonResponse = new JSONObject(response);
+                    boolean success = jsonResponse.getBoolean("success");
+
+
+                    if (success) {
+
+                        // 정보 초기화
+
+                        String nextPlaceCode="";
+                        String nextPlaceLocationString="";
+                        String nextPlaceTitle="";
+                        LatLng nextPlaceLocation = null;
+
+
+                        nextPlaceCode = jsonResponse.getString("nextPlaceCode");
+                        nextPlaceLocationString = jsonResponse.getString("nextPlaceLocationString");
+                        nextPlaceTitle = jsonResponse.getString("nextPlaceTitle");
+
+                        String[] locationSplit = nextPlaceLocationString.split(",");
+
+                        if(locationSplit.length == 2){
+                            nextPlaceLocation = new LatLng(Double.parseDouble(locationSplit[0]),
+                                    Double.parseDouble(locationSplit[1]));
+                        }
+
+                        map_frag_navi_searchBar_Start.setText("내 위치");
+                        map_frag_navi_searchBar_End.setText(nextPlaceTitle);
+
+                        endPlaceCode = nextPlaceCode;
+
+                        if(nextPlaceLocation != null){
+                            endLocation = nextPlaceLocation;
+                        }
+
+                        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                            return;
+                        }
+
+                        fusedLocationClient.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+                            @Override
+                            public void onSuccess(Location location) {
+
+                                startLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                                startPlaceCode = "LOCATION";
+
+                                // 경로 그리는 메소드
+                                if (startLocation != null && endLocation!=null && isLogin) {
+
+                                    NaviInfo naviInfo = new NaviInfo(startPlaceCode, endPlaceCode, startLocation, endLocation);
+                                    showBriefingDirection(naviInfo);
+
+                                }
+                            }
+                        });
+
+
+                    }else{
+
+                        AlertDialog.Builder msgBuilder = new AlertDialog.Builder(getContext())
+                                .setTitle("알림")
+                                .setMessage("다음 강의 정보가 없습니다.")
+                                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                                    }
+                                });
+
+                        AlertDialog msgDlg = msgBuilder.create(); msgDlg.show();
+
+                    }
+
+
+                } catch (Exception e) {
+
+                    Log.d("@@@", "validate error");
+                    e.printStackTrace();
+
+                }
+
+            }
+
+        };
 
 
         return layout;
@@ -2031,8 +2144,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
 
-    // 다음 시간의 강의 장소 코드와 자표를 가져오는 서버 통신 코드
-    Disposable getNextPlaceBackgroundTask;
+    // 다음 시간의 강의 장소 코드와 좌표를 가져오는 서버 통신 코드
+    /*Disposable getNextPlaceBackgroundTask;
 
     void GetNextPlaceBackgroundTask() {
 
@@ -2163,6 +2276,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         });
 
-    }
+    }*/
 
 }

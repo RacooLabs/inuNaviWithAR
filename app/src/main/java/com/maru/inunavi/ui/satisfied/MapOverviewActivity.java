@@ -54,8 +54,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
@@ -68,7 +71,7 @@ public class MapOverviewActivity extends AppCompatActivity implements OnMapReady
     private GoogleMap gMap;
     private SupportMapFragment mapFragment;
     private Polyline polyline = null;
-    private String url = sessionURL;
+    private String sUrl = sessionURL;
 
     private Marker startMarker = null; // 출발 마커
     private Marker endMarker = null; // 도착 마커
@@ -120,7 +123,6 @@ public class MapOverviewActivity extends AppCompatActivity implements OnMapReady
                 finish();
             }
         });
-
 
 
     }
@@ -190,7 +192,7 @@ public class MapOverviewActivity extends AppCompatActivity implements OnMapReady
         map_activity_overview_date.setText(overviewInfoList.get(i).getEndLectureTime() + " 수업 시작");
         map_activity_overview_start_lecture_title.setText(overviewInfoList.get(i).getStartLectureName());
         map_activity_overview_end_lecture_title.setText(overviewInfoList.get(i).getEndLectureName());
-        map_activity_overview_time_distance.setText(overviewInfoList.get(i).getTotalTime()+ "분 | " + overviewInfoList.get(i).getDistance() + "m");
+        map_activity_overview_time_distance.setText(overviewInfoList.get(i).getTotalTime()+ "분 | " + (int)overviewInfoList.get(i).getDistance() + "m");
 
 
         PolylineOptions polylineOptions = new PolylineOptions().addAll(overviewInfoList.get(i).getDirectionList()).color(R.color.main_color);
@@ -278,7 +280,7 @@ public class MapOverviewActivity extends AppCompatActivity implements OnMapReady
     }
 
 
-    // 학기 경로 분석 결과를 가져오는 서버 통신 코드
+    // 학기 경로 오버뷰를 가져오는 서버 통신 코드
     Disposable getOverviewRouteTask;
 
     void GetAnalysisResultBackgroundTask() {
@@ -287,13 +289,37 @@ public class MapOverviewActivity extends AppCompatActivity implements OnMapReady
 
             // doInBackground
 
-            String target = (IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/GetOverviewRoot.php" :
-                    "http://" + DemoIP + "/selectLecture")+ "?userEmail=\"" + MainActivity.cookieManager.getCookie(url).replace("cookieKey=", "") + "\"";
+            //String target = (IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/GetOverviewRoot.php" :
+             //       "http://" + DemoIP + "/selectLecture")+ "?userEmail=\"" + MainActivity.cookieManager.getCookie(sUrl).replace("cookieKey=", "") + "\"";
 
+            String target = (IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/GetOverviewRoot.php" :
+                    "http://" + DemoIP + "/selectLecture");
 
             try {
                 URL url = new URL(target);
-                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                //HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+
+                Map<String,Object> params = new LinkedHashMap<>();
+                params.put("email", MainActivity.cookieManager.getCookie(sUrl).replace("cookieKey=", ""));
+
+
+                StringBuilder postData = new StringBuilder();
+                for(Map.Entry<String,Object> param : params.entrySet()) {
+                    if(postData.length() != 0) postData.append('&');
+                    postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
+                    postData.append('=');
+                    postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
+                }
+                byte[] postDataBytes = postData.toString().getBytes("UTF-8");
+
+                HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                httpURLConnection.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.getOutputStream().write(postDataBytes);
+
+
                 InputStream inputStream = httpURLConnection.getInputStream();
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
                 String temp;
@@ -329,7 +355,7 @@ public class MapOverviewActivity extends AppCompatActivity implements OnMapReady
                 String endLectureName = "";
                 String endLectureTime = "";
                 int totalTime = 0;
-                int distance = 0;
+                double distance = 0;
                 String directionString = "";
 
                 int count = 0;
@@ -343,7 +369,7 @@ public class MapOverviewActivity extends AppCompatActivity implements OnMapReady
                     endLectureName = object.getString("endLectureName");
                     endLectureTime = object.getString("endLectureTime");
                     totalTime = object.getInt("totalTime");
-                    distance = object.getInt("distance");
+                    distance = object.getDouble("distance");
                     directionString = object.getString("directionString");
 
                     count++;
