@@ -16,7 +16,7 @@ import java.util.Map;
 public class ChangePasswordRequest extends StringRequest {
 
     final static private String URL = IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/ChangePassword.php" :
-            "http://" + DemoIP + "/user/login";
+            "http://" + DemoIP + "/user/update";
 
     private Map<String, String> parameters;
 

@@ -25,7 +25,7 @@
         <shape android:shape="rectangle">
 
             <corners android:radius="20dp"/>
-            <solid android:color="#CDE5FE"/>
+            <solid android:color="@color/main_button_disable_color"/>
 
         </shape>
 

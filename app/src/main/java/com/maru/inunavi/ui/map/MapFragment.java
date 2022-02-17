@@ -414,11 +414,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
 
-                    if(!editText_search.getText().toString().isEmpty() && !editText_search.getText().toString().equals("")){
-
-                        startSearch(editText_search.getText().toString());
-
-                    }
+                    startSearch(editText_search.getText().toString());
 
                 }
 

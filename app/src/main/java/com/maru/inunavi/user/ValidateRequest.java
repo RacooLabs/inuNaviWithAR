@@ -16,7 +16,7 @@ import java.util.Map;
 public class ValidateRequest extends StringRequest {
 
     final static private String URL = IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/UserValidate.php?email=" :
-            "http://" + DemoIP + "/user/check/id?id=";
+            "http://" + DemoIP + "/user/check/id?email=";
 
     private Map<String, String> parameters;
 

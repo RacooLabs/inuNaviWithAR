@@ -40,6 +40,17 @@ public class FindPasswordCheckActivity extends AppCompatActivity {
 
 
 
+    @Override
+    public void onBackPressed() {
+
+        Intent intent = new Intent(FindPasswordCheckActivity.this, FindPasswordActivity.class);
+        intent.putExtra("CallType", -2);
+        setResult(Activity.RESULT_OK, intent);
+        finish();
+        overridePendingTransition(0, 0);
+
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +69,9 @@ public class FindPasswordCheckActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                Intent intent = new Intent(FindPasswordCheckActivity.this, FindPasswordActivity.class);
+                intent.putExtra("CallType", -2);
+                setResult(Activity.RESULT_OK, intent);
                 finish();
                 overridePendingTransition(0, 0);
 

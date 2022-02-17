@@ -101,7 +101,7 @@ public class SignUpActivity extends AppCompatActivity {
                                     boolean success = jsonResponse.getBoolean("success");
 
 
-                                    if (success) {
+                                    if (!success) {
                                         setDoneEditText(editText_sign_up_email, sign_up_email_done_icon, textView_email_warning);
                                         emailValidate = true;
                                     }else{
@@ -267,7 +267,7 @@ public class SignUpActivity extends AppCompatActivity {
                                boolean success = jsonResponse.getBoolean("success");
 
 
-                               if (success) {
+                               if (!success) {
                                    setDoneEditText(editText_sign_up_email, sign_up_email_done_icon, textView_email_warning);
                                    emailValidate = true;
                                }else{

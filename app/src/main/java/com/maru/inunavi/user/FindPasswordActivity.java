@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,13 +52,15 @@ public class FindPasswordActivity extends AppCompatActivity {
             }
         });
 
-       EditText editText_find_password_email = findViewById(R.id.editText_find_password_email);
-       
-       ImageView find_password_done_icon = findViewById(R.id.find_password_done_icon);
+        EditText editText_find_password_email = findViewById(R.id.editText_find_password_email);
 
-       TextView textView_warning = findViewById(R.id.textView_warning);
+        ImageView find_password_done_icon = findViewById(R.id.find_password_done_icon);
 
-       TextView button_find_password = findViewById(R.id.button_find_password);
+        TextView textView_warning = findViewById(R.id.textView_warning);
+
+        TextView button_find_password = findViewById(R.id.button_find_password);
+
+        ProgressBar button_find_progressbar = findViewById(R.id.button_find_progressbar);
 
 
         ActivityResultLauncher<Intent> backToMainLoginResultLauncher = registerForActivityResult(
@@ -77,6 +80,12 @@ public class FindPasswordActivity extends AppCompatActivity {
                                     finish();
                                     break;
 
+                                case -2:
+
+                                    setNormalEditText(editText_find_password_email, find_password_done_icon, textView_warning);
+                                    editText_find_password_email.clearFocus();
+                                    editText_find_password_email.setText("");
+
                             }
 
                         }
@@ -89,11 +98,18 @@ public class FindPasswordActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                button_find_password.setEnabled(false);
+                button_find_password.setText("");
+                button_find_progressbar.setVisibility(View.VISIBLE);
+
                 String userEmail = editText_find_password_email.getText().toString().trim();
 
                 if (userEmail.equals("")) {
                     setNotEditText(editText_find_password_email, find_password_done_icon, textView_warning, "이메일을 입력하세요.");
                     userEmailIsExist = false;
+                    button_find_password.setEnabled(true);
+                    button_find_password.setText("찾기");
+                    button_find_progressbar.setVisibility(View.INVISIBLE);
 
                 }else{
 
@@ -108,18 +124,23 @@ public class FindPasswordActivity extends AppCompatActivity {
                                 JSONObject jsonResponse = new JSONObject(response);
                                 boolean success = jsonResponse.getBoolean("success");
 
-                                if (!success) {
+                                if (success) {
                                     setDoneEditText(editText_find_password_email, find_password_done_icon, textView_warning);
                                     userEmailIsExist = true;
 
                                 }else{
                                     setNotEditText(editText_find_password_email, find_password_done_icon,  textView_warning, "이메일이 존재하지 않습니다.");
                                     userEmailIsExist = false;
+                                    button_find_password.setEnabled(true);
+                                    button_find_password.setText("찾기");
+                                    button_find_progressbar.setVisibility(View.INVISIBLE);
+
                                 }
 
                                 editText_find_password_email.clearFocus();
 
                                 if(userEmailIsExist) {
+
 
                                     Response.Listener<String> responseListener = new Response.Listener<String>() {
 
@@ -134,7 +155,7 @@ public class FindPasswordActivity extends AppCompatActivity {
                                                 Log.d("@@@ findpasswordactivity104 ", response);
 
                                                 boolean success = jsonResponse.getBoolean("success");
-                                                String verifyCode = jsonResponse.getString("verifyCode");
+                                                String verifyCode = jsonResponse.getString("code");
 
 
 
@@ -176,6 +197,9 @@ public class FindPasswordActivity extends AppCompatActivity {
 
                                 setNotEditText(editText_find_password_email, find_password_done_icon,  textView_warning, "서버 연결 실패");
                                 userEmailIsExist = false;
+                                button_find_password.setEnabled(true);
+                                button_find_password.setText("찾기");
+                                button_find_progressbar.setVisibility(View.INVISIBLE);
 
                             }
 

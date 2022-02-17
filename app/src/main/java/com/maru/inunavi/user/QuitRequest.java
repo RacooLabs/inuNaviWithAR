@@ -16,7 +16,7 @@ import java.util.Map;
 public class QuitRequest extends StringRequest {
 
     final static private String URL = IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/Quit.php" :
-            "http://" + DemoIP + "/user/login";
+            "http://" + DemoIP + "/user/quit";
 
     private Map<String, String> parameters;
 

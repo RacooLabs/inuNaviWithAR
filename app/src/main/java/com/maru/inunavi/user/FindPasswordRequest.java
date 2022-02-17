@@ -16,7 +16,7 @@ import java.util.Map;
 public class FindPasswordRequest extends StringRequest {
 
     final static private String URL = IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/FindPassword.php" :
-            "http://" + DemoIP + "/user/login";
+            "http://" + DemoIP + "/user/verify";
 
     private Map<String, String> parameters;
 
