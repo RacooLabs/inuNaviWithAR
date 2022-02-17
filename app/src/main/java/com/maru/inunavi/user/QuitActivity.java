@@ -111,7 +111,7 @@ public class QuitActivity extends AppCompatActivity {
                                                 boolean success = jsonResponse.getBoolean("success");
 
                                                 if (success) {
-                                                    Toast.makeText(getApplicationContext(), "회원 탈퇴를 완료하였습니다.", Toast.LENGTH_LONG).show();
+                                                    Toast.makeText(getApplicationContext(), "회원 탈퇴를 완료하였습니다.", Toast.LENGTH_SHORT).show();
 
                                                     Intent intent = new Intent(QuitActivity.this, SettingActivity.class);
                                                     intent.putExtra("CallType", 1);
@@ -120,7 +120,7 @@ public class QuitActivity extends AppCompatActivity {
                                                     overridePendingTransition(0, 0);
 
                                                 } else {
-                                                    Toast.makeText(getApplicationContext(), "회원탈퇴에 실패하였습니다.", Toast.LENGTH_LONG).show();
+                                                    Toast.makeText(getApplicationContext(), "회원탈퇴에 실패하였습니다.", Toast.LENGTH_SHORT).show();
                                                 }
 
                                             } catch (Exception e) {

@@ -515,7 +515,8 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+
             isThreadRun = false;
+
     }
 }

@@ -2,6 +2,8 @@ package com.maru.inunavi.user;
 
 import static com.maru.inunavi.MainActivity.sessionURL;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -34,6 +36,17 @@ public class FindPasswordChangeActivity extends AppCompatActivity {
 
     private String userEmail = "";
 
+    @Override
+    public void onBackPressed() {
+
+        Intent intent = new Intent(FindPasswordChangeActivity.this, FindPasswordCheckActivity.class);
+        intent.putExtra("CallType", -1);
+        setResult(Activity.RESULT_OK, intent);
+        finish();
+        overridePendingTransition(0, 0);
+
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,11 +63,15 @@ public class FindPasswordChangeActivity extends AppCompatActivity {
         find_password_change_back_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                
-                //setResult 걸기
+
+                Intent intent = new Intent(FindPasswordChangeActivity.this, FindPasswordCheckActivity.class);
+                intent.putExtra("CallType", -1);
+                setResult(Activity.RESULT_OK, intent);
                 finish();
                 overridePendingTransition(0, 0);
+
             }
+
         });
 
 
@@ -81,7 +98,6 @@ public class FindPasswordChangeActivity extends AppCompatActivity {
                     newPasswordValidate = false;
                 }else{
 
-
                     String userPassword = editText_find_password_change.getText().toString().trim();
                     String userPasswordCheck = editText_find_password_change_second.getText().toString().trim();
 
@@ -96,6 +112,7 @@ public class FindPasswordChangeActivity extends AppCompatActivity {
                     }else if (userPassword.length() > 15 || userPassword.length() < 6){
                         setNotEditText(editText_find_password_change, find_password_change_done_icon, textView_password_warning, "비밀번호는 6자 이상 20자 이하입니다.");
                         newPasswordValidate = false;
+
 
                     }else {
 
@@ -185,12 +202,16 @@ public class FindPasswordChangeActivity extends AppCompatActivity {
                                 boolean success = jsonResponse.getBoolean("success");
 
                                 if (success) {
-                                    Toast.makeText(getApplicationContext(), "비밀번호 변경을 완료하였습니다.", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getApplicationContext(), "비밀번호 변경을 완료하였습니다.", Toast.LENGTH_SHORT).show();
+
+                                    Intent intent = new Intent(FindPasswordChangeActivity.this, FindPasswordCheckActivity.class);
+                                    intent.putExtra("CallType", -1);
+                                    setResult(Activity.RESULT_OK, intent);
                                     finish();
                                     overridePendingTransition(0, 0);
 
                                 } else {
-                                    Toast.makeText(getApplicationContext(), "비밀번호 변경에 실패하였습니다.", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getApplicationContext(), "비밀번호 변경에 실패하였습니다.", Toast.LENGTH_SHORT).show();
                                 }
 
                             } catch (Exception e) {
@@ -207,6 +228,10 @@ public class FindPasswordChangeActivity extends AppCompatActivity {
                     ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest(userEmail, userNewPassword, responseListener);
                     RequestQueue queue = Volley.newRequestQueue(FindPasswordChangeActivity.this);
                     queue.add(changePasswordRequest);
+
+                }else{
+
+                    Toast.makeText(getApplicationContext(), "수정할 항목이 있습니다.", Toast.LENGTH_SHORT).show();
 
                 }
 

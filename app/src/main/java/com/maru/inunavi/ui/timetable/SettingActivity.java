@@ -1,6 +1,7 @@
 package com.maru.inunavi.ui.timetable;
 
 import static com.maru.inunavi.MainActivity.cookieManager;
+import static com.maru.inunavi.MainActivity.sessionURL;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -35,6 +36,9 @@ public class SettingActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     SettingAdapter adapter;
 
+    private String url = sessionURL;
+    private String userEmail = MainActivity.cookieManager.getCookie(url).replace("cookieKey=", "");
+
     @Override protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
@@ -44,8 +48,10 @@ public class SettingActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false)) ;
 
         ImageView tita_setting_backButton = findViewById(R.id.tita_setting_backButton);
+        TextView setting_user_email = findViewById(R.id.setting_user_email);
 
-
+        // 이메일 적기
+        setting_user_email.setText(userEmail);
 
         //돌아가기 버튼
         tita_setting_backButton.setOnClickListener(new View.OnClickListener() {

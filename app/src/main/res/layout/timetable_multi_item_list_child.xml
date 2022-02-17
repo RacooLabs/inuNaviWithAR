@@ -2,7 +2,7 @@
 <LinearLayout
     android:id="@+id/timetable_multi_item_list_child_layout"
     android:layout_width="match_parent"
-    android:layout_height="40dp"
+    android:layout_height="42dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:paddingLeft="30dp"
     android:paddingRight="30dp"

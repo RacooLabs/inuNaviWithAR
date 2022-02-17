@@ -213,6 +213,14 @@
 
         </activity>
 
+        <activity
+            android:name="com.maru.inunavi.user.FindPasswordChangeActivity"
+            android:exported="true"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait">
+
+        </activity>
+
 
 
         <meta-data

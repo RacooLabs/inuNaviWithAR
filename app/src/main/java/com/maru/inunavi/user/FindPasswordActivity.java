@@ -72,9 +72,11 @@ public class FindPasswordActivity extends AppCompatActivity {
 
                             switch (CallType){
 
-                                case 1:
+                                case -1:
+
                                     finish();
                                     break;
+
                             }
 
                         }
@@ -138,7 +140,7 @@ public class FindPasswordActivity extends AppCompatActivity {
 
                                                 if (success) {
 
-                                                    Toast.makeText(getApplicationContext(), "이메일에 인증번호를 전송했습니다." , Toast.LENGTH_LONG).show();
+                                                    Toast.makeText(getApplicationContext(), "이메일에 인증코드를 전송했습니다." , Toast.LENGTH_SHORT).show();
                                                     Intent intent = new Intent(FindPasswordActivity.this, FindPasswordCheckActivity.class);
                                                     intent.putExtra("userEmail", userEmail);
                                                     intent.putExtra("verifyCode", verifyCode);
@@ -146,7 +148,7 @@ public class FindPasswordActivity extends AppCompatActivity {
 
 
                                                 } else {
-                                                    Toast.makeText(getApplicationContext(), "이메일 인증 요청에 실패하였습니다.", Toast.LENGTH_LONG).show();
+                                                    Toast.makeText(getApplicationContext(), "이메일 인증 요청에 실패하였습니다.", Toast.LENGTH_SHORT).show();
                                                 }
 
                                             } catch (Exception e) {

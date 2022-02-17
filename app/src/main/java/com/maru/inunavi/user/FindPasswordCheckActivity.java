@@ -22,6 +22,8 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 import com.maru.inunavi.R;
+import com.maru.inunavi.ui.timetable.search.SearchActivity;
+import com.maru.inunavi.ui.timetable.search.SearchCategoryActivity;
 
 import org.json.JSONObject;
 
@@ -35,6 +37,8 @@ public class FindPasswordCheckActivity extends AppCompatActivity {
 
     private String userEmail = "";
     private String verifyCode = "";
+
+
 
 
     @Override
@@ -53,9 +57,10 @@ public class FindPasswordCheckActivity extends AppCompatActivity {
         textView_find_password_check_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                
+
                 finish();
                 overridePendingTransition(0, 0);
+
             }
         });
 
@@ -79,8 +84,14 @@ public class FindPasswordCheckActivity extends AppCompatActivity {
 
                             switch (CallType){
 
-                                case 1:
+                                case -1:
+
+                                    Intent returnIntent = new Intent(FindPasswordCheckActivity.this, FindPasswordActivity.class);
+                                    returnIntent.putExtra("CallType", -1);
+                                    setResult(Activity.RESULT_OK, returnIntent);
                                     finish();
+                                    overridePendingTransition(0, 0);
+
                                     break;
 
                             }
@@ -99,7 +110,7 @@ public class FindPasswordCheckActivity extends AppCompatActivity {
                 String verifyCodeInput = editText_find_password_check_verifyCode.getText().toString().trim();
 
                 if (verifyCodeInput.equals("")) {
-                    setNotEditText(editText_find_password_check_verifyCode, find_password_check_done_icon, textView_warning, "인증번호를 입력하세요.");
+                    setNotEditText(editText_find_password_check_verifyCode, find_password_check_done_icon, textView_warning, "인증코드를 입력하세요.");
                     verifyCodeIsPassed = false;
 
                 }else{
@@ -111,7 +122,7 @@ public class FindPasswordCheckActivity extends AppCompatActivity {
 
                     }else{
 
-                        setNotEditText(editText_find_password_check_verifyCode, find_password_check_done_icon, textView_warning, "인증번호가 일치하지 않습니다.");
+                        setNotEditText(editText_find_password_check_verifyCode, find_password_check_done_icon, textView_warning, "인증코드가 일치하지 않습니다.");
                         verifyCodeIsPassed = false;
 
                     }

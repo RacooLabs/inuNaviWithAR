@@ -1,20 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="40dp"
+    android:layout_height="42dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:paddingLeft="30dp"
-    android:paddingRight="30dp">
+
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/child_title"
-        android:layout_height="match_parent"
+        android:layout_height="41dp"
         android:layout_width="match_parent"
         android:textColor="@color/main_text_color"
         android:textSize="@dimen/main_text_size"
         android:gravity="center_vertical"
         android:background="?attr/selectableItemBackground"
         android:clickable="true"
+        android:layout_marginRight="30dp"
+        android:layout_marginLeft="30dp"
         />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:background="#F2F2F3"/>
 
 </LinearLayout>

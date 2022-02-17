@@ -291,7 +291,7 @@ public class SignUpActivity extends AppCompatActivity {
                                                boolean success = jsonResponse.getBoolean("success");
 
                                                if (success) {
-                                                   Toast.makeText(getApplicationContext(), "회원 등록을 완료하였습니다.", Toast.LENGTH_LONG).show();
+                                                   Toast.makeText(getApplicationContext(), "회원 등록을 완료하였습니다.", Toast.LENGTH_SHORT).show();
 
 
 
@@ -299,7 +299,7 @@ public class SignUpActivity extends AppCompatActivity {
                                                    overridePendingTransition(0, 0);
 
                                                }else{
-                                                   Toast.makeText(getApplicationContext(), "회원 등록에 실패하였습니다.", Toast.LENGTH_LONG).show();
+                                                   Toast.makeText(getApplicationContext(), "회원 등록에 실패하였습니다.", Toast.LENGTH_SHORT).show();
                                                }
 
                                            } catch (Exception e) {
@@ -319,7 +319,7 @@ public class SignUpActivity extends AppCompatActivity {
 
 
                                }else{
-                                   Toast.makeText(getApplicationContext(), "수정할 항목이 있습니다.", Toast.LENGTH_LONG).show();
+                                   Toast.makeText(getApplicationContext(), "수정할 항목이 있습니다.", Toast.LENGTH_SHORT).show();
                                }
 
                            } catch (Exception e) {

@@ -81,7 +81,7 @@ public class LoginActivity extends AppCompatActivity {
 
                             if(success){
 
-                                Toast.makeText(getApplicationContext(), "로그인 성공", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "로그인 성공", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 intent.putExtra("CallType", 1);
                                 intent.putExtra("userEmail",userEmail);
