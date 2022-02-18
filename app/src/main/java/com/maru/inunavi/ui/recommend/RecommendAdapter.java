@@ -388,6 +388,12 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.MyVi
                     how = object.getString("how");
                     point = object.getString("point");
 
+                    classtime_raw = classtime_raw.trim();
+                    classtime_raw = classtime_raw.replaceAll("\"", "");
+                    classtime_raw = classtime_raw.replaceAll(" ", "");
+                    classtime_raw = classtime_raw.replace("[", "");
+                    classtime_raw = classtime_raw.replaceAll("]", "");
+
                     Lecture lecture = new Lecture(id, department, Integer.parseInt(grade), category, number, lecturename,
                             professor, classroom_raw, classtime_raw, classroom, classtime, how, Integer.parseInt(point));
 

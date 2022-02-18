@@ -184,6 +184,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
                                     schedule.addSchedule(mData.get(holder.getAdapterPosition()));
 
+
                                 }else{
                                     AlertDialog.Builder builder = new AlertDialog.Builder(parent);
                                     AlertDialog dialog = builder.setMessage("강의 추가를 실패하였습니다.").setPositiveButton("확인", null)
@@ -221,7 +222,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     public int getItemCount() {
         return mData != null ? mData.size() : 0;
     }
-
 
     Disposable backgroundtask;
 
@@ -319,6 +319,12 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                     classtime = object.getString("classtime");
                     how = object.getString("how");
                     point = object.getString("point");
+
+                    classtime_raw = classtime_raw.trim();
+                    classtime_raw = classtime_raw.replaceAll("\"", "");
+                    classtime_raw = classtime_raw.replaceAll(" ", "");
+                    classtime_raw = classtime_raw.replace("[", "");
+                    classtime_raw = classtime_raw.replaceAll("]", "");
 
                     Lecture lecture = new Lecture(id, department, Integer.parseInt(grade), category, number, lecturename,
                             professor, classroom_raw, classtime_raw, classroom, classtime, how, Integer.parseInt(point));

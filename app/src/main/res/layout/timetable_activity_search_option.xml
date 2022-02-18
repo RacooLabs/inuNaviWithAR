@@ -60,8 +60,8 @@
             android:imeOptions="actionSearch"
             android:inputType="text"
             android:maxLength="20"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
+            android:paddingLeft="@dimen/editText_padding"
+            android:paddingRight="@dimen/editText_padding"
             android:textColor="@color/main_text_color"
             android:textSize="@dimen/main_text_size"/>
 

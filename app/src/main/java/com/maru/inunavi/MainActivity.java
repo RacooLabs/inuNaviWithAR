@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentManager;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.webkit.CookieManager;
 
@@ -19,7 +20,12 @@ import com.maru.inunavi.ui.map.MapFragment;
 import com.maru.inunavi.ui.recommend.RecommendFragment;
 import com.maru.inunavi.ui.satisfied.SatisfiedFragment;
 
-public class MainActivity extends AppCompatActivity {
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.MapsInitializer.Renderer;
+import com.google.android.gms.maps.OnMapsSdkInitializedCallback;
+
+
+public class MainActivity extends AppCompatActivity implements OnMapsSdkInitializedCallback {
 
     BottomNavigationView bottomNavigationView;
 
@@ -32,8 +38,24 @@ public class MainActivity extends AppCompatActivity {
 
 
     @Override
+    public void onMapsSdkInitialized(MapsInitializer.Renderer renderer) {
+        switch (renderer) {
+            case LATEST:
+                Log.d("MapsDemo", "The latest version of the renderer is used.");
+                break;
+            case LEGACY:
+                Log.d("MapsDemo", "The legacy version of the renderer is used.");
+                break;
+        }
+    }
+
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        MapsInitializer.initialize(getApplicationContext(), Renderer.LATEST, this);
+
 
         setContentView(R.layout.main_activity);
 

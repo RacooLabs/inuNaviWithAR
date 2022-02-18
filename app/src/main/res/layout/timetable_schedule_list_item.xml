@@ -6,11 +6,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
-        android:id="@+id/textView_search_list_lectureName"
+        android:id="@+id/textView_schedule_list_lectureName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/textView_search_list_professor"
+        app:layout_constraintBottom_toTopOf="@id/textView_schedule_list_professor"
         app:layout_constraintTop_toTopOf="parent"
         android:text="교과목이름"
         android:gravity="center|left"
@@ -25,12 +25,12 @@
     </TextView>
 
     <TextView
-        android:id="@+id/textView_search_list_professor"
+        android:id="@+id/textView_schedule_list_professor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/textView_search_list_info"
-        app:layout_constraintTop_toBottomOf="@id/textView_search_list_lectureName"
+        app:layout_constraintBottom_toTopOf="@id/textView_schedule_list_info"
+        app:layout_constraintTop_toBottomOf="@id/textView_schedule_list_lectureName"
         android:text="김교수"
         android:gravity="center_vertical"
         android:textSize="12sp"
@@ -41,12 +41,12 @@
     </TextView>
 
     <TextView
-        android:id="@+id/textView_search_list_info"
+        android:id="@+id/textView_schedule_list_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/textView_search_list_time"
-        app:layout_constraintTop_toBottomOf="@id/textView_search_list_professor"
+        app:layout_constraintBottom_toTopOf="@id/textView_schedule_list_time"
+        app:layout_constraintTop_toBottomOf="@id/textView_schedule_list_professor"
         android:text="1학년 전공선택 1학점 000000000"
         android:gravity="center_vertical"
         android:textSize="12sp"
@@ -57,12 +57,12 @@
     </TextView>
 
     <TextView
-        android:id="@+id/textView_search_list_time"
+        android:id="@+id/textView_schedule_list_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textView_search_list_info"
+        app:layout_constraintTop_toBottomOf="@id/textView_schedule_list_info"
         android:text="월화수목금토"
         android:gravity="center_vertical"
         android:textSize="12sp"
@@ -73,14 +73,14 @@
     </TextView>
 
     <TextView
-        android:id="@+id/tita_search_add"
+        android:id="@+id/tita_schedule_list_delete"
         android:layout_width="60dp"
         android:layout_height="@dimen/click_button_height"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:background="@drawable/layout_more_option_button_roundedbox"
-        android:text="추가"
+        android:text="삭제"
         android:layout_marginRight="24dp"
         android:textSize="@dimen/main_text_size"
         android:textColor="@color/white"

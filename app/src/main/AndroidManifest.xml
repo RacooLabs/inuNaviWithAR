@@ -221,6 +221,14 @@
 
         </activity>
 
+        <activity
+            android:name="com.maru.inunavi.ui.timetable.search.ScheduleListActivity"
+            android:exported="true"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait">
+
+        </activity>
+
 
 
         <meta-data

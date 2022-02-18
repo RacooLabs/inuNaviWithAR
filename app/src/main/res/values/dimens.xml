@@ -11,9 +11,14 @@
     <dimen name="top_bar_button_size">24dp</dimen>
     <dimen name="top_bar_leftPadding">16dp</dimen>
     <dimen name="major_item_leftPadding">20dp</dimen>
-    <dimen name="editText_padding">16dp</dimen>
-    <dimen name="editText_height">42dp</dimen>
+    <dimen name="editText_padding">20dp</dimen>
+    <dimen name="editText_height">48dp</dimen>
     <dimen name="default_button_height">36dp</dimen>
+
+    <dimen name="click_button_height">42dp</dimen>
+
+
+
 
     <dimen name="design_bottom_navigation_text_size" tools:override="true">30sp</dimen>
     <dimen name="design_bottom_navigation_active_text_size" tools:override="true">30sp</dimen>

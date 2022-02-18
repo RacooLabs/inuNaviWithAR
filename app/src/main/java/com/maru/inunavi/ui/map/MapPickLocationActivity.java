@@ -15,6 +15,7 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -65,7 +66,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+
 public class MapPickLocationActivity extends AppCompatActivity implements OnMapReadyCallback {
+
 
     private GoogleMap gMap;
     private SupportMapFragment mapFragment;
@@ -73,6 +76,7 @@ public class MapPickLocationActivity extends AppCompatActivity implements OnMapR
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
         setContentView(R.layout.map_activity_pick_location);
 

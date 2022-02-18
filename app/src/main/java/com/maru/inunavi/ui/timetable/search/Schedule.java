@@ -28,6 +28,7 @@ import com.maru.inunavi.ui.timetable.SettingAdapter;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 
 
 public class Schedule {
@@ -36,6 +37,7 @@ public class Schedule {
     private String url = sessionURL;
 
     public int colorCount = 0;
+    public ArrayList<Lecture> lectureScheduleList = new ArrayList<>();
     public Lecture lectureSchedule[] = new Lecture[328];
     public String colors[] = {
             "#5d9134",
@@ -58,34 +60,40 @@ public class Schedule {
 
     public void addSchedule(Lecture lecture){
 
-        int startTime;
-        int endTime;
+        lectureScheduleList.add(lecture);
 
-        String classTime = lecture.getClasstime();
-        String [] tokens=classTime.split(",");
+        if(lecture.getClasstime().equals("-") ||lecture.getClasstime().isEmpty()){
+
+        }else{
+
+            int startTime;
+            int endTime;
+
+            String classTime = lecture.getClasstime();
+            String [] tokens=classTime.split(",");
 
 
+            for(int i=0;i<tokens.length; i++){
 
-        for(int i=0;i<tokens.length; i++){
+                String startEndTime[] = tokens[i].split("-");
+                startTime = Integer.parseInt(startEndTime[0]);
+                endTime = Integer.parseInt(startEndTime[1]);
 
-            String startEndTime[] = tokens[i].split("-");
-            startTime = Integer.parseInt(startEndTime[0]);
-            endTime = Integer.parseInt(startEndTime[1]);
+                for(int j=startTime; j<endTime+1;j++){
+                    Log.d("@@Schedule 74 " , startTime + " : " + endTime);
+                    lectureSchedule[j] = lecture;
+                    lectureSchedule[j].setColor(colors[colorCount]);
+                }
 
-            for(int j=startTime; j<endTime+1;j++){
-                Log.d("@@Schedule 74 " , startTime + " : " + endTime);
-                lectureSchedule[j] = lecture;
-                lectureSchedule[j].setColor(colors[colorCount]);
             }
-
+            colorCount++;
         }
-
-        colorCount++;
 
     }
 
     public void ResetSchedule() {
 
+        lectureScheduleList = new ArrayList<>();
         lectureSchedule = new Lecture[328];
         colorCount = 0;
 
@@ -99,23 +107,31 @@ public class Schedule {
 
         String classTime = lectureTime;
 
-        String [] tokens=classTime.split(",");
+        if(classTime.equals("-") || classTime.isEmpty()){
 
-        for(int i=0;i<tokens.length; i++){
+            return true;
 
-            String startEndTime[] = tokens[i].split("-");
-            startTime = Integer.parseInt(startEndTime[0]);
-            endTime = Integer.parseInt(startEndTime[1]);
+        }else{
 
-            for(int j=startTime; j<endTime;j++){
-                if(lectureSchedule[j] != null){
-                    return false;
+            String [] tokens=classTime.split(",");
+
+            for(int i=0;i<tokens.length; i++){
+
+                String startEndTime[] = tokens[i].split("-");
+                startTime = Integer.parseInt(startEndTime[0]);
+                endTime = Integer.parseInt(startEndTime[1]);
+
+                for(int j=startTime; j<endTime;j++){
+                    if(lectureSchedule[j] != null){
+                        return false;
+                    }
                 }
+
             }
 
-        }
+            return true;
 
-        return true;
+        }
 
     }
 
@@ -130,6 +146,16 @@ public class Schedule {
                     return true;
                 }
             }
+        }
+
+        for(int i =0;i<lectureScheduleList.size();i++){
+
+            if(lectureScheduleList.get(i)!=null){
+                if (classNumber.equals(lectureScheduleList.get(i).getNumber())){
+                    return true;
+                }
+            }
+
         }
 
         return false;
@@ -214,7 +240,7 @@ public class Schedule {
 
                                                 try {
 
-                                                    Log.d("@@@", "SearchAdapter_78 : " + response);
+                                                    Log.d("@@@", "deleteClick_243 : " + response);
 
                                                     JSONObject jsonResponse = new JSONObject(response);
 

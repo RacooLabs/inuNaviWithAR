@@ -38,6 +38,7 @@ import com.maru.inunavi.IpAddress;
 import com.maru.inunavi.ui.satisfied.OverviewInfo;
 import com.maru.inunavi.ui.timetable.search.Lecture;
 import com.maru.inunavi.ui.timetable.search.Schedule;
+import com.maru.inunavi.ui.timetable.search.ScheduleListActivity;
 import com.maru.inunavi.ui.timetable.search.SearchActivity;
 import com.maru.inunavi.user.ChangePasswordActivity;
 import com.maru.inunavi.user.LoginActivity;
@@ -98,6 +99,7 @@ public class CalendarFragment extends Fragment {
         Button button_frag_tita_login = root.findViewById(R.id.button_frag_tita_login);
         ImageView imageView_frag_tita_setting = root.findViewById(R.id.imageView_frag_tita_setting);
         ImageView imageView_frag_tita_add = root.findViewById(R.id.imageView_frag_tita_add);
+        ImageView imageView_frag_tita_list = root.findViewById(R.id.imageView_frag_tita_list);
 
         relativeLayout_frag_tita = root.findViewById(R.id.linearLayout_frag_tita);
 
@@ -404,6 +406,16 @@ public class CalendarFragment extends Fragment {
                     }
                 });
 
+        // 강의 추가 현황
+
+        imageView_frag_tita_list.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), ScheduleListActivity.class);
+                searchActivityResultLauncher.launch(intent);
+            }
+        });
+
 
         //강의 추가 버튼
         imageView_frag_tita_add.setOnClickListener(new View.OnClickListener() {
@@ -583,7 +595,6 @@ public class CalendarFragment extends Fragment {
                 String point;
 
 
-
                 while (count < jsonArray.length()) {
                     JSONObject object = jsonArray.getJSONObject(count);
 
@@ -600,6 +611,12 @@ public class CalendarFragment extends Fragment {
                     classtime = object.getString("classtime");
                     how = object.getString("how");
                     point = object.getString("point");
+
+                    classtime_raw = classtime_raw.trim();
+                    classtime_raw = classtime_raw.replaceAll("\"", "");
+                    classtime_raw = classtime_raw.replaceAll(" ", "");
+                    classtime_raw = classtime_raw.replace("[", "");
+                    classtime_raw = classtime_raw.replaceAll("]", "");
 
                     Lecture lecture = new Lecture(id, department, Integer.parseInt(grade), category, number, lecturename,
                             professor, classroom_raw, classtime_raw, classroom, classtime, how, Integer.parseInt(point));
@@ -620,11 +637,7 @@ public class CalendarFragment extends Fragment {
 
             backgroundtask.dispose();
 
-
         });
-
-
-
 
     }
 

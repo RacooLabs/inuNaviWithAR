@@ -100,7 +100,7 @@
             <TextView
                 android:id="@+id/textView_recommend_add"
                 android:layout_width="60dp"
-                android:layout_height="@dimen/editText_height"
+                android:layout_height="@dimen/click_button_height"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"

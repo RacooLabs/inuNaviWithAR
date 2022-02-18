@@ -19,6 +19,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
@@ -85,6 +86,10 @@ public class FindPasswordActivity extends AppCompatActivity {
                                     setNormalEditText(editText_find_password_email, find_password_done_icon, textView_warning);
                                     editText_find_password_email.clearFocus();
                                     editText_find_password_email.setText("");
+
+                                    button_find_password.setEnabled(true);
+                                    button_find_password.setText("찾기");
+                                    button_find_progressbar.setVisibility(View.INVISIBLE);
 
                             }
 
@@ -184,6 +189,7 @@ public class FindPasswordActivity extends AppCompatActivity {
                                     };
 
                                     FindPasswordRequest findPasswordRequest = new FindPasswordRequest(userEmail, responseListener);
+                                    findPasswordRequest.setRetryPolicy(new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
                                     RequestQueue validateEmailQueue = Volley.newRequestQueue(FindPasswordActivity.this);
                                     validateEmailQueue.add(findPasswordRequest);
 
