@@ -38,6 +38,9 @@ public class FindPasswordCheckActivity extends AppCompatActivity {
     private String userEmail = "";
     private String verifyCode = "";
 
+    private TextView find_password_check_timer;
+    private PasswordTimer passwordTimer;
+
 
 
     @Override
@@ -58,12 +61,31 @@ public class FindPasswordCheckActivity extends AppCompatActivity {
 
         setContentView(R.layout.user_find_password_check);
 
+
         if(getIntent() != null){
             userEmail = getIntent().getStringExtra("userEmail");
             verifyCode = getIntent().getStringExtra("verifyCode");
         }
 
+
         TextView textView_find_password_check_back = findViewById(R.id.textView_find_password_check_back);
+
+        EditText editText_find_password_check_verifyCode = findViewById(R.id.editText_find_password_check_verifyCode);
+
+        ImageView find_password_check_done_icon = findViewById(R.id.find_password_check_done_icon);
+
+        TextView textView_warning = findViewById(R.id.textView_warning);
+
+        TextView button_find_password_check = findViewById(R.id.button_find_password_check);
+
+        //타이머 설정
+        find_password_check_timer = findViewById(R.id.find_password_check_timer);
+        passwordTimer = new PasswordTimer(180000, 1000, find_password_check_timer,
+                editText_find_password_check_verifyCode, find_password_check_done_icon, textView_warning, "입력 시간이 초과되었습니다.\n이전으로 돌아가서 다시 요청해주세요.",
+                button_find_password_check);
+
+        passwordTimer.start();
+
 
         textView_find_password_check_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,13 +100,7 @@ public class FindPasswordCheckActivity extends AppCompatActivity {
             }
         });
 
-       EditText editText_find_password_check_verifyCode = findViewById(R.id.editText_find_password_check_verifyCode);
-       
-       ImageView find_password_check_done_icon = findViewById(R.id.find_password_check_done_icon);
 
-       TextView textView_warning = findViewById(R.id.textView_warning);
-
-       TextView button_find_password_check = findViewById(R.id.button_find_password_check);
 
         ActivityResultLauncher<Intent> backToMainLoginResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
