@@ -395,6 +395,7 @@ public class CalendarFragment extends Fragment {
                             if(CallType == 2001) {
 
 
+                                relativeLayout_frag_tita.removeAllViews();
                                 schedule.ResetSchedule();
                                 ScheduleBackgroundTask();
 

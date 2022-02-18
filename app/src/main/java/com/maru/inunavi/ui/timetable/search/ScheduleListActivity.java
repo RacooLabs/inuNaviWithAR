@@ -6,6 +6,7 @@ import static com.maru.inunavi.MainActivity.sessionURL;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -58,6 +59,7 @@ public class ScheduleListActivity extends AppCompatActivity {
     private TextView tita_schedule_list_totalCount;
     private TextView tita_schedule_list_totalScore;
     private ScheduleListAdapter scheduleListAdapter;
+    private TextView tita_schedule_list_info;
 
     private int totalCount = 0;
     private int totalScore = 0;
@@ -89,6 +91,9 @@ public class ScheduleListActivity extends AppCompatActivity {
         tita_schedule_list_backButton = findViewById(R.id.tita_schedule_list_backButton);
         tita_schedule_list_totalCount = findViewById(R.id.tita_schedule_list_totalCount);
         tita_schedule_list_totalScore = findViewById(R.id.tita_schedule_list_totalScore);
+        tita_schedule_list_info = findViewById(R.id.tita_schedule_list_info);
+
+        tita_schedule_list_info.setVisibility(View.VISIBLE);
 
         //돌아가기 버튼
         tita_schedule_list_backButton.setOnClickListener(new View.OnClickListener() {
@@ -232,6 +237,12 @@ public class ScheduleListActivity extends AppCompatActivity {
 
                 }
 
+                if(count > 0){
+                    tita_schedule_list_info.setVisibility(View.GONE);
+                }else{
+                    tita_schedule_list_info.setVisibility(View.VISIBLE);
+                }
+
                 tita_schedule_list_totalCount.setText("과목 수 " + totalCount);
                 tita_schedule_list_totalScore.setText("총 학점 " + totalScore);
 
@@ -245,55 +256,82 @@ public class ScheduleListActivity extends AppCompatActivity {
                     @Override
                     public void onItemClick(View v, int position) {
 
-                        Response.Listener<String> responseListener = new Response.Listener<String>() {
+                        AlertDialog.Builder dlg = new AlertDialog.Builder(ScheduleListActivity.this);
+                        dlg.setTitle("정보");
+                        dlg.setMessage(scheduleList.get(position).getLecturename() + "을(를) 삭제하시겠습니까?");
 
-                            @Override
-                            public void onResponse(String response) {
+                        dlg.setPositiveButton("삭제",new DialogInterface.OnClickListener(){
+                            public void onClick(DialogInterface dialog, int which) {
 
-                                try {
+                                Response.Listener<String> responseListener = new Response.Listener<String>() {
 
-                                    Log.d("@@@", "SearchAdapter_78 : " + response);
+                                    @Override
+                                    public void onResponse(String response) {
 
-                                    JSONObject jsonResponse = new JSONObject(response);
+                                        try {
 
-                                    boolean success = jsonResponse.getBoolean("success");
+                                            Log.d("@@@", "SearchAdapter_78 : " + response);
 
-                                    if (success) {
-                                        AlertDialog.Builder builder = new AlertDialog.Builder(ScheduleListActivity.this);
-                                        AlertDialog dialog = builder.setMessage("강의를 삭제하였습니다.").setPositiveButton("확인", null)
-                                                .create();
-                                        dialog.show();
+                                            JSONObject jsonResponse = new JSONObject(response);
 
-                                        totalCount --;
-                                        totalScore -= scheduleList.get(position).getPoint();
+                                            boolean success = jsonResponse.getBoolean("success");
 
-                                        scheduleList.remove(position);
-                                        scheduleListAdapter.notifyDataSetChanged();
+                                            if (success) {
+                                                AlertDialog.Builder builder = new AlertDialog.Builder(ScheduleListActivity.this);
+                                                AlertDialog dialog = builder.setMessage("강의를 삭제하였습니다.").setPositiveButton("확인", null)
+                                                        .create();
+                                                dialog.show();
 
-                                        tita_schedule_list_totalCount.setText("과목 수 " + totalCount);
-                                        tita_schedule_list_totalScore.setText("총 학점 " + totalScore);
+                                                totalCount --;
+                                                totalScore -= scheduleList.get(position).getPoint();
+
+                                                if(totalCount > 0){
+                                                    tita_schedule_list_info.setVisibility(View.GONE);
+                                                }else{
+                                                    tita_schedule_list_info.setVisibility(View.VISIBLE);
+                                                }
+
+                                                scheduleList.remove(position);
+                                                scheduleListAdapter.notifyDataSetChanged();
+
+                                                tita_schedule_list_totalCount.setText("과목 수 " + totalCount);
+                                                tita_schedule_list_totalScore.setText("총 학점 " + totalScore);
 
 
-                                    }else{
-                                        AlertDialog.Builder builder = new AlertDialog.Builder(ScheduleListActivity.this);
-                                        AlertDialog dialog = builder.setMessage("강의 삭제를 실패하였습니다.").setPositiveButton("확인", null)
-                                                .create();
-                                        dialog.show();
+                                            }else{
+                                                AlertDialog.Builder builder = new AlertDialog.Builder(ScheduleListActivity.this);
+                                                AlertDialog dialog = builder.setMessage("강의 삭제를 실패하였습니다.").setPositiveButton("확인", null)
+                                                        .create();
+                                                dialog.show();
+                                            }
+
+                                        } catch (Exception e) {
+
+                                            e.printStackTrace();
+
+                                        }
+
                                     }
 
-                                } catch (Exception e) {
+                                };
 
-                                    e.printStackTrace();
-
-                                }
+                                DeleteRequest deleteRequest = new DeleteRequest(userEmail, scheduleList.get(position).getNumber(),responseListener);
+                                RequestQueue queue = Volley.newRequestQueue(getBaseContext());
+                                queue.add(deleteRequest);
 
                             }
+                        });
 
-                        };
+                        dlg.setNegativeButton("취소",new DialogInterface.OnClickListener(){
 
-                        DeleteRequest deleteRequest = new DeleteRequest(userEmail, scheduleList.get(position).getNumber(),responseListener);
-                        RequestQueue queue = Volley.newRequestQueue(getBaseContext());
-                        queue.add(deleteRequest);
+                            public void onClick(DialogInterface dialog, int which) {
+
+
+
+                            }
+                        });
+
+                        dlg.show();
 
                     }
                 });

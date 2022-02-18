@@ -691,7 +691,8 @@
             app:layout_constraintRight_toRightOf="@id/map_frag_sliding_topBar"
             android:text="검색 결과가 없습니다."
             android:textSize="14sp"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:textColor="@color/hint_text_normal"/>
 
 
         <androidx.recyclerview.widget.RecyclerView

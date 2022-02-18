@@ -169,6 +169,7 @@
         android:visibility="visible"
         android:text="검색 결과가 없습니다."
         android:textSize="@dimen/main_text_size"
+        android:textColor="@color/hint_text_normal"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

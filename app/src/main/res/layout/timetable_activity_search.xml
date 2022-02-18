@@ -146,7 +146,8 @@
         app:layout_constraintBottom_toBottomOf="@+id/tita_search_recycler_view"
         app:layout_constraintLeft_toLeftOf="@+id/tita_search_recycler_view"
         app:layout_constraintRight_toRightOf="@+id/tita_search_recycler_view"
-        android:visibility="visible"/>
+        android:visibility="visible"
+        android:textColor="@color/hint_text_normal"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
