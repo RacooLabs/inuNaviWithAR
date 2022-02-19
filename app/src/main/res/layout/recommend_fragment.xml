@@ -55,6 +55,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/frag_recommend_recyclerView"
             >
 
             <TextView
@@ -72,6 +73,19 @@
                 android:textStyle="bold" />
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/frag_recommend_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/main_text_size"
+            android:text="추천 정보가 없습니다."
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:visibility="gone"
+            android:textColor="@color/hint_text_normal" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/frag_recommend_recyclerView"

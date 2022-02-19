@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -63,6 +64,8 @@ public class RecommendFragment extends Fragment {
 
     private ArrayList<Lecture> recommendListType0 = new ArrayList<>();
     private ArrayList<Lecture> recommendListType1 = new ArrayList<>();
+    private TextView frag_recommend_info;
+
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -75,6 +78,7 @@ public class RecommendFragment extends Fragment {
 
         ConstraintLayout constraint_frag_recommend_main = root.findViewById(R.id.constraint_frag_recommend_main);
         Button button_frag_recommend_login = root.findViewById(R.id.button_frag_recommend_login);
+        frag_recommend_info = root.findViewById(R.id.frag_recommend_info);
 
         recyclerView = (RecyclerView)root.findViewById(R.id.frag_recommend_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false)) ;
@@ -287,14 +291,45 @@ public class RecommendFragment extends Fragment {
 
                 ArrayList<Lecture> totalRecommendList = new ArrayList<>();
 
-                totalRecommendList.add(new Lecture(0,"",0,"","","거리 맞춤 추천","","","", "","","",0));
-                totalRecommendList.addAll(recommendListType0);
-                totalRecommendList.add(new Lecture(0,"",0,"","","개인 맞춤 추천","","","", "","","",0));
-                totalRecommendList.addAll(recommendListType1);
+                if(recommendListType0.size() == 0 && recommendListType1.size() == 0){
+
+                    frag_recommend_info.setVisibility(View.VISIBLE);
+
+                }else {
+
+                    frag_recommend_info.setVisibility(View.INVISIBLE);
+
+                    if (recommendListType0.size() == 0) {
+                        totalRecommendList.add(new Lecture(0, "", 0, "", "", "개인 맞춤 추천", "", "", "", "", "", "", 0));
+                        totalRecommendList.addAll(recommendListType1);
+
+                    } else if (recommendListType1.size() == 0) {
+                        totalRecommendList.add(new Lecture(0, "", 0, "", "", "거리 맞춤 추천", "", "", "", "", "", "", 0));
+                        totalRecommendList.addAll(recommendListType0);
+
+                    }else{
+
+                        totalRecommendList.add(new Lecture(0, "", 0, "", "", "거리 맞춤 추천", "", "", "", "", "", "", 0));
+                        totalRecommendList.addAll(recommendListType0);
+                        totalRecommendList.add(new Lecture(0, "", 0, "", "", "개인 맞춤 추천", "", "", "", "", "", "", 0));
+                        totalRecommendList.addAll(recommendListType1);
+
+
+                    }
+                }
 
 
                 adapter = new RecommendAdapter(totalRecommendList, getActivity());
                 recyclerView.setAdapter(adapter);
+
+                adapter.setOnItemClickListener(new RecommendAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View v, int position) {
+
+                        RecommendBackgroundTask();
+
+                    }
+                });
 
 
             } catch (Exception e) {

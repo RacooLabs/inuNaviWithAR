@@ -24,8 +24,6 @@ import com.maru.inunavi.R;
 import com.maru.inunavi.ui.timetable.search.AddRequest;
 import com.maru.inunavi.ui.timetable.search.Lecture;
 import com.maru.inunavi.ui.timetable.search.Schedule;
-import com.maru.inunavi.ui.timetable.search.SearchActivity;
-import com.maru.inunavi.ui.timetable.search.SearchAdapter;
 
 
 import org.json.JSONArray;
@@ -56,7 +54,7 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.MyVi
     private String userEmail = "";
     private Schedule schedule = new Schedule();
 
-    private SearchAdapter.OnItemClickListener mListener = null ;
+    private RecommendAdapter.OnItemClickListener mListener = null ;
     private ArrayList<Lecture> mData = null;
 
     private String sUrl = sessionURL;
@@ -74,9 +72,9 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.MyVi
     }
 
 
-    public void setOnItemClickListener(SearchAdapter.OnItemClickListener listener) {
+    public void setOnItemClickListener(RecommendAdapter.OnItemClickListener listener) {
 
-        this.mListener = listener ;
+        this.mListener = listener;
 
     }
 
@@ -192,6 +190,8 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.MyVi
                     mData.get(position).getPoint() + "학점 " + mData.get(position).getNumber());
             holder.textView_recommend_time.setText(mData.get(position).getClasstime_raw());
 
+
+
             holder.textView_recommend_add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -237,8 +237,16 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.MyVi
                                                 .create();
                                         dialog.show();
 
+                                        int pos = holder.getAdapterPosition() ;
+
+                                        if (pos != RecyclerView.NO_POSITION) {
+                                            if(mListener != null){
+                                                mListener.onItemClick(view,pos);
+                                            }
+                                        }
 
                                         schedule.addSchedule(mData.get(holder.getAdapterPosition()));
+
 
                                     }else{
                                         AlertDialog.Builder builder = new AlertDialog.Builder(parent);
