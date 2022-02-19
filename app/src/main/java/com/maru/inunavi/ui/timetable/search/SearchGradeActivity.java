@@ -50,7 +50,7 @@ public class SearchGradeActivity extends AppCompatActivity implements Serializab
             @Override
             public void onClick(View view) {
                 finish();
-                overridePendingTransition(0, 0);
+
             }
         });
 
@@ -81,7 +81,7 @@ public class SearchGradeActivity extends AppCompatActivity implements Serializab
                 intent.putExtra("Grade", ((TextView)v).getText());
                 setResult(Activity.RESULT_OK, intent);
                 finish();
-                overridePendingTransition(0, 0);
+
 
             }
 
@@ -116,7 +116,7 @@ public class SearchGradeActivity extends AppCompatActivity implements Serializab
                 intent.putExtra("Grade", gradeList);
                 setResult(Activity.RESULT_OK, intent);
                 finish();
-                overridePendingTransition(0, 0);
+
 
             }
         });

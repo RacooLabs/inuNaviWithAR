@@ -1,4 +1,4 @@
-package com.maru.inunavi.user;
+package com.maru.inunavi.ui.timetable;
 
 import static com.maru.inunavi.IpAddress.DemoIP;
 import static com.maru.inunavi.IpAddress.DemoIP_ClientTest;
@@ -13,16 +13,16 @@ import com.maru.inunavi.IpAddress;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SignUpRequest extends StringRequest {
+public class ModifyMajorRequest extends StringRequest {
 
 
-    final static private String URL = IpAddress.isTest ? "http://" + DemoIP_ClientTest + "/inuNavi/UserRegister.php" :
+    final static private String URL = IpAddress.isTest ? "http://" + DemoIP_ClientTest + "/inuNavi/ModifyMajor.php" :
             "http://" + DemoIP + "/user/insert";
 
 
     private Map<String, String> parameters;
 
-    public SignUpRequest(String userEmail, String userPassword,String userMajor, Response.Listener<String> listener){
+    public ModifyMajorRequest(String userEmail, String userMajor, Response.Listener<String> listener){
 
         super(Method.POST, URL, listener, new Response.ErrorListener() {
         @Override
@@ -33,9 +33,7 @@ public class SignUpRequest extends StringRequest {
 
         parameters = new HashMap<>();
         parameters.put("email", userEmail);
-        parameters.put("password", userPassword);
         parameters.put("major", userMajor);
-
 
     }
 

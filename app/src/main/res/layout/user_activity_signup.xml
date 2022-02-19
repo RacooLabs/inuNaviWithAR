@@ -187,7 +187,57 @@
             android:paddingLeft="6dp"
             />
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="10dp">
 
+            <EditText
+                android:id="@+id/editText_sign_up_major"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/editText_height"
+                android:background="@drawable/layout_login_round_box"
+                android:hint="전공을 선택하세요."
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:maxLength="30"
+                android:paddingLeft="@dimen/editText_padding"
+                android:paddingRight="@dimen/editText_padding"
+                android:textColor="@color/main_text_color"
+                android:textSize="@dimen/main_text_size"
+                android:cursorVisible="false"
+                android:focusableInTouchMode="false"
+
+                />
+
+
+            <ImageView
+                android:id="@+id/sign_up_major_arrow"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:padding="8dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:src="@drawable/ic_arrow_forward_ios_white_24dp"
+                android:gravity="center_vertical"
+                android:focusable="false"
+                android:clickable="true"
+                android:textSize="@dimen/main_text_size"/>
+
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/textView_major_warning"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="전공 문제"
+            android:textSize="@dimen/warning_text_size"
+            android:textColor="@color/warning_color"
+            android:visibility="gone"
+            android:paddingTop="6dp"
+            android:paddingLeft="6dp"/>
 
 
 

@@ -43,8 +43,6 @@ public class LoginActivity extends AppCompatActivity {
         ImageView user_activity_login_backButton = findViewById(R.id.user_activity_login_backButton);
 
 
-
-        
         //회원가입 하러가기 버튼
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,6 +76,7 @@ public class LoginActivity extends AppCompatActivity {
                             Log.d("@@@",response.toString());
                             JSONObject jsonResponse = new JSONObject(response);
                             boolean success = jsonResponse.getBoolean("success");
+                            String userMajor = jsonResponse.getString("major");
 
                             if(success){
 
@@ -85,6 +84,7 @@ public class LoginActivity extends AppCompatActivity {
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 intent.putExtra("CallType", 1);
                                 intent.putExtra("userEmail",userEmail);
+                                intent.putExtra("userMajor", userMajor);
                                 setResult(Activity.RESULT_OK, intent);
                                 finish();
                                 overridePendingTransition(0, 0);
@@ -99,6 +99,7 @@ public class LoginActivity extends AppCompatActivity {
 
                         }catch (Exception e){
 
+                            Log.d("LoginActivity 102", e.toString());
                             setNotEditText(editText_password, textView_login_password_warning, "서버 연결 실패");
 
                         }

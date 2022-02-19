@@ -43,7 +43,6 @@ public class FindPasswordChangeActivity extends AppCompatActivity {
         intent.putExtra("CallType", -1);
         setResult(Activity.RESULT_OK, intent);
         finish();
-        overridePendingTransition(0, 0);
 
     }
 
@@ -68,7 +67,6 @@ public class FindPasswordChangeActivity extends AppCompatActivity {
                 intent.putExtra("CallType", -1);
                 setResult(Activity.RESULT_OK, intent);
                 finish();
-                overridePendingTransition(0, 0);
 
             }
 
@@ -208,7 +206,6 @@ public class FindPasswordChangeActivity extends AppCompatActivity {
                                     intent.putExtra("CallType", -1);
                                     setResult(Activity.RESULT_OK, intent);
                                     finish();
-                                    overridePendingTransition(0, 0);
 
                                 } else {
                                     Toast.makeText(getApplicationContext(), "비밀번호 변경에 실패하였습니다.", Toast.LENGTH_SHORT).show();

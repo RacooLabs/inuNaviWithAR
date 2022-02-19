@@ -30,7 +30,6 @@ public class SearchMajorActivity extends AppCompatActivity {
 
         ImageView tita_search_option_single_backButton = findViewById(R.id.tita_search_option_single_backButton);
 
-
         //Topbar
         Intent intent = getIntent();
         String topBarTitle = intent.getStringExtra("topBarTitle");
@@ -42,7 +41,6 @@ public class SearchMajorActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 finish();
-                overridePendingTransition(0, 0);
             }
         });
 
@@ -63,7 +61,7 @@ public class SearchMajorActivity extends AppCompatActivity {
             data.add(major);
         }
 
-        SearchOptionAdapter adapter =  new SearchOptionAdapter(data);
+        adapter =  new SearchOptionAdapter(data);
 
         recyclerView.setAdapter(adapter);
 
@@ -78,7 +76,6 @@ public class SearchMajorActivity extends AppCompatActivity {
                 intent.putExtra("Major", ((TextView)v).getText());
                 setResult(Activity.RESULT_OK, intent);
                 finish();
-                overridePendingTransition(0, 0);
 
             }
 

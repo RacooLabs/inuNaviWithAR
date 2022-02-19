@@ -41,7 +41,7 @@ public class SearchCSEActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 finish();
-                overridePendingTransition(0, 0);
+
             }
         });
 
@@ -72,7 +72,7 @@ public class SearchCSEActivity extends AppCompatActivity {
                 intent.putExtra("CSE", ((TextView)v).getText());
                 setResult(Activity.RESULT_OK, intent);
                 finish();
-                overridePendingTransition(0, 0);
+
 
             }
 

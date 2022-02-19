@@ -123,11 +123,8 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-import com.google.android.gms.maps.MapsInitializer;
-import com.google.android.gms.maps.MapsInitializer.Renderer;
 
-
-public class MapFragment extends Fragment implements OnMapReadyCallback, OnMapsSdkInitializedCallback {
+public class MapFragment extends Fragment implements OnMapReadyCallback{
 
 
     private MapView mapView = null;
@@ -237,18 +234,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnMapsS
     // 다음 강의실 찾기 변수
 
 
-    @Override
-    public void onMapsSdkInitialized(MapsInitializer.Renderer renderer) {
-        switch (renderer) {
-            case LATEST:
-                Log.d("MapsDemo", "The latest version of the renderer is used.");
-                break;
-            case LEGACY:
-                Log.d("MapsDemo", "The legacy version of the renderer is used.");
-                break;
-        }
-    }
-
 
     //다음 강의실 정보 결과 응답 POST 방식
     private Response.Listener<String> responseNextPlaceListener;
@@ -261,10 +246,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnMapsS
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        MapsInitializer.initialize(getActivity().getApplicationContext(), Renderer.LATEST, this);
-
-
 
 
     }
@@ -935,12 +916,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnMapsS
                         if (result.getResultCode() == Activity.RESULT_OK) {
                             Intent intent = result.getData();
 
-                            int CallType = intent.getIntExtra("CallType", 2);
                             String userEmail = intent.getStringExtra("userEmail");
+                            String userMajor = intent.getStringExtra("userMajor");
 
                             //로그인 요청, 쿠키 저장
 
                             cookieManager.setCookie(url,"cookieKey="+userEmail);
+                            MainActivity.userMajor = userMajor;
 
                             MainActivity.autoLogin = true;
 
@@ -950,6 +932,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnMapsS
                                 SharedPreferences auto = getContext().getSharedPreferences("autoLogin", Activity.MODE_PRIVATE);
                                 SharedPreferences.Editor autoLoginEdit = auto.edit();
                                 autoLoginEdit.putString("userEmail", userEmail);
+                                autoLoginEdit.putString("userMajor", MainActivity.userMajor);
                                 autoLoginEdit.putBoolean("isAutoLogin", true);
                                 autoLoginEdit.commit();
 
@@ -1522,7 +1505,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnMapsS
 
                 if(gMap != null)
                     //Map.setPadding(0,DpToPixel(170), 0, DpToPixel(140));
-                    gMap.setPadding(0,DpToPixel(170), 0, DpToPixel(0));
+                    gMap.setPadding(0,DpToPixel(182), 0, DpToPixel(0));
 
 
                 map_frag_navi_searchBar_Start.setText("");
@@ -1590,7 +1573,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnMapsS
         Toast.makeText(getContext(), "경로 찾기 시작", Toast.LENGTH_SHORT).show();
 
         if(gMap != null)
-            gMap.setPadding(0,DpToPixel(170), 0, DpToPixel(140));
+            gMap.setPadding(0,DpToPixel(182), 0, DpToPixel(140));
 
         latLngList.clear();
 

@@ -72,8 +72,10 @@ public class SearchOptionActivity extends AppCompatActivity implements Serializa
         //돌아가기 버튼
         tita_search_option_backButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)  { finish();
-                overridePendingTransition(0, 0);}
+            public void onClick(View view)  {
+                finish();
+
+            }
         });
 
         //검색 조건
@@ -365,7 +367,6 @@ public class SearchOptionActivity extends AppCompatActivity implements Serializa
 
                 setResult(Activity.RESULT_OK, intent);
                 finish();
-                overridePendingTransition(0, 0);
 
             }
 

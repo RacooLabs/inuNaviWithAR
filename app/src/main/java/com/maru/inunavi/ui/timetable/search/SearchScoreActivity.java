@@ -49,7 +49,6 @@ public class SearchScoreActivity extends AppCompatActivity implements Serializab
             @Override
             public void onClick(View view) {
                 finish();
-                overridePendingTransition(0, 0);
             }
         });
 
@@ -80,7 +79,6 @@ public class SearchScoreActivity extends AppCompatActivity implements Serializab
                 intent.putExtra("Score", ((TextView)v).getText());
                 setResult(Activity.RESULT_OK, intent);
                 finish();
-                overridePendingTransition(0, 0);
 
             }
 
@@ -115,7 +113,6 @@ public class SearchScoreActivity extends AppCompatActivity implements Serializab
                 intent.putExtra("Score", scoreList);
                 setResult(Activity.RESULT_OK, intent);
                 finish();
-                overridePendingTransition(0, 0);
 
             }
         });

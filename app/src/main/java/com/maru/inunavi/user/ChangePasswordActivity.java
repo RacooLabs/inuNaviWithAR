@@ -47,7 +47,6 @@ public class ChangePasswordActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 finish();
-                overridePendingTransition(0, 0);
             }
         });
 
@@ -107,19 +106,6 @@ public class ChangePasswordActivity extends AppCompatActivity {
                                    if (success) {
                                        setDoneEditText(editText_change_password_origin, change_password_origin_done_icon, textView_origin_warning);
                                        originPasswordValidate = true;
-
-                                       if(!userPassword.isEmpty() && !userPassword.equals("")){
-
-                                           if(!originPassword.equals(userPassword)){
-                                               setDoneEditText(editText_change_password, change_password_done_icon,  textView_password_warning);
-                                               newPasswordValidate = true;
-                                           }else{
-                                               setNotEditText(editText_change_password, change_password_done_icon,  textView_password_warning, "기존과 다른 비밀번호를 입력하세요.");
-                                               newPasswordValidate = false;
-                                           }
-
-                                       }
-
 
 
                                    }else{
@@ -244,14 +230,23 @@ public class ChangePasswordActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                String userNewPassword = editText_change_password.getText().toString();
+                String originPassword= editText_change_password_origin.getText().toString().trim();
+                String userNewPassword = editText_change_password.getText().toString().trim();
+                String userNewPasswordCheck = editText_change_password_second.getText().toString().trim();
 
                 editText_change_password_origin.clearFocus();
                 editText_change_password.clearFocus();
                 editText_change_password_second.clearFocus();
 
+                if (userNewPassword.equals("")) {
+                    setNotEditText(editText_change_password, change_password_done_icon, textView_password_warning, "새 비밀번호를 입력하세요.");
+                    newPasswordValidate = false;
+                }
 
-                String originPassword= editText_change_password_origin.getText().toString().trim();
+                if (userNewPasswordCheck.equals("")) {
+                    setNotEditText(editText_change_password_second, change_password_second_done_icon, textView_password_second_warning, "새 비밀번호를 재확인하세요.");
+                    newPasswordCheckValidate = false;
+                }
 
                 if (originPassword.equals("")) {
                     setNotEditText(editText_change_password_origin, change_password_origin_done_icon, textView_origin_warning, "기존 비밀번호를 입력하세요.");
@@ -271,22 +266,9 @@ public class ChangePasswordActivity extends AppCompatActivity {
                                 boolean success = jsonResponse.getBoolean("success");
 
                                 if (success) {
+
                                     setDoneEditText(editText_change_password_origin, change_password_origin_done_icon, textView_origin_warning);
                                     originPasswordValidate = true;
-
-                                    String userPassword = editText_change_password.getText().toString().trim();
-
-                                    if(!userPassword.isEmpty() && !userPassword.equals("")){
-
-                                        if(!originPassword.equals(userPassword)){
-                                            setDoneEditText(editText_change_password, change_password_done_icon,  textView_password_warning);
-                                            newPasswordValidate = true;
-                                        }else{
-                                            setNotEditText(editText_change_password, change_password_done_icon,  textView_password_warning, "기존과 다른 비밀번호를 입력하세요.");
-                                            newPasswordValidate = false;
-                                        }
-
-                                    }
 
                                     if(originPasswordValidate && newPasswordValidate && newPasswordCheckValidate){
 
@@ -309,7 +291,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
                                                     if (success) {
                                                         Toast.makeText(getApplicationContext(), "비밀번호 변경을 완료하였습니다.", Toast.LENGTH_SHORT).show();
                                                         finish();
-                                                        overridePendingTransition(0, 0);
+
 
                                                     }else{
                                                         Toast.makeText(getApplicationContext(), "비밀번호 변경에 실패하였습니다.", Toast.LENGTH_SHORT).show();

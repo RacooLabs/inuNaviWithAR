@@ -21,6 +21,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
 import com.maru.inunavi.AppInfo;
 import com.maru.inunavi.MainActivity;
 import com.maru.inunavi.R;
@@ -28,6 +31,11 @@ import com.maru.inunavi.ui.timetable.search.Schedule;
 import com.maru.inunavi.user.ChangePasswordActivity;
 import com.maru.inunavi.user.LoginActivity;
 import com.maru.inunavi.user.QuitActivity;
+import com.maru.inunavi.user.SignUpActivity;
+import com.maru.inunavi.user.SignUpMajorActivity;
+import com.maru.inunavi.user.SignUpRequest;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -49,9 +57,11 @@ public class SettingActivity extends AppCompatActivity {
 
         ImageView tita_setting_backButton = findViewById(R.id.tita_setting_backButton);
         TextView setting_user_email = findViewById(R.id.setting_user_email);
+        TextView setting_user_major = findViewById(R.id.setting_user_major);
 
         // 이메일 적기
         setting_user_email.setText(userEmail);
+        setting_user_major.setText(MainActivity.userMajor);
 
         //돌아가기 버튼
         tita_setting_backButton.setOnClickListener(new View.OnClickListener() {
@@ -65,6 +75,7 @@ public class SettingActivity extends AppCompatActivity {
         ArrayList<String> list = new ArrayList<>();
         list.add("로그아웃");
         list.add("비밀번호 수정");
+        list.add("전공 변경");
         list.add("회원 탈퇴");
         list.add("앱 정보");
         list.add("오류 신고");
@@ -96,6 +107,64 @@ public class SettingActivity extends AppCompatActivity {
                     }
                 });
 
+        //전공 변경 콜백
+        ActivityResultLauncher<Intent> modifyMajorActivityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            Intent intent = result.getData();
+
+                            int CallType = intent.getIntExtra("CallType", 0);
+
+                            if(CallType == 1) {
+
+                                String userMajor = intent.getStringExtra("userMajor");
+
+                                Response.Listener<String> modifyMajorResponseListener = new Response.Listener<String>() {
+
+                                    @Override
+                                    public void onResponse(String response) {
+
+                                        try {
+
+                                            JSONObject jsonResponse = new JSONObject(response);
+
+                                            boolean success = jsonResponse.getBoolean("success");
+
+                                            if (success) {
+
+                                                Log.d("@@@ SettingActivity.java 138", response);
+                                                Toast.makeText(getApplicationContext(), "전공을 변경하였습니다.", Toast.LENGTH_SHORT).show();
+                                                MainActivity.userMajor = userMajor;
+                                                setting_user_major.setText(MainActivity.userMajor);
+
+                                            } else {
+                                                Toast.makeText(getApplicationContext(), "전공 변경을 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                                            }
+
+                                        } catch (Exception e) {
+
+                                            e.printStackTrace();
+
+                                        }
+
+
+                                    }
+
+                                };
+
+                                ModifyMajorRequest modifyMajorRequest = new ModifyMajorRequest(userEmail ,userMajor, modifyMajorResponseListener);
+                                RequestQueue queue = Volley.newRequestQueue(SettingActivity.this);
+                                queue.add(modifyMajorRequest);
+
+                            }
+
+                        }
+                    }
+                });
+
 
         //어댑터 콜백 리스너
         adapter.setOnItemClickListener(new SettingAdapter.OnItemClickListener() {
@@ -110,12 +179,19 @@ public class SettingActivity extends AppCompatActivity {
                     finish();
                     overridePendingTransition(0, 0);
 
-                }else if(((TextView)v).getText().equals("비밀번호 수정")){
+                }else if(((TextView)v).getText().equals("비밀번호 수정")) {
 
                     // 비밀 번호 변경 요청
 
                     Intent startIntent = new Intent(SettingActivity.this, ChangePasswordActivity.class);
                     startActivity(startIntent);
+
+                }else if(((TextView)v).getText().equals("전공 변경")){
+
+                    // 전공 변경 요청
+
+                    Intent startIntent = new Intent(SettingActivity.this, SignUpMajorActivity.class);
+                    modifyMajorActivityResultLauncher.launch(startIntent);
 
 
                 }else if(((TextView)v).getText().equals("회원 탈퇴")){

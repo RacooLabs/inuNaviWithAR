@@ -15,8 +15,9 @@
         android:gravity="center_vertical"
         android:background="?attr/selectableItemBackground"
         android:clickable="true"
-        android:layout_marginRight="30dp"
-        android:layout_marginLeft="30dp"
+        android:paddingRight="32dp"
+        android:paddingLeft="32dp"
+        android:text="컴퓨터공학부"
         />
 
     <View

@@ -30,7 +30,6 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
 
     private ArrayList<String> mData = null;
 
-    public TextView textView_setting_list;
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 

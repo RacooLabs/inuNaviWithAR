@@ -49,7 +49,7 @@ public class SearchCategoryActivity extends AppCompatActivity implements Seriali
             @Override
             public void onClick(View view) {
                 finish();
-                overridePendingTransition(0, 0);
+
             }
         });
 
@@ -80,7 +80,7 @@ public class SearchCategoryActivity extends AppCompatActivity implements Seriali
                 intent.putExtra("Category", ((TextView)v).getText());
                 setResult(Activity.RESULT_OK, intent);
                 finish();
-                overridePendingTransition(0, 0);
+
 
             }
 
@@ -115,7 +115,7 @@ public class SearchCategoryActivity extends AppCompatActivity implements Seriali
                 intent.putExtra("Category", categoryList);
                 setResult(Activity.RESULT_OK, intent);
                 finish();
-                overridePendingTransition(0, 0);
+
 
             }
         });

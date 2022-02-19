@@ -153,7 +153,6 @@
                 android:layout_weight="1"
                 android:padding="8dp"
                 android:paddingRight="30dp"
-                android:text="컴퓨터공학부 "
                 android:src="@drawable/ic_arrow_forward_ios_white_24dp"
                 android:gravity="center_vertical"
                 android:textSize="@dimen/main_text_size"/>
@@ -201,7 +200,6 @@
                 android:layout_weight="1"
                 android:padding="8dp"
                 android:paddingRight="30dp"
-                android:text="컴퓨터공학부 "
                 android:src="@drawable/ic_arrow_forward_ios_white_24dp"
                 android:gravity="center_vertical"
                 android:textSize="@dimen/main_text_size"/>
@@ -249,7 +247,6 @@
                 android:layout_weight="1"
                 android:padding="8dp"
                 android:paddingRight="30dp"
-                android:text="컴퓨터공학부 "
                 android:src="@drawable/ic_arrow_forward_ios_white_24dp"
                 android:gravity="center_vertical"
                 android:textSize="@dimen/main_text_size"/>
@@ -296,7 +293,6 @@
                 android:layout_weight="1"
                 android:padding="8dp"
                 android:paddingRight="30dp"
-                android:text="컴퓨터공학부 "
                 android:src="@drawable/ic_arrow_forward_ios_white_24dp"
                 android:gravity="center_vertical"
                 android:textSize="@dimen/main_text_size"/>
@@ -343,7 +339,6 @@
                 android:layout_weight="1"
                 android:padding="8dp"
                 android:paddingRight="30dp"
-                android:text="컴퓨터공학부 "
                 android:src="@drawable/ic_arrow_forward_ios_white_24dp"
                 android:gravity="center_vertical"
                 android:textSize="@dimen/main_text_size"/>
@@ -393,7 +388,6 @@
                 android:layout_weight="1"
                 android:padding="8dp"
                 android:paddingRight="30dp"
-                android:text="컴퓨터공학부 "
                 android:src="@drawable/ic_arrow_forward_ios_white_24dp"
                 android:gravity="center_vertical"
                 android:textSize="@dimen/main_text_size"/>

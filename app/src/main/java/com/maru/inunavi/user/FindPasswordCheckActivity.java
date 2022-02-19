@@ -50,7 +50,6 @@ public class FindPasswordCheckActivity extends AppCompatActivity {
         intent.putExtra("CallType", -2);
         setResult(Activity.RESULT_OK, intent);
         finish();
-        overridePendingTransition(0, 0);
 
     }
 
@@ -95,7 +94,6 @@ public class FindPasswordCheckActivity extends AppCompatActivity {
                 intent.putExtra("CallType", -2);
                 setResult(Activity.RESULT_OK, intent);
                 finish();
-                overridePendingTransition(0, 0);
 
             }
         });
@@ -120,7 +118,6 @@ public class FindPasswordCheckActivity extends AppCompatActivity {
                                     returnIntent.putExtra("CallType", -1);
                                     setResult(Activity.RESULT_OK, returnIntent);
                                     finish();
-                                    overridePendingTransition(0, 0);
 
                                     break;
 

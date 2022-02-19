@@ -56,6 +56,16 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/setting_user_major"/>
+
+        <TextView
+            android:id="@+id/setting_user_major"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="컴퓨터공학부"
+            app:layout_constraintTop_toBottomOf="@id/setting_user_icon"
+            app:layout_constraintLeft_toLeftOf="@id/setting_user_icon"
+            app:layout_constraintRight_toRightOf="@id/setting_user_icon"
             app:layout_constraintBottom_toTopOf="@id/setting_user_email"/>
 
         <TextView
@@ -63,7 +73,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="racoo340@gmail.com"
-            app:layout_constraintTop_toBottomOf="@id/setting_user_icon"
+            app:layout_constraintTop_toBottomOf="@id/setting_user_major"
             app:layout_constraintLeft_toLeftOf="@id/setting_user_icon"
             app:layout_constraintRight_toRightOf="@id/setting_user_icon"
             app:layout_constraintBottom_toBottomOf="parent"/>

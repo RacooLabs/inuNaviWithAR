@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements OnMapsSdkInitiali
     BottomNavigationView bottomNavigationView;
 
     public static CookieManager cookieManager;
+    public static String userMajor = "";
 
     public static String sessionURL = IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/" :
             "http://" + DemoIP;
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements OnMapsSdkInitiali
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        MapsInitializer.initialize(getApplicationContext(), Renderer.LATEST, this);
+        //MapsInitializer.initialize(getApplicationContext(), Renderer.LATEST, this);
 
 
         setContentView(R.layout.main_activity);
@@ -194,11 +195,13 @@ public class MainActivity extends AppCompatActivity implements OnMapsSdkInitiali
 
         SharedPreferences auto = getSharedPreferences("autoLogin", Activity.MODE_PRIVATE);
         String userEmail = auto.getString("userEmail", null);
+        String userMajor = auto.getString("userMajor", null);
         Boolean isAutoLogin = auto.getBoolean("isAutoLogin", false);
 
         if(isAutoLogin){
 
             cookieManager.setCookie(sessionURL,"cookieKey="+userEmail);
+            MainActivity.userMajor = userMajor;
             MainActivity.autoLogin = true;
 
         }

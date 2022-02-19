@@ -89,10 +89,14 @@ public class RecommendFragment extends Fragment {
 
                             int CallType = intent.getIntExtra("CallType", 2);
                             String userEmail = intent.getStringExtra("userEmail");
+                            String userMajor = intent.getStringExtra("userMajor");
 
                             //로그인 요청, 쿠키 저장
 
                             cookieManager.setCookie(sUrl,"cookieKey="+userEmail);
+                            MainActivity.userMajor = userMajor;
+
+
                             frag_satisfied_login_box.setVisibility(View.GONE);
                             constraint_frag_recommend_main.setVisibility(View.VISIBLE);
 
@@ -102,6 +106,7 @@ public class RecommendFragment extends Fragment {
                                 SharedPreferences auto = getContext().getSharedPreferences("autoLogin", Activity.MODE_PRIVATE);
                                 SharedPreferences.Editor autoLoginEdit = auto.edit();
                                 autoLoginEdit.putString("userEmail", userEmail);
+                                autoLoginEdit.putString("userMajor", MainActivity.userMajor);
                                 autoLoginEdit.putBoolean("isAutoLogin", true);
                                 autoLoginEdit.commit();
 

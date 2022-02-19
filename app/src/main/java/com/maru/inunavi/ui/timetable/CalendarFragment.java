@@ -86,7 +86,6 @@ public class CalendarFragment extends Fragment {
     public static ArrayList<String> categoryList= new ArrayList<>();
 
 
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
@@ -463,22 +462,27 @@ public class CalendarFragment extends Fragment {
 
                             int CallType = intent.getIntExtra("CallType", 2);
                             String userEmail = intent.getStringExtra("userEmail");
+                            String userMajor = intent.getStringExtra("userMajor");
 
                             //로그인 요청, 쿠키 저장
 
                             if(CallType == 2) {
                                 ((BottomNavigationView) getActivity().findViewById(R.id.nav_view)).setSelectedItemId(R.id.navigation_satisfied);
                             }
+
                             cookieManager.setCookie(sUrl,"cookieKey="+userEmail);
+                            MainActivity.userMajor = userMajor;
                             frag_tita_login_box.setVisibility(View.GONE);
                             constraint_frag_tita_main.setVisibility(View.VISIBLE);
 
                             MainActivity.autoLogin = true;
+
                             if(MainActivity.autoLogin) {
                                 // 자동 로그인 데이터 저장
                                 SharedPreferences auto = getContext().getSharedPreferences("autoLogin", Activity.MODE_PRIVATE);
                                 SharedPreferences.Editor autoLoginEdit = auto.edit();
                                 autoLoginEdit.putString("userEmail", userEmail);
+                                autoLoginEdit.putString("userMajor", MainActivity.userMajor);
                                 autoLoginEdit.putBoolean("isAutoLogin", true);
                                 autoLoginEdit.commit();
 
@@ -650,7 +654,7 @@ public class CalendarFragment extends Fragment {
     }
 
 
-    // 학기 경로 분석 결과를 가져오는 서버 통신 코드
+    // 학기 정보를 가져오는 서버 통신 코드
     Disposable getTimetableInfoTask;
 
     void GetTimetableInfoTask() {
