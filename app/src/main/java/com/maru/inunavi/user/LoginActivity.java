@@ -76,9 +76,11 @@ public class LoginActivity extends AppCompatActivity {
                             Log.d("@@@",response.toString());
                             JSONObject jsonResponse = new JSONObject(response);
                             boolean success = jsonResponse.getBoolean("success");
-                            String userMajor = jsonResponse.getString("major");
+
 
                             if(success){
+
+                                String userMajor = jsonResponse.getString("major");
 
                                 Toast.makeText(getApplicationContext(), "로그인 성공", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);

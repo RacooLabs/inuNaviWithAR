@@ -2028,7 +2028,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
             // doInBackground
 
 
-            String target = (IpAddress.isTest ? "http://" + DemoIP_ClientTest + "/inuNavi/GetRoot.php" :
+            String target = (IpAddress.isTest ? "http://" + DemoIP_ClientTest + "/inuNavi/GetRootLive.php" :
                     "http://" + DemoIP + "/selectLecture")+ "?startPlaceCode=\"" + naviInfo.getStartPlaceCode() + "\"&endPlaceCode=\"" + naviInfo.getEndPlaceCode()
                     + "\"&startLocation=\"" + naviInfo.getStartLocation().latitude + "," + naviInfo.getStartLocation().longitude
                     + "\"&endLocation=\"" + naviInfo.getEndLocation().latitude + "," + naviInfo.getEndLocation().longitude + "\"";
