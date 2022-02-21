@@ -132,6 +132,7 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
             public void onClick(View view) {
                 isThreadRun = false;
                 finish();
+                overridePendingTransition(0, 0);
             }
         });
 
@@ -392,7 +393,7 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
             // doInBackground
 
             String target = (IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/GetRootLive.php" :
-                    "http://" + DemoIP + "/selectLecture")+ "?startPlaceCode=\"" + naviInfo.getStartPlaceCode() + "\"&endPlaceCode=\"" + naviInfo.getEndPlaceCode()
+                    "http://" + DemoIP + "/getRootLive")+ "?startPlaceCode=\"" + naviInfo.getStartPlaceCode() + "\"&endPlaceCode=\"" + naviInfo.getEndPlaceCode()
                     + "\"&startLocation=\"" + naviInfo.getStartLocation().latitude + "," + naviInfo.getStartLocation().longitude
                     + "\"&endLocation=\"" + naviInfo.getEndLocation().latitude + "," + naviInfo.getEndLocation().longitude + "\"";
 
@@ -435,7 +436,7 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
                 Boolean isArrived = false;
                 String route = "";
                 int time = 0;
-                double distance = 0;
+                double dist = 0;
                 int steps = 0;
 
                 while (count < jsonArray.length()) {
@@ -444,7 +445,7 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
                     isArrived = object.getBoolean("isArrived");
                     route = object.getString("route");
                     time = object.getInt("time");
-                    distance = object.getDouble("distance");
+                    dist = object.getDouble("dist");
                     steps = object.getInt("steps");
 
                     count++;
@@ -468,7 +469,7 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
                     }else{
 
                         map_activity_navigation_detail_time.setText(time+"");
-                        map_activity_navigation_detail_distance.setText("앞으로 " + (int)distance+"m");
+                        map_activity_navigation_detail_distance.setText("앞으로 " + (int)dist+"m");
 
                         route.trim();
                         route.replaceAll(" ","");

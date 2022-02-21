@@ -140,13 +140,29 @@ public class SettingActivity extends AppCompatActivity {
                                                 MainActivity.userMajor = userMajor;
                                                 setting_user_major.setText(MainActivity.userMajor);
 
+                                                MainActivity.autoLogin = true;
+
+                                                if(MainActivity.autoLogin) {
+
+                                                    // 자동 로그인 데이터 저장
+                                                    SharedPreferences auto = getApplicationContext().getSharedPreferences("autoLogin", Activity.MODE_PRIVATE);
+                                                    SharedPreferences.Editor autoLoginEdit = auto.edit();
+                                                    autoLoginEdit.putString("userEmail", userEmail);
+                                                    autoLoginEdit.putString("userMajor", MainActivity.userMajor);
+                                                    autoLoginEdit.putBoolean("isAutoLogin", true);
+                                                    autoLoginEdit.commit();
+
+                                                }
+
+
+
                                             } else {
                                                 Toast.makeText(getApplicationContext(), "전공 변경을 실패하였습니다.", Toast.LENGTH_SHORT).show();
                                             }
 
                                         } catch (Exception e) {
 
-                                            e.printStackTrace();
+
 
                                         }
 

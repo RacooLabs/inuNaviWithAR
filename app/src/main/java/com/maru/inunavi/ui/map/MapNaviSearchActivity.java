@@ -383,7 +383,7 @@ public class MapNaviSearchActivity extends AppCompatActivity {
                 String placeCode = "NONE";
                 String title = "";
                 String sort = "";
-                double distance = 0.0;
+                double dist = 0.0;
                 LatLng location = null;
                 String time = "-";
                 String callNum = "-";
@@ -394,7 +394,7 @@ public class MapNaviSearchActivity extends AppCompatActivity {
                     placeCode = object.getString("placeCode");
                     title = object.getString("title");
                     sort = object.getString("sort");
-                    distance = object.getDouble("distance");
+                    dist = object.getDouble("dist");
 
                     String[] locationString = object.getString("location").trim().split(",");
                     if (locationString.length == 2) {
@@ -404,7 +404,7 @@ public class MapNaviSearchActivity extends AppCompatActivity {
                     callNum = object.getString("callNum");
 
 
-                    Place place = new Place(placeCode, title, sort, distance, location, time,
+                    Place place = new Place(placeCode, title, sort, dist, location, time,
                             callNum);
 
                     searchPlaceList.add(place);

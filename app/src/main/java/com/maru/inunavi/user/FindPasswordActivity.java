@@ -79,6 +79,7 @@ public class FindPasswordActivity extends AppCompatActivity {
                                 case -1:
 
                                     finish();
+                                    overridePendingTransition(0, 0);
                                     break;
 
                                 case -2:

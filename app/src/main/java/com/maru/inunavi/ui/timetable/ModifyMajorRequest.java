@@ -17,7 +17,7 @@ public class ModifyMajorRequest extends StringRequest {
 
 
     final static private String URL = IpAddress.isTest ? "http://" + DemoIP_ClientTest + "/inuNavi/ModifyMajor.php" :
-            "http://" + DemoIP + "/user/insert";
+            "http://" + DemoIP + "/user/update2";
 
 
     private Map<String, String> parameters;
@@ -27,13 +27,13 @@ public class ModifyMajorRequest extends StringRequest {
         super(Method.POST, URL, listener, new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
-            Log.d("@@@", "error_signup_requst:24");
+            Log.d("@@@", "error_signup_requst:24" + error.toString());
         }
     });
 
         parameters = new HashMap<>();
         parameters.put("email", userEmail);
-        parameters.put("major", userMajor);
+        parameters.put("newMajor", userMajor);
 
     }
 

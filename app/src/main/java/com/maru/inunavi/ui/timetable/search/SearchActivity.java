@@ -68,12 +68,30 @@ public class SearchActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
 
-
-
     private ArrayList<Lecture> lectureList = new ArrayList<>();
+
+
+    public static ArrayList<String> gradeList = new ArrayList<String>(Arrays.asList("1학년", "2학년", "3학년", "4학년" ));
+    public static ArrayList<String> categoryList = CalendarFragment.categoryList;
+    public static ArrayList<String> scoreList = new ArrayList<String>(Arrays.asList("1학점", "2학점", "3학점", "4학점"));
+
+    public static ArrayList<String> selectionCategoryList = new ArrayList<>();
+    public static ArrayList<String> selectionGradeList = new ArrayList<>();
+    public static ArrayList<String> selectionScoreList = new ArrayList<>();
+
+    public static String main_keyword_option;
+    public static boolean[] radioList;
+    public static String major_option;
+    public static String cse_option;
+    public static String sort_option;
+    public static String grade_option;
+    public static String category_option;
+    public static String score_option;
+
 
     @Override
     public void onBackPressed() {
+
 
         Intent intent = new Intent(SearchActivity.this, MainActivity.class);
         intent.putExtra("CallType", 2001);
@@ -81,7 +99,6 @@ public class SearchActivity extends AppCompatActivity {
         finish();
         overridePendingTransition(0, 0);
 
-        super.onBackPressed();
 
     }
 
@@ -96,15 +113,36 @@ public class SearchActivity extends AppCompatActivity {
         tita_search_radioGroup = findViewById(R.id.tita_search_radioGroup);
         tita_search_info = findViewById(R.id.tita_search_info);
 
+        selectionCategoryList.clear();
+        selectionGradeList.clear();
+        selectionScoreList.clear();
+
+        selectionCategoryList.addAll(categoryList);
+        selectionGradeList.addAll(gradeList);
+        selectionScoreList.addAll(scoreList);
+
+        main_keyword_option = "";
+        radioList= new boolean[]{true, false, false, false};
+        major_option = "전체";
+        cse_option = "전체";
+        sort_option =  "기본";
+        grade_option = "전체";
+        category_option = "전체";
+        score_option = "전체";
+
         //돌아가기 버튼
         tita_search_backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)  {
+
+
                 Intent intent = new Intent(SearchActivity.this, MainActivity.class);
                 intent.putExtra("CallType", 2001);
                 setResult(Activity.RESULT_OK, intent);
+
                 finish();
                 overridePendingTransition(0, 0);
+
             }
         });
 
@@ -152,7 +190,7 @@ public class SearchActivity extends AppCompatActivity {
                             Intent intent = result.getData();
                             int CallType = intent.getIntExtra("CallType", 0);
 
-                            String main_keyword = intent.getStringExtra("main_keyword");
+                            String main_keyword = intent.getStringExtra("main_keyword_option");
                             String keyword_option = intent.getStringExtra("keyword_option");
                             String major_option = intent.getStringExtra("major_option");
                             String cse_option = intent.getStringExtra("cse_option");
@@ -303,7 +341,7 @@ public class SearchActivity extends AppCompatActivity {
                     classtime_raw = classtime_raw.replaceAll("]", "");
 
 
-                    Lecture lecture = new Lecture(id, department, Integer.parseInt(grade), category, number, lecturename,
+                    Lecture lecture = new Lecture(id, department, grade, category, number, lecturename,
                             professor, classroom_raw, classtime_raw, classroom, classtime, how, Integer.parseInt(point));
                     lectureList.add(lecture);
                     count++;

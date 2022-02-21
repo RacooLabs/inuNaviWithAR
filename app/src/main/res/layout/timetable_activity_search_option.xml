@@ -68,7 +68,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center|left"
+            android:gravity="center"
             android:orientation="horizontal"
             android:layout_marginBottom="30dp">
 
@@ -76,7 +76,6 @@
                 android:id="@+id/tita_search_option_radioGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="4dp"
                 android:orientation="horizontal"
                 android:checkedButton="@+id/tita_search_option_radio1"
                 >
@@ -85,8 +84,6 @@
                     android:id="@+id/tita_search_option_radio1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginRight="4dp"
                     android:buttonTint="@color/main_color"
                     android:text="전체"
                     android:textSize="@dimen/small_text_size" />

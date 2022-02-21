@@ -4,7 +4,7 @@ public class Lecture {
 
     int id; // 학과
     String department;
-    int grade; // 학년
+    String grade; // 학년
     String category;
     String number;
     String lecturename;
@@ -19,7 +19,7 @@ public class Lecture {
     String color;
 
 
-    public Lecture(int id, String department, int grade, String category, String number, String lecturename, String professor, String classroom_raw, String classtime_raw, String classroom, String classtime, String how, int point) {
+    public Lecture(int id, String department, String grade, String category, String number, String lecturename, String professor, String classroom_raw, String classtime_raw, String classroom, String classtime, String how, int point) {
         this.id = id;
         this.department = department;
         this.grade = grade;
@@ -52,11 +52,11 @@ public class Lecture {
         this.department = department;
     }
 
-    public int getGrade() {
+    public String getGrade() {
         return grade;
     }
 
-    public void setGrade(int grade) {
+    public void setGrade(String grade) {
         this.grade = grade;
     }
 

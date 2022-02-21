@@ -1,5 +1,7 @@
 package com.maru.inunavi.ui.timetable.search;
 
+import static com.maru.inunavi.ui.timetable.search.SearchActivity.selectionCategoryList;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,7 +24,6 @@ import java.util.List;
 public class SearchCategoryActivity extends AppCompatActivity implements Serializable {
 
     RecyclerView recyclerView;
-    SearchOptionAdapter adapter;
     private ArrayList<String> categoryList;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,7 @@ public class SearchCategoryActivity extends AppCompatActivity implements Seriali
             @Override
             public void onClick(View view) {
                 finish();
+                overridePendingTransition(0, 0);
 
             }
         });
@@ -58,33 +60,16 @@ public class SearchCategoryActivity extends AppCompatActivity implements Seriali
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         List<SearchOptionAdapter.Item> data = new ArrayList<>();
 
-        ArrayList<String> categoryTypeList = categoryList;
 
-        for (int i =0;i<categoryTypeList.size();i++){
-            SearchOptionAdapter.Item category_Type = new SearchOptionAdapter.Item(SearchOptionAdapter.MULTI_CHILD, categoryTypeList.get(i));
+        for (int i =0;i<categoryList.size();i++){
+            SearchOptionAdapter.Item category_Type = new SearchOptionAdapter.Item(SearchOptionAdapter.MULTI_CHILD, categoryList.get(i));
             data.add(category_Type);
         }
 
-        SearchOptionAdapter adapter =  new SearchOptionAdapter(data, categoryList);
+        SearchOptionAdapter adapter =  new SearchOptionAdapter(data, selectionCategoryList);
 
         recyclerView.setAdapter(adapter);
 
-
-        //어댑터 콜백 리스너
-        adapter.setOnItemClickListener(new SearchOptionAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View v, int position) {
-
-                Intent intent = new Intent(SearchCategoryActivity.this, SearchActivity.class);
-                intent.putExtra("CallType", 1001);
-                intent.putExtra("Category", ((TextView)v).getText());
-                setResult(Activity.RESULT_OK, intent);
-                finish();
-
-
-            }
-
-        });
 
         tita_search_option_multi_allCheck.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,10 +96,10 @@ public class SearchCategoryActivity extends AppCompatActivity implements Seriali
 
                 Intent intent = new Intent(SearchCategoryActivity.this, SearchOptionActivity.class);
                 intent.putExtra("CallType", 1001);
-                Collections.sort(categoryList);
-                intent.putExtra("Category", categoryList);
+                Collections.sort(selectionCategoryList);
                 setResult(Activity.RESULT_OK, intent);
                 finish();
+                overridePendingTransition(0, 0);
 
 
             }

@@ -116,7 +116,7 @@ public class RecommendFragment extends Fragment {
 
                             }
 
-                            RecommendBackgroundTask();
+                            //RecommendBackgroundTask();
 
                         }
                     }
@@ -141,7 +141,7 @@ public class RecommendFragment extends Fragment {
 
             // 정보 초기화
 
-            RecommendBackgroundTask();
+            //RecommendBackgroundTask();
 
 
 
@@ -275,7 +275,7 @@ public class RecommendFragment extends Fragment {
                     classtime_raw = classtime_raw.replace("[", "");
                     classtime_raw = classtime_raw.replaceAll("]", "");
 
-                    Lecture lecture = new Lecture(id, department, Integer.parseInt(grade), category, number, lecturename,
+                    Lecture lecture = new Lecture(id, department, grade, category, number, lecturename,
                             professor, classroom_raw, classtime_raw, classroom, classtime, how, Integer.parseInt(point));
 
 
@@ -300,18 +300,18 @@ public class RecommendFragment extends Fragment {
                     frag_recommend_info.setVisibility(View.INVISIBLE);
 
                     if (recommendListType0.size() == 0) {
-                        totalRecommendList.add(new Lecture(0, "", 0, "", "", "개인 맞춤 추천", "", "", "", "", "", "", 0));
+                        totalRecommendList.add(new Lecture(0, "", "", "", "", "개인 맞춤 추천", "", "", "", "", "", "", 0));
                         totalRecommendList.addAll(recommendListType1);
 
                     } else if (recommendListType1.size() == 0) {
-                        totalRecommendList.add(new Lecture(0, "", 0, "", "", "거리 맞춤 추천", "", "", "", "", "", "", 0));
+                        totalRecommendList.add(new Lecture(0, "", "", "", "", "거리 맞춤 추천", "", "", "", "", "", "", 0));
                         totalRecommendList.addAll(recommendListType0);
 
                     }else{
 
-                        totalRecommendList.add(new Lecture(0, "", 0, "", "", "거리 맞춤 추천", "", "", "", "", "", "", 0));
+                        totalRecommendList.add(new Lecture(0, "", "", "", "", "거리 맞춤 추천", "", "", "", "", "", "", 0));
                         totalRecommendList.addAll(recommendListType0);
-                        totalRecommendList.add(new Lecture(0, "", 0, "", "", "개인 맞춤 추천", "", "", "", "", "", "", 0));
+                        totalRecommendList.add(new Lecture(0, "", "", "", "", "개인 맞춤 추천", "", "", "", "", "", "", 0));
                         totalRecommendList.addAll(recommendListType1);
 
 
@@ -326,7 +326,7 @@ public class RecommendFragment extends Fragment {
                     @Override
                     public void onItemClick(View v, int position) {
 
-                        RecommendBackgroundTask();
+                        //RecommendBackgroundTask();
 
                     }
                 });

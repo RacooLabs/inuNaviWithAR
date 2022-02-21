@@ -41,6 +41,7 @@ public class SearchCSEActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 finish();
+                overridePendingTransition(0, 0);
 
             }
         });
@@ -53,8 +54,8 @@ public class SearchCSEActivity extends AppCompatActivity {
         ArrayList<String> CSEArray = CalendarFragment.CSEArray;
 
         for (int i =0;i<CSEArray.size();i++){
-            SearchOptionAdapter.Item major = new SearchOptionAdapter.Item(SearchOptionAdapter.DEFAULT_CHILD, CSEArray.get(i));
-            data.add(major);
+            SearchOptionAdapter.Item CSE = new SearchOptionAdapter.Item(SearchOptionAdapter.DEFAULT_CHILD, CSEArray.get(i));
+            data.add(CSE);
         }
 
         SearchOptionAdapter adapter =  new SearchOptionAdapter(data);
@@ -72,6 +73,7 @@ public class SearchCSEActivity extends AppCompatActivity {
                 intent.putExtra("CSE", ((TextView)v).getText());
                 setResult(Activity.RESULT_OK, intent);
                 finish();
+                overridePendingTransition(0, 0);
 
 
             }

@@ -90,6 +90,7 @@ public class MapPickLocationActivity extends AppCompatActivity implements OnMapR
             @Override
             public void onClick(View view) {
                 finish();
+                overridePendingTransition(0, 0);
             }
         });
 
@@ -145,6 +146,7 @@ public class MapPickLocationActivity extends AppCompatActivity implements OnMapR
                 intent.putExtra("longitude",pickLocation.longitude );
                 setResult(Activity.RESULT_OK, intent);
                 finish();
+                overridePendingTransition(0, 0);
 
 
             }

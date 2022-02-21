@@ -110,7 +110,7 @@
             <TextView
                 android:id="@+id/tita_search_option_button"
                 android:layout_width="96dp"
-                android:layout_height="24dp"
+                android:layout_height="32dp"
                 android:background="@drawable/layout_more_option_button_roundedbox"
                 android:text="더 많은 옵션"
                 android:textSize="@dimen/small_text_size"

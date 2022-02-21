@@ -1,5 +1,8 @@
 package com.maru.inunavi.ui.timetable.search;
 
+import static com.maru.inunavi.ui.timetable.search.SearchActivity.selectionGradeList;
+import static com.maru.inunavi.ui.timetable.search.SearchActivity.selectionScoreList;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -49,6 +52,7 @@ public class SearchScoreActivity extends AppCompatActivity implements Serializab
             @Override
             public void onClick(View view) {
                 finish();
+                overridePendingTransition(0, 0);
             }
         });
 
@@ -57,32 +61,19 @@ public class SearchScoreActivity extends AppCompatActivity implements Serializab
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         List<SearchOptionAdapter.Item> data = new ArrayList<>();
 
-        ArrayList<String> scoreTypeList = new ArrayList<String>(Arrays.asList("1학점","2학점","3학점","4학점"));
 
-        for (int i =0;i<scoreTypeList.size();i++){
-            SearchOptionAdapter.Item score_Type = new SearchOptionAdapter.Item(SearchOptionAdapter.MULTI_CHILD, scoreTypeList.get(i));
+
+        for (int i =0;i<scoreList.size();i++){
+            SearchOptionAdapter.Item score_Type = new SearchOptionAdapter.Item(SearchOptionAdapter.MULTI_CHILD, scoreList.get(i));
             data.add(score_Type);
         }
 
-        SearchOptionAdapter adapter =  new SearchOptionAdapter(data, scoreList);
+
+
+        SearchOptionAdapter adapter =  new SearchOptionAdapter(data, selectionScoreList);
 
         recyclerView.setAdapter(adapter);
 
-
-        //어댑터 콜백 리스너
-        adapter.setOnItemClickListener(new SearchOptionAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View v, int position) {
-
-                Intent intent = new Intent(SearchScoreActivity.this, SearchActivity.class);
-                intent.putExtra("CallType", 1001);
-                intent.putExtra("Score", ((TextView)v).getText());
-                setResult(Activity.RESULT_OK, intent);
-                finish();
-
-            }
-
-        });
 
         tita_search_option_multi_allCheck.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,10 +100,10 @@ public class SearchScoreActivity extends AppCompatActivity implements Serializab
 
                 Intent intent = new Intent(SearchScoreActivity.this, SearchOptionActivity.class);
                 intent.putExtra("CallType", 1001);
-                Collections.sort(scoreList);
-                intent.putExtra("Score", scoreList);
+                Collections.sort(selectionScoreList);
                 setResult(Activity.RESULT_OK, intent);
                 finish();
+                overridePendingTransition(0, 0);
 
             }
         });

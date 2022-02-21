@@ -58,6 +58,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -623,7 +624,7 @@ public class CalendarFragment extends Fragment {
                     classtime_raw = classtime_raw.replace("[", "");
                     classtime_raw = classtime_raw.replaceAll("]", "");
 
-                    Lecture lecture = new Lecture(id, department, Integer.parseInt(grade), category, number, lecturename,
+                    Lecture lecture = new Lecture(id, department, grade, category, number, lecturename,
                             professor, classroom_raw, classtime_raw, classroom, classtime, how, Integer.parseInt(point));
 
                     schedule.addSchedule(lecture);
@@ -664,7 +665,7 @@ public class CalendarFragment extends Fragment {
             // doInBackground
 
             String target = (IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/GetTimetableInfo.php" :
-                    "http://" + DemoIP + "/selectLecture");
+                    "http://" + DemoIP + "/getTimeTableInfo");
 
             try {
                 URL url = new URL(target);
@@ -735,8 +736,10 @@ public class CalendarFragment extends Fragment {
                     majorArrayString.trim();
                     majorArrayString.replaceAll(" ", "");
 
+
                     CSEArrayString.trim();
                     CSEArrayString.replaceAll(" ", "");
+
 
                     categoryListString.trim();
                     categoryListString.replaceAll(" ", "");
@@ -744,6 +747,14 @@ public class CalendarFragment extends Fragment {
                     majorArray = new ArrayList<String>(Arrays.asList(majorArrayString.split(",")));
                     CSEArray = new ArrayList<String>(Arrays.asList(CSEArrayString.split(",")));
                     categoryList = new ArrayList<String>(Arrays.asList(categoryListString.split(",")));
+
+                    Collections.sort(majorArray);
+                    Collections.sort(CSEArray);
+                    Collections.sort(categoryList);
+
+
+                    CSEArray.remove("전체");
+                    categoryList.remove("전체");
 
                     frag_tita_year_semester.setText(year + "년 " + semester + "학기");
 

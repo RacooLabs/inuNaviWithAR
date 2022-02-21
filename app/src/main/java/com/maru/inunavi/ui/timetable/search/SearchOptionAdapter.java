@@ -97,7 +97,6 @@ public class MajorAdapter extends RecyclerView.Adapter<com.maru.inunavi.ui.timet
 */
 
 package com.maru.inunavi.ui.timetable.search;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -135,18 +134,17 @@ public class SearchOptionAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public static final int DEFAULT_CHILD = 3;
     public static final int MULTI_CHILD = 4;
 
-    public static int ALL_CHECKED = 2;
-
-    private List<String> selectionList;
+    public int ALL_CHECKED = 2;
 
     private List<Item> data;
 
+    private ArrayList<String> selectionList;
+
     public SearchOptionAdapter(List<Item> data) {
         this.data = data;
-        this.selectionList = selectionList;
     }
 
-    public SearchOptionAdapter(List<Item> data, List<String> selectionList) {
+    public SearchOptionAdapter(List<Item> data, ArrayList<String> selectionList) {
         this.data = data;
         this.selectionList = selectionList;
     }
@@ -155,30 +153,9 @@ public class SearchOptionAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int type) {
         View view = null;
         Context context = parent.getContext();
-        float dp = context.getResources().getDisplayMetrics().density;
-        int subItemPaddingLeft = (int) (18 * dp);
-        int subItemPaddingTopAndBottom = (int) (5 * dp);
+
+
         switch (type) {
-            case HEADER:
-                LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                view = inflater.inflate(R.layout.timetable_single_item_list_header, parent, false);
-                ListHeaderViewHolder header = new ListHeaderViewHolder(view);
-
-                return header;
-
-            case DEFAULT_HEADER:
-                LayoutInflater inflater_default_header = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                view = inflater_default_header.inflate(R.layout.timetable_single_item_list_default_header, parent, false);
-                ListDefaultHeaderViewHolder default_header = new ListDefaultHeaderViewHolder(view);
-
-                return default_header;
-
-            case CHILD:
-                LayoutInflater inflater_child = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                view = inflater_child.inflate(R.layout.timetable_single_item_list_child, parent, false);
-                ListChildViewHolder child = new ListChildViewHolder(view);
-
-                return child;
 
             case DEFAULT_CHILD:
                 LayoutInflater inflater_default_child = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -212,61 +189,6 @@ public class SearchOptionAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         final Item item = data.get(position);
         switch (item.type) {
-            case HEADER:
-                final ListHeaderViewHolder itemController = (ListHeaderViewHolder) holder;
-                itemController.refferalItem = item;
-                itemController.header_title.setText(item.text);
-
-                if (item.invisibleChildren == null) {
-                    itemController.btn_expand_toggle.setImageResource(R.drawable.circle_minus);
-                } else {
-                    itemController.btn_expand_toggle.setImageResource(R.drawable.circle_plus);
-                }
-
-
-
-                itemController.header_title_layout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (item.invisibleChildren == null) {
-                            item.invisibleChildren = new ArrayList<Item>();
-                            int count = 0;
-                            int pos = data.indexOf(itemController.refferalItem);
-                            while (data.size() > pos + 1 && data.get(pos + 1).type == CHILD) {
-                                item.invisibleChildren.add(data.remove(pos + 1));
-                                count++;
-                            }
-                            notifyItemRangeRemoved(pos + 1, count);
-                            itemController.btn_expand_toggle.setImageResource(R.drawable.circle_plus);
-                        } else {
-                            int pos = data.indexOf(itemController.refferalItem);
-                            int index = pos + 1;
-                            for (Item i : item.invisibleChildren) {
-                                data.add(index, i);
-                                index++;
-                            }
-                            notifyItemRangeInserted(pos + 1, index - pos - 1);
-                            itemController.btn_expand_toggle.setImageResource(R.drawable.circle_minus);
-                            item.invisibleChildren = null;
-                        }
-                    }
-                });
-                break;
-
-            case DEFAULT_HEADER:
-
-                final ListDefaultHeaderViewHolder defaultHeaderView = (ListDefaultHeaderViewHolder) holder;
-                TextView itemTextView_defaultHeader = (TextView) defaultHeaderView.default_header_title;
-                itemTextView_defaultHeader.setText(data.get(position).text);
-
-                break;
-
-            case CHILD:
-
-                final ListChildViewHolder childView = (ListChildViewHolder) holder;
-                TextView itemTextView = (TextView) childView.child_title;
-                itemTextView.setText(data.get(position).text);
-                break;
 
             case DEFAULT_CHILD:
 
@@ -276,6 +198,7 @@ public class SearchOptionAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 break;
 
             case MULTI_CHILD:
+
                 final ListMultiChildViewHolder multiChildView = (ListMultiChildViewHolder) holder;
                 TextView itemTextView_multiChild = (TextView) multiChildView.child_title;
                 itemTextView_multiChild.setText(data.get(position).text);
@@ -287,6 +210,7 @@ public class SearchOptionAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
                     public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+
                         if(isChecked){
                             if(!selectionList.contains(child_text))
                                 selectionList.add(child_text);
@@ -294,8 +218,11 @@ public class SearchOptionAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                             if(selectionList.contains(child_text))
                                 selectionList.remove(child_text);
                         }
+
                     }
+
                 });
+
 
                 if(selectionList.contains(child_text)){
 
@@ -306,6 +233,7 @@ public class SearchOptionAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     multiChildView.checkBox.setChecked(false);
 
                 }
+
 
                 switch (ALL_CHECKED){
                     case 0 :

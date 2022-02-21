@@ -841,12 +841,27 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                 startLocation = endLocation;
                 endLocation = tmpLocation;
 
+                if(startLocation != null && endLocation == null){
+
+                    setStartMarker(startLocation);
+
+                }else if (startLocation == null && endLocation != null){
+
+                    setEndMarker(endLocation);
+
+                }else if (startLocation != null && endLocation != null) {
+
+                    setStartMarker(startLocation);
+                    setEndMarker(endLocation);
+
+                }else{
+
+
+                }
+
                 String tmpPlaceTitle = map_frag_navi_searchBar_Start.getText().toString();
                 map_frag_navi_searchBar_Start.setText(map_frag_navi_searchBar_End.getText().toString());
                 map_frag_navi_searchBar_End.setText(tmpPlaceTitle);
-
-                setStartMarker(startLocation);
-                setEndMarker(endLocation);
 
                 if (!map_frag_navi_searchBar_Start.getText().toString().equals("") &&
                         !(map_frag_navi_searchBar_End.getText().toString().equals(""))) {
@@ -1928,7 +1943,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                 String placeCode = "NONE";
                 String title = "";
                 String sort = "";
-                double distance = 0.0;
+                double dist = 0.0;
                 LatLng location = null;
                 String time = "-";
                 String callNum = "-";
@@ -1939,7 +1954,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                     placeCode = object.getString("placeCode");
                     title = object.getString("title");
                     sort = object.getString("sort");
-                    distance = object.getDouble("distance");
+                    dist = object.getDouble("dist");
 
                     String[] locationString = object.getString("location").trim().split(",");
                     if (locationString.length == 2) {
@@ -1949,7 +1964,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                     callNum = object.getString("callNum");
 
 
-                    Place place = new Place(placeCode, title, sort, distance, location, time,
+                    Place place = new Place(placeCode, title, sort, dist, location, time,
                             callNum);
 
                     placeList.add(place);
@@ -2029,7 +2044,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
 
 
             String target = (IpAddress.isTest ? "http://" + DemoIP_ClientTest + "/inuNavi/GetRootLive.php" :
-                    "http://" + DemoIP + "/selectLecture")+ "?startPlaceCode=\"" + naviInfo.getStartPlaceCode() + "\"&endPlaceCode=\"" + naviInfo.getEndPlaceCode()
+                    "http://" + DemoIP + "/getRootLive")+ "?startPlaceCode=\"" + naviInfo.getStartPlaceCode() + "\"&endPlaceCode=\"" + naviInfo.getEndPlaceCode()
                     + "\"&startLocation=\"" + naviInfo.getStartLocation().latitude + "," + naviInfo.getStartLocation().longitude
                     + "\"&endLocation=\"" + naviInfo.getEndLocation().latitude + "," + naviInfo.getEndLocation().longitude + "\"";
 
@@ -2102,8 +2117,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
 
                     for (int i=0;i<routeStringSplit.length;i+=2){
 
-                        latLngList.add(new LatLng(Double.parseDouble(routeStringSplit[i]),
-                                Double.parseDouble(routeStringSplit[i+1])));
+                        latLngList.add(new LatLng(Double.parseDouble(routeStringSplit[i])-0.00003,
+                                Double.parseDouble(routeStringSplit[i+1])-0.00002));
 
                     }
 

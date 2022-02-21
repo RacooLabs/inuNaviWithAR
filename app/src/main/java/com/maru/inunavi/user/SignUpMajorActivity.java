@@ -37,6 +37,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
@@ -70,13 +71,14 @@ public class SignUpMajorActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 finish();
+                overridePendingTransition(0, 0);
 
             }
         });
 
-        //GetTimetableInfoTask();
+        GetTimetableInfoTask();
 
-        majorArray.clear();
+        /*majorArray.clear();
         majorArray.remove("전체");
         majorArray.add("컴퓨터공학부");
         majorArray.add("정보통신공학과");
@@ -99,11 +101,14 @@ public class SignUpMajorActivity extends AppCompatActivity {
                 intent.putExtra("userMajor", majorArray.get(position));
                 setResult(Activity.RESULT_OK, intent);
                 finish();
+                overridePendingTransition(0, 0);
 
 
             }
 
         }) ;
+
+        */
 
     }
 
@@ -116,7 +121,7 @@ public class SignUpMajorActivity extends AppCompatActivity {
             // doInBackground
 
             String target = (IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/GetTimetableInfo.php" :
-                    "http://" + DemoIP + "/selectLecture");
+                    "http://" + DemoIP + "/getTimeTableInfo");
 
             try {
                 URL url = new URL(target);
@@ -179,9 +184,12 @@ public class SignUpMajorActivity extends AppCompatActivity {
                     majorArrayString.trim();
                     majorArrayString.replaceAll(" ", "");
 
+
                     majorArray = new ArrayList<String>(Arrays.asList(majorArrayString.split(",")));
 
                     majorArray.remove("전체");
+
+                    Collections.sort(majorArray);
 
                     majorRecyclerView = findViewById(R.id.sign_up_major_recycler_view);
                     majorRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -201,6 +209,7 @@ public class SignUpMajorActivity extends AppCompatActivity {
                             intent.putExtra("userMajor", majorArray.get(position));
                             setResult(Activity.RESULT_OK, intent);
                             finish();
+                            overridePendingTransition(0, 0);
 
 
                         }

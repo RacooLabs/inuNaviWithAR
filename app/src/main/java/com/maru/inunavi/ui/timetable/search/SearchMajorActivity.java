@@ -41,6 +41,7 @@ public class SearchMajorActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 finish();
+                overridePendingTransition(0, 0);
             }
         });
 
@@ -76,6 +77,7 @@ public class SearchMajorActivity extends AppCompatActivity {
                 intent.putExtra("Major", ((TextView)v).getText());
                 setResult(Activity.RESULT_OK, intent);
                 finish();
+                overridePendingTransition(0, 0);
 
             }
 

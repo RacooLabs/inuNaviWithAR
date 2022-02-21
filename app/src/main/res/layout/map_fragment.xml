@@ -201,7 +201,8 @@
                 android:inputType="text"
                 android:maxLength="20"
                 android:textSize="@dimen/main_text_size"
-                android:focusable="false"/>
+                android:focusable="false"
+                android:focusableInTouchMode="false"/>
 
             <EditText
                 android:id="@+id/map_frag_navi_searchBar_End"
@@ -220,7 +221,8 @@
                 android:inputType="text"
                 android:maxLength="20"
                 android:textSize="@dimen/main_text_size"
-                android:focusable="false"/>
+                android:focusable="false"
+                android:focusableInTouchMode="false"/>
 
             <ImageView
                 android:id="@+id/map_frag_navi_change"

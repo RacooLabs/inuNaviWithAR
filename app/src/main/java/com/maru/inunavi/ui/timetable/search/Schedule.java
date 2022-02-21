@@ -93,7 +93,7 @@ public class Schedule {
 
     public void ResetSchedule() {
 
-        lectureScheduleList = new ArrayList<>();
+        lectureScheduleList.clear();
         lectureSchedule = new Lecture[328];
         colorCount = 0;
 
@@ -121,7 +121,7 @@ public class Schedule {
                 startTime = Integer.parseInt(startEndTime[0]);
                 endTime = Integer.parseInt(startEndTime[1]);
 
-                for(int j=startTime; j<endTime;j++){
+                for(int j=startTime; j<endTime+1;j++){
                     if(lectureSchedule[j] != null){
                         return false;
                     }
@@ -172,6 +172,10 @@ public class Schedule {
 
         int sameCount = 1;
 
+        if(context == null){
+            return;
+        }
+
         for(int i=0;i<schedule_textView.length;i++){
 
             if(this.lectureSchedule[i] != null){
@@ -192,7 +196,8 @@ public class Schedule {
 
                         Log.d("Schedule 165 : ", (i+1) +"");
 
-                        TextView textView = new TextView(container.getContext());
+
+                        TextView textView = new TextView(context);
                         textView.setText(lectureSchedule[i].getLecturename());
                         textView.setTextColor(Color.WHITE);
                         textView.setBackgroundColor(Color.parseColor(lectureSchedule[i].getColor()));

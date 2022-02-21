@@ -79,7 +79,6 @@ public class ScheduleListActivity extends AppCompatActivity {
         finish();
         overridePendingTransition(0, 0);
 
-        super.onBackPressed();
 
     }
 
@@ -119,7 +118,7 @@ public class ScheduleListActivity extends AppCompatActivity {
         String target = IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/ScheduleList.php":
                 "http://" + DemoIP +"/user/select/class";
 
-        scheduleList = new ArrayList<>();
+        scheduleList.clear();
 
         backgroundtask = Observable.fromCallable(() -> {
             // doInBackground
@@ -219,7 +218,7 @@ public class ScheduleListActivity extends AppCompatActivity {
                     classtime_raw = classtime_raw.replace("[", "");
                     classtime_raw = classtime_raw.replaceAll("]", "");
 
-                    Lecture lecture = new Lecture(id, department, Integer.parseInt(grade), category, number, lecturename,
+                    Lecture lecture = new Lecture(id, department, grade, category, number, lecturename,
                             professor, classroom_raw, classtime_raw, classroom, classtime, how, Integer.parseInt(point));
 
                     scheduleList.add(lecture);

@@ -402,7 +402,7 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.MyVi
                     classtime_raw = classtime_raw.replace("[", "");
                     classtime_raw = classtime_raw.replaceAll("]", "");
 
-                    Lecture lecture = new Lecture(id, department, Integer.parseInt(grade), category, number, lecturename,
+                    Lecture lecture = new Lecture(id, department, grade, category, number, lecturename,
                             professor, classroom_raw, classtime_raw, classroom, classtime, how, Integer.parseInt(point));
 
                     schedule.addSchedule(lecture);

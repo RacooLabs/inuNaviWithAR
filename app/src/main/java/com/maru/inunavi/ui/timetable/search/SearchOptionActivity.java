@@ -1,5 +1,21 @@
 package com.maru.inunavi.ui.timetable.search;
 
+
+import static com.maru.inunavi.ui.timetable.search.SearchActivity.categoryList;
+import static com.maru.inunavi.ui.timetable.search.SearchActivity.category_option;
+import static com.maru.inunavi.ui.timetable.search.SearchActivity.cse_option;
+import static com.maru.inunavi.ui.timetable.search.SearchActivity.gradeList;
+import static com.maru.inunavi.ui.timetable.search.SearchActivity.grade_option;
+import static com.maru.inunavi.ui.timetable.search.SearchActivity.main_keyword_option;
+import static com.maru.inunavi.ui.timetable.search.SearchActivity.major_option;
+import static com.maru.inunavi.ui.timetable.search.SearchActivity.radioList;
+import static com.maru.inunavi.ui.timetable.search.SearchActivity.scoreList;
+import static com.maru.inunavi.ui.timetable.search.SearchActivity.score_option;
+import static com.maru.inunavi.ui.timetable.search.SearchActivity.selectionCategoryList;
+import static com.maru.inunavi.ui.timetable.search.SearchActivity.selectionGradeList;
+import static com.maru.inunavi.ui.timetable.search.SearchActivity.selectionScoreList;
+import static com.maru.inunavi.ui.timetable.search.SearchActivity.sort_option;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,21 +41,35 @@ import java.util.Arrays;
 
 public class SearchOptionActivity extends AppCompatActivity implements Serializable {
 
-    ArrayList<String> gradeList = new ArrayList<String>(Arrays.asList("1학년", "2학년", "3학년", "4학년" ));
 
-    ArrayList<String> categoryList = CalendarFragment.categoryList;
-
-    ArrayList<String> scoreList = new ArrayList<String>(Arrays.asList("1학점", "2학점", "3학점", "4학점"));
-
-    String main_keyword = "";
     String keyword_option = "전체";
 
-    String major_option = "전체";
-    String cse_option = "전체";
-    String sort_option =  "기본";
-    String grade_option = "전체";
-    String category_option = "전체";
-    String score_option = "전체";
+
+    @Override
+    public void onBackPressed() {
+
+        selectionCategoryList.clear();
+        selectionGradeList.clear();
+        selectionScoreList.clear();
+
+        selectionCategoryList.addAll(categoryList);
+        selectionGradeList.addAll(gradeList);
+        selectionScoreList.addAll(scoreList);
+
+        main_keyword_option = "";
+        SearchActivity.radioList= new boolean[]{true, false, false, false};
+        major_option = "전체";
+        cse_option = "전체";
+        sort_option =  "기본";
+        grade_option = "전체";
+        category_option = "전체";
+        score_option = "전체";
+
+        finish();
+        overridePendingTransition(0, 0);
+
+
+    }
 
     @Override protected void onCreate(Bundle savedInstanceState) {
 
@@ -67,16 +97,63 @@ public class SearchOptionActivity extends AppCompatActivity implements Serializa
 
         TextView tita_search_option_ok = findViewById(R.id.tita_search_option_ok);
 
+        tita_search_option_searchbar.setText(main_keyword_option);
+        tita_search_option_major_text.setText(major_option);
+        tita_search_option_cse_text.setText(cse_option);
+        tita_search_option_sort_text.setText(sort_option);
+        tita_search_option_grade_text.setText(grade_option);
+        tita_search_option_category_text.setText(category_option);
+        tita_search_option_score_text.setText(score_option);
 
 
         //돌아가기 버튼
         tita_search_option_backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)  {
+
+                selectionCategoryList.clear();
+                selectionGradeList.clear();
+                selectionScoreList.clear();
+
+                selectionCategoryList.addAll(categoryList);
+                selectionGradeList.addAll(gradeList);
+                selectionScoreList.addAll(scoreList);
+
+                main_keyword_option = "";
+                SearchActivity.radioList= new boolean[]{true, false, false, false};
+                major_option = "전체";
+                cse_option = "전체";
+                sort_option =  "기본";
+                grade_option = "전체";
+                category_option = "전체";
+                score_option = "전체";
+
                 finish();
+                overridePendingTransition(0, 0);
 
             }
         });
+
+        // 라디오 버튼 세팅
+
+        if(radioList[0]){
+
+            tita_search_option_radioGroup.check(R.id.tita_search_option_radio1);
+
+        }else if(radioList[1]){
+
+            tita_search_option_radioGroup.check(R.id.tita_search_option_radio2);
+
+        }else if(radioList[2]){
+
+            tita_search_option_radioGroup.check(R.id.tita_search_option_radio3);
+
+        }else if(radioList[3]) {
+
+            tita_search_option_radioGroup.check(R.id.tita_search_option_radio4);
+
+        }
+
 
         //검색 조건
         tita_search_option_radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -86,18 +163,42 @@ public class SearchOptionActivity extends AppCompatActivity implements Serializa
 
                     case R.id.tita_search_option_radio1:
                         keyword_option = "전체";
+
+                        radioList[0] = true;
+                        radioList[1] = false;
+                        radioList[2] = false;
+                        radioList[3] = false;
+
                         break;
 
                     case R.id.tita_search_option_radio2:
                         keyword_option = "과목명";
+
+                        radioList[0] = false;
+                        radioList[1] = true;
+                        radioList[2] = false;
+                        radioList[3] = false;
+
                         break;
 
                     case R.id.tita_search_option_radio3:
                         keyword_option = "교수명";
+
+                        radioList[0] = false;
+                        radioList[1] = false;
+                        radioList[2] = true;
+                        radioList[3] = false;
+
                         break;
 
                     case R.id.tita_search_option_radio4:
                         keyword_option = "과목코드";
+
+                        radioList[0] = false;
+                        radioList[1] = false;
+                        radioList[2] = false;
+                        radioList[3] = true;
+
                         break;
 
                 }
@@ -117,6 +218,8 @@ public class SearchOptionActivity extends AppCompatActivity implements Serializa
                             String major = intent.getStringExtra("Major");
 
                             tita_search_option_major_text.setText(major);
+                            major_option = major;
+
 
                         }
                     }
@@ -146,6 +249,7 @@ public class SearchOptionActivity extends AppCompatActivity implements Serializa
                             String CSE = intent.getStringExtra("CSE");
 
                             tita_search_option_cse_text.setText(CSE);
+                            cse_option = CSE;
 
                         }
                     }
@@ -177,6 +281,7 @@ public class SearchOptionActivity extends AppCompatActivity implements Serializa
                             String sortType = intent.getStringExtra("Sort");
 
                             tita_search_option_sort_text.setText(sortType);
+                            sort_option = sortType;
 
                         }
                     }
@@ -201,26 +306,28 @@ public class SearchOptionActivity extends AppCompatActivity implements Serializa
 
                             Intent intent = result.getData();
                             int CallType = intent.getIntExtra("CallType", 0);
-                            gradeList = (ArrayList<String>)intent.getSerializableExtra("Grade");
 
-                            if(gradeList.size() == 4 || gradeList.size() == 0){
+
+                            if(selectionGradeList.size() == gradeList.size() || selectionGradeList.size() == 0){
 
                                 tita_search_option_grade_text.setText("전체");
+                                grade_option = "전체";
 
-                            }else if(gradeList.size() > 0){
+                            }else if(selectionGradeList.size() > 0){
 
                                 StringBuilder sb = new StringBuilder();
 
                                 int i;
 
-                                for(i=0;i<gradeList.size()-1;i++){
-                                    sb.append(gradeList.get(i));
+                                for(i=0;i<selectionGradeList.size()-1;i++){
+                                    sb.append(selectionGradeList.get(i));
                                     sb.append(", ");
                                 }
 
-                                sb.append(gradeList.get(i));
+                                sb.append(selectionGradeList.get(i));
 
                                 tita_search_option_grade_text.setText(sb);
+                                grade_option = sb.toString();
 
                             }
 
@@ -248,26 +355,28 @@ public class SearchOptionActivity extends AppCompatActivity implements Serializa
 
                             Intent intent = result.getData();
                             int CallType = intent.getIntExtra("CallType", 0);
-                            categoryList = (ArrayList<String>)intent.getSerializableExtra("Category");
 
-                            if(categoryList.size() == 9 || categoryList.size() == 0){
+
+                            if(selectionCategoryList.size() == categoryList.size() || selectionCategoryList.size() == 0){
 
                                 tita_search_option_category_text.setText("전체");
+                                category_option = "전체";
 
-                            }else if(categoryList.size() > 0){
+                            }else if(selectionCategoryList.size() > 0){
 
                                 StringBuilder sb = new StringBuilder();
 
                                 int i;
 
-                                for(i=0;i<categoryList.size()-1;i++){
-                                    sb.append(categoryList.get(i));
+                                for(i=0;i<selectionCategoryList.size()-1;i++){
+                                    sb.append(selectionCategoryList.get(i));
                                     sb.append(", ");
                                 }
 
-                                sb.append(categoryList.get(i));
+                                sb.append(selectionCategoryList.get(i));
 
                                 tita_search_option_category_text.setText(sb);
+                                category_option = sb.toString();
 
                             }
 
@@ -297,26 +406,27 @@ public class SearchOptionActivity extends AppCompatActivity implements Serializa
 
                             Intent intent = result.getData();
                             int CallType = intent.getIntExtra("CallType", 0);
-                            scoreList = (ArrayList<String>)intent.getSerializableExtra("Score");
 
 
-                            if(scoreList.size() == 4 || scoreList.size() == 0){
+                            if(selectionScoreList.size() == scoreList.size() || selectionScoreList.size() == 0){
                                 tita_search_option_score_text.setText("전체");
+                                score_option = "전체";
 
-                            }else if(scoreList.size() > 0){
+                            }else if(selectionScoreList.size() > 0){
 
                                 StringBuilder sb = new StringBuilder();
 
                                 int i;
 
-                                for(i=0;i<scoreList.size()-1;i++){
-                                    sb.append(scoreList.get(i));
+                                for(i=0;i<selectionScoreList.size()-1;i++){
+                                    sb.append(selectionScoreList.get(i));
                                     sb.append(", ");
                                 }
 
-                                sb.append(scoreList.get(i));
+                                sb.append(selectionScoreList.get(i));
 
                                 tita_search_option_score_text.setText(sb);
+                                score_option = sb.toString();
 
                             }
 
@@ -344,9 +454,9 @@ public class SearchOptionActivity extends AppCompatActivity implements Serializa
 
 
                 if(tita_search_option_searchbar.getText() == null){
-                    main_keyword = "";
+                    main_keyword_option = "";
                 }else{
-                    main_keyword = tita_search_option_searchbar.getText().toString().trim();
+                    main_keyword_option = tita_search_option_searchbar.getText().toString().trim();
                 }
 
                 major_option = tita_search_option_major_text.getText().toString();
@@ -356,7 +466,7 @@ public class SearchOptionActivity extends AppCompatActivity implements Serializa
                 category_option = tita_search_option_category_text.getText().toString();
                 score_option = tita_search_option_score_text.getText().toString();
 
-                intent.putExtra("main_keyword", main_keyword);
+                intent.putExtra("main_keyword_option", main_keyword_option);
                 intent.putExtra("keyword_option",keyword_option);
                 intent.putExtra("major_option",  major_option);
                 intent.putExtra("cse_option",  cse_option);
@@ -367,6 +477,7 @@ public class SearchOptionActivity extends AppCompatActivity implements Serializa
 
                 setResult(Activity.RESULT_OK, intent);
                 finish();
+                overridePendingTransition(0, 0);
 
             }
 

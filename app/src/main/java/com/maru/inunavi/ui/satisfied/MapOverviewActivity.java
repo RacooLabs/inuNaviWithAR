@@ -121,6 +121,7 @@ public class MapOverviewActivity extends AppCompatActivity implements OnMapReady
             @Override
             public void onClick(View view) {
                 finish();
+                overridePendingTransition(0, 0);
             }
         });
 
@@ -355,7 +356,7 @@ public class MapOverviewActivity extends AppCompatActivity implements OnMapReady
                 String endLectureName = "";
                 String endLectureTime = "";
                 int totalTime = 0;
-                double distance = 0;
+                double dist = 0;
                 String directionString = "";
 
                 int count = 0;
@@ -369,12 +370,12 @@ public class MapOverviewActivity extends AppCompatActivity implements OnMapReady
                     endLectureName = object.getString("endLectureName");
                     endLectureTime = object.getString("endLectureTime");
                     totalTime = object.getInt("totalTime");
-                    distance = object.getDouble("distance");
+                    dist = object.getDouble("dist");
                     directionString = object.getString("directionString");
 
                     count++;
 
-                    overviewInfoList.add(new OverviewInfo(startLectureName,endLectureName,endLectureTime, totalTime, distance,directionString));
+                    overviewInfoList.add(new OverviewInfo(startLectureName,endLectureName,endLectureTime, totalTime, dist,directionString));
 
                 }
 
@@ -388,6 +389,7 @@ public class MapOverviewActivity extends AppCompatActivity implements OnMapReady
                                 public void onClick(DialogInterface dialogInterface, int i) {
 
                                     finish();
+                                    overridePendingTransition(0, 0);
 
                                 }
                             });

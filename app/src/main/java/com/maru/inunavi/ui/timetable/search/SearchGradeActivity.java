@@ -1,5 +1,7 @@
 package com.maru.inunavi.ui.timetable.search;
 
+import static com.maru.inunavi.ui.timetable.search.SearchActivity.selectionGradeList;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -50,6 +52,7 @@ public class SearchGradeActivity extends AppCompatActivity implements Serializab
             @Override
             public void onClick(View view) {
                 finish();
+                overridePendingTransition(0, 0);
 
             }
         });
@@ -59,33 +62,18 @@ public class SearchGradeActivity extends AppCompatActivity implements Serializab
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         List<SearchOptionAdapter.Item> data = new ArrayList<>();
 
-        ArrayList<String> gradeTypeList = new ArrayList<String>(Arrays.asList("1학년", "2학년", "3학년", "4학년" ));
 
-        for (int i =0;i<gradeTypeList.size();i++){
-            SearchOptionAdapter.Item grade_Type = new SearchOptionAdapter.Item(SearchOptionAdapter.MULTI_CHILD, gradeTypeList.get(i));
+
+        for (int i =0;i<gradeList.size();i++){
+            SearchOptionAdapter.Item grade_Type = new SearchOptionAdapter.Item(SearchOptionAdapter.MULTI_CHILD, gradeList.get(i));
             data.add(grade_Type);
         }
 
-        SearchOptionAdapter adapter =  new SearchOptionAdapter(data, gradeList);
+        SearchOptionAdapter adapter =  new SearchOptionAdapter(data, selectionGradeList);
 
         recyclerView.setAdapter(adapter);
 
 
-        //어댑터 콜백 리스너
-        adapter.setOnItemClickListener(new SearchOptionAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View v, int position) {
-
-                Intent intent = new Intent(SearchGradeActivity.this, SearchActivity.class);
-                intent.putExtra("CallType", 1001);
-                intent.putExtra("Grade", ((TextView)v).getText());
-                setResult(Activity.RESULT_OK, intent);
-                finish();
-
-
-            }
-
-        });
 
         tita_search_option_multi_allCheck.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,10 +100,10 @@ public class SearchGradeActivity extends AppCompatActivity implements Serializab
 
                 Intent intent = new Intent(SearchGradeActivity.this, SearchOptionActivity.class);
                 intent.putExtra("CallType", 1001);
-                Collections.sort(gradeList);
-                intent.putExtra("Grade", gradeList);
+                Collections.sort(selectionGradeList);
                 setResult(Activity.RESULT_OK, intent);
                 finish();
+                overridePendingTransition(0, 0);
 
 
             }

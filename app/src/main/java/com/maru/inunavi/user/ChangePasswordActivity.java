@@ -47,6 +47,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 finish();
+                overridePendingTransition(0, 0);
             }
         });
 
@@ -291,6 +292,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
                                                     if (success) {
                                                         Toast.makeText(getApplicationContext(), "비밀번호 변경을 완료하였습니다.", Toast.LENGTH_SHORT).show();
                                                         finish();
+                                                        overridePendingTransition(0, 0);
 
 
                                                     }else{
