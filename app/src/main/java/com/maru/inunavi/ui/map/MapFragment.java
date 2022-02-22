@@ -187,8 +187,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
     public ArrayList<Drawable> searchKeywordIconList;
 
 
-    // 슬라이딩 패널에 들어가는 spinner
-    private Spinner map_frag_sliding_spinner;
+    // 슬라이딩 패널
     private TextView map_frag_no_searchResult;
 
     // 추가 기능 버튼
@@ -290,7 +289,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
 
 
         // 슬라이딩 패널에 들어가는 spinner
-        map_frag_sliding_spinner = layout.findViewById(R.id.map_frag_sliding_spinner);
         map_frag_no_searchResult = layout.findViewById(R.id.map_frag_no_searchResult);
 
         // 추가 기능 버튼
@@ -338,7 +336,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         searchKeywordIconList = new ArrayList<>();
 
         searchKeywordList.add("header");
-        searchKeywordList.add("식사");
+        searchKeywordList.add("식당");
         searchKeywordList.add("카페");
         searchKeywordList.add("편의점");
         searchKeywordList.add("편의시설");
@@ -371,24 +369,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
             }
         });
 
-
-
-        //스피너 설정
-        String[] items = getResources().getStringArray(R.array.map_frag_sliding_spinner_list);
-        map_frag_sliding_spinner.setAdapter(new ArrayAdapter(getContext(), R.layout.map_fragment_custom_spinner_item, items));
-        map_frag_sliding_spinner.setSelection(0, false);
-
-        map_frag_sliding_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                startSearch(editText_search.getText().toString());
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
 
         //초기 모드 설정
         setMapFragmentMode(DEFAULT_MODE, autoCompleteTextView_search_wrapper, mapSlidingLayout, map_frag_detail_box_wrapper,
@@ -1094,7 +1074,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
 
                         AlertDialog.Builder msgBuilder = new AlertDialog.Builder(getContext())
                                 .setTitle("알림")
-                                .setMessage("다음 강의 정보가 없습니다.")
+                                .setMessage("오늘 남은 강의 정보가 없습니다.")
                                 .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -1897,12 +1877,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
             // doInBackground
 
             String searchKeyword = editText_search.getText().toString();
-            String searchSortOption = map_frag_sliding_spinner.getSelectedItem().toString();
             String myLocation = myCurrentLocation.latitude + "," + myCurrentLocation.longitude;
 
             String target = (IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/PlaceSearchList.php" :
-                    "http://" + DemoIP + "/selectLecture")+ "?searchKeyword=\"" + searchKeyword + "\"&searchSortOption=\"" + searchSortOption
-                    + "\"&myLocation=\"" + myLocation + "\"";
+                    "http://" + DemoIP + "/placeSearchList")+ "?searchKeyword=\"" + searchKeyword + "\"&myLocation=\"" + myLocation + "\"";
 
             try {
                 URL url = new URL(target);
@@ -1920,9 +1898,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                 httpURLConnection.disconnect();
                 return stringBuilder.toString().trim();
 
+
+
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.d("@@@map fragment 229", e.toString());
+
+
             }
 
             return null;
@@ -1932,6 +1914,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
             // onPostExecute
 
             try {
+
 
                 Log.d("@@@map fragment 1630", result);
 
