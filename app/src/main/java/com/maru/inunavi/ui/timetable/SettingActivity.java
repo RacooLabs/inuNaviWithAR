@@ -149,7 +149,6 @@ public class SettingActivity extends AppCompatActivity {
                                                     SharedPreferences.Editor autoLoginEdit = auto.edit();
                                                     autoLoginEdit.putString("userEmail", userEmail);
                                                     autoLoginEdit.putString("userMajor", MainActivity.userMajor);
-                                                    autoLoginEdit.putBoolean("isAutoLogin", true);
                                                     autoLoginEdit.commit();
 
                                                 }

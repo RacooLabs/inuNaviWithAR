@@ -97,6 +97,8 @@ public class SignUpActivity extends AppCompatActivity {
 
         TextView button_sign_up = findViewById(R.id.button_sign_up);
 
+        sign_up_major_arrow.setColorFilter(getResources().getColor(R.color.default_arrow_color, null));
+
         editText_sign_up_email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
@@ -309,12 +311,14 @@ public class SignUpActivity extends AppCompatActivity {
                     majorValidate = true;
                     editText_sign_up_major.setBackgroundResource(R.drawable.layout_login_round_box_done);
                     sign_up_major_arrow.setVisibility(View.VISIBLE);
+                    sign_up_major_arrow.setColorFilter(getResources().getColor(R.color.done_color, null));
                     textView_major_warning.setVisibility(View.INVISIBLE);
 
                 } else {
                     majorValidate = false;
                     editText_sign_up_major.setBackgroundResource(R.drawable.layout_login_signup_round_box_not);
                     sign_up_major_arrow.setVisibility(View.VISIBLE);
+                    sign_up_major_arrow.setColorFilter(getResources().getColor(R.color.not_color, null));
                     textView_major_warning.setVisibility(View.VISIBLE);
                     textView_major_warning.setText("전공을 선택하세요.");
                 }
@@ -370,6 +374,7 @@ public class SignUpActivity extends AppCompatActivity {
                     sign_up_major_arrow.setVisibility(View.VISIBLE);
                     textView_major_warning.setVisibility(View.VISIBLE);
                     textView_major_warning.setText("전공을 선택하세요.");
+                    sign_up_major_arrow.setColorFilter(getResources().getColor(R.color.not_color, null));
                     majorValidate = false;
 
                 }

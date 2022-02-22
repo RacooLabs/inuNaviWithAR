@@ -16,7 +16,7 @@ import java.util.Map;
 public class NextPlaceRequest extends StringRequest {
 
     final static private String URL = (IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/GetNextPlace.php" :
-            "http://" + DemoIP + "/selectLecture");
+            "http://" + DemoIP + "/getNextPlace");
 
     private Map<String, String> parameters;
 

@@ -54,7 +54,12 @@ public class Schedule {
             "#2986C3",
             "#822fbd",
             "#404040",
-            "#634b47"};
+            "#634b47",
+            "#1E588F",
+            "#4F2C54",
+            "#DF1B2E",
+            "#00B19B",
+            "#E85022"};
 
     private String userEmail;
 
@@ -86,7 +91,13 @@ public class Schedule {
                 }
 
             }
+
             colorCount++;
+
+            if(colorCount == colors.length){
+                colorCount = 0;
+            }
+
         }
 
     }

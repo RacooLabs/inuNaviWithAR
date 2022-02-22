@@ -16,6 +16,12 @@
 
     <color name="main_button_disable_color">#B4D8FE</color>
 
+    <color name="done_color">#0DB501</color>
+    <color name="not_color">#E30000</color>
+    <color name="default_arrow_color">#CCCCCC</color>
+
+
+
 
 
 

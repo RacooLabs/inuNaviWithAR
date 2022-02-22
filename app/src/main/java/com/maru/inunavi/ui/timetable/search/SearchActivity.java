@@ -209,6 +209,10 @@ public class SearchActivity extends AppCompatActivity {
 
                             Log.d("@@@ searchactivity111", target);
 
+
+                            tita_search_radioGroup.check(R.id.tita_search_radioButton1);
+                            tita_search_searchbar.setText("");
+
                             SearchBackgroundTask();
 
                         }

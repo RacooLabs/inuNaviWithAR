@@ -955,6 +955,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
 
                             //GetNextPlaceBackgroundTask();
 
+                            isLogin = true;
+
                             NextPlaceRequest nextPlaceRequest = new NextPlaceRequest(userEmail, responseNextPlaceListener);
                             RequestQueue queueNextPlaceAnalysis = Volley.newRequestQueue(getContext());
                             queueNextPlaceAnalysis.add(nextPlaceRequest);
