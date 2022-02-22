@@ -243,19 +243,19 @@ public class FindPasswordChangeActivity extends AppCompatActivity {
 
 
 
-    public void setNormalEditText(EditText e, ImageView i_done, TextView t){
-        e.setBackgroundResource(R.drawable.layout_login_round_box);
+    public void setNormalEditText(EditText e, ImageView i_done, TextView t) {
+        e.setBackgroundResource(R.drawable.layout_login_signup_round_box);
         i_done.setVisibility(View.INVISIBLE);
         t.setVisibility(View.GONE);
     }
 
-    public void setDoneEditText(EditText e, ImageView i_done, TextView t){
-        e.setBackgroundResource(R.drawable.layout_login_round_box_done);
+    public void setDoneEditText(EditText e, ImageView i_done, TextView t) {
+        e.setBackgroundResource(R.drawable.layout_login_signup_round_box_done);
         i_done.setVisibility(View.VISIBLE);
         t.setVisibility(View.GONE);
     }
 
-    public void setNotEditText(EditText e, ImageView i_done, TextView t, String msg){
+    public void setNotEditText(EditText e, ImageView i_done, TextView t, String msg) {
         e.setBackgroundResource(R.drawable.layout_login_signup_round_box_not);
         i_done.setVisibility(View.INVISIBLE);
         t.setVisibility(View.VISIBLE);

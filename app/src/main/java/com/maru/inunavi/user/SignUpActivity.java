@@ -309,7 +309,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                 if (!charSequence.toString().equals("") || !charSequence.toString().isEmpty()) {
                     majorValidate = true;
-                    editText_sign_up_major.setBackgroundResource(R.drawable.layout_login_round_box_done);
+                    editText_sign_up_major.setBackgroundResource(R.drawable.layout_login_signup_round_box_done);
                     sign_up_major_arrow.setVisibility(View.VISIBLE);
                     sign_up_major_arrow.setColorFilter(getResources().getColor(R.color.done_color, null));
                     textView_major_warning.setVisibility(View.INVISIBLE);
@@ -488,13 +488,13 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     public void setNormalEditText(EditText e, ImageView i_done, TextView t) {
-        e.setBackgroundResource(R.drawable.layout_login_round_box);
+        e.setBackgroundResource(R.drawable.layout_login_signup_round_box);
         i_done.setVisibility(View.INVISIBLE);
         t.setVisibility(View.GONE);
     }
 
     public void setDoneEditText(EditText e, ImageView i_done, TextView t) {
-        e.setBackgroundResource(R.drawable.layout_login_round_box_done);
+        e.setBackgroundResource(R.drawable.layout_login_signup_round_box_done);
         i_done.setVisibility(View.VISIBLE);
         t.setVisibility(View.GONE);
     }

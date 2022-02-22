@@ -127,15 +127,17 @@ public class SettingActivity extends AppCompatActivity {
                                     @Override
                                     public void onResponse(String response) {
 
+                                        Log.d("@@@ SettingActivity.java 138", response);
+
                                         try {
 
                                             JSONObject jsonResponse = new JSONObject(response);
 
                                             boolean success = jsonResponse.getBoolean("success");
 
+
                                             if (success) {
 
-                                                Log.d("@@@ SettingActivity.java 138", response);
                                                 Toast.makeText(getApplicationContext(), "전공을 변경하였습니다.", Toast.LENGTH_SHORT).show();
                                                 MainActivity.userMajor = userMajor;
                                                 setting_user_major.setText(MainActivity.userMajor);

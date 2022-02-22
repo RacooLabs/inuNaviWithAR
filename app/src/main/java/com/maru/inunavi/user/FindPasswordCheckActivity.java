@@ -141,6 +141,7 @@ public class FindPasswordCheckActivity extends AppCompatActivity {
 
                 if (verifyCodeInput.equals("")) {
                     setNotEditText(editText_find_password_check_verifyCode, find_password_check_done_icon, textView_warning, "인증코드를 입력하세요.");
+                    find_password_check_timer.setTextColor(getResources().getColor(R.color.not_color, null));
                     verifyCodeIsPassed = false;
 
                 }else{
@@ -148,11 +149,13 @@ public class FindPasswordCheckActivity extends AppCompatActivity {
                     if(verifyCodeInput.equals(verifyCode)){
 
                         setDoneEditText(editText_find_password_check_verifyCode, find_password_check_done_icon, textView_warning);
+                        find_password_check_timer.setTextColor(getResources().getColor(R.color.done_color, null));
                         verifyCodeIsPassed = true;
 
                     }else{
 
                         setNotEditText(editText_find_password_check_verifyCode, find_password_check_done_icon, textView_warning, "인증코드가 일치하지 않습니다.");
+                        find_password_check_timer.setTextColor(getResources().getColor(R.color.not_color, null));
                         verifyCodeIsPassed = false;
 
                     }
@@ -177,19 +180,19 @@ public class FindPasswordCheckActivity extends AppCompatActivity {
     }
 
 
-    public void setNormalEditText(EditText e, ImageView i_done, TextView t){
-        e.setBackgroundResource(R.drawable.layout_login_round_box);
+    public void setNormalEditText(EditText e, ImageView i_done, TextView t) {
+        e.setBackgroundResource(R.drawable.layout_login_signup_round_box);
         i_done.setVisibility(View.INVISIBLE);
         t.setVisibility(View.GONE);
     }
 
-    public void setDoneEditText(EditText e, ImageView i_done, TextView t){
-        e.setBackgroundResource(R.drawable.layout_login_round_box_done);
-        i_done.setVisibility(View.VISIBLE);
+    public void setDoneEditText(EditText e, ImageView i_done, TextView t) {
+        e.setBackgroundResource(R.drawable.layout_login_signup_round_box_done);
+        i_done.setVisibility(View.INVISIBLE);
         t.setVisibility(View.GONE);
     }
 
-    public void setNotEditText(EditText e, ImageView i_done, TextView t, String msg){
+    public void setNotEditText(EditText e, ImageView i_done, TextView t, String msg) {
         e.setBackgroundResource(R.drawable.layout_login_signup_round_box_not);
         i_done.setVisibility(View.INVISIBLE);
         t.setVisibility(View.VISIBLE);
