@@ -233,13 +233,12 @@ public class SatisfiedFragment extends Fragment {
 
                             //GetAnalysisResultBackgroundTask();
 
-                            /*
-                            완성되면 풀것.
+
                             AnalysisRequest analysisRequest = new AnalysisRequest(userEmail, responseAnalysisListener);
                             RequestQueue queueAnalysis = Volley.newRequestQueue(getContext());
                             queueAnalysis.add(analysisRequest);
 
-                            */
+
 
 
                         }
@@ -268,13 +267,12 @@ public class SatisfiedFragment extends Fragment {
 
             //GetAnalysisResultBackgroundTask();
 
-            /*
-            완성되면 풀것.
+
             AnalysisRequest analysisRequest = new AnalysisRequest(userEmail, responseAnalysisListener);
             RequestQueue queueAnalysis = Volley.newRequestQueue(getContext());
             queueAnalysis.add(analysisRequest);
 
-            */
+
 
         }else{
 

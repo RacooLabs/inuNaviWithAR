@@ -185,7 +185,18 @@ public class MapOverviewActivity extends AppCompatActivity implements OnMapReady
 
             LatLngBounds bounds = builder.build();
 
-            gMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, DpToPixel(48)));
+
+
+            try {
+
+                gMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, DpToPixel(80)));
+
+
+            }catch (Exception e){
+
+                gMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, DpToPixel(24)));
+
+            }
 
         }
 
@@ -193,7 +204,7 @@ public class MapOverviewActivity extends AppCompatActivity implements OnMapReady
         map_activity_overview_date.setText(overviewInfoList.get(i).getEndLectureTime() + " 수업 시작");
         map_activity_overview_start_lecture_title.setText(overviewInfoList.get(i).getStartLectureName());
         map_activity_overview_end_lecture_title.setText(overviewInfoList.get(i).getEndLectureName());
-        map_activity_overview_time_distance.setText(overviewInfoList.get(i).getTotalTime()+ "분 | " + (int)overviewInfoList.get(i).getDistance() + "m");
+        map_activity_overview_time_distance.setText(overviewInfoList.get(i).getTotalTime()+ "분 · " + (int)overviewInfoList.get(i).getDistance() + "m");
 
 
         PolylineOptions polylineOptions = new PolylineOptions().addAll(overviewInfoList.get(i).getDirectionList()).color(R.color.main_color);
@@ -370,7 +381,7 @@ public class MapOverviewActivity extends AppCompatActivity implements OnMapReady
                     endLectureName = object.getString("endLectureName");
                     endLectureTime = object.getString("endLectureTime");
                     totalTime = object.getInt("totalTime");
-                    dist = object.getDouble("dist");
+                    dist = object.getDouble("distance");
                     directionString = object.getString("directionString");
 
                     count++;
