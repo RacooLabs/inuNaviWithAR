@@ -16,7 +16,7 @@ import java.util.Map;
 public class AnalysisRequest extends StringRequest {
 
     final static private String URL = (IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/GetAnalysisResult.php" :
-            "http://" + DemoIP + "/selectLecture");
+            "http://" + DemoIP + "/getAnalysisResult");
 
     private Map<String, String> parameters;
 

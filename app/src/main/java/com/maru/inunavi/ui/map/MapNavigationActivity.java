@@ -11,6 +11,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -30,6 +33,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -38,10 +42,14 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.JointType;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.RoundCap;
@@ -74,12 +82,12 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
     private double bearing = 0;
     private Polyline polyline = null;
 
+    private Marker endMarker = null; // 도착 마커
+    private final int markerSize = 48;
+
     private SensorManager m_sensor_manager;
     private Sensor m_ot_sensor;
     private int m_check_count = 0;
-
-    private TextView textView1;
-    private TextView textView2;
 
     private TextView map_activity_navigation_detail_time;
     private TextView map_activity_navigation_detail_distance;
@@ -115,8 +123,7 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
         }
 
 
-        textView1 = findViewById(R.id.text1);
-        textView2 = findViewById(R.id.text2);
+
 
         map_activity_navigation_detail_time = findViewById(R.id.map_activity_navigation_detail_time);
         map_activity_navigation_detail_distance = findViewById(R.id.map_activity_navigation_detail_distance);
@@ -217,9 +224,6 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
                                             latLngList.clear();
                                             gMap.clear();
 
-                                            textView1.setText(location.getLatitude()+"");
-                                            textView2.setText(location.getLongitude()+"");
-
                                             GetRootBackgroundTask(new NaviInfo("LOCATION", endPlaceCode ,new LatLng(location.getLatitude(), location.getLongitude()), endLocation ));
 
 
@@ -243,7 +247,7 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
                             });
 
                             try {
-                                sleep(1000);
+                                sleep(3000);
 
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
@@ -457,6 +461,16 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
 
                 }else {
 
+                    JSONObject resultObj = new JSONObject();
+
+                    resultObj.put("isArrived", isArrived);
+                    resultObj.put("route", route);
+                    resultObj.put("angle", azimuth);
+
+
+                    Log.d("@@@MapnavigationActivity461", resultObj.toString());
+
+
                     if(isArrived){
 
                         Intent sendingIntent = new Intent(MapNavigationActivity.this, MainActivity.class);
@@ -485,7 +499,12 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
 
                         }
 
+                        if(latLngList.size()>0){
+                            setEndMarker(latLngList.get(latLngList.size()-1));
+                        }
+
                         updateCamera(gMap, azimuth);
+
 
                         PolylineOptions polylineOptions = new PolylineOptions().addAll(latLngList).color(R.color.main_color);
                         polyline = gMap.addPolyline(polylineOptions);
@@ -522,4 +541,32 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
         overridePendingTransition(0, 0);
 
     }
+
+    public void setEndMarker(LatLng endLocation){
+
+        if (endMarker != null) {
+            endMarker.remove();
+            endMarker = null;
+        }
+
+        if (gMap != null) {
+
+            endMarker = gMap.addMarker(new MarkerOptions().position(endLocation).icon(bitmapDescriptorFromVector(getApplicationContext(), R.drawable.ic_inumarker_end)));
+            endMarker.setTag("endMarker");
+            gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(endLocation,gMap.getCameraPosition().zoom));
+
+        }
+
+    }
+
+    private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
+        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
+        vectorDrawable.setBounds(0, 0, DpToPixel(markerSize), DpToPixel(markerSize));
+        Bitmap bitmap = Bitmap.createBitmap(DpToPixel(markerSize), DpToPixel(markerSize), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        vectorDrawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
+    }
+
+
 }

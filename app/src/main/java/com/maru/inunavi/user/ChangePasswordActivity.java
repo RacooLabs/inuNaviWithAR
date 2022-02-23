@@ -316,7 +316,9 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
 
                                     }else{
+
                                         Toast.makeText(getApplicationContext(), "수정할 항목이 있습니다.", Toast.LENGTH_SHORT).show();
+
                                     }
 
 

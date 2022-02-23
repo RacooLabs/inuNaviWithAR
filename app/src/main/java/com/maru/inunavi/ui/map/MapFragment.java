@@ -1409,7 +1409,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                 map_frag_navi_searchWrapper.setVisibility(View.GONE);
 
                 naviButton.setVisibility(View.VISIBLE);
-                arButton.setVisibility(View.VISIBLE);
+                arButton.setVisibility(View.GONE);
                 map_frag_navi_detail_box_wrapper.setVisibility(View.GONE);
                 searchKeywordRecyclerView.setVisibility(View.VISIBLE);
 
@@ -1427,7 +1427,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                 map_frag_navi_searchWrapper.setVisibility(View.GONE);
 
                 naviButton.setVisibility(View.VISIBLE);
-                arButton.setVisibility(View.VISIBLE);
+                arButton.setVisibility(View.GONE);
 
                 map_frag_navi_detail_box_wrapper.setVisibility(View.GONE);
                 searchKeywordRecyclerView.setVisibility(View.INVISIBLE);
@@ -1459,7 +1459,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                 map_frag_navi_searchWrapper.setVisibility(View.GONE);
 
                 naviButton.setVisibility(View.VISIBLE);
-                arButton.setVisibility(View.VISIBLE);
+                arButton.setVisibility(View.GONE);
 
                 map_frag_navi_detail_box_wrapper.setVisibility(View.GONE);
                 searchKeywordRecyclerView.setVisibility(View.INVISIBLE);
@@ -1487,7 +1487,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                 map_frag_navi_searchWrapper.setVisibility(View.GONE);
 
                 naviButton.setVisibility(View.VISIBLE);
-                arButton.setVisibility(View.VISIBLE);
+                arButton.setVisibility(View.GONE);
 
                 map_frag_navi_detail_box_wrapper.setVisibility(View.GONE);
                 searchKeywordRecyclerView.setVisibility(View.INVISIBLE);
@@ -1518,7 +1518,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                 map_frag_navi_searchWrapper.setVisibility(View.VISIBLE);
 
                 naviButton.setVisibility(View.INVISIBLE);
-                arButton.setVisibility(View.VISIBLE);
+                arButton.setVisibility(View.GONE);
 
                 map_frag_navi_detail_box_wrapper.setVisibility(View.GONE);
                 searchKeywordRecyclerView.setVisibility(View.INVISIBLE);
@@ -1939,7 +1939,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                     placeCode = object.getString("placeCode");
                     title = object.getString("title");
                     sort = object.getString("sort");
-                    dist = object.getDouble("dist");
+                    dist = object.getDouble("distance");
 
                     String[] locationString = object.getString("location").trim().split(",");
                     if (locationString.length == 2) {

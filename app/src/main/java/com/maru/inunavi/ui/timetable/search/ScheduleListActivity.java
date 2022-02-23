@@ -212,6 +212,7 @@ public class ScheduleListActivity extends AppCompatActivity {
                     how = object.getString("how");
                     point = object.getString("point");
 
+                    lecturename = lecturename.replaceAll("\"", "");
                     classtime_raw = classtime_raw.trim();
                     classtime_raw = classtime_raw.replaceAll("\"", "");
                     classtime_raw = classtime_raw.replaceAll(" ", "");

@@ -176,7 +176,7 @@ public class RecommendFragment extends Fragment {
             // doInBackground
 
             String target = (IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/RecommendList.php" :
-                    "http://" + DemoIP + "/selectLecture");
+                    "http://" + DemoIP + "/recommendList");
 
             try {
                 URL url = new URL(target);

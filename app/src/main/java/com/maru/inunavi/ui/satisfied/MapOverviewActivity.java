@@ -294,7 +294,7 @@ public class MapOverviewActivity extends AppCompatActivity implements OnMapReady
              //       "http://" + DemoIP + "/selectLecture")+ "?userEmail=\"" + MainActivity.cookieManager.getCookie(sUrl).replace("cookieKey=", "") + "\"";
 
             String target = (IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/GetOverviewRoot.php" :
-                    "http://" + DemoIP + "/selectLecture");
+                    "http://" + DemoIP + "/getOverviewRoot");
 
             try {
                 URL url = new URL(target);

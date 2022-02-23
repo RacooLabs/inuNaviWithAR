@@ -339,7 +339,7 @@ public class MapNaviSearchActivity extends AppCompatActivity {
             String myLocation = myCurrentLocation.latitude + "," + myCurrentLocation.longitude;
 
             String target = (IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/PlaceSearchList.php" :
-                    "http://" + DemoIP + "/selectLecture")+ "?searchKeyword=\"" + searchKeyword + "\"&myLocation=\"" + myLocation + "\"";
+                    "http://" + DemoIP + "/placeSearchList")+ "?searchKeyword=\"" + searchKeyword + "\"&myLocation=\"" + myLocation + "\"";
 
             try {
                 URL url = new URL(target);
@@ -393,7 +393,7 @@ public class MapNaviSearchActivity extends AppCompatActivity {
                     placeCode = object.getString("placeCode");
                     title = object.getString("title");
                     sort = object.getString("sort");
-                    dist = object.getDouble("dist");
+                    dist = object.getDouble("distance");
 
                     String[] locationString = object.getString("location").trim().split(",");
                     if (locationString.length == 2) {
