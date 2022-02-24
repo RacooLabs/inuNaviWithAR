@@ -186,8 +186,19 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.MyVi
 
             holder.textView_recommend_lectureName.setText(mData.get(position).getLecturename());
             holder.textView_recommend_professor.setText(mData.get(position).getProfessor());
-            holder.textView_recommend_info.setText(mData.get(position).getGrade() + "학년 " + mData.get(position).getCategory() + " " +
-                    mData.get(position).getPoint() + "학점 " + mData.get(position).getNumber());
+
+            if(mData.get(position).getGrade().equals("전학년")){
+
+                holder.textView_recommend_info.setText(mData.get(position).getGrade() + " " + mData.get(position).getCategory() + " " +
+                        mData.get(position).getPoint() + "학점 " + mData.get(position).getNumber());
+
+            }else{
+
+                holder.textView_recommend_info.setText(mData.get(position).getGrade() + "학년 " + mData.get(position).getCategory() + " " +
+                        mData.get(position).getPoint() + "학점 " + mData.get(position).getNumber());
+
+            }
+            
             holder.textView_recommend_time.setText(mData.get(position).getClasstime_raw());
 
 

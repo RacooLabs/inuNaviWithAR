@@ -1016,8 +1016,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                     JSONObject jsonResponse = new JSONObject(response);
                     boolean success = jsonResponse.getBoolean("success");
 
-
                     if (success) {
+
 
                         // 정보 초기화
 
@@ -1031,43 +1031,79 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                         nextPlaceLocationString = jsonResponse.getString("nextPlaceLocationString");
                         nextPlaceTitle = jsonResponse.getString("nextPlaceTitle");
 
-                        String[] locationSplit = nextPlaceLocationString.split(",");
+                        if(nextPlaceCode.substring(0,2).equals("ZZ")){
 
-                        if(locationSplit.length == 2){
-                            nextPlaceLocation = new LatLng(Double.parseDouble(locationSplit[0]),
-                                    Double.parseDouble(locationSplit[1]));
-                        }
+                            AlertDialog.Builder msgBuilder = new AlertDialog.Builder(getContext())
+                                    .setTitle("알림")
+                                    .setMessage("사이버 강의입니다.")
+                                    .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
 
-                        map_frag_navi_searchBar_Start.setText("내 위치");
-                        map_frag_navi_searchBar_End.setText(nextPlaceTitle);
+                                        }
+                                    });
 
-                        endPlaceCode = nextPlaceCode;
+                            AlertDialog msgDlg = msgBuilder.create(); msgDlg.show();
 
-                        if(nextPlaceLocation != null){
-                            endLocation = nextPlaceLocation;
-                        }
 
-                        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        }else if(nextPlaceCode.substring(0,2).equals("NC")){
 
-                            return;
-                        }
+                            AlertDialog.Builder msgBuilder = new AlertDialog.Builder(getContext())
+                                    .setTitle("알림")
+                                    .setMessage("미추홀 캠퍼스는 지원하지 않습니다. ")
+                                    .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
 
-                        fusedLocationClient.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
-                            @Override
-                            public void onSuccess(Location location) {
+                                        }
+                                    });
 
-                                startLocation = new LatLng(location.getLatitude(), location.getLongitude());
-                                startPlaceCode = "LOCATION";
+                            AlertDialog msgDlg = msgBuilder.create(); msgDlg.show();
 
-                                // 경로 그리는 메소드
-                                if (startLocation != null && endLocation!=null && isLogin) {
 
-                                    NaviInfo naviInfo = new NaviInfo(startPlaceCode, endPlaceCode, startLocation, endLocation);
-                                    showBriefingDirection(naviInfo);
+                        }else {
 
-                                }
+
+                            String[] locationSplit = nextPlaceLocationString.split(",");
+
+                            if (locationSplit.length == 2) {
+                                nextPlaceLocation = new LatLng(Double.parseDouble(locationSplit[0]),
+                                        Double.parseDouble(locationSplit[1]));
                             }
-                        });
+
+                            map_frag_navi_searchBar_Start.setText("내 위치");
+                            map_frag_navi_searchBar_End.setText(nextPlaceTitle);
+
+                            endPlaceCode = nextPlaceCode;
+
+                            if (nextPlaceLocation != null) {
+                                endLocation = nextPlaceLocation;
+                            }
+
+                            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                                return;
+                            }
+
+                            fusedLocationClient.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+                                @Override
+                                public void onSuccess(Location location) {
+
+                                    startLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                                    startPlaceCode = "LOCATION";
+
+                                    // 경로 그리는 메소드
+                                    if (startLocation != null && endLocation != null && isLogin) {
+
+                                        NaviInfo naviInfo = new NaviInfo(startPlaceCode, endPlaceCode, startLocation, endLocation);
+                                        showBriefingDirection(naviInfo);
+
+                                    }
+                                }
+                            });
+
+                        }
+
 
 
                     }else{
@@ -1085,6 +1121,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                         AlertDialog msgDlg = msgBuilder.create(); msgDlg.show();
 
                     }
+
+
 
 
                 } catch (Exception e) {

@@ -132,8 +132,19 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
         holder.textView_search_list_lectureName.setText(mData.get(position).getLecturename());
         holder.textView_search_list_professor.setText(mData.get(position).getProfessor());
-        holder.textView_search_list_info.setText(mData.get(position).getGrade() + "학년 " + mData.get(position).getCategory() + " " +
-                mData.get(position).getPoint() + "학점 " + mData.get(position).getNumber());
+
+        if(mData.get(position).getGrade().equals("전학년")){
+
+            holder.textView_search_list_info.setText(mData.get(position).getGrade() + " " + mData.get(position).getCategory() + " " +
+                    mData.get(position).getPoint() + "학점 " + mData.get(position).getNumber());
+
+        }else{
+
+            holder.textView_search_list_info.setText(mData.get(position).getGrade() + "학년 " + mData.get(position).getCategory() + " " +
+                    mData.get(position).getPoint() + "학점 " + mData.get(position).getNumber());
+
+        }
+
         holder.textView_search_list_time.setText(mData.get(position).getClasstime_raw());
 
         holder.tita_search_add.setOnClickListener(new View.OnClickListener() {
