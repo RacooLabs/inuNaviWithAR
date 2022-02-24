@@ -26,6 +26,7 @@ import android.os.SystemClock;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -112,6 +113,8 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.map_activity_navigation);
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         Intent intent = getIntent();
 
@@ -539,6 +542,17 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
         super.onDestroy();
         isThreadRun = false;
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        isThreadRun = false;
+        finish();
+        overridePendingTransition(0, 0);
+
+    }
+
+
 
     @Override
     public void onBackPressed() {
