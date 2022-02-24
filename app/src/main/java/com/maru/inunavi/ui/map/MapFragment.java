@@ -1208,6 +1208,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         rlpCompass.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
         //rlpCompass.setMargins(0, DpToPixel(122), 0, 0);
 
+        LatLngBounds australiaBounds = new LatLngBounds(
+                new LatLng(37.37011619593982, 126.6264775804691), // SW bounds
+                new LatLng(37.37958006018376, 126.63864407929854)  // NE bounds
+        );
+
+        gMap.setLatLngBoundsForCameraTarget(australiaBounds);
+
 
         gMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override

@@ -51,7 +51,6 @@
                 android:hint="이메일"
                 android:imeOptions="actionDone"
                 android:inputType="text"
-                android:maxLength="30"
                 android:paddingLeft="@dimen/editText_padding"
                 android:paddingRight="@dimen/editText_padding"
                 android:textColor="@color/main_text_color"

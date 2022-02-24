@@ -311,7 +311,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="일주일 총 이동 거리"
+                android:text="일주일 예상 이동 거리"
                 android:textStyle="bold"
                 android:textColor="@color/main_color"
                 android:textSize="@dimen/main_text_size"
@@ -344,7 +344,7 @@
 
 
             android:background="@drawable/layout_more_option_button_roundedbox"
-            android:text="전체 경로 보기"
+            android:text="예상 경로 미리 보기"
             android:textSize="@dimen/main_text_size"
             android:textColor="@color/white"
             android:gravity="center"

@@ -53,6 +53,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
@@ -129,6 +130,14 @@ public class MapPickLocationActivity extends AppCompatActivity implements OnMapR
 
 
         gMap.moveCamera(CameraUpdateFactory.newLatLngZoom( new LatLng(37.37532099190484, 126.63285407077159) , 17));
+
+
+        LatLngBounds australiaBounds = new LatLngBounds(
+                new LatLng(37.37011619593982, 126.6264775804691), // SW bounds
+                new LatLng(37.37958006018376, 126.63864407929854)  // NE bounds
+        );
+
+        gMap.setLatLngBoundsForCameraTarget(australiaBounds);
 
         //--------------------------맵 초기화 완료---------------------------------------------
 
