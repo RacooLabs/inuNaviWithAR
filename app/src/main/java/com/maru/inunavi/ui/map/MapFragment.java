@@ -340,9 +340,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         searchKeywordList.add("카페");
         searchKeywordList.add("편의점");
         searchKeywordList.add("편의시설");
-        searchKeywordList.add("부속건물");
-        searchKeywordList.add("야외시설");
         searchKeywordList.add("흡연실");
+        searchKeywordList.add("야외시설");
+        searchKeywordList.add("부속건물");
         searchKeywordList.add("footer");
 
         searchKeywordIconList.add( getResources().getDrawable(R.drawable.ic_cancel_black_24dp, null));
@@ -350,9 +350,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         searchKeywordIconList.add( getResources().getDrawable(R.drawable.ic_local_cafe_black_24dp, null));
         searchKeywordIconList.add( getResources().getDrawable(R.drawable.ic_local_convenience_store_black_24dp, null));
         searchKeywordIconList.add( getResources().getDrawable(R.drawable.ic_print_black_24dp, null));
-        searchKeywordIconList.add( getResources().getDrawable(R.drawable.ic_apartment_black_24dp, null));
-        searchKeywordIconList.add( getResources().getDrawable(R.drawable.ic_sports_tennis_black_24dp, null));
         searchKeywordIconList.add( getResources().getDrawable(R.drawable.ic_smoking_rooms_black_24dp, null));
+        searchKeywordIconList.add( getResources().getDrawable(R.drawable.ic_sports_tennis_black_24dp, null));
+        searchKeywordIconList.add( getResources().getDrawable(R.drawable.ic_apartment_black_24dp, null));
         searchKeywordIconList.add( getResources().getDrawable(R.drawable.ic_cancel_black_24dp, null));
 
 

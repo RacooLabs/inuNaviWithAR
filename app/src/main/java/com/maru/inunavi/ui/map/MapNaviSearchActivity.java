@@ -105,7 +105,17 @@ public class MapNaviSearchActivity extends AppCompatActivity {
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-        
+        //검색창 클리어
+        map_frag_navi_search_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                map_frag_navi_search_searchBar.setText("");
+
+            }
+        });
+
+
         //돌아가기 버튼
         map_frag_navi_search_back.setOnClickListener(new View.OnClickListener() {
             @Override
