@@ -1402,13 +1402,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
             }
         });
 
-        //지도 경계 설정 - 일단은 보류
-        /*LatLngBounds adelaideBounds = new LatLngBounds(
-                new LatLng(37.368355013388836, 126.62518635929207), // SW bounds
-                new LatLng(37.379929492345504, 126.63984034460945)  // NE bounds
-        );
 
-        gMap.setLatLngBoundsForCameraTarget(adelaideBounds);*/
 
         gMap.setPadding(0,DpToPixel(108),0,0);
 
