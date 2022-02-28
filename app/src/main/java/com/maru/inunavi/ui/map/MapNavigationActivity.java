@@ -86,9 +86,7 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
     private Marker endMarker = null; // 도착 마커
     private final int markerSize = 48;
 
-    private SensorManager m_sensor_manager;
-    private Sensor m_ot_sensor;
-    private int m_check_count = 0;
+
 
     private TextView map_activity_navigation_detail_time;
     private TextView map_activity_navigation_detail_distance;
@@ -99,6 +97,10 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
     private Thread naviThread;
 
     private List<LatLng> latLngList = new ArrayList<>();
+
+    private SensorManager m_sensor_manager;
+    private Sensor m_ot_sensor;
+    private int m_check_count = 0;
 
     private double azimuth;
 
@@ -471,14 +473,15 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
 
                 }else {
 
-                    JSONObject resultObj = new JSONObject();
+                    //AR용
+                    /*JSONObject resultObj = new JSONObject();
 
                     resultObj.put("isArrived", isArrived);
                     resultObj.put("route", route);
                     resultObj.put("angle", azimuth);
 
 
-                    Log.d("@@@MapnavigationActivity461", resultObj.toString());
+                    Log.d("@@@MapnavigationActivity461", resultObj.toString());*/
 
 
                     if(isArrived){

@@ -1,6 +1,7 @@
 package com.maru.inunavi.ui.map;
 
 
+import static android.content.Context.SENSOR_SERVICE;
 import static com.maru.inunavi.IpAddress.DemoIP;
 import static com.maru.inunavi.IpAddress.DemoIP_ClientTest;
 import static com.maru.inunavi.MainActivity.cookieManager;
@@ -25,6 +26,10 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.telecom.Call;
@@ -108,6 +113,7 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -124,7 +130,7 @@ import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
-public class MapFragment extends Fragment implements OnMapReadyCallback{
+public class MapFragment extends Fragment implements OnMapReadyCallback, SensorEventListener {
 
 
     private MapView mapView = null;
@@ -234,8 +240,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
 
 
 
-    //다음 강의실 정보 결과 응답 POST 방식
+    // 다음 강의실 정보 결과 응답 POST 방식
     private Response.Listener<String> responseNextPlaceListener;
+
+    // AR
+    private String route;
+    private int m_check_count = 0;
+    private SensorManager m_sensor_manager;
+    private Sensor m_ot_sensor;
+    private double azimuth;
 
 
     public MapFragment() {
@@ -245,6 +258,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        m_sensor_manager = (SensorManager) getActivity().getSystemService(SENSOR_SERVICE);
+        // SensorManager 를 이용해서 방향 센서 객체를 얻는다.
+        m_ot_sensor = m_sensor_manager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
 
 
     }
@@ -1165,13 +1182,21 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
     @Override
     public void onResume() {
         super.onResume();
+
         mapView.onResume();
+
+        m_check_count = 0;
+        // 센서 값을 이 컨텍스트에서 받아볼 수 있도록 리스너를 등록한다.
+        m_sensor_manager.registerListener(this, m_ot_sensor, SensorManager.SENSOR_DELAY_UI);
+
     }
 
     @Override
     public void onPause() {
         super.onPause();
         mapView.onPause();
+        m_sensor_manager.unregisterListener(this);
+
     }
 
     @Override
@@ -1466,8 +1491,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                 map_frag_navi_searchWrapper.setVisibility(View.GONE);
 
                 naviButton.setVisibility(View.VISIBLE);
-                arButton.setVisibility(View.GONE);
 
+                arButton.setVisibility(View.GONE);
                 map_frag_navi_detail_box_wrapper.setVisibility(View.GONE);
                 searchKeywordRecyclerView.setVisibility(View.INVISIBLE);
 
@@ -1558,7 +1583,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
 
                 naviButton.setVisibility(View.INVISIBLE);
                 arButton.setVisibility(View.GONE);
-
                 map_frag_navi_detail_box_wrapper.setVisibility(View.GONE);
                 searchKeywordRecyclerView.setVisibility(View.INVISIBLE);
 
@@ -1607,6 +1631,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
     public void showBriefingDirection(NaviInfo naviInfo) {
 
         Toast.makeText(getContext(), "경로 찾기 시작", Toast.LENGTH_SHORT).show();
+
 
         if(gMap != null)
             gMap.setPadding(0,DpToPixel(182), 0, DpToPixel(140));
@@ -2108,7 +2133,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
 
                 int count = 0;
 
-                String route = "";
+                route = "";
                 int time = 0;
                 double dist = 0;
                 int steps = 0;
@@ -2171,6 +2196,47 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                     stylePolyline(polyline);
 
                     map_frag_navi_detail_box_wrapper.setVisibility(View.VISIBLE);
+
+                    AR_button_wrapper.setVisibility(View.VISIBLE);
+
+                    AR_button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                                return;
+                            }
+
+                            fusedLocationClient.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+                                @Override
+                                public void onSuccess(Location location) {
+
+                                    JSONObject resultObj = new JSONObject();
+
+                                    try {
+                                        resultObj.put("route", route);
+                                        resultObj.put("location", location.getLatitude() + ", " + location.getLongitude());
+                                        resultObj.put("angle", azimuth);
+
+                                        Log.d("@@@MapFragment 2217", resultObj.toString());
+
+                                        /*Intent intent = new Intent(getActivity(), UnityPlayerActivity.class);
+                                        startActivity(intent);
+*/
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                }
+                            });
+
+
+
+
+                        }
+                    });
 
 
                 }
@@ -2321,5 +2387,25 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         });
 
     }*/
+
+    public void onAccuracyChanged(Sensor sensor, int accuracy)
+    {
+
+    }
+
+
+    public void onSensorChanged(SensorEvent event)
+    {
+        // 방향 센서가 전달한 데이터인 경우
+
+        // 첫번째 데이터인 방위값으로 문자열을 구성하여 텍스트뷰에 출력한다.
+        if(event.sensor.getType() == Sensor.TYPE_ORIENTATION) {
+            String str;
+            azimuth = event.values[0];
+
+
+        }
+
+    }
 
 }
