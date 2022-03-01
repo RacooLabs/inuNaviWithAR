@@ -111,7 +111,7 @@ public class SignUpActivity extends AppCompatActivity {
                     String userEmail = editText_sign_up_email.getText().toString().trim();
                     Pattern p = Pattern.compile("^[_a-zA-Z0-9-\\.]+@[\\.a-zA-Z0-9-]+\\.[a-zA-Z]+$");
                     Matcher m = p.matcher(userEmail);
-                    Log.d("@@@", userEmail);
+
 
 
                     if (userEmail.equals("")) {
@@ -132,7 +132,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                                 try {
 
-                                    Log.d("@@@", "signupactivity_107 : " + response);
+
                                     JSONObject jsonResponse = new JSONObject(response);
                                     boolean success = jsonResponse.getBoolean("success");
 
@@ -147,8 +147,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                                 } catch (Exception e) {
 
-                                    Log.d("@@@", "validate error");
-                                    e.printStackTrace();
+
 
                                     setNotEditText(editText_sign_up_email, sign_up_email_done_icon, textView_email_warning, "서버 연결 실패");
                                     emailValidate = false;
@@ -351,7 +350,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                 Pattern p = Pattern.compile("^[_a-zA-Z0-9-\\.]+@[\\.a-zA-Z0-9-]+\\.[a-zA-Z]+$");
                 Matcher m = p.matcher(userEmail);
-                Log.d("@@@", userEmail);
+
 
 
                 if (userPassword.equals("")) {
@@ -398,7 +397,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                             try {
 
-                                Log.d("@@@", "signupactivity_107 : " + response);
+
                                 JSONObject jsonResponse = new JSONObject(response);
                                 boolean success = jsonResponse.getBoolean("success");
 
@@ -416,7 +415,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                                                 try {
 
-                                                    Log.d("@@@", "signupactivity_329 : " + response);
+
 
                                                     JSONObject jsonResponse = new JSONObject(response);
 
@@ -434,7 +433,6 @@ public class SignUpActivity extends AppCompatActivity {
 
                                                 } catch (Exception e) {
 
-                                                    e.printStackTrace();
 
                                                 }
 
@@ -461,8 +459,6 @@ public class SignUpActivity extends AppCompatActivity {
 
                             } catch (Exception e) {
 
-                                Log.d("@@@", "validate error");
-                                e.printStackTrace();
 
                                 setNotEditText(editText_sign_up_email, sign_up_email_done_icon, textView_email_warning, "서버 연결 실패");
                                 emailValidate = false;

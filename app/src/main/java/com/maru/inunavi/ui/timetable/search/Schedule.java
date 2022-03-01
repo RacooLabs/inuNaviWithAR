@@ -85,7 +85,7 @@ public class Schedule {
                 endTime = Integer.parseInt(startEndTime[1]);
 
                 for(int j=startTime; j<endTime+1;j++){
-                    Log.d("@@Schedule 74 " , startTime + " : " + endTime);
+
                     lectureSchedule[j] = lecture;
                     lectureSchedule[j].setColor(colors[colorCount]);
                 }
@@ -191,21 +191,21 @@ public class Schedule {
 
             if(this.lectureSchedule[i] != null){
 
-                Log.d("Schedule 151 : ", i +"");
+
             //schedule_textView[i].setText(lectureSchedule[i].getLecturename());
             //schedule_textView[i].setBackgroundColor(Color.BLACK);
                 if (!((i>=0 && i<=15 ) || (i>=48 && i<=63) || (i>=96 && i<=111) || (i>=144 && i<=159) || (i>=192 && i<=207) || (i>=240 && i<=255) || (i>=288 && i<=335))){
 
                     if (sameCount == 1) {
 
-                        Log.d("@@@ Schedule147", ""+i);
+
                         positionX = (int) schedule_textView[i].getX();
                         positionY = (int) schedule_textView[i].getY();
                     }
 
                     if (this.lectureSchedule[i+1] == null){
 
-                        Log.d("Schedule 165 : ", (i+1) +"");
+
 
 
                         TextView textView = new TextView(context);
@@ -256,7 +256,7 @@ public class Schedule {
 
                                                 try {
 
-                                                    Log.d("@@@", "deleteClick_243 : " + response);
+
 
                                                     JSONObject jsonResponse = new JSONObject(response);
 
@@ -282,7 +282,6 @@ public class Schedule {
 
                                                 } catch (Exception e) {
 
-                                                    e.printStackTrace();
 
                                                 }
 
@@ -354,7 +353,7 @@ public class Schedule {
 
                                                 try {
 
-                                                    Log.d("@@@", "SearchAdapter_78 : " + response);
+
 
                                                     JSONObject jsonResponse = new JSONObject(response);
 
@@ -380,7 +379,6 @@ public class Schedule {
 
                                                 } catch (Exception e) {
 
-                                                    e.printStackTrace();
 
                                                 }
 
@@ -406,7 +404,6 @@ public class Schedule {
                     }else{
 
                         sameCount++;
-                        Log.d("@@@ schedule 92", " error");
 
                     }
 

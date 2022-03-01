@@ -238,6 +238,13 @@
         </activity>
 
 
+        <activity
+            android:name="com.maru.inunavi.ui.map.UnityPlayerActivity"
+            android:exported="true"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait"/>
+
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAHc4z-ZU1saOBMV0r-xKKy_GNmiPQeG5c" />

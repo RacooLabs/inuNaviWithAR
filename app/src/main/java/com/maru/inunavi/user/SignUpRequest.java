@@ -27,7 +27,7 @@ public class SignUpRequest extends StringRequest {
         super(Method.POST, URL, listener, new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
-            Log.d("@@@", "error_signup_requst:24");
+
         }
     });
 

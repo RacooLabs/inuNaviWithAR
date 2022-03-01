@@ -113,7 +113,7 @@ public class SatisfiedFragment extends Fragment {
 
                 try {
 
-                    Log.d("@@@", "satisfiedFragment_116 : " + response);
+
                     JSONObject jsonResponse = new JSONObject(response);
                     boolean success = jsonResponse.getBoolean("success");
 
@@ -188,8 +188,7 @@ public class SatisfiedFragment extends Fragment {
 
                 } catch (Exception e) {
 
-                    Log.d("@@@", "validate error");
-                    e.printStackTrace();
+
 
                 }
 
@@ -356,8 +355,7 @@ public class SatisfiedFragment extends Fragment {
                 return stringBuilder.toString().trim();
 
             } catch (Exception e) {
-                e.printStackTrace();
-                Log.d("@@@satisfied Fragment 274", e.toString());
+
             }
 
             return null;
@@ -368,7 +366,7 @@ public class SatisfiedFragment extends Fragment {
 
             try {
 
-                Log.d("@@@satisfied fragment 285", result);
+
 
                 JSONObject jsonObject = new JSONObject(result);
                 JSONArray jsonArray = jsonObject.getJSONArray("response");
@@ -451,7 +449,6 @@ public class SatisfiedFragment extends Fragment {
                 }
 
             } catch (Exception e) {
-                e.printStackTrace();
 
             }
 

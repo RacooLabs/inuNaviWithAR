@@ -23,7 +23,7 @@ public class AppInfo extends AppCompatActivity {
             packageInfo = getBaseContext().getPackageManager().getPackageInfo(getBaseContext().getPackageName(), 0);
             version = packageInfo.versionName;
         } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
+
         }
 
         TextView textView_version= findViewById(R.id.version);

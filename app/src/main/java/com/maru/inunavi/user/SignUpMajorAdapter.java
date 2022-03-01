@@ -46,7 +46,7 @@ public class MajorAdapter extends RecyclerView.Adapter<com.maru.inunavi.ui.timet
                 @Override
                 public void onClick(View v) {
 
-                    Log.d("@@@majoradpater : 48", "error");
+
 
                     int pos = getAdapterPosition() ;
                     if (pos != RecyclerView.NO_POSITION) {

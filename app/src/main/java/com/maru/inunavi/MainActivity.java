@@ -25,7 +25,7 @@ import com.google.android.gms.maps.MapsInitializer.Renderer;
 import com.google.android.gms.maps.OnMapsSdkInitializedCallback;
 
 
-public class MainActivity extends AppCompatActivity implements OnMapsSdkInitializedCallback {
+public class MainActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
 
@@ -38,17 +38,7 @@ public class MainActivity extends AppCompatActivity implements OnMapsSdkInitiali
     public static Boolean autoLogin = false;
 
 
-    @Override
-    public void onMapsSdkInitialized(MapsInitializer.Renderer renderer) {
-        switch (renderer) {
-            case LATEST:
-                Log.d("MapsDemo", "The latest version of the renderer is used.");
-                break;
-            case LEGACY:
-                Log.d("MapsDemo", "The legacy version of the renderer is used.");
-                break;
-        }
-    }
+
 
 
     @Override

@@ -49,6 +49,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.JointType;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
@@ -202,6 +203,7 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
         gMap.moveCamera(CameraUpdateFactory.newLatLngZoom( new LatLng(37.37532099190484, 126.63285407077159) , 17));
 
         gMap.getUiSettings().setScrollGesturesEnabled(false);
+        gMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getBaseContext(), R.raw.map_style));
 
         //--------------------------맵 초기화 완료---------------------------------------------
 
@@ -262,7 +264,6 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
                                 sleep(3000);
 
                             } catch (InterruptedException e) {
-                                e.printStackTrace();
                             }
 
                         }
@@ -430,8 +431,7 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
                 return stringBuilder.toString().trim();
 
             } catch (Exception e) {
-                e.printStackTrace();
-                Log.d("@@@MapNavigationActivity396", e.toString());
+
             }
 
             return null;
@@ -442,7 +442,7 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
 
             try {
 
-                Log.d("@@@MapNavigationActivity 407", result);
+
 
                 JSONObject jsonObject = new JSONObject(result);
                 JSONArray jsonArray = jsonObject.getJSONArray("response");
@@ -481,7 +481,7 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
                     resultObj.put("angle", azimuth);
 
 
-                    Log.d("@@@MapnavigationActivity461", resultObj.toString());*/
+               */
 
 
                     if(isArrived){
@@ -530,7 +530,6 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
 
 
             } catch (Exception e) {
-                e.printStackTrace();
 
             }
 

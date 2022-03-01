@@ -161,8 +161,7 @@ public class ScheduleListActivity extends AppCompatActivity {
                 return stringBuilder.toString().trim();
 
             } catch (Exception e) {
-                e.printStackTrace();
-                Log.d("@@@search adapter 229", e.toString());
+
             }
 
             return null;
@@ -174,7 +173,7 @@ public class ScheduleListActivity extends AppCompatActivity {
 
             try {
 
-                Log.d("@@@search adapter 258", result);
+
                 JSONObject jsonObject = new JSONObject(result);
                 JSONArray jsonArray = jsonObject.getJSONArray("response");
 
@@ -270,7 +269,7 @@ public class ScheduleListActivity extends AppCompatActivity {
 
                                         try {
 
-                                            Log.d("@@@", "SearchAdapter_78 : " + response);
+
 
                                             JSONObject jsonResponse = new JSONObject(response);
 
@@ -307,7 +306,6 @@ public class ScheduleListActivity extends AppCompatActivity {
 
                                         } catch (Exception e) {
 
-                                            e.printStackTrace();
 
                                         }
 
@@ -339,7 +337,6 @@ public class ScheduleListActivity extends AppCompatActivity {
 
             } catch (Exception e) {
 
-                e.printStackTrace();
 
             }
 

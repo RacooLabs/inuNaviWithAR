@@ -62,8 +62,7 @@ public class RecommendFragment extends Fragment {
     private RecommendAdapter adapter;
     private View root;
 
-    private ArrayList<Lecture> recommendListType0 = new ArrayList<>();
-    private ArrayList<Lecture> recommendListType1 = new ArrayList<>();
+    private ArrayList<Lecture> recommendList = new ArrayList<>();
     private TextView frag_recommend_info;
 
 
@@ -141,7 +140,7 @@ public class RecommendFragment extends Fragment {
 
             // 정보 초기화
 
-            //RecommendBackgroundTask();
+            RecommendBackgroundTask();
 
 
 
@@ -169,14 +168,14 @@ public class RecommendFragment extends Fragment {
     // 기존 시간표 불러오기.
     void RecommendBackgroundTask() {
 
-        recommendListType0 = new ArrayList<>();
-        recommendListType1 = new ArrayList<>();
+        recommendList = new ArrayList<>();
+
 
         recommendBackgroundTask = Observable.fromCallable(() -> {
             // doInBackground
 
             String target = (IpAddress.isTest ? "http://"+ DemoIP_ClientTest +"/inuNavi/RecommendList.php" :
-                    "http://" + DemoIP + "/recommendList");
+                    "http://" + DemoIP + "/getRecommendLecture");
 
             try {
                 URL url = new URL(target);
@@ -216,8 +215,7 @@ public class RecommendFragment extends Fragment {
                 return stringBuilder.toString().trim();
 
             } catch (Exception e) {
-                e.printStackTrace();
-                Log.d("@@@search adapter 229", e.toString());
+
             }
 
             return null;
@@ -228,13 +226,12 @@ public class RecommendFragment extends Fragment {
 
             try {
 
-                Log.d("@@@search adapter 258", result);
+
                 JSONObject jsonObject = new JSONObject(result);
                 JSONArray jsonArray = jsonObject.getJSONArray("response");
 
                 int count = 0;
 
-                int type;
                 int id;
                 String department;
                 String grade;
@@ -254,7 +251,6 @@ public class RecommendFragment extends Fragment {
                 while (count < jsonArray.length()) {
                     JSONObject object = jsonArray.getJSONObject(count);
 
-                    type = object.getInt("type");
                     id = object.getInt("id");
                     department = object.getString("department");
                     grade = object.getString("grade");
@@ -279,11 +275,7 @@ public class RecommendFragment extends Fragment {
                             professor, classroom_raw, classtime_raw, classroom, classtime, how, Integer.parseInt(point));
 
 
-                    if(type == 0){
-                        recommendListType0.add(lecture);
-                    }else if (type == 1){
-                        recommendListType1.add(lecture);
-                    }
+                    recommendList.add(lecture);
 
                     count++;
 
@@ -291,7 +283,7 @@ public class RecommendFragment extends Fragment {
 
                 ArrayList<Lecture> totalRecommendList = new ArrayList<>();
 
-                if(recommendListType0.size() == 0 && recommendListType1.size() == 0){
+                if(recommendList.size() == 0){
 
                     frag_recommend_info.setVisibility(View.VISIBLE);
 
@@ -299,23 +291,9 @@ public class RecommendFragment extends Fragment {
 
                     frag_recommend_info.setVisibility(View.INVISIBLE);
 
-                    if (recommendListType0.size() == 0) {
-                        totalRecommendList.add(new Lecture(0, "", "", "", "", "개인 맞춤 추천", "", "", "", "", "", "", 0));
-                        totalRecommendList.addAll(recommendListType1);
+                    totalRecommendList.add(new Lecture(0, "", "", "", "", "강의 추천", "", "", "", "", "", "", 0));
+                    totalRecommendList.addAll(recommendList);
 
-                    } else if (recommendListType1.size() == 0) {
-                        totalRecommendList.add(new Lecture(0, "", "", "", "", "거리 맞춤 추천", "", "", "", "", "", "", 0));
-                        totalRecommendList.addAll(recommendListType0);
-
-                    }else{
-
-                        totalRecommendList.add(new Lecture(0, "", "", "", "", "거리 맞춤 추천", "", "", "", "", "", "", 0));
-                        totalRecommendList.addAll(recommendListType0);
-                        totalRecommendList.add(new Lecture(0, "", "", "", "", "개인 맞춤 추천", "", "", "", "", "", "", 0));
-                        totalRecommendList.addAll(recommendListType1);
-
-
-                    }
                 }
 
 
@@ -326,14 +304,13 @@ public class RecommendFragment extends Fragment {
                     @Override
                     public void onItemClick(View v, int position) {
 
-                        //RecommendBackgroundTask();
+                        RecommendBackgroundTask();
 
                     }
                 });
 
 
             } catch (Exception e) {
-                e.printStackTrace();
             }
 
             recommendBackgroundTask.dispose();

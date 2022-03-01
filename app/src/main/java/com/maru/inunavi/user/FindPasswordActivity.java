@@ -126,7 +126,7 @@ public class FindPasswordActivity extends AppCompatActivity {
 
                             try {
 
-                                Log.d("@@@", "signupactivity_107 : " + response);
+
                                 JSONObject jsonResponse = new JSONObject(response);
                                 boolean success = jsonResponse.getBoolean("success");
 
@@ -155,10 +155,10 @@ public class FindPasswordActivity extends AppCompatActivity {
 
                                             try {
 
-                                                Log.d("@@@", "findpasswordactivity104 : " + response);
+
 
                                                 JSONObject jsonResponse = new JSONObject(response);
-                                                Log.d("@@@ findpasswordactivity104 ", response);
+
 
                                                 boolean success = jsonResponse.getBoolean("success");
                                                 String verifyCode = jsonResponse.getString("code");
@@ -180,7 +180,6 @@ public class FindPasswordActivity extends AppCompatActivity {
 
                                             } catch (Exception e) {
 
-                                                e.printStackTrace();
 
                                             }
 
@@ -199,8 +198,7 @@ public class FindPasswordActivity extends AppCompatActivity {
 
                             } catch (Exception e) {
 
-                                Log.d("@@@", "validate error");
-                                e.printStackTrace();
+
 
                                 setNotEditText(editText_find_password_email, find_password_done_icon,  textView_warning, "서버 연결 실패");
                                 userEmailIsExist = false;

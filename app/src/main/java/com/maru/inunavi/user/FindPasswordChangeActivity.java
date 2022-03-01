@@ -192,12 +192,12 @@ public class FindPasswordChangeActivity extends AppCompatActivity {
 
                             try {
 
-                                Log.d("@@@", "signupactivity_329 : " + response);
+
 
                                 JSONObject jsonResponse = new JSONObject(response);
 
 
-                                Log.d("@@@ changePassword ", response);
+
 
                                 boolean success = jsonResponse.getBoolean("success");
 
@@ -216,7 +216,6 @@ public class FindPasswordChangeActivity extends AppCompatActivity {
 
                             } catch (Exception e) {
 
-                                e.printStackTrace();
 
                             }
 

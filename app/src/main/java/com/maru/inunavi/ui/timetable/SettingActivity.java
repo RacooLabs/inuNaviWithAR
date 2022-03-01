@@ -127,7 +127,7 @@ public class SettingActivity extends AppCompatActivity {
                                     @Override
                                     public void onResponse(String response) {
 
-                                        Log.d("@@@ SettingActivity.java 138", response);
+
 
                                         try {
 

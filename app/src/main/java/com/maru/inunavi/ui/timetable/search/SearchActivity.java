@@ -165,7 +165,7 @@ public class SearchActivity extends AppCompatActivity {
                             "http://" + DemoIP + "/selectLecture")+ "?main_keyword=\"" + main_keyword + "\"&keyword_option=\"" + keyword_option
                              + "\"&major_option=\"전체\"" + "&cse_option=\"전체\"" + "&sort_option=\"기본\"" + "&grade_option=\"전체\"" + "&category_option=\"전체\"" + "&score_option=\"전체\"";
 
-                    Log.d("@@@searchActivity 119", target);
+
 
                     SearchBackgroundTask();
 
@@ -207,7 +207,7 @@ public class SearchActivity extends AppCompatActivity {
 
 
 
-                            Log.d("@@@ searchactivity111", target);
+
 
 
                             tita_search_radioGroup.check(R.id.tita_search_radioButton1);
@@ -287,8 +287,7 @@ public class SearchActivity extends AppCompatActivity {
                 return stringBuilder.toString().trim();
 
             } catch (Exception e) {
-                e.printStackTrace();
-                Log.d("@@@search activity 106", e.toString());
+
             }
 
             return null;
@@ -299,7 +298,6 @@ public class SearchActivity extends AppCompatActivity {
 
             try {
 
-                Log.d("@@@ SearchAcitvity236", result);
 
                 lectureList.clear();
                 JSONObject jsonObject = new JSONObject(result);
@@ -368,7 +366,6 @@ public class SearchActivity extends AppCompatActivity {
 
 
             } catch (Exception e) {
-                e.printStackTrace();
             }
 
             backgroundtask.dispose();

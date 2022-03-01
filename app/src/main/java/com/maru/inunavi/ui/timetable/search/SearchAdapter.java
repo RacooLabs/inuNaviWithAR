@@ -180,7 +180,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
                             try {
 
-                                Log.d("@@@", "SearchAdapter_78 : " + response);
+
 
                                 JSONObject jsonResponse = new JSONObject(response);
 
@@ -205,7 +205,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
                             } catch (Exception e) {
 
-                                e.printStackTrace();
 
                             }
 
@@ -280,8 +279,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                 return stringBuilder.toString().trim();
 
             } catch (Exception e) {
-                e.printStackTrace();
-                Log.d("@@@search adapter 229", e.toString());
+
             }
 
             return null;
@@ -292,7 +290,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
             try {
 
-                Log.d("@@@search adapter 258", result);
+
                 JSONObject jsonObject = new JSONObject(result);
                 JSONArray jsonArray = jsonObject.getJSONArray("response");
 
@@ -349,7 +347,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
 
             } catch (Exception e) {
-                e.printStackTrace();
             }
 
             backgroundtask.dispose();

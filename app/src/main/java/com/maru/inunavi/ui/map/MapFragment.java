@@ -73,6 +73,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CustomCap;
 import com.google.android.gms.maps.model.JointType;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -1029,7 +1030,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, SensorE
 
                 try {
 
-                    Log.d("@@@", "satisfiedFragment_116 : " + response);
+
                     JSONObject jsonResponse = new JSONObject(response);
                     boolean success = jsonResponse.getBoolean("success");
 
@@ -1144,8 +1145,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, SensorE
 
                 } catch (Exception e) {
 
-                    Log.d("@@@", "validate error");
-                    e.printStackTrace();
+
 
                 }
 
@@ -1314,6 +1314,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, SensorE
         });
 
         gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(37.37532099190484, 126.63285407077159), 17));
+        //gMap.setBuildingsEnabled(false);
+        if(getContext()!=null){
+            gMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(), R.raw.map_style));
+        }
+
 
 
         //----------------------------------------------------------
@@ -1469,6 +1474,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, SensorE
 
                 searchBar.setVisibility(View.VISIBLE);
                 slidingPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+
                 detailBox.setVisibility(View.GONE);
                 map_frag_navi_searchWrapper.setVisibility(View.GONE);
 
@@ -1965,8 +1971,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, SensorE
 
 
             } catch (Exception e) {
-                e.printStackTrace();
-                Log.d("@@@map fragment 229", e.toString());
+
 
 
             }
@@ -1980,7 +1985,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, SensorE
             try {
 
 
-                Log.d("@@@map fragment 1630", result);
 
                 placeList.clear();
 
@@ -2068,10 +2072,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, SensorE
                                 placeList.get(0).getLocation().longitude), 17));
                     }
 
+                    gMap.setPadding(0,DpToPixel(66), 0, 0);
+
                 }
 
             } catch (Exception e) {
-                e.printStackTrace();
 
             }
 
@@ -2114,8 +2119,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, SensorE
                 return stringBuilder.toString().trim();
 
             } catch (Exception e) {
-                e.printStackTrace();
-                Log.d("@@@map fragment 1798", e.toString());
+
             }
 
             return null;
@@ -2126,7 +2130,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, SensorE
 
             try {
 
-                Log.d("@@@map fragment 1630", result);
 
                 JSONObject jsonObject = new JSONObject(result);
                 JSONArray jsonArray = jsonObject.getJSONArray("response");
@@ -2219,14 +2222,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, SensorE
                                         resultObj.put("location", location.getLatitude() + ", " + location.getLongitude());
                                         resultObj.put("angle", azimuth);
 
-                                        Log.d("@@@MapFragment 2217", resultObj.toString());
 
-                                        /*Intent intent = new Intent(getActivity(), UnityPlayerActivity.class);
+
+                                        Intent intent = new Intent(getActivity(), UnityPlayerActivity.class);
                                         startActivity(intent);
-*/
+
 
                                     } catch (JSONException e) {
-                                        e.printStackTrace();
                                     }
 
                                 }
@@ -2243,7 +2245,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, SensorE
 
 
             } catch (Exception e) {
-                e.printStackTrace();
 
             }
 
@@ -2285,8 +2286,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, SensorE
                 return stringBuilder.toString().trim();
 
             } catch (Exception e) {
-                e.printStackTrace();
-                Log.d("@@@map fragment 2053", e.toString());
+
             }
 
             return null;
@@ -2297,7 +2297,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, SensorE
 
             try {
 
-                Log.d("@@@map fragment 2064", result);
+
 
                 JSONObject jsonObject = new JSONObject(result);
                 JSONArray jsonArray = jsonObject.getJSONArray("response");
@@ -2378,7 +2378,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, SensorE
                 }
 
             } catch (Exception e) {
-                e.printStackTrace();
 
             }
 

@@ -141,8 +141,7 @@ public class SignUpMajorActivity extends AppCompatActivity {
                 return stringBuilder.toString().trim();
 
             } catch (Exception e) {
-                e.printStackTrace();
-                Log.d("@@@CalendarFragment 647", e.toString());
+
             }
 
             return null;
@@ -153,7 +152,7 @@ public class SignUpMajorActivity extends AppCompatActivity {
 
             try {
 
-                Log.d("@@@CalendarFragment 658", result);
+
 
                 JSONObject jsonObject = new JSONObject(result);
                 JSONArray jsonArray = jsonObject.getJSONArray("response");
@@ -219,7 +218,6 @@ public class SignUpMajorActivity extends AppCompatActivity {
                 }
 
             } catch (Exception e) {
-                e.printStackTrace();
 
             }
 

@@ -54,6 +54,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
@@ -138,6 +139,7 @@ public class MapPickLocationActivity extends AppCompatActivity implements OnMapR
         );
 
         gMap.setLatLngBoundsForCameraTarget(australiaBounds);
+        gMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getBaseContext(), R.raw.map_style));
 
         //--------------------------맵 초기화 완료---------------------------------------------
 

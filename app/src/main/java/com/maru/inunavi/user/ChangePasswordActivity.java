@@ -100,7 +100,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
                                try {
 
-                                   Log.d("@@@", "signupactivity_107 : " + response);
+
                                    JSONObject jsonResponse = new JSONObject(response);
                                    boolean success = jsonResponse.getBoolean("success");
 
@@ -116,8 +116,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
                                } catch (Exception e) {
 
-                                   Log.d("@@@", "validate error");
-                                   e.printStackTrace();
+
 
                                    setNotEditText(editText_change_password_origin, change_password_origin_done_icon,  textView_origin_warning, "서버 연결 실패");
                                    originPasswordValidate = false;
@@ -262,7 +261,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
                             try {
 
-                                Log.d("@@@", "signupactivity_107 : " + response);
+
                                 JSONObject jsonResponse = new JSONObject(response);
                                 boolean success = jsonResponse.getBoolean("success");
 
@@ -280,12 +279,12 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
                                                 try {
 
-                                                    Log.d("@@@", "signupactivity_329 : " + response);
+
 
                                                     JSONObject jsonResponse = new JSONObject(response);
 
 
-                                                    Log.d("@@@ changePassword ", response);
+
 
                                                     boolean success = jsonResponse.getBoolean("success");
 
@@ -301,7 +300,6 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
                                                 } catch (Exception e) {
 
-                                                    e.printStackTrace();
 
                                                 }
 
@@ -330,8 +328,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
                             } catch (Exception e) {
 
-                                Log.d("@@@", "validate error");
-                                e.printStackTrace();
+
 
                                 setNotEditText(editText_change_password_origin, change_password_origin_done_icon,  textView_origin_warning, "서버 연결 실패");
                                 originPasswordValidate = false;

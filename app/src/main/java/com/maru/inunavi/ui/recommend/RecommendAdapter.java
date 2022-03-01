@@ -236,7 +236,7 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.MyVi
 
                                 try {
 
-                                    Log.d("@@@", "RecommendAdapter_213 : " + response);
+
 
                                     JSONObject jsonResponse = new JSONObject(response);
 
@@ -268,7 +268,6 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.MyVi
 
                                 } catch (Exception e) {
 
-                                    e.printStackTrace();
 
                                 }
 
@@ -356,8 +355,7 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.MyVi
                 return stringBuilder.toString().trim();
 
             } catch (Exception e) {
-                e.printStackTrace();
-                Log.d("@@@search adapter 229", e.toString());
+
             }
 
             return null;
@@ -368,7 +366,7 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.MyVi
 
             try {
 
-                Log.d("@@@search adapter 258", result);
+
                 JSONObject jsonObject = new JSONObject(result);
                 JSONArray jsonArray = jsonObject.getJSONArray("response");
 
@@ -425,7 +423,6 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.MyVi
 
 
             } catch (Exception e) {
-                e.printStackTrace();
             }
 
             backgroundtask.dispose();

@@ -49,7 +49,7 @@ public class LaunchActivity extends AppCompatActivity {
 
             }
 
-            Log.d("launchActivity line 49", String.valueOf(checkLocationServicesStatus()));
+
 
             if(checkLocationServicesStatus() && hasPermissions(PERMISSIONS)){
 

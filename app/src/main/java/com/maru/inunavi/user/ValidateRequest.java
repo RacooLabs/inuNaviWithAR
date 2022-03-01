@@ -26,7 +26,7 @@ public class ValidateRequest extends StringRequest {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("@@@2", String.valueOf(error));
+
             }
         });
 

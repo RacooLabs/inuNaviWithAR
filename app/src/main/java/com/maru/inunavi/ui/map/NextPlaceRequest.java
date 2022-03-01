@@ -25,7 +25,7 @@ public class NextPlaceRequest extends StringRequest {
         super(Method.POST, URL, listener, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("@@@", String.valueOf(error));
+
             }
         });
 

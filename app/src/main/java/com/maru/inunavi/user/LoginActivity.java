@@ -73,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         try{
-                            Log.d("@@@",response.toString());
+
                             JSONObject jsonResponse = new JSONObject(response);
                             boolean success = jsonResponse.getBoolean("success");
 
@@ -100,7 +100,7 @@ public class LoginActivity extends AppCompatActivity {
 
                         }catch (Exception e){
 
-                            Log.d("LoginActivity 102", e.toString());
+
                             setNotEditText(editText_password, textView_login_password_warning, "서버 연결 실패");
 
                         }

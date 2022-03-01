@@ -37,6 +37,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.JointType;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
@@ -168,7 +169,7 @@ public class MapOverviewActivity extends AppCompatActivity implements OnMapReady
         gMap.setLatLngBoundsForCameraTarget(australiaBounds);
 
         gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(australiaBounds.getCenter(), 10));
-
+        gMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getBaseContext(), R.raw.map_style));
 
         //--------------------------맵 초기화 완료---------------------------------------------
 
@@ -355,8 +356,6 @@ public class MapOverviewActivity extends AppCompatActivity implements OnMapReady
                 return stringBuilder.toString().trim();
 
             } catch (Exception e) {
-                e.printStackTrace();
-                Log.d("@@@MapOverviewActivity 310", e.toString());
             }
 
             return null;
@@ -367,7 +366,7 @@ public class MapOverviewActivity extends AppCompatActivity implements OnMapReady
 
             try {
 
-                Log.d("@@@MapOverviewActivity 321", result);
+
 
                 JSONObject jsonObject = new JSONObject(result);
                 JSONArray jsonArray = jsonObject.getJSONArray("response");
@@ -474,7 +473,6 @@ public class MapOverviewActivity extends AppCompatActivity implements OnMapReady
                 }
 
             } catch (Exception e) {
-                e.printStackTrace();
 
             }
 

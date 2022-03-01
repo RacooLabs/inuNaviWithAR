@@ -391,7 +391,7 @@ public class CalendarFragment extends Fragment {
 
                             int CallType = intent.getIntExtra("CallType", 0);
 
-                            Log.d("@@@ CalendarFragment342", CallType + " : " + Activity.RESULT_OK);
+
                             if(CallType == 2001) {
 
 
@@ -442,7 +442,7 @@ public class CalendarFragment extends Fragment {
 
         }else{
 
-            //Log.d("@@@ fragmentcalendar : 61", cookieManager.getCookie(url).toString());
+
 
             //로그인 버튼 리스너
             frag_tita_login_box.setVisibility(View.VISIBLE);
@@ -567,8 +567,7 @@ public class CalendarFragment extends Fragment {
                 return stringBuilder.toString().trim();
 
             } catch (Exception e) {
-                e.printStackTrace();
-                Log.d("@@@search adapter 229", e.toString());
+
             }
 
             return null;
@@ -580,7 +579,7 @@ public class CalendarFragment extends Fragment {
 
             try {
 
-                Log.d("@@@search adapter 258", result);
+
                 JSONObject jsonObject = new JSONObject(result);
                 JSONArray jsonArray = jsonObject.getJSONArray("response");
 
@@ -637,7 +636,7 @@ public class CalendarFragment extends Fragment {
 
 
             } catch (Exception e) {
-                e.printStackTrace();
+
             }
 
             schedule.setting(schedule_textView,relativeLayout_frag_tita, getActivity(), this);
@@ -686,8 +685,7 @@ public class CalendarFragment extends Fragment {
                 return stringBuilder.toString().trim();
 
             } catch (Exception e) {
-                e.printStackTrace();
-                Log.d("@@@CalendarFragment 647", e.toString());
+
             }
 
             return null;
@@ -698,7 +696,6 @@ public class CalendarFragment extends Fragment {
 
             try {
 
-                Log.d("@@@CalendarFragment 658", result);
 
                 JSONObject jsonObject = new JSONObject(result);
                 JSONArray jsonArray = jsonObject.getJSONArray("response");
@@ -762,7 +759,6 @@ public class CalendarFragment extends Fragment {
                 }
 
             } catch (Exception e) {
-                e.printStackTrace();
 
             }
 

@@ -35,7 +35,6 @@ public class OverviewInfo {
 
         for (int i=0;i<directionStringSplit.length;i+=2){
 
-            Log.d("@@@overviewinfo.class : 33", "\""+ directionStringSplit[i+1] + "\"");
 
             directionList.add(new LatLng(Double.parseDouble(directionStringSplit[i]),
                     Double.parseDouble(directionStringSplit[i+1])));

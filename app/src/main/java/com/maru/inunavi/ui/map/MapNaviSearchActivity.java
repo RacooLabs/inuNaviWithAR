@@ -368,8 +368,7 @@ public class MapNaviSearchActivity extends AppCompatActivity {
                 return stringBuilder.toString().trim();
 
             } catch (Exception e) {
-                e.printStackTrace();
-                Log.d("@@@mapnavisearchactivity 229", e.toString());
+
             }
 
             return null;
@@ -380,7 +379,7 @@ public class MapNaviSearchActivity extends AppCompatActivity {
 
             try {
 
-                Log.d("@@@mapnavisearchactivity 1630", result);
+
 
                 searchPlaceList.clear();
 
@@ -438,7 +437,6 @@ public class MapNaviSearchActivity extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
 
             } catch (Exception e) {
-                e.printStackTrace();
 
             }
 
