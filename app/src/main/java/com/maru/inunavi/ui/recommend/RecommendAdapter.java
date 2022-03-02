@@ -96,15 +96,13 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.MyVi
             super(v);
 
             switch (viewType){
+
+                default:
                 case 0:
                     textView_subtitle = (TextView) v.findViewById(R.id.textView_subtitle);
                     break;
 
                 case 1:
-                    textView_subtitle = (TextView) v.findViewById(R.id.textView_subtitle);
-                    break;
-
-                case 2:
 
                     textView_recommend_lectureName = (TextView) v.findViewById(R.id.textView_recommend_lectureName);
                     textView_recommend_professor = (TextView) v.findViewById(R.id.textView_recommend_professor);
@@ -112,10 +110,6 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.MyVi
                     textView_recommend_time = (TextView) v.findViewById(R.id.textView_recommend_time);
                     textView_recommend_add = itemView.findViewById(R.id.textView_recommend_add);
 
-                    break;
-
-                default:
-                    textView_subtitle = (TextView) v.findViewById(R.id.textView_subtitle);
                     break;
 
             }
@@ -141,8 +135,9 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.MyVi
         LinearLayout v;
 
         switch (viewType){
-            case 0:
 
+            default:
+            case 0:
                 v = (LinearLayout) LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.recommend_cardview_subtitle, parent, false);
                 break;
@@ -150,20 +145,10 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.MyVi
             case 1:
 
                 v = (LinearLayout) LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.recommend_cardview_subtitle, parent, false);
-                break;
-
-            case 2:
-
-                v = (LinearLayout) LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.recommend_cardview, parent, false);
-
                 break;
 
-            default:
-                v = (LinearLayout) LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.recommend_cardview_subtitle, parent, false);
-                break;
+
         }
 
         MyViewHolder vh = new MyViewHolder(v,viewType);
@@ -176,11 +161,8 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.MyVi
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
 
-        if (mData.get(position).getLecturename().equals("거리 맞춤 추천")){
-            holder.textView_subtitle.setText("거리 맞춤 추천");
-
-        } else if (mData.get(position).getLecturename().equals("개인 맞춤 추천")){
-            holder.textView_subtitle.setText("개인 맞춤 추천");
+        if (mData.get(position).getLecturename().equals("강의 추천")){
+            holder.textView_subtitle.setText("강의 추천");
 
         } else {
 
@@ -299,12 +281,11 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.MyVi
 
     public int getItemViewType(int position) {
 
-        if (mData.get(position).getLecturename().equals("거리 맞춤 추천")) {
+        if (mData.get(position).getLecturename().equals("강의 추천")) {
             return 0;
-        } else if (mData.get(position).getLecturename().equals("개인 맞춤 추천")) {
-            return 1;
         } else {
-            return 2;
+            return 1;
+
         }
 
     }

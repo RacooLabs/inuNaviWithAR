@@ -2200,7 +2200,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, SensorE
 
                     map_frag_navi_detail_box_wrapper.setVisibility(View.VISIBLE);
 
-                    AR_button_wrapper.setVisibility(View.VISIBLE);
+                    //AR_button_wrapper.setVisibility(View.VISIBLE);
 
                     AR_button.setOnClickListener(new View.OnClickListener() {
                         @Override
