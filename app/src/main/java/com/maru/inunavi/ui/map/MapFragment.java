@@ -2224,8 +2224,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, SensorE
 
 
 
-                                        Intent intent = new Intent(getActivity(), UnityPlayerActivity.class);
-                                        startActivity(intent);
+                                        /*Intent intent = new Intent(getActivity(), UnityPlayerActivity.class);
+                                        startActivity(intent);*/
 
 
                                     } catch (JSONException e) {

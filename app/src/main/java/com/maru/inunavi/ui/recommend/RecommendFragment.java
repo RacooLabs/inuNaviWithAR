@@ -216,6 +216,8 @@ public class RecommendFragment extends Fragment {
 
             } catch (Exception e) {
 
+                e.printStackTrace();
+
             }
 
             return null;
@@ -225,6 +227,7 @@ public class RecommendFragment extends Fragment {
             // onPostExecute
 
             try {
+
 
 
                 JSONObject jsonObject = new JSONObject(result);
@@ -311,6 +314,9 @@ public class RecommendFragment extends Fragment {
 
 
             } catch (Exception e) {
+
+
+
             }
 
             recommendBackgroundTask.dispose();
