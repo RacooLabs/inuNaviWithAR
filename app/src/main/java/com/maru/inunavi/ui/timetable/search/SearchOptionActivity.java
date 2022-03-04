@@ -1,7 +1,7 @@
 package com.maru.inunavi.ui.timetable.search;
 
 
-import static com.maru.inunavi.ui.timetable.search.SearchActivity.categoryList;
+
 import static com.maru.inunavi.ui.timetable.search.SearchActivity.category_option;
 import static com.maru.inunavi.ui.timetable.search.SearchActivity.cse_option;
 import static com.maru.inunavi.ui.timetable.search.SearchActivity.gradeList;
@@ -52,7 +52,7 @@ public class SearchOptionActivity extends AppCompatActivity implements Serializa
         selectionGradeList.clear();
         selectionScoreList.clear();
 
-        selectionCategoryList.addAll(categoryList);
+        selectionCategoryList.addAll(CalendarFragment.categoryList);
         selectionGradeList.addAll(gradeList);
         selectionScoreList.addAll(scoreList);
 
@@ -115,7 +115,7 @@ public class SearchOptionActivity extends AppCompatActivity implements Serializa
                 selectionGradeList.clear();
                 selectionScoreList.clear();
 
-                selectionCategoryList.addAll(categoryList);
+                selectionCategoryList.addAll(CalendarFragment.categoryList);
                 selectionGradeList.addAll(gradeList);
                 selectionScoreList.addAll(scoreList);
 
@@ -357,7 +357,7 @@ public class SearchOptionActivity extends AppCompatActivity implements Serializa
                             int CallType = intent.getIntExtra("CallType", 0);
 
 
-                            if(selectionCategoryList.size() == categoryList.size() || selectionCategoryList.size() == 0){
+                            if(selectionCategoryList.size() == CalendarFragment.categoryList.size() || selectionCategoryList.size() == 0){
 
                                 tita_search_option_category_text.setText("전체");
                                 category_option = "전체";
@@ -390,7 +390,6 @@ public class SearchOptionActivity extends AppCompatActivity implements Serializa
             public void onClick(View view) {
                 Intent intent = new Intent(SearchOptionActivity.this, SearchCategoryActivity.class);
                 intent.putExtra("topBarTitle", "구분");
-                intent.putExtra("Category", categoryList);
                 categoryActivityResultLauncher.launch(intent);
             }
         });

@@ -169,7 +169,11 @@ public class MapOverviewActivity extends AppCompatActivity implements OnMapReady
         gMap.setLatLngBoundsForCameraTarget(australiaBounds);
 
         gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(australiaBounds.getCenter(), 10));
-        gMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getBaseContext(), R.raw.map_style));
+
+
+        if(getBaseContext()!=null){
+            gMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getBaseContext(), R.raw.map_style));
+        }
 
         //--------------------------맵 초기화 완료---------------------------------------------
 

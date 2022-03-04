@@ -72,7 +72,7 @@ public class SearchActivity extends AppCompatActivity {
 
 
     public static ArrayList<String> gradeList = new ArrayList<String>(Arrays.asList("1학년", "2학년", "3학년", "4학년" ));
-    public static ArrayList<String> categoryList = CalendarFragment.categoryList;
+    //public static ArrayList<String> categoryList = CalendarFragment.categoryList;
     public static ArrayList<String> scoreList = new ArrayList<String>(Arrays.asList("1학점", "2학점", "3학점", "4학점"));
 
     public static ArrayList<String> selectionCategoryList = new ArrayList<>();
@@ -117,7 +117,7 @@ public class SearchActivity extends AppCompatActivity {
         selectionGradeList.clear();
         selectionScoreList.clear();
 
-        selectionCategoryList.addAll(categoryList);
+        selectionCategoryList.addAll(CalendarFragment.categoryList);
         selectionGradeList.addAll(gradeList);
         selectionScoreList.addAll(scoreList);
 

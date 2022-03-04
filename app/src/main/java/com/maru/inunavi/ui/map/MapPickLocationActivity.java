@@ -139,7 +139,10 @@ public class MapPickLocationActivity extends AppCompatActivity implements OnMapR
         );
 
         gMap.setLatLngBoundsForCameraTarget(australiaBounds);
-        gMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getBaseContext(), R.raw.map_style));
+        if(getBaseContext()!=null){
+            gMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getBaseContext(), R.raw.map_style));
+        }
+
 
         //--------------------------맵 초기화 완료---------------------------------------------
 

@@ -583,6 +583,7 @@ public class CalendarFragment extends Fragment {
                 JSONObject jsonObject = new JSONObject(result);
                 JSONArray jsonArray = jsonObject.getJSONArray("response");
 
+
                 int count = 0;
 
                 int id;
@@ -705,6 +706,8 @@ public class CalendarFragment extends Fragment {
                 String majorArrayString = "";
                 String CSEArrayString = "";
                 String categoryListString = "";
+
+
 
                 int count = 0;
 

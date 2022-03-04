@@ -14,10 +14,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.maru.inunavi.R;
+import com.maru.inunavi.ui.timetable.CalendarFragment;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -43,7 +43,7 @@ public class SearchCategoryActivity extends AppCompatActivity implements Seriali
         TextView tita_search_option_multi_topBar_textView = findViewById(R.id.tita_search_option_multi_topBar_textView);
         tita_search_option_multi_topBar_textView.setText(topBarTitle);
 
-        categoryList = (ArrayList<String>)getIntent().getSerializableExtra("Category");
+        ArrayList<String> categoryList = CalendarFragment.categoryList;
 
         //돌아가기 버튼
         tita_search_option_multi_backButton.setOnClickListener(new View.OnClickListener() {

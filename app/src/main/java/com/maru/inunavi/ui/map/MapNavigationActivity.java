@@ -203,7 +203,10 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
         gMap.moveCamera(CameraUpdateFactory.newLatLngZoom( new LatLng(37.37532099190484, 126.63285407077159) , 17));
 
         gMap.getUiSettings().setScrollGesturesEnabled(false);
-        gMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getBaseContext(), R.raw.map_style));
+        if(getBaseContext()!=null){
+            gMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getBaseContext(), R.raw.map_style));
+        }
+
 
         //--------------------------맵 초기화 완료---------------------------------------------
 
@@ -261,7 +264,7 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
                             });
 
                             try {
-                                sleep(3000);
+                                sleep(1500);
 
                             } catch (InterruptedException e) {
                             }
@@ -321,7 +324,7 @@ public class MapNavigationActivity extends AppCompatActivity implements OnMapRea
 
                     CameraPosition currentPlace = new CameraPosition.Builder()
                             .target(new LatLng(location.getLatitude(), location.getLongitude()))
-                            .bearing((float)bearing).tilt(60).zoom(20).build();
+                            .bearing((float)bearing).tilt(30).zoom(18).build();
 
                     gMap.animateCamera(CameraUpdateFactory.newCameraPosition(currentPlace), new GoogleMap.CancelableCallback() {
                         @Override
