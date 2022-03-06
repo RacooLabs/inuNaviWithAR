@@ -237,17 +237,6 @@
 
         </activity>
 
-        <activity android:name="com.maru.inunavi.ui.map.UnityPlayerActivity"
-            android:screenOrientation="landscape"
-            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection"
-            android:launchMode="singleTask"
-            android:process=":unityplayer">
-
-
-
-        </activity>
-
-
 
 
 

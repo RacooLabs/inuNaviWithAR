@@ -1859,16 +1859,22 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, SensorE
 
         }else{
 
-            fusedLocationClient.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
-                @Override
-                public void onSuccess(Location location) {
+            try {
+                fusedLocationClient.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
 
-                    myCurrentLocation = new LatLng(location.getLatitude(), location.getLongitude());
-                    SearchBackgroundTask();
+                        myCurrentLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                        SearchBackgroundTask();
 
-                }
+                    }
 
-            });
+                });
+
+            }catch (Exception e) {
+
+            }
+
         }
 
 

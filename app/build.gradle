@@ -7,7 +7,7 @@ android {
 
     defaultConfig {
         applicationId "com.maru.inunavi"
-        minSdk 28
+        minSdk 26
         targetSdk 31
         versionCode 2
         versionName "1.0.1"
