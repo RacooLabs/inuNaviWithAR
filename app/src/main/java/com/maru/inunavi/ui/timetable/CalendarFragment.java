@@ -753,9 +753,26 @@ public class CalendarFragment extends Fragment {
                     Collections.sort(CSEArray);
                     Collections.sort(categoryList);
 
-
-                    CSEArray.remove("전체");
+                    /*majorArray.remove("전체");
+                    CSEArray.remove("전체");*/
                     categoryList.remove("전체");
+
+
+                    ArrayList<String> tmpMajorArray = majorArray;
+                    ArrayList<String> tmpCSEArray = CSEArray;
+
+                    tmpMajorArray.remove("전체");
+                    tmpCSEArray.remove("전체");
+
+                    majorArray = new ArrayList<String>();
+                    CSEArray = new ArrayList<String>();
+
+                    majorArray.add("전체");
+                    CSEArray.add("전체");
+
+                    majorArray.addAll(tmpMajorArray);
+                    CSEArray.addAll(tmpCSEArray);
+
 
                     frag_tita_year_semester.setText(year + "년 " + semester + "학기");
 

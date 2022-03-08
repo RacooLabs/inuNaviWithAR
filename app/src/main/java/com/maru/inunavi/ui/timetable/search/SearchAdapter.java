@@ -212,7 +212,13 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
                     };
 
-                    userEmail = (MainActivity.cookieManager.getCookie(sUrl)).replace("cookieKey=", "");
+                    try{
+
+                        userEmail = (MainActivity.cookieManager.getCookie(sUrl)).replace("cookieKey=", "");
+
+                    }catch (Exception e){
+
+                    }
 
                     AddRequest addRequest = new AddRequest(userEmail, mData.get(holder.getAdapterPosition()).getNumber(),responseListener);
                     RequestQueue queue = Volley.newRequestQueue(parent);

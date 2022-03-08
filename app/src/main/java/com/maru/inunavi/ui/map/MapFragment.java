@@ -32,6 +32,8 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.telecom.Call;
 import android.util.Log;
 import android.util.TypedValue;
@@ -112,6 +114,8 @@ import com.maru.inunavi.ui.satisfied.AnalysisRequest;
 import com.maru.inunavi.ui.timetable.search.Lecture;
 import com.maru.inunavi.user.LoginActivity;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+import com.unity3d.player.UnityPlayer;
+import com.unity3d.player.UnityPlayerActivity;
 
 
 import org.json.JSONArray;
@@ -2207,7 +2211,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, SensorE
 
                     map_frag_navi_detail_box_wrapper.setVisibility(View.VISIBLE);
 
-                    //AR_button_wrapper.setVisibility(View.VISIBLE);
+                    AR_button_wrapper.setVisibility(View.VISIBLE);
 
                     AR_button.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -2226,14 +2230,21 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, SensorE
 
                                     try {
                                         resultObj.put("route", route);
-                                        resultObj.put("location", location.getLatitude() + ", " + location.getLongitude());
-                                        resultObj.put("angle", azimuth);
 
+                                        Intent intent = new Intent(getActivity(), UnityPlayerActivity.class);
+                                        startActivity(intent);
 
+                                        final Handler handler = new Handler(){
+                                            @Override
+                                            public void handleMessage(Message msg) {
 
-                                        /*Intent intent = new Intent(getActivity(), UnityPlayerActivity.class);
-                                        startActivity(intent);*/
+                                                String json = resultObj.toString();
+                                                UnityPlayer.UnitySendMessage("GameObject", "dataRecept", json);
 
+                                            }
+                                        };
+
+                                        handler.sendEmptyMessageDelayed(0,3000);
 
                                     } catch (JSONException e) {
                                     }

@@ -263,7 +263,6 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.MyVi
                         RequestQueue queue = Volley.newRequestQueue(parent);
                         queue.add(addRequest);
 
-
                     }
 
                 }
