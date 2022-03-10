@@ -2244,7 +2244,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, SensorE
                                             }
                                         };
 
-                                        handler.sendEmptyMessageDelayed(0,3000);
+                                        handler.sendEmptyMessageDelayed(0,6000);
 
                                     } catch (JSONException e) {
                                     }
